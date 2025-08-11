@@ -1,21 +1,25 @@
 "use client";
 
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { fetchSelectDataExcelImport, insertJornadasExcel } from "@/services/excel/service.excel";
+import { fetchSelectDataExcelImport, insertJornadasExcel } from "@/services/importacion/service.excel";
 import { Button } from "@mui/material";
 import UploadFileRoundedIcon from '@mui/icons-material/UploadFileRounded';
 import SyncIcon from '@mui/icons-material/Sync';
-import FeedbackSnackbar from "../../ui/feedback";
+import FeedbackSnackbar from "../../../ui/feedback";
 import { Formulario } from "./components/formulario";
 import { useImportarExcelForm } from "./hooks/useImportarExcelForm";
 import { useDropzoneH } from "./hooks/useDropzone";
 import { importarExcelDatos } from "./types";
 import { Dropzone } from "./components/dropzone";
+import { useRouter } from "next/navigation";
+import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
+import Link from "next/link";
 
 export default function ExcelImportform() {
     const { control, handleSubmit, setError, clearErrors, setValue, watch, formState: { errors }, reset } = useImportarExcelForm();
 
     const dropzone = useDropzoneH(setValue, setError, clearErrors);
+    const router = useRouter();
 
     const { data: selectDatos, isLoading: selectCargando } = useQuery({
         queryKey: ["fetchSelectDataExcelImport"],
@@ -25,8 +29,12 @@ export default function ExcelImportform() {
 
     const mutacion = useMutation({
         mutationFn: (data: importarExcelDatos) => insertJornadasExcel(data),
-        onSuccess: (status) => {
-            if ( status === 200) {
+        onSuccess: (response) => {
+            if (!response.completa) {
+                router.push(`/administrativo/importacion/${response.importacion}/completar`);
+                reset();
+            } else {
+                router.push(`/administrativo/importacion`);
                 reset();
             };
         },
@@ -43,16 +51,16 @@ export default function ExcelImportform() {
 
     return (
         <div className="flex flex-col gap-4 items-center justify-center w-full h-full">
-            <form onSubmit={handleSubmit(onSubmit)} className="w-[90%] space-y-4">
+            <form onSubmit={handleSubmit(onSubmit)} className="w-[95%] space-y-4">
                 <div className="flex flex-row gap-2 w-full h-18">
-                    <Formulario 
+                    <Formulario
                         control={control}
                         selectCargando={selectCargando}
                         selectDatos={selectDatos}
                     />
                 </div>
                 <div className="w-full">
-                    <Dropzone 
+                    <Dropzone
                         getRootProps={dropzone.getRootProps}
                         getInputProps={dropzone.getInputProps}
                         isDragActive={dropzone.isDragActive}
@@ -61,7 +69,22 @@ export default function ExcelImportform() {
                         errores={errors}
                     />
                 </div>
-                <div className="flex justify-end">
+                <div className="flex justify-between">
+                    <Button
+                        component={Link}
+                        variant="contained"
+                        color="warning"
+                        href={"/administrativo/importacion"}
+                        disableElevation
+                        startIcon={
+                            mutacion.isPending ? (
+                                <SyncIcon className="animate-spin" />
+                            ) : <ArrowBackRoundedIcon />
+                        }
+                        disabled={mutacion.isPending}
+                    >
+                        Importaciones
+                    </Button>
                     <Button
                         type="submit"
                         variant="contained"
@@ -79,7 +102,7 @@ export default function ExcelImportform() {
                 </div>
             </form>
             <FeedbackSnackbar
-                open= {mutacion.isSuccess || mutacion.isError}
+                open={mutacion.isSuccess || mutacion.isError}
                 severity={mutacion.isSuccess ? "success" : "error"}
                 message={mutacion.isSuccess ? "Archivo importado correctamente" : mutacion.error instanceof Error ? mutacion.error.message : "Error al importar el archivo"}
             />

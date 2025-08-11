@@ -27,7 +27,7 @@ export default function Nav() {
           variant="text"
           color="warning"
           className="flex !pl-6 !items-center !justify-start !text-gray-800 hover:!text-orange-600 !font-medium hover:!bg-orange-100"
-          sx={{ margin: "2px", textTransform: "none" }}
+          sx={{ textTransform: "none" }}
           onClick={toggleDrawer}
           fullWidth
           disableElevation

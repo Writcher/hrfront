@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-
 export const useFiltrosInteriores = (setValue: any,  watch: any) => {
     const filtroMarcasIncompletas = watch("filtroMarcasIncompletas")
     

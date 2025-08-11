@@ -6,7 +6,7 @@ interface FormularioFiltrosProps {
     filtroMes: number;
     filtroQuincena: number;
     filtroMarcasIncompletas: boolean;
-    selectCargando: boolean; 
+    selectCargando: boolean;
     selectDatos: any[];
     onCambioFiltroMes: (event: React.ChangeEvent<HTMLInputElement>) => void;
     onCambioFiltroQuincena: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -73,7 +73,7 @@ export const FormularioFiltros: React.FC<FormularioFiltrosProps> = ({
             label="Solo Fichajes Incompletos"
             className="w-full !text-gray-700"
             onChange={onCambioFiltroMarcaIncompleta}
-            value={filtroMarcasIncompletas}
+            checked={filtroMarcasIncompletas}
         />
     </form>
 );

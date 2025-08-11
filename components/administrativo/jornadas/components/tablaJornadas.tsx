@@ -1,13 +1,13 @@
 import { Skeleton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import React from "react";
 
-interface TablaEmpleadosProps {
+interface TablaJornadasProps {
     jornadasDatos: any;
     jornadasCargando: boolean;
     filasPorPagina: number;
 }
 
-export const TablaJornadas: React.FC<TablaEmpleadosProps> = ({
+export const TablaJornadas: React.FC<TablaJornadasProps> = ({
     jornadasDatos,
     jornadasCargando,
     filasPorPagina,

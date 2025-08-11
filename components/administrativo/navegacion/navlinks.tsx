@@ -11,7 +11,7 @@ import Link from "next/link";
 const linksadmin = [
     { name: 'Inicio', href: '/administrativo', icon: HomeRoundedIcon },
     { name: 'Jornadas', href: '/administrativo/jornadas', icon: SummarizeRoundedIcon },
-    { name: 'Importar Informe', href: '/administrativo/excel', icon: UploadFileRoundedIcon },
+    { name: 'Informes Importados', href: '/administrativo/importacion', icon: UploadFileRoundedIcon },
 
     //Añadir links segun necesario aca.
 ];
@@ -50,7 +50,7 @@ export default function NavLinksAdministrativo() {
                         variant="text"
                         color="warning"
                         className={`!pl-6 !items-center !h-[4%] !justify-start hover:!text-orange-600 !font-medium hover:!bg-orange-100 !rounded ${isActive ? '!text-orange-600 !bg-orange-100' : '!text-gray-800'}`}
-                        sx={{ margin: "2px", textTransform: "none" }}
+                        sx={{ textTransform: "none" }}
                         fullWidth
                         disableElevation
                         startIcon={

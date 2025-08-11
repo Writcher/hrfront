@@ -39,9 +39,6 @@ export const Formulario: React.FC<FormularioProps> = ({
                         error={!!error}
                         helperText={error?.message}
                     >
-                        <MenuItem value={0} disabled>
-                            Seleccione un proyecto
-                        </MenuItem>
                         {selectDatos.proyectos.map((proyecto: { id: number, nombre: string }) => (
                             <MenuItem key={proyecto.id} value={proyecto.id}>
                                 {proyecto.nombre}
@@ -77,9 +74,6 @@ export const Formulario: React.FC<FormularioProps> = ({
                         error={!!error}
                         helperText={error?.message}
                     >
-                        <MenuItem value={0} disabled>
-                            Seleccione tipo de jornada
-                        </MenuItem>
                         {selectDatos.tiposJornada.map((tipo: { id: number, nombre: string }) => (
                             <MenuItem key={tipo.id} value={tipo.id}>
                                 {tipo.nombre}
