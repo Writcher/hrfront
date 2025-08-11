@@ -1,17 +1,17 @@
 "use server";
 
 import CONFIG from "@/config";
-import { insertJornadasExcelData } from "@/lib/dtos/excelimportservice";
+import { insertJornadasExcelParams } from "@/lib/dtos/excel";
 
-export async function insertJornadasExcel(data: insertJornadasExcelData) {
+export async function insertJornadasExcel(data: insertJornadasExcelParams) {
     try {
         const formData = new FormData();
 
-        formData.append("file", data.file!);
-        formData.append("id_proyecto", data.id_proyecto.toString());
-        formData.append("id_tipojornada", data.id_tipojornada.toString());
+        formData.append("file", data.archivo!);
+        formData.append("id_proyecto", data.proyecto.toString());
+        formData.append("id_tipojornada", data.tipoJornada.toString());
 
-        const response = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_EXCEL_IMPORT}`, {
+        const response = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_EXCEL}`, {
             method: "POST",
             body: formData,
         });
@@ -24,7 +24,6 @@ export async function insertJornadasExcel(data: insertJornadasExcelData) {
 
         return response.status;
     } catch (error) {
-        console.error("Error importando Excel: ", error);
         throw error;
     };
 };
@@ -35,7 +34,7 @@ export async function fetchSelectDataExcelImport() {
             method: "GET"
         });
 
-        const tiposJornadaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_TIPOJORNADA}`, {
+        const tiposJornadaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_TIPOSJORNADA}`, {
             method: "GET"
         });
 
@@ -48,7 +47,6 @@ export async function fetchSelectDataExcelImport() {
 
         return { proyectos, tiposJornada };
     } catch (error) {
-        console.error("Error buscando datos para selec ExcelImport: ", error);
         throw error;
     };
 };

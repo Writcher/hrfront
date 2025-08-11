@@ -3,15 +3,15 @@
 import { useDrawer } from "@/lib/context/navcontext";
 import { Button, IconButton } from "@mui/material";
 import { usePathname } from 'next/navigation';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import UploadFileRoundedIcon from '@mui/icons-material/UploadFileRounded';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import SummarizeRoundedIcon from '@mui/icons-material/SummarizeRounded';
 import Link from "next/link";
 
 const linksadmin = [
     { name: 'Inicio', href: '/administrativo', icon: HomeRoundedIcon },
-    { name: 'Jornadas', href: '/administrativo/report', icon: SummarizeRoundedIcon },
-    { name: 'Importar Informe', href: '/administrativo/excelimport', icon: CloudUploadIcon },
+    { name: 'Jornadas', href: '/administrativo/jornadas', icon: SummarizeRoundedIcon },
+    { name: 'Importar Informe', href: '/administrativo/excel', icon: UploadFileRoundedIcon },
 
     //Añadir links segun necesario aca.
 ];

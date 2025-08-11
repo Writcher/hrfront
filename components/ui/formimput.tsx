@@ -3,8 +3,8 @@ import { Control, FieldPath, FieldValues, useController } from "react-hook-form"
 
 // Opción para items de select
 type SelectOption = {
-  value: string | number;
-  label: string;
+  id: string | number;
+  name: string;
 };
 
 // Props del componente
@@ -60,6 +60,7 @@ export default function FormField<T extends FieldValues>({
         type={type}
         variant={variant}
         color={color}
+        size="small"
         fullWidth={fullWidth}
         select={select}
         error={!!error}
@@ -77,8 +78,8 @@ export default function FormField<T extends FieldValues>({
         } : undefined}
       >
         {select && options.map((option) => (
-          <MenuItem key={option.value} value={option.value}>
-            {option.label}
+          <MenuItem key={option.id} value={option.id}>
+            {option.name}
           </MenuItem>
         ))}
       </TextField>

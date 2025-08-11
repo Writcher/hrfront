@@ -1,6 +1,6 @@
 "use client";
 
-import Nav from "@/components/administrativo/nav";
+import Nav from "@/components/administrativo/navegacion/nav";
 import { useDrawer } from "@/lib/context/navcontext";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
