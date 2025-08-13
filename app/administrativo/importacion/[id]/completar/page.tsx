@@ -1,3 +1,5 @@
+import TablaCompletarImportacion from "@/components/administrativo/importacion/[id]/completar";
+
 export default async function CompletarImportacion({ params }: { params: Promise<{ id: number }> }) {
     const { id: id } = await params;
     return (
@@ -8,7 +10,7 @@ export default async function CompletarImportacion({ params }: { params: Promise
                 </p>
             </div>
             <div className="flex flex-col items-center justify-center w-full h-[90%]">
-                {id}
+                <TablaCompletarImportacion idImportacion={id} />
             </div>
         </div>
     );

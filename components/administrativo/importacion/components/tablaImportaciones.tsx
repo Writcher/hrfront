@@ -26,19 +26,19 @@ export const TablaListaImportaciones: React.FC<TablaImportacionesProps> = ({
                 }}
             >
                 <TableRow>
-                    <TableCell align="left" width="20%">
+                    <TableCell align="left" width="33%">
                         <div style={{ userSelect: "none" }}
                             className={`text-gray-700 font-medium md:font-bold text-[17px]`}>
                             Fecha de Importacion
                         </div>
                     </TableCell>
-                    <TableCell align="center"  width="20%">
+                    <TableCell align="center" width="33%">
                         <div style={{ userSelect: "none" }}
                             className={`text-gray-700 font-medium md:font-bold text-[17px]`}>
                             Estado
                         </div>
                     </TableCell>
-                    <TableCell align="center" width="10%">
+                    <TableCell align="right" width="33%">
                         <div style={{ userSelect: "none" }}
                             className={`text-gray-700 font-medium md:font-bold text-[17px]`}>
                             Acciones
@@ -50,13 +50,13 @@ export const TablaListaImportaciones: React.FC<TablaImportacionesProps> = ({
                 <TableBody>
                     {Array.from({ length: filasPorPagina }).map((_, index) => (
                         <TableRow key={index}>
-                            <TableCell align="left" size="small">
+                            <TableCell align="left" size="small" width="33%">
                                 <Skeleton variant="text" width={100} />
                             </TableCell>
-                            <TableCell align="center" size="small">
+                            <TableCell align="center" size="small" width="33%">
                                 <Skeleton variant="text" width={100} />
                             </TableCell>
-                            <TableCell align="center" size="small" width="10%">
+                            <TableCell align="right" size="small" width="33%">
                                 <Skeleton variant="text" width={100} />
                             </TableCell>
                         </TableRow>
@@ -66,41 +66,39 @@ export const TablaListaImportaciones: React.FC<TablaImportacionesProps> = ({
                 <TableBody>
                     {importacionesDatos?.importaciones?.length > 0 ? (
                         importacionesDatos.importaciones.map((row: any) => (
-                            <React.Fragment key={row.id}>
-                                <TableRow>
-                                    <TableCell align="left" size="small">
-                                        <div className="text-gray-700 font-medium text-[15px]" style={{ userSelect: "none" }}>
-                                            {new Intl.DateTimeFormat('es-AR', {
-                                                weekday: 'long',
-                                                day: 'numeric',
-                                                month: 'numeric',
-                                                year: '2-digit'
-                                            }).format(new Date(row.fecha)).replace(/\//g, '-')}
-                                        </div>
-                                    </TableCell>
-                                    <TableCell align="center" size="small">
-                                        <div className="text-gray-700 font-medium text-[15px]" style={{ userSelect: "none" }}>
-                                            <Chip label={row.nombreestado} color={row.nombreestado.toLowerCase() !== 'incompleta' ? "success" : "error"}/>
-                                        </div>
-                                    </TableCell>
-                                    <TableCell align="center" size="small">
-                                        <div className="text-gray-700 font-medium text-[15px]" style={{ userSelect: "none" }}>
-                                            <Button
-                                                component={Link}
-                                                href={`/administrativo/importacion/${row.id}/completar`}
-                                                variant="contained"
-                                                color="success"
-                                                disableElevation
-                                                endIcon={<EditNoteRoundedIcon />}
-                                                size="small"
-                                                disabled={row.nombreestado.toLowerCase() !== 'incompleta'}
-                                            >
-                                                COMPLETAR
-                                            </Button>
-                                        </div>
-                                    </TableCell>
-                                </TableRow>
-                            </React.Fragment>
+                            <TableRow key={row.id}>
+                                <TableCell align="left" size="small">
+                                    <div className="text-gray-700 font-medium text-[15px]" style={{ userSelect: "none" }}>
+                                        {new Intl.DateTimeFormat('es-AR', {
+                                            weekday: 'long',
+                                            day: 'numeric',
+                                            month: 'numeric',
+                                            year: '2-digit'
+                                        }).format(new Date(row.fecha)).replace(/\//g, '-')}
+                                    </div>
+                                </TableCell>
+                                <TableCell align="center" size="small">
+                                    <div className="text-gray-700 font-medium text-[15px]" style={{ userSelect: "none" }}>
+                                        <Chip label={row.nombreestado} color={row.nombreestado.toLowerCase() !== 'incompleta' ? "success" : "error"} />
+                                    </div>
+                                </TableCell>
+                                <TableCell align="right" size="small">
+                                    <div className="text-gray-700 font-medium text-[15px]" style={{ userSelect: "none" }}>
+                                        <Button
+                                            component={Link}
+                                            href={`/administrativo/importacion/${row.id}/completar`}
+                                            variant="contained"
+                                            color="success"
+                                            disableElevation
+                                            endIcon={<EditNoteRoundedIcon />}
+                                            size="small"
+                                            disabled={row.nombreestado.toLowerCase() !== 'incompleta'}
+                                        >
+                                            COMPLETAR
+                                        </Button>
+                                    </div>
+                                </TableCell>
+                            </TableRow>
                         ))
                     ) : (
                         <TableRow>

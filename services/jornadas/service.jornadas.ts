@@ -1,5 +1,6 @@
 "use server"
 
+import { FormularioJornadaFormularioDatos } from "@/components/administrativo/importacion/[id]/completar/types";
 import CONFIG from "@/config";
 import { fetchEmpleadosTablaJornadasParams, fetchJornadasEmpleadosParams } from "@/lib/dtos/jornadas";
 
@@ -90,4 +91,29 @@ export async function fetchJornadasEmpleado(data: fetchJornadasEmpleadosParams) 
     } catch (error) {
         throw error;
     };
+};
+
+export async function editJornada(parametros: FormularioJornadaFormularioDatos) {
+    try {
+        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_JORNADA!.replace("{id}",parametros.id!.toString())}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                entrada: parametros.entrada,
+                salida: parametros.salida
+            })
+        });
+
+        if (!respuestaRaw.ok) {
+            throw new Error("Error en la respuesta del servidor");
+        };
+
+        const respuesta = await respuestaRaw.json();
+
+        return respuesta;
+    } catch (error) {
+        throw error;
+    }; 
 };

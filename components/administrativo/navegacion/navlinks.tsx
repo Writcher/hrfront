@@ -11,7 +11,7 @@ import Link from "next/link";
 const linksadmin = [
     { name: 'Inicio', href: '/administrativo', icon: HomeRoundedIcon },
     { name: 'Jornadas', href: '/administrativo/jornadas', icon: SummarizeRoundedIcon },
-    { name: 'Informes Importados', href: '/administrativo/importacion', icon: UploadFileRoundedIcon },
+    { name: 'Informes', href: '/administrativo/importacion', icon: UploadFileRoundedIcon },
 
     //Añadir links segun necesario aca.
 ];

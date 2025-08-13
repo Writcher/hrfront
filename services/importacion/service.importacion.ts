@@ -1,7 +1,7 @@
 "use server"
 
 import CONFIG from "@/config";
-import { fetchImportacionesParams } from "@/lib/dtos/importaciones";
+import { fetchImportacionesParams, fetchImportacionJornadasParams } from "@/lib/dtos/importaciones";
 
 export async function fetchImportaciones(params: fetchImportacionesParams) {
     try {
@@ -23,7 +23,40 @@ export async function fetchImportaciones(params: fetchImportacionesParams) {
         const datosEmpleados = await datosImportacionesRaw.json();
 
         return datosEmpleados;
+    } catch (error) {
+        throw error;
+    };
+};
 
+export async function fetchImportacionJornadas(params: fetchImportacionJornadasParams) {
+    try {
+        const datosImportacionJornadasParams = new URLSearchParams({
+            filtroMarcasIncompletas: params.filtroMarcasIncompletas.toString(),
+            pagina: params.pagina.toString(),
+            filasPorPagina: params.filasPorPagina.toString()
+        });
+
+        const importacionJornadasRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_IMPORTACIONJORNADAS!.replace("{id}", params.idImportacion!.toString())}?${datosImportacionJornadasParams.toString()}`, {
+            method: "GET"
+        });
+
+        const importacionJornadas = await importacionJornadasRaw.json();
+
+        return importacionJornadas;
+    } catch (error) {
+        throw error;
+    };
+};
+
+export async function setImportacionCompleta(id: number) {
+    try {
+        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_IMPORTACION!.replace("{id}", id!.toString())}`, {
+            method: "PATCH"
+        });
+
+        const respuesta = await respuestaRaw.json()
+
+        return respuesta;
     } catch (error) {
         throw error;
     };
