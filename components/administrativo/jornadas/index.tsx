@@ -7,7 +7,7 @@ import FilterAltOffRoundedIcon from '@mui/icons-material/FilterAltOffRounded';
 import UploadFileRoundedIcon from '@mui/icons-material/UploadFileRounded';
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
-import { useTablaJornadaFormulario } from "./hooks/useTablaJornadaForm";
+import { useTablaEmpleadosFormulario } from "./hooks/useTablaEmpleadosFormulario";
 import { useFiltros } from "./hooks/useFiltros";
 import { usePaginacion } from "./hooks/usePaginacion";
 import { useOrdenacion } from "./hooks/useOrdenacion";
@@ -20,14 +20,13 @@ import { ContenidoFilaExpandida } from "./components/contenidoFilaExpandida";
 import { fetchDatosSelectTablaEmpleados, fetchEmpleadosTablaJornadas } from "@/services/jornadas/service.jornadas";
 
 export default function TablaEmpleadosJornadas() {
-  const { watch, setValue, getValues } = useTablaJornadaFormulario();
+  const { watch, setValue, getValues } = useTablaEmpleadosFormulario();
 
   const filtros = useFiltros(setValue, getValues, watch);
   const paginacion = usePaginacion(setValue, watch);
   const ordenacion = useOrdenacion(setValue, watch);
   const expansion = useExpansion(setValue, watch);
 
-  // Queries
   const { data: selectDatos } = useQuery({
     queryKey: ["fetchDatosSelectTablaEmpleados"],
     queryFn: () => fetchDatosSelectTablaEmpleados(),
@@ -53,7 +52,7 @@ export default function TablaEmpleadosJornadas() {
   };
 
   return (
-    <div className="flex flex-col gap-2 items-start justify-between w-[95%] h-full mb-1">
+    <div className="flex flex-col gap-1 items-start w-full h-full">
       <div className="flex flex-row gap-2 w-full">
         <ButtonGroup variant="outlined" color="inherit">
           <Button
@@ -69,7 +68,7 @@ export default function TablaEmpleadosJornadas() {
             variant="contained"
             color="error"
             disableElevation
-            onClick={filtros.handleCerrarFiltros}
+            onClick={filtros.handleLimpiarFiltros}
           >
             <FilterAltOffRoundedIcon />
           </Button>
@@ -114,7 +113,7 @@ export default function TablaEmpleadosJornadas() {
         filtrosActivos={filtros.filtrosActivos}
         getNombreProyectoPorId={getNombreProyectoPorId}
       />
-      <div className="flex grow flex-col justify-between w-full rounded overflow-y-auto" style={{ border: "2px solid #ED6C02" }}>
+      <div className="flex flex-col justify-between w-full h-full overflow-y-auto rounded" style={{ border: "2px solid #ED6C02" }}>
         <TablaEmpleados
           empleadosDatos={empleadosDatos}
           empleadosCargando={empleadosCargando}
@@ -128,8 +127,6 @@ export default function TablaEmpleadosJornadas() {
             <ContenidoFilaExpandida
               idFilaExpandida={expansion.idFilaExpandida}
               idFilaExpandidaProp={idFilaExpandidaProp}
-              setValue={setValue}
-              watch={watch}
             />
           )}
         />

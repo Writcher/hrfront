@@ -6,16 +6,12 @@ interface TablaImportacionJornadasProps {
     jornadasDatos: any;
     jornadasCargando: boolean;
     filasPorPagina: number;
-    filtro: any;
-    paginacion: any;
 }
 
 export const TablaImportacionJornadas: React.FC<TablaImportacionJornadasProps> = ({
     jornadasDatos,
     jornadasCargando,
-    filasPorPagina,
-    filtro,
-    paginacion
+    filasPorPagina
 }) => (
     <TableContainer>
         <Table stickyHeader>
@@ -89,8 +85,6 @@ export const TablaImportacionJornadas: React.FC<TablaImportacionJornadasProps> =
                         jornadasDatos.jornadas.map((row: any) => (
                             <FormularioJornada
                                 jornada={row}
-                                paginacion={paginacion}
-                                filtro={filtro}
                                 key={row.id}
                             />
                         ))

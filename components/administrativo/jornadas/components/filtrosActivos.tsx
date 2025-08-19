@@ -7,7 +7,7 @@ export const FiltrosActivos: React.FC<FiltrosActivosProps> = ({
   filtrosActivos,
   getNombreProyectoPorId
 }) => (
-  <div className="flex flex-col md:flex-row md:flex-wrap gap-2">
+  <div className="flex flex-row flex-wrap gap-2">
     {Object.entries(filtrosActivos).map(([key, value]) => (
       value && (
         <span key={key} className="border border-gray-700 p-2 rounded text-xs md:text-sm">

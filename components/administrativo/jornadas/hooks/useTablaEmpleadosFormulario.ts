@@ -1,24 +1,19 @@
 import { useForm } from "react-hook-form";
-import { tablaJornadasFormularioDatos } from "../types";
+import { tablaEmpleadosFormularioDatos } from "../types";
 
-export const useTablaJornadaFormulario = () => {
-  return useForm<tablaJornadasFormularioDatos>({
+export const useTablaEmpleadosFormulario = () => {
+  return useForm<tablaEmpleadosFormularioDatos>({
     defaultValues: {
       filtrosAncla: null,
       filtrosActivos: {},
       busquedaNombre: "",
       busquedaNombreNormal: "",
       mostrarBusquedaNombre: true,
-      filtroProyecto: 0,
+      filtroProyecto: '',
       mostrarFiltroProyecto: false,
-      filtroMes: 0,
-      filtroQuincena: 0,
-      filtroMarcasIncompletas: false,
       idFilaExpandida: null,
       pagina: 0,
       filasPorPagina: 25,
-      paginaInterna: 0,
-      filasPorPaginaInterna: 16,
       ordenDireccion: "ASC",
       ordenColumna: "nombreapellido"
     }

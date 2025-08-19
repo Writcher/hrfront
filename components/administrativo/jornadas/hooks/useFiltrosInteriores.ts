@@ -2,8 +2,8 @@ export const useFiltrosInteriores = (setValue: any,  watch: any) => {
     const filtroMarcasIncompletas = watch("filtroMarcasIncompletas")
     
     const handleLimpiarFiltros = () => {
-        setValue("filtroMes", 0);
-        setValue("filtroQuincena", 0);
+        setValue("filtroMes", '');
+        setValue("filtroQuincena", '');
         setValue("filtroMarcasIncompletas", false);
     };
     const handleCambioFiltroMes = (event: React.ChangeEvent<HTMLInputElement>) => {

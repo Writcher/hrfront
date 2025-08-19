@@ -8,23 +8,21 @@ export async function insertJornadasExcel(data: insertJornadasExcelParams) {
         const formData = new FormData();
 
         formData.append("file", data.archivo!);
-        formData.append("id_proyecto", data.proyecto.toString());
-        formData.append("id_tipojornada", data.tipoJornada.toString());
+        formData.append("id_proyecto", data.proyecto.toString() === '' ? '0' : data.proyecto.toString());
+        formData.append("id_tipojornada", data.tipoJornada.toString() === '' ? '0' : data.tipoJornada.toString());
 
         const responseRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_EXCEL}`, {
             method: "POST",
             body: formData,
         });
 
+        const respuesta = await responseRaw.json();
+        
         if (!responseRaw.ok) {
-            const errorText = await responseRaw.text();
-            console.error("Error en el response del backend:", errorText);
-            throw new Error(`Error al importar Excel: ${responseRaw.status}`);
+            throw new Error(respuesta.error || "Error desconocido al importar excel");
         };
 
-        const response = await responseRaw.json();
-
-        return response;
+        return respuesta;
     } catch (error) {
         throw error;
     };

@@ -2,7 +2,7 @@ export const useFiltros = (setValue: any, watch: any) => {
     const filtroIncompletas = watch("filtroIncompletas");
 
     const handleLimpiarFiltros = () => {
-        setValue("filtroProyecto", 0);
+        setValue("filtroProyecto", '');
         setValue("filtroIncompletas", false)
     };
 

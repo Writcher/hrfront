@@ -38,7 +38,7 @@ export default function TablaImportaciones() {
     });
 
     return (
-        <div className="flex flex-col gap-2 items-start justify-between w-[95%] h-full mb-1">
+        <div className="flex flex-col gap-1 items-start w-full h-full">
             <div className="flex flex-row gap-2 w-full">
                 <Button
                     variant="contained"
@@ -69,7 +69,7 @@ export default function TablaImportaciones() {
                     Importar Informe
                 </Button>
             </div>
-            <div className="flex grow flex-col justify-between w-full rounded overflow-y-auto" style={{ border: "2px solid #ED6C02" }}>
+            <div className="flex flex-col justify-between w-full h-full overflow-y-auto rounded" style={{ border: "2px solid #ED6C02" }}>
                 <TablaListaImportaciones
                     importacionesDatos={importacionesDatos}
                     importacionesCargando={importacionesCargando}

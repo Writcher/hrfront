@@ -4,7 +4,7 @@ interface FormularioFiltrosProps {
   mostrarBusquedaNombre: boolean;
   mostrarFiltroProyecto: boolean;
   busquedaNombreNormal: string;
-  filtroProyecto: number;
+  filtroProyecto: number | '';
   selectDatos: any[];
   onCambioBusquedaNombre: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onCambioFiltroProyecto: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -19,7 +19,7 @@ export const FormularioFiltros: React.FC<FormularioFiltrosProps> = ({
   onCambioBusquedaNombre,
   onCambioFiltroProyecto
 }) => (
-  <form className="flex items-center justify-start w-2/6 gap-4">
+  <form className="flex items-center justify-start w-2/6">
     {mostrarBusquedaNombre && (
       <TextField
         id="busquedaNombre"

@@ -1,6 +1,6 @@
 export type  fetchEmpleadosTablaJornadasParams = {
     busquedaNombre: string,
-    filtroProyecto: number,
+    filtroProyecto: number | '',
     pagina: number,
     filasPorPagina: number,
     ordenColumna: string,
@@ -8,9 +8,9 @@ export type  fetchEmpleadosTablaJornadasParams = {
 };
 
 export type fetchJornadasEmpleadosParams = {
-    idEmpleado: number | null,
-    filtroMes: number,
-    filtroQuincena: number,
+    id_empleado: number | null,
+    filtroMes: number | '',
+    filtroQuincena: number | '',
     filtroMarcasIncompletas: boolean,
     pagina: number,
     filasPorPagina: number,

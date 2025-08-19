@@ -1,19 +1,44 @@
-export type tablaJornadasFormularioDatos = {
+export type tablaEmpleadosFormularioDatos = {
     filtrosAncla: any
     filtrosActivos: { [key: string]: any }
     busquedaNombre: string
     busquedaNombreNormal: string
     mostrarBusquedaNombre: boolean
-    filtroProyecto: number
+    filtroProyecto: number | ''
     mostrarFiltroProyecto: boolean
     idFilaExpandida: number | null
     pagina: number
     filasPorPagina: number
     ordenDireccion: "ASC" | "DESC"
     ordenColumna: string
-    filtroMes: number
-    filtroQuincena: number
+};
+
+export type tablaJornadasFormularioDatos = {
+    filtroMes: number | ''
+    filtroQuincena: number | ''
     filtroMarcasIncompletas: boolean
-    paginaInterna: number
-    filasPorPaginaInterna: number
+    pagina: number
+    filasPorPagina: number
+    formularioVisible: boolean
+    entrada: string | null
+    salida: string | null
+    entradaTarde: string | null
+    salidaTarde: string | null
+    tipoJornada: number | ''
+    fecha: string
+    tipoAusencia: number | ''
+    observacion: string
+    jornadaPartida: boolean
+};
+
+export type insertJornadaParametros = {
+    entrada: string | null,
+    salida: string | null,
+    entradaTarde: string | null,
+    salidaTarde: string | null,
+    fecha: string,
+    id_tipojornada: number | '',
+    id_tipoausencia: number | '',
+    observacion: string,
+    id_empleado: number,
 };

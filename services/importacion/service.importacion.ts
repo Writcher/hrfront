@@ -7,7 +7,7 @@ export async function fetchImportaciones(params: fetchImportacionesParams) {
     try {
         const datosImportacionesParams = new URLSearchParams({
             filtroIncompletas: params.filtroIncompletas.toString(),
-            filtroProyecto: params.filtroProyecto.toString(),
+            filtroProyecto: params.filtroProyecto.toString() === '' ? '0' : params.filtroProyecto.toString(),
             pagina: params.pagina.toString(),
             filasPorPagina: params.filasPorPagina.toString(),
         });

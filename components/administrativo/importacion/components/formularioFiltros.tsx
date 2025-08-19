@@ -4,7 +4,7 @@ import { SyntheticEvent } from "react";
 
 interface FormularioFiltrosProps {
     filtroIncompletas: boolean;
-    filtroProyecto: number;
+    filtroProyecto: number | '';
     selectDatos: any[];
     selectCargando: boolean;
     onCambioFiltroIncompletas: (event: SyntheticEvent<Element, Event>, checked: boolean) => void;

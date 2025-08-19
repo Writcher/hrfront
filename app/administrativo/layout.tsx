@@ -7,11 +7,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     const { hidden } = useDrawer();
 
     return (
-        <div className="flex flex-col md:flex-row h-screen">
-            <div className="h-full" style={{ width: hidden ? "4.5vw" : "12.5vw"}}>
+        <div className="flex flex-row h-screen">
+            <div style={{ width: hidden ? "5vw" : "12.5vw"}}>
                 <Nav />
             </div>
-            <div className="flex flex-grow">
+            <div className="flex flex-grow m-[4px]">
                 {children}
             </div>
         </div>

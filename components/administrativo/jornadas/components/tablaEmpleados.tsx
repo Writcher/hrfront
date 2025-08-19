@@ -37,32 +37,29 @@ export const TablaEmpleados: React.FC<TablaEmpleadosProps> = ({
       >
         <TableRow>
           <TableCell align="center" onClick={() => onOrden('legajo')} style={{ cursor: 'pointer' }} width="10%">
-            <div style={{ userSelect: "none" }} 
-                 className={`text-gray-700 font-medium md:font-bold text-[17px] ${
-                   ordenColumna === 'legajo' ? (ordenDireccion === 'ASC' ? 'text-orange-500' : 'text-red-500') : ''
-                 }`}>
+            <div style={{ userSelect: "none" }}
+              className={`text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)] ${ordenColumna === 'legajo' ? (ordenDireccion === 'ASC' ? 'text-orange-500' : 'text-red-500') : ''
+                }`}>
               Legajo
             </div>
           </TableCell>
           <TableCell align="center" onClick={() => onOrden('id_reloj')} style={{ cursor: 'pointer' }} width="10%">
-            <div style={{ userSelect: "none" }} 
-                 className={`text-gray-700 font-medium md:font-bold text-[17px] ${
-                   ordenColumna === 'id_reloj' ? (ordenDireccion === 'ASC' ? 'text-orange-500' : 'text-red-500') : ''
-                 }`}>
+            <div style={{ userSelect: "none" }}
+              className={`text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)] ${ordenColumna === 'id_reloj' ? (ordenDireccion === 'ASC' ? 'text-orange-500' : 'text-red-500') : ''
+                }`}>
               ID en Reloj
             </div>
           </TableCell>
           <TableCell align="left" onClick={() => onOrden('nombreapellido')} style={{ cursor: 'pointer' }} width="80%">
-            <div style={{ userSelect: "none" }} 
-                 className={`text-gray-700 font-medium md:font-bold text-[17px] ${
-                   ordenColumna === 'nombreapellido' ? (ordenDireccion === 'ASC' ? 'text-orange-500' : 'text-red-500') : ''
-                 }`}>
+            <div style={{ userSelect: "none" }}
+              className={`text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)] ${ordenColumna === 'nombreapellido' ? (ordenDireccion === 'ASC' ? 'text-orange-500' : 'text-red-500') : ''
+                }`}>
               Nombre de Empleado
             </div>
           </TableCell>
         </TableRow>
       </TableHead>
-      
+
       {empleadosCargando ? (
         <TableBody>
           {Array.from({ length: filasPorPagina }).map((_, index) => (
@@ -89,17 +86,17 @@ export const TablaEmpleados: React.FC<TablaEmpleadosProps> = ({
                   className={`cursor-pointer ${idFilaExpandida === row.id ? 'bg-orange-100' : ''}`}
                 >
                   <TableCell align="center" size="small">
-                    <div className="text-gray-700 font-medium text-[15px]" style={{ userSelect: "none" }}>
+                    <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.75rem)]" style={{ userSelect: "none" }}>
                       {row.legajo}
                     </div>
                   </TableCell>
                   <TableCell align="center" size="small">
-                    <div className="text-gray-700 font-medium text-[15px]" style={{ userSelect: "none" }}>
+                    <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]" style={{ userSelect: "none" }}>
                       {row.id_reloj}
                     </div>
                   </TableCell>
                   <TableCell align="left" size="small">
-                    <div className="text-gray-700 font-medium text-[15px]" style={{ userSelect: "none" }}>
+                    <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]" style={{ userSelect: "none" }}>
                       {row.nombre}
                     </div>
                   </TableCell>

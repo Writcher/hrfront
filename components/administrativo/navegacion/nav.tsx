@@ -15,10 +15,10 @@ export default function Nav() {
         <IconButton
           color="warning"
           onClick={toggleDrawer}
-          sx={{ margin: "2px"}}
-          className="!grow !items-center !justify-center !text-gray-800 hover:!text-orange-600 !font-medium hover:!bg-orange-100 !rounded"
+          sx={{ margin: "0.25vw"}}
+          className="!grow !items-center !justify-center !rounded !text-gray-800 !font-medium hover:!bg-orange-100 hover:!text-orange-600"
         >
-          <span className="text-2xl flex items-center justify-center"><MenuRoundedIcon /></span>
+          <span className="flex items-center justify-center"><MenuRoundedIcon /></span>
         </IconButton>
       )
     } else {
@@ -26,14 +26,14 @@ export default function Nav() {
         <Button
           variant="text"
           color="warning"
-          className="flex !pl-6 !items-center !justify-start !text-gray-800 hover:!text-orange-600 !font-medium hover:!bg-orange-100"
-          sx={{ textTransform: "none" }}
+          className="!grow !items-center !justify-start !rounded !text-gray-800 !font-medium hover:!bg-orange-100 hover:!text-orange-600"
+          sx={{ textTransform: "none", margin: "0.25vw", paddingLeft: "10.5%" }}
           onClick={toggleDrawer}
           fullWidth
           disableElevation
-          startIcon={<span className="text-2xl flex items-center justify-center"><MenuOpenRoundedIcon /></span>}
+          startIcon={<span className="flex items-center justify-center"><MenuOpenRoundedIcon /></span>}
         >
-          Menú
+          <span className="text-[clamp(0.25rem,5vw,1rem)]">Menú</span>  
         </Button>
       )
     };
@@ -47,11 +47,10 @@ export default function Nav() {
       slotProps={{
         paper: {
           sx: {
-            width: hidden ? "4vw" : "12vw",
+            width: hidden ? "4.75vw" : "12.25vw",
             height: "calc(100vh - 8px)",
             border: "2px solid #ED6C02",
-            boxShadow: "0 0 15px rgba(0, 0, 0, 0.1)",
-            bgcolor: "#F3F4F6",
+            bgcolor: "#FFFF",
             margin: "4px",
             borderRadius: "5px"
           },
@@ -59,14 +58,15 @@ export default function Nav() {
       }}
     >
       <div className="flex flex-col h-full w-full">
-        <div className="flex h-[5%]">
+        <div className="flex h-[5vh]">
           {hideButton()}
         </div>
         <Divider variant="middle" sx={{ bgcolor: "#ED6C02" }} flexItem />
-        <div className="flex flex-col h-[95%] overflow-y-auto justify-start">
+        <div className="flex flex-col justify-start h-[95vh] mt-[0.125vw] overflow-y-auto">
           <NavLinksAdministrativo />
         </div>
       </div>
     </Drawer>
   );
 }
+//F3F4F6

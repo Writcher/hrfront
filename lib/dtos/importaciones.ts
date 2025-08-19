@@ -1,6 +1,6 @@
 export type fetchImportacionesParams = {
     filtroIncompletas: boolean;
-    filtroProyecto: number;
+    filtroProyecto: number | '';
     pagina: number;
     filasPorPagina: number;
 };

@@ -11,7 +11,7 @@ import { TablaImportacionJornadas } from "./components/tablaJornadas";
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-
+import SaveAsRoundedIcon from '@mui/icons-material/SaveAsRounded';
 
 interface CompletarInformacionProps {
     idImportacion: number
@@ -52,7 +52,7 @@ export default function TablaCompletarImportacion({ idImportacion }: CompletarIn
         }
     });
     return (
-        <div className="flex flex-col gap-2 items-start justify-between w-[95%] h-full mb-1">
+        <div className="flex flex-col gap-1 items-start w-full h-full">
             <div className="flex flex-row gap-2 w-full">
                 <FormControlLabel
                     control={<IOSSwitch sx={{ m: 1 }} />}
@@ -63,13 +63,11 @@ export default function TablaCompletarImportacion({ idImportacion }: CompletarIn
                 />
                 <div className="flex grow" />
             </div>
-            <div className="flex grow flex-col justify-between w-full rounded overflow-y-auto" style={{ border: "2px solid #ED6C02" }}>
+            <div className="flex flex-col justify-between w-full h-full overflow-y-auto rounded" style={{ border: "2px solid #ED6C02" }}>
                 <TablaImportacionJornadas
                     jornadasDatos={jornadasDatos}
                     jornadasCargando={jornadasCargando}
                     filasPorPagina={paginacion.filasPorPagina}
-                    paginacion={paginacion}
-                    filtro={watch("filtroMarcasIncompletas")}
                 />
                 <div className="flex justify-end items-center overflow-x-hide"
                     style={{ borderTop: "2px solid #ED6C02" }}>
@@ -119,6 +117,7 @@ export default function TablaCompletarImportacion({ idImportacion }: CompletarIn
                     disableElevation
                     disabled={botonDeshabilitado || jornadasCargando}
                     onClick={() => mutacion.mutate(idImportacion)}
+                    endIcon={<SaveAsRoundedIcon/>}
                 >
                     Confirmar
                 </Button>

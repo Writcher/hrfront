@@ -10,11 +10,9 @@ import dayjs from 'dayjs';
 
 interface FormularioJornadaProps {
     jornada: any
-    paginacion: any
-    filtro: any
 }
 
-export function FormularioJornada({ jornada, paginacion, filtro }: FormularioJornadaProps) {
+export function FormularioJornada({ jornada }: FormularioJornadaProps) {
     const { control, handleSubmit } = useFormularioJornadaFormulario(jornada);
     const queryClient = useQueryClient();
 

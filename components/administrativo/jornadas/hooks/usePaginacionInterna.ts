@@ -1,14 +1,14 @@
 export const usePaginacionInterna = (setValue: any, watch: any) => {
-  const pagina = watch("paginaInterna");
-  const filasPorPagina = watch("filasPorPaginaInterna");
+  const pagina = watch("pagina");
+  const filasPorPagina = watch("filasPorPagina");
 
   const handleCambioPagina = (event: React.MouseEvent<HTMLButtonElement> | null, nuevaPagina: number) => {
-    setValue("paginaInterna", nuevaPagina);
+    setValue("pagina", nuevaPagina);
   };
 
   const handleCambioFilasPorPagina = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setValue("filasPorPaginaInterna", parseInt(event.target.value, 10));
-    setValue("paginaInterna", 0);
+    setValue("filasPorPagina", parseInt(event.target.value, 10));
+    setValue("pagina", 0);
   };
 
   return {

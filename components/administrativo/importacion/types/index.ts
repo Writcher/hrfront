@@ -1,5 +1,5 @@
 export type TablaImportacionesFormularioDatos = {
-    filtroProyecto: number;
+    filtroProyecto: number | '';
     filtroIncompletas: boolean;
     pagina: number;
     filasPorPagina: number;

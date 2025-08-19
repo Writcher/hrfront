@@ -17,7 +17,7 @@ export const useFiltros = (setValue: any, getValues: any, watch: any) => {
   const handleLimpiarFiltros = () => {
     setValue("busquedaNombre", "");
     setValue("busquedaNombreNormal", "");
-    setValue("filtroProyecto", 0);
+    setValue("filtroProyecto", '');
     setValue("idFilaExpandida", null);
     setValue("mostrarBusquedaNombre", true);
     setValue("mostrarFiltroProyecto", false);

@@ -3,8 +3,8 @@ import { TextField, MenuItem, FormControlLabel, Skeleton } from "@mui/material";
 import { SyntheticEvent } from "react";
 
 interface FormularioFiltrosProps {
-    filtroMes: number;
-    filtroQuincena: number;
+    filtroMes: number | '';
+    filtroQuincena: number | '';
     filtroMarcasIncompletas: boolean;
     selectCargando: boolean;
     selectDatos: any[];
@@ -63,7 +63,7 @@ export const FormularioFiltros: React.FC<FormularioFiltrosProps> = ({
             fullWidth
             value={filtroQuincena}
             onChange={onCambioFiltroQuincena}
-            disabled={filtroMes === 0}
+            disabled={filtroMes === ''}
         >
             <MenuItem key={1} value={1}>Primera Quincena</MenuItem>
             <MenuItem key={2} value={2}>Segunda Quincena</MenuItem>
