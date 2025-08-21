@@ -7,6 +7,7 @@ import SyncIcon from '@mui/icons-material/Sync';
 import { iniciarSesionFormularioDatos } from "./types";
 import { useMutation } from "@tanstack/react-query";
 import { logIn } from "@/services/auth/service.auth";
+import LoginRoundedIcon from '@mui/icons-material/LoginRounded';
 
 export default function PantallaInicioSesion() {
     const { control, handleSubmit } = useIniciarSesionFormulario();
@@ -44,7 +45,7 @@ export default function PantallaInicioSesion() {
                             endIcon={
                                 mutacion.isPending ? (
                                     <SyncIcon className="animate-spin" />
-                                ) : ""
+                                ) : <LoginRoundedIcon />
                             }
                             disabled={mutacion.isPending}
                         >

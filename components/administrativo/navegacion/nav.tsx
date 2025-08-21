@@ -5,6 +5,8 @@ import MenuOpenRoundedIcon from '@mui/icons-material/MenuOpenRounded';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import { useDrawer } from "@/lib/context/navcontext";
 import NavLinksAdministrativo from "./navlinks";
+import { doLogout } from "@/services/auth/service.auth";
+import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 
 export default function Nav() {
   const { hidden, toggleDrawer } = useDrawer();
@@ -15,7 +17,7 @@ export default function Nav() {
         <IconButton
           color="warning"
           onClick={toggleDrawer}
-          sx={{ margin: "0.25vw"}}
+          sx={{ margin: "0.25vw" }}
           className="!grow !items-center !justify-center !rounded !text-gray-800 !font-medium hover:!bg-orange-100 hover:!text-orange-600"
         >
           <span className="flex items-center justify-center"><MenuRoundedIcon /></span>
@@ -33,7 +35,37 @@ export default function Nav() {
           disableElevation
           startIcon={<span className="flex items-center justify-center"><MenuOpenRoundedIcon /></span>}
         >
-          <span className="text-[clamp(0.25rem,5vw,1rem)]">Menú</span>  
+          <span className="text-[clamp(0.1rem,2.5vw,1rem)]">Menú</span>
+        </Button>
+      )
+    };
+  };
+
+  const logOutButton = () => {
+    if (hidden) {
+      return (
+        <IconButton
+          color="error"
+          onClick={doLogout}
+          sx={{ margin: "0.25vw" }}
+          className="!grow !items-center !justify-center !rounded !text-red-600 !font-medium hover:!bg-red-100 hover:!text-red-600"
+        >
+          <span className="flex items-center justify-center"><LogoutRoundedIcon /></span>
+        </IconButton>
+      )
+    } else {
+      return (
+        <Button
+          variant="text"
+          color="error"
+          className="!grow !items-center !justify-start !rounded !text-gray-800 !font-medium hover:!bg-red-100 hover:!text-red-600"
+          sx={{ textTransform: "none", margin: "0.25vw", paddingLeft: "10.5%" }}
+          onClick={doLogout}
+          fullWidth
+          disableElevation
+          startIcon={<span className="flex items-center justify-center"><LogoutRoundedIcon /></span>}
+        >
+          <span className="text-[clamp(0.1rem,6vw,1rem)]">Salir</span>
         </Button>
       )
     };
@@ -62,8 +94,12 @@ export default function Nav() {
           {hideButton()}
         </div>
         <Divider variant="middle" sx={{ bgcolor: "#ED6C02" }} flexItem />
-        <div className="flex flex-col justify-start h-[95vh] mt-[0.125vw] overflow-y-auto">
+        <div className="flex flex-col justify-start h-[90vh] mt-[0.125vw] overflow-y-auto">
           <NavLinksAdministrativo />
+        </div>
+        <Divider variant="middle" sx={{ bgcolor: "#ED6C02" }} flexItem />
+        <div className="flex h-[5vh]">
+          {logOutButton()}
         </div>
       </div>
     </Drawer>

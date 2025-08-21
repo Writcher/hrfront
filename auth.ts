@@ -27,6 +27,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                         return {
                             id: usuario.id.toString(),
                             correo: usuario.correo,
+                            tipoUsuario: tipoUsuario.nombre,
                         };
                     };
 
@@ -42,22 +43,23 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     pages: {
         signIn: '/login',
     },
+    session: {
+        strategy: "jwt"
+    },
     callbacks: {
         async jwt({ token, user }) {
-            // Agregar información del usuario al token
-
             if (user) {
                 token.id = user.id;
+                token.tipoUsuario = user.tipoUsuario;
             }
             return token;
         },
         async session({ session, token }) {
-            // Agregar información del token a la sesión
-
             if (token) {
                 session.user.id = token.id as string;
+                session.user.tipoUsuario = token.tipoUsuario as string;
             }
             return session;
         },
     },
-})
+});

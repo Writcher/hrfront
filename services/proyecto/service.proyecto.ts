@@ -1,11 +1,17 @@
 "use server"
 
 import CONFIG from "@/config";
+import { getToken } from "@/lib/utils/getToken";
 
 export async function fetchProyectos() {
     try {
+        const token = await getToken();
+
         const proyectosRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_PROYECTOS}`, {
-            method: "GET"
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
         });
 
         if (!proyectosRaw.ok) {

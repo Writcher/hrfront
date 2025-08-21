@@ -2,9 +2,12 @@
 
 import CONFIG from "@/config";
 import { editJornadaDTO, fetchJornadasDTO, fetchJornadasPorImportacionDTO, insertJornadaDTO } from "@/lib/dtos/jornada";
+import { getToken } from "@/lib/utils/getToken";
 
 export async function fetchJornadas(parametros: fetchJornadasDTO) {
     try {
+        const token = await getToken();
+
         const jornadasParametros = new URLSearchParams({
             filtroMes: parametros.filtroMes.toString() === '' ? '0' : parametros.filtroMes.toString(),
             filtroQuincena: parametros.filtroQuincena.toString() === '' ? '0' : parametros.filtroQuincena.toString(),
@@ -14,7 +17,10 @@ export async function fetchJornadas(parametros: fetchJornadasDTO) {
         });
 
         const jornadasRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_EMPLEADOJORNADAS!.replace("{id}", parametros.id_empleado!.toString())}?${jornadasParametros.toString()}`, {
-            method: "GET"
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
         });
 
         if (!jornadasRaw.ok) {
@@ -31,6 +37,8 @@ export async function fetchJornadas(parametros: fetchJornadasDTO) {
 
 export async function editJornada(parametros: editJornadaDTO) {
     try {
+        const token = await getToken();
+
         const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_JORNADA!.replace("{id}", parametros.id!.toString())}`, {
             method: "PATCH",
             headers: {
@@ -56,6 +64,8 @@ export async function editJornada(parametros: editJornadaDTO) {
 
 export async function insertJornada(parametros: insertJornadaDTO) {
     try {
+        const token = await getToken();
+
         const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_CREAR_JORNADA}`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -76,6 +86,8 @@ export async function insertJornada(parametros: insertJornadaDTO) {
 
 export async function fetchJornadasPorImportacion(parametros: fetchJornadasPorImportacionDTO) {
     try {
+        const token = await getToken();
+
         const jornadasParametros = new URLSearchParams({
             filtroMarcasIncompletas: parametros.filtroMarcasIncompletas.toString(),
             pagina: parametros.pagina.toString(),

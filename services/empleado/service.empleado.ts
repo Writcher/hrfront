@@ -2,9 +2,12 @@
 
 import CONFIG from "@/config";
 import { fetchEmpleadosDTO } from "@/lib/dtos/empleado";
+import { getToken } from "@/lib/utils/getToken";
 
 export async function fetchEmpleados(parametros: fetchEmpleadosDTO) {
     try {
+        const token = await getToken();
+
         const empleadosParametros = new URLSearchParams({
             busquedaNombre: parametros.busquedaNombre,
             filtroProyecto: parametros.filtroProyecto.toString() === '' ? '0' : parametros.filtroProyecto.toString(),
@@ -15,7 +18,10 @@ export async function fetchEmpleados(parametros: fetchEmpleadosDTO) {
         });
 
         const empleadosRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_EMPLEADOS}?${empleadosParametros.toString()}`, {
-            method: "GET"
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
         });
 
         if (!empleadosRaw.ok) {

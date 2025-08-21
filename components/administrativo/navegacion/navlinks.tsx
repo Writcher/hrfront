@@ -56,7 +56,7 @@ export default function NavLinksAdministrativo() {
                             disableElevation
                             startIcon={<span className="flex items-center justify-center"><LinkIcon /></span>}
                         >
-                            <span className="text-[clamp(0.25rem,5vw,1rem)]">{link.name}</span>                           
+                            <span className="text-[clamp(0.1rem,5vw,1rem)]">{link.name}</span>                           
                         </Button>
                     </div>
                 );
