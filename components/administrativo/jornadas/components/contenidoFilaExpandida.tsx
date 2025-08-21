@@ -1,13 +1,13 @@
 import { Button, TableCell, TablePagination, TableRow } from "@mui/material";
 import { useFiltrosInteriores } from "../hooks/useFiltrosInteriores";
-import { usePaginacionInterna } from "../hooks/usePaginacionInterna";
+import { usePaginacion } from "../hooks/usePaginacion";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import UploadRoundedIcon from '@mui/icons-material/UploadRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import FilterAltOffRoundedIcon from '@mui/icons-material/FilterAltOffRounded';
 import { FormularioFiltros } from "./formularioFiltrosInteriores";
 import { TablaJornadas } from "./tablaJornadas";
-import { fetchDatosSelectFormularioJornada, fetchDatosSelectTablaJornadas, fetchJornadasEmpleado, insertJornada } from "@/services/jornadas/service.jornadas";
+import { fetchDatosSelectFormularioJornada } from "@/services/jornadas/service.jornadas";
 import { useMostrarFormulario } from "../hooks/useMostrarFormulario";
 import { useTablaJornadaFormulario } from "../hooks/useTablaJornadasFormulario";
 import { CrearJornadaFormulario } from "./crearJornadaFormulario";
@@ -16,6 +16,8 @@ import { SubmitHandler } from "react-hook-form";
 import { insertJornadaParametros, tablaJornadasFormularioDatos } from "../types";
 import { useSwitchFormulario } from "../hooks/useSwitchFormulario";
 import FeedbackSnackbar from "@/components/ui/feedback";
+import { fetchJornadas, insertJornada } from "@/services/jornada/service.jornada";
+import { fetchMeses } from "@/services/mes/service.mes";
 
 interface ContenidoFilaExpandidaProps {
     idFilaExpandida: number,
@@ -29,13 +31,13 @@ export function ContenidoFilaExpandida({
     const { watch, setValue, control, handleSubmit } = useTablaJornadaFormulario();
 
     const filtros = useFiltrosInteriores(setValue, watch);
-    const paginacion = usePaginacionInterna(setValue, watch);
+    const paginacion = usePaginacion(setValue, watch);
     const formularioVisible = useMostrarFormulario(setValue, watch);
     const switchFormulario = useSwitchFormulario(setValue, watch);
 
     const { data: selectDatos, isLoading: selectCargando } = useQuery({
         queryKey: ["fetchDatosSelectTablaJornadas"],
-        queryFn: () => fetchDatosSelectTablaJornadas(),
+        queryFn: () => fetchMeses(),
         refetchOnWindowFocus: false,
         staleTime: 30 * 60 * 1000,
         gcTime: 60 * 60 * 1000,
@@ -50,8 +52,16 @@ export function ContenidoFilaExpandida({
     });
 
     const { data: jornadasDatos, isLoading: jornadasCargando, isError: jornadasError, refetch: jornadasRefetch } = useQuery({
-        queryKey: ["fetchJornadasEmpleado", idFilaExpandida, watch("filtroMes"), watch("filtroQuincena"), watch("filtroMarcasIncompletas"), paginacion.pagina, paginacion.filasPorPagina],
-        queryFn: () => fetchJornadasEmpleado({
+        queryKey: [
+            "fetchJornadasEmpleado", 
+            idFilaExpandida, 
+            watch("filtroMes"), 
+            watch("filtroQuincena"), 
+            watch("filtroMarcasIncompletas"), 
+            paginacion.pagina, 
+            paginacion.filasPorPagina
+        ],
+        queryFn: () => fetchJornadas({
             id_empleado: idFilaExpandida,
             filtroMes: watch("filtroMes"),
             filtroQuincena: watch("filtroQuincena"),

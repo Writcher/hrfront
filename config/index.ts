@@ -13,4 +13,6 @@ export default {
     URL_IMPORTACION: process.env.URL_IMPORTACION,
     URL_TIPOSAUSENCIA: process.env.URL_TIPOSAUSENCIA,
     URL_CREAR_JORNADA: process.env.URL_CREAR_JORNADA,
+    URL_USUARIOS: process.env.URL_USUARIOS,
+    URL_TIPOUSUARIO: process.env.URL_TIPOUSUARIO
 };

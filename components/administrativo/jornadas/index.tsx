@@ -17,7 +17,8 @@ import { FormularioFiltros } from "./components/formularioFiltros";
 import { FiltrosActivos } from "./components/filtrosActivos";
 import { TablaEmpleados } from "./components/tablaEmpleados";
 import { ContenidoFilaExpandida } from "./components/contenidoFilaExpandida";
-import { fetchDatosSelectTablaEmpleados, fetchEmpleadosTablaJornadas } from "@/services/jornadas/service.jornadas";
+import { fetchProyectos } from "@/services/proyecto/service.proyecto";
+import { fetchEmpleados } from "@/services/empleado/service.empleado";
 
 export default function TablaEmpleadosJornadas() {
   const { watch, setValue, getValues } = useTablaEmpleadosFormulario();
@@ -29,13 +30,21 @@ export default function TablaEmpleadosJornadas() {
 
   const { data: selectDatos } = useQuery({
     queryKey: ["fetchDatosSelectTablaEmpleados"],
-    queryFn: () => fetchDatosSelectTablaEmpleados(),
+    queryFn: () => fetchProyectos(),
     refetchOnWindowFocus: false
   });
 
   const { data: empleadosDatos, isLoading: empleadosCargando } = useQuery({
-    queryKey: ["fetchEmpleadosTablaJornadas", paginacion.pagina, paginacion.filasPorPagina, ordenacion.ordenColumna, ordenacion.ordenDireccion, watch("busquedaNombre"), watch("filtroProyecto")], //añadir parametros
-    queryFn: () => fetchEmpleadosTablaJornadas({
+    queryKey: [
+      "fetchEmpleadosTablaJornadas", 
+      paginacion.pagina, 
+      paginacion.filasPorPagina, 
+      ordenacion.ordenColumna, 
+      ordenacion.ordenDireccion, 
+      watch("busquedaNombre"), 
+      watch("filtroProyecto")
+    ],
+    queryFn: () => fetchEmpleados({
       busquedaNombre: watch("busquedaNombre"),
       filtroProyecto: watch("filtroProyecto"),
       pagina: paginacion.pagina,

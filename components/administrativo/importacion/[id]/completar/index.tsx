@@ -4,7 +4,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useFiltros } from "./hooks/useFiltros";
 import { usePaginacion } from "./hooks/usePaginacion";
 import { useTablaImportacionJornadasFormulario } from "./hooks/useTablaImportacionJornadasFormulario";
-import { fetchImportacionJornadas, setImportacionCompleta } from "@/services/importacion/service.importacion";
+import { setImportacionCompleta } from "@/services/importacion/service.importacion";
 import { Button, FormControlLabel, Link, TablePagination } from "@mui/material";
 import { IOSSwitch } from "@/components/ui/switch";
 import { TablaImportacionJornadas } from "./components/tablaJornadas";
@@ -12,12 +12,13 @@ import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import SaveAsRoundedIcon from '@mui/icons-material/SaveAsRounded';
+import { fetchJornadasPorImportacion } from "@/services/jornada/service.jornada";
 
 interface CompletarInformacionProps {
-    idImportacion: number
+    id_importacion: number
 }
 
-export default function TablaCompletarImportacion({ idImportacion }: CompletarInformacionProps) {
+export default function TablaCompletarImportacion({ id_importacion }: CompletarInformacionProps) {
     const { setValue, watch } = useTablaImportacionJornadasFormulario();
 
     const filtros = useFiltros(setValue, watch);
@@ -25,9 +26,14 @@ export default function TablaCompletarImportacion({ idImportacion }: CompletarIn
     const router = useRouter();
 
     const { data: jornadasDatos, isLoading: jornadasCargando } = useQuery({
-        queryKey: ["fetchImportacionJornadas", paginacion.pagina, paginacion.filasPorPagina, watch("filtroMarcasIncompletas")],
-        queryFn: () => fetchImportacionJornadas({
-            idImportacion,
+        queryKey: [
+            "fetchImportacionJornadas", 
+            paginacion.pagina, 
+            paginacion.filasPorPagina, 
+            watch("filtroMarcasIncompletas")
+        ],
+        queryFn: () => fetchJornadasPorImportacion({
+            id_importacion,
             filtroMarcasIncompletas: watch("filtroMarcasIncompletas"),
             pagina: paginacion.pagina,
             filasPorPagina: paginacion.filasPorPagina,
@@ -44,7 +50,7 @@ export default function TablaCompletarImportacion({ idImportacion }: CompletarIn
     const botonDeshabilitado = Number(watch("totalIncompleto")) !== 0
 
     const mutacion = useMutation({
-        mutationFn: (id: number) => setImportacionCompleta(id),
+        mutationFn: (id: number) => setImportacionCompleta({ id }),
         onSuccess: (respuesta) => {
             if (respuesta.ok) {
                 router.push(`/administrativo/importacion`);
@@ -116,7 +122,7 @@ export default function TablaCompletarImportacion({ idImportacion }: CompletarIn
                     color="success"
                     disableElevation
                     disabled={botonDeshabilitado || jornadasCargando}
-                    onClick={() => mutacion.mutate(idImportacion)}
+                    onClick={() => mutacion.mutate(id_importacion)}
                     endIcon={<SaveAsRoundedIcon/>}
                 >
                     Confirmar

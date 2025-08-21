@@ -1,0 +1,99 @@
+"use server"
+
+import CONFIG from "@/config";
+import { editJornadaDTO, fetchJornadasDTO, fetchJornadasPorImportacionDTO, insertJornadaDTO } from "@/lib/dtos/jornada";
+
+export async function fetchJornadas(parametros: fetchJornadasDTO) {
+    try {
+        const jornadasParametros = new URLSearchParams({
+            filtroMes: parametros.filtroMes.toString() === '' ? '0' : parametros.filtroMes.toString(),
+            filtroQuincena: parametros.filtroQuincena.toString() === '' ? '0' : parametros.filtroQuincena.toString(),
+            filtroMarcasIncompletas: parametros.filtroMarcasIncompletas.toString(),
+            pagina: parametros.pagina.toString(),
+            filasPorPagina: parametros.filasPorPagina.toString(),
+        });
+
+        const jornadasRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_EMPLEADOJORNADAS!.replace("{id}", parametros.id_empleado!.toString())}?${jornadasParametros.toString()}`, {
+            method: "GET"
+        });
+
+        if (!jornadasRaw.ok) {
+            throw new Error("Error en la respuesta del servidor");
+        };
+
+        const jornadas = await jornadasRaw.json();
+
+        return jornadas;
+    } catch (error) {
+        throw error;
+    };
+};
+
+export async function editJornada(parametros: editJornadaDTO) {
+    try {
+        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_JORNADA!.replace("{id}", parametros.id!.toString())}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                entrada: parametros.entrada,
+                salida: parametros.salida
+            })
+        });
+
+        if (!respuestaRaw.ok) {
+            throw new Error("Error en la respuesta del servidor");
+        };
+
+        const respuesta = await respuestaRaw.json();
+
+        return respuesta;
+    } catch (error) {
+        throw error;
+    };
+};
+
+export async function insertJornada(parametros: insertJornadaDTO) {
+    try {
+        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_CREAR_JORNADA}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(parametros),
+        });
+
+        if (!respuestaRaw.ok) {
+            throw new Error("Error en la respuesta del servidor");
+        };
+
+        const respuesta = await respuestaRaw.json();
+
+        return respuesta;
+    } catch (error) {
+        throw error;
+    };
+};
+
+export async function fetchJornadasPorImportacion(parametros: fetchJornadasPorImportacionDTO) {
+    try {
+        const jornadasParametros = new URLSearchParams({
+            filtroMarcasIncompletas: parametros.filtroMarcasIncompletas.toString(),
+            pagina: parametros.pagina.toString(),
+            filasPorPagina: parametros.filasPorPagina.toString()
+        });
+
+        const jornadasRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_IMPORTACIONJORNADAS!.replace("{id}", parametros.id_importacion!.toString())}?${jornadasParametros.toString()}`, {
+            method: "GET"
+        });
+
+        if (!jornadasRaw.ok) {
+            throw new Error("Error en la respuesta del servidor");
+        };
+
+        const jornadas = await jornadasRaw.json();
+
+        return jornadas;
+    } catch (error) {
+        throw error;
+    };
+};

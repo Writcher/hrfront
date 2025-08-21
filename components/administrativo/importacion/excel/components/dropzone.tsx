@@ -3,7 +3,7 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 interface DropzoneProps {
     getRootProps: any;
-    getInputProps: any,
+    getInputProps: any;
     isDragActive: boolean;
     borrarArchivo: () => void;
     archivo: File | null;

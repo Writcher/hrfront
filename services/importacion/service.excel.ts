@@ -1,9 +1,9 @@
 "use server";
 
 import CONFIG from "@/config";
-import { insertJornadasExcelParams } from "@/lib/dtos/excel";
+import { insertJornadasExcelDTO } from "@/lib/dtos/excel";
 
-export async function insertJornadasExcel(data: insertJornadasExcelParams) {
+export async function insertJornadasExcel(data: insertJornadasExcelDTO) {
     try {
         const formData = new FormData();
 

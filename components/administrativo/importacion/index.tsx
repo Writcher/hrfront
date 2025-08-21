@@ -11,8 +11,8 @@ import { usePaginacion } from "./hooks/usePaginacion";
 import { useQuery } from "@tanstack/react-query";
 import { fetchImportaciones } from "@/services/importacion/service.importacion";
 import { TablaListaImportaciones } from "./components/tablaImportaciones";
-import { fetchDatosSelectTablaEmpleados } from "@/services/jornadas/service.jornadas";
 import { FormularioFiltros } from "./components/formularioFiltros";
+import { fetchProyectos } from "@/services/proyecto/service.proyecto";
 
 export default function TablaImportaciones() {
     const { setValue, watch } = useTablaImportacionesFormulario();
@@ -22,12 +22,18 @@ export default function TablaImportaciones() {
 
     const { data: selectDatos, isLoading: selectCargando } = useQuery({
         queryKey: ["fetchDatosSelectTablaEmpleados"],
-        queryFn: () => fetchDatosSelectTablaEmpleados(),
+        queryFn: () => fetchProyectos(),
         refetchOnWindowFocus: false
     });
 
     const { data: importacionesDatos, isLoading: importacionesCargando } = useQuery({
-        queryKey: ["fetchImportaciones", paginacion.pagina, paginacion.filasPorPagina, watch("filtroProyecto"), watch("filtroIncompletas")],
+        queryKey: [
+            "fetchImportaciones", 
+            paginacion.pagina, 
+            paginacion.filasPorPagina, 
+            watch("filtroProyecto"), 
+            watch("filtroIncompletas")
+        ],
         queryFn: () => fetchImportaciones({
             filtroIncompletas: watch("filtroIncompletas"),
             filtroProyecto: watch("filtroProyecto"),

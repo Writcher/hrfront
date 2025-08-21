@@ -4,9 +4,9 @@ import { Controller } from "react-hook-form";
 import SaveAsRoundedIcon from '@mui/icons-material/SaveAsRounded';
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { FormularioJornadaFormularioDatos } from "../types";
-import { editJornada } from "@/services/jornadas/service.jornadas";
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import dayjs from 'dayjs';
+import { editJornada } from "@/services/jornada/service.jornada";
 
 interface FormularioJornadaProps {
     jornada: any
