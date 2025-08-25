@@ -14,7 +14,7 @@ export const TablaImportacionJornadas: React.FC<TablaImportacionJornadasProps> =
     filasPorPagina
 }) => (
     <TableContainer>
-        <Table stickyHeader>
+        <Table stickyHeader size="small">
             <TableHead
                 sx={{
                     '& .MuiTableCell-root': {
@@ -27,31 +27,31 @@ export const TablaImportacionJornadas: React.FC<TablaImportacionJornadasProps> =
                 <TableRow>
                     <TableCell align="left">
                         <div style={{ userSelect: "none" }}
-                            className="text-dray-700 font-medium md:font-bold text-[17px]">
+                            className="text-gray-700 font-bold [clamp(0.25rem,5vw,1rem)]">
                             Fecha
                         </div>
                     </TableCell>
                     <TableCell align="center">
                         <div style={{ userSelect: "none" }}
-                            className="text-dray-700 font-medium md:font-bold text-[17px]">
+                            className="text-gray-700 font-bold [clamp(0.25rem,5vw,1rem)]">
                             Nombre de Empleado
                         </div>
                     </TableCell>
                     <TableCell align="center">
                         <div style={{ userSelect: "none" }}
-                            className="text-dray-700 font-medium md:font-bold text-[17px]">
+                            className="text-gray-700 font-bold [clamp(0.25rem,5vw,1rem)]">
                             Entrada
                         </div>
                     </TableCell>
                     <TableCell align="center">
                         <div style={{ userSelect: "none" }}
-                            className="text-dray-700 font-medium md:font-bold text-[17px]">
+                            className="text-gray-700 font-bold [clamp(0.25rem,5vw,1rem)]">
                             Salida
                         </div>
                     </TableCell>
                     <TableCell align="right">
                         <div style={{ userSelect: "none" }}
-                            className="text-dray-700 font-medium md:font-bold text-[17px]">
+                            className="text-gray-700 font-bold [clamp(0.25rem,5vw,1rem)]">
                             Acciones
                         </div>
                     </TableCell>

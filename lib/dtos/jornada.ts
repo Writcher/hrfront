@@ -2,9 +2,9 @@ export type fetchJornadasDTO = {
     id_empleado: number | null,
     filtroMes: number | '',
     filtroQuincena: number | '',
-    filtroMarcasIncompletas: boolean,
-    pagina: number,
-    filasPorPagina: number,
+    filtroMarcasIncompletas?: boolean,
+    pagina?: number,
+    filasPorPagina?: number,
 };
 
 export type editJornadaDTO = {

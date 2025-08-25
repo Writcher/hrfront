@@ -9,25 +9,17 @@ export async function fetchDatosSelectFormularioJornada() {
 
         const tiposAusencia = await fetchTiposAusencia();
 
-        let id_ausenciaJustificada;
-        let id_ausenciaInjustificada;
+        let id_ausencia;
         let id_jornadaNormal;
 
         if (tiposJornada && tiposAusencia) {
             const tipo = tiposJornada.find(
-                (item: { id: number, nombre: string }) => item.nombre === "Ausencia Justificada"
+                (item: { id: number, nombre: string }) => item.nombre === "Ausencia"
             );
 
-            id_ausenciaJustificada = tipo ? tipo.id : null;
+            id_ausencia = tipo ? tipo.id : null;
         };
 
-        if (tiposJornada && tiposAusencia) {
-            const tipo = tiposJornada.find(
-                (item: { id: number, nombre: string }) => item.nombre === "Ausencia Injustificada"
-            );
-
-            id_ausenciaInjustificada = tipo ? tipo.id : null;
-        };
 
         if (tiposJornada && tiposAusencia) {
             const tipo = tiposJornada.find(
@@ -37,7 +29,7 @@ export async function fetchDatosSelectFormularioJornada() {
             id_jornadaNormal = tipo ? tipo.id : null;
         };
 
-        return { tiposJornada, tiposAusencia, id_ausenciaJustificada, id_jornadaNormal, id_ausenciaInjustificada };
+        return { tiposJornada, tiposAusencia, id_ausencia, id_jornadaNormal };
     } catch (error) {
         throw error
     };

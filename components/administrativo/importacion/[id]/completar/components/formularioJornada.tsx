@@ -36,7 +36,7 @@ export function FormularioJornada({ jornada }: FormularioJornadaProps) {
     return (
         <TableRow>
             <TableCell align="left" size="small">
-                <div className="text-gray-700 font-medium text-[15px]">
+                <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.8rem)]">
                     {new Intl.DateTimeFormat('es-AR', {
                         weekday: 'long',
                         day: 'numeric',
@@ -46,12 +46,12 @@ export function FormularioJornada({ jornada }: FormularioJornadaProps) {
                 </div>
             </TableCell>
             <TableCell align="center" size="small">
-                <div className="text-gray-700 font-medium text-[15px]">
+                <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.8rem)]">
                     {jornada.nombreempleado}
                 </div>
             </TableCell>
             <TableCell align="center" size="small">
-                <div className="text-gray-700 font-medium text-[15px]">
+                <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.8rem)]">
                     <Controller
                         name="entrada"
                         control={control}
@@ -90,7 +90,7 @@ export function FormularioJornada({ jornada }: FormularioJornadaProps) {
                 </div>
             </TableCell>
             <TableCell align="center" size="small">
-                <div className="text-gray-700 font-medium text-[15px]">
+                <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.8rem)]">
                     <Controller
                         name="salida"
                         control={control}
@@ -121,7 +121,7 @@ export function FormularioJornada({ jornada }: FormularioJornadaProps) {
                 </div>
             </TableCell>
             <TableCell align="right" size="small">
-                <div className="text-gray-700 font-medium text-[15px]">
+                <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.8rem)]">
                     <Button
                         variant="contained"
                         color="success"

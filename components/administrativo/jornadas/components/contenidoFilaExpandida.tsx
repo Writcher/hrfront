@@ -96,7 +96,7 @@ export function ContenidoFilaExpandida({
     return (
         <TableRow className={`cursor-pointer ${idFilaExpandida === idFilaExpandidaProp ? 'bg-orange-100' : ''}`}>
             <TableCell colSpan={3} sx={{ padding: "4px" }}>
-                <div className="flex flex-col gap-2 items-start justify-center h-full rounded bg-white p-[5px]" style={{ border: "2px solid #ED6C02", }}>
+                <div className="flex flex-col gap-2 items-start justify-center h-full rounded bg-white p-[5px] pt-[10px]" style={{ border: "2px solid #ED6C02", }}>
                     <div className="flex flex-row gap-2 w-full h-11 items-center">
                         {formularioVisible.formularioVisible ? (
                             <></>
@@ -166,6 +166,7 @@ export function ContenidoFilaExpandida({
                                 control={control}
                                 watch={watch}
                                 switchFormulario={switchFormulario}
+                                setValue={setValue}
                             />
                         ) : (
                             <>

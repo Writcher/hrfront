@@ -4,11 +4,15 @@ import { Button, Divider, Drawer, IconButton } from "@mui/material";
 import MenuOpenRoundedIcon from '@mui/icons-material/MenuOpenRounded';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import { useDrawer } from "@/lib/context/navcontext";
-import NavLinksAdministrativo from "./navlinks";
 import { doLogout } from "@/services/auth/service.auth";
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
+import { ComponentType } from "react";
 
-export default function Nav() {
+interface NavProps {
+  links: ComponentType
+}
+
+export default function Nav({ links: Links }: NavProps) {
   const { hidden, toggleDrawer } = useDrawer();
 
   const hideButton = () => {
@@ -95,7 +99,7 @@ export default function Nav() {
         </div>
         <Divider variant="middle" sx={{ bgcolor: "#ED6C02" }} flexItem />
         <div className="flex flex-col justify-start h-[90vh] mt-[0.125vw] overflow-y-auto">
-          <NavLinksAdministrativo />
+          <Links />
         </div>
         <Divider variant="middle" sx={{ bgcolor: "#ED6C02" }} flexItem />
         <div className="flex h-[5vh]">
@@ -104,5 +108,4 @@ export default function Nav() {
       </div>
     </Drawer>
   );
-}
-//F3F4F6
+};

@@ -11,9 +11,9 @@ export async function fetchJornadas(parametros: fetchJornadasDTO) {
         const jornadasParametros = new URLSearchParams({
             filtroMes: parametros.filtroMes.toString() === '' ? '0' : parametros.filtroMes.toString(),
             filtroQuincena: parametros.filtroQuincena.toString() === '' ? '0' : parametros.filtroQuincena.toString(),
-            filtroMarcasIncompletas: parametros.filtroMarcasIncompletas.toString(),
-            pagina: parametros.pagina.toString(),
-            filasPorPagina: parametros.filasPorPagina.toString(),
+            filtroMarcasIncompletas: parametros.filtroMarcasIncompletas ? parametros.filtroMarcasIncompletas.toString() : "false",
+            pagina: parametros.pagina !== null && parametros.pagina !== undefined ? parametros.pagina.toString() : '',
+            filasPorPagina: parametros.filasPorPagina !== null && parametros.filasPorPagina !== undefined ? parametros.filasPorPagina.toString() : '',
         });
 
         const jornadasRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_EMPLEADOJORNADAS!.replace("{id}", parametros.id_empleado!.toString())}?${jornadasParametros.toString()}`, {
@@ -42,6 +42,7 @@ export async function editJornada(parametros: editJornadaDTO) {
         const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_JORNADA!.replace("{id}", parametros.id!.toString())}`, {
             method: "PATCH",
             headers: {
+                Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
@@ -68,7 +69,10 @@ export async function insertJornada(parametros: insertJornadaDTO) {
 
         const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_CREAR_JORNADA}`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json"
+            },
             body: JSON.stringify(parametros),
         });
 
@@ -95,7 +99,10 @@ export async function fetchJornadasPorImportacion(parametros: fetchJornadasPorIm
         });
 
         const jornadasRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_IMPORTACIONJORNADAS!.replace("{id}", parametros.id_importacion!.toString())}?${jornadasParametros.toString()}`, {
-            method: "GET"
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
         });
 
         if (!jornadasRaw.ok) {

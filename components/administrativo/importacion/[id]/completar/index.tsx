@@ -50,7 +50,7 @@ export default function TablaCompletarImportacion({ id_importacion }: CompletarI
     const botonDeshabilitado = Number(watch("totalIncompleto")) !== 0
 
     const mutacion = useMutation({
-        mutationFn: (id: number) => setImportacionCompleta({ id }),
+        mutationFn: (id: number) => setImportacionCompleta(id),
         onSuccess: (respuesta) => {
             if (respuesta.ok) {
                 router.push(`/administrativo/importacion`);

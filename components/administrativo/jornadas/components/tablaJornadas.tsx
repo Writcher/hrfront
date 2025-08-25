@@ -59,6 +59,11 @@ export const TablaJornadas: React.FC<TablaJornadasProps> = ({
                                 Tipo de Jornada
                             </div>
                         </TableCell>
+                        <TableCell align="center">
+                            <div style={{ userSelect: "none" }} className="text-gray-700 font-bold [clamp(0.25rem,5vw,1rem)]">
+                                Tipo de Ausencia
+                            </div>
+                        </TableCell>
                         <TableCell align="right">
                             <div style={{ userSelect: "none" }} className="text-gray-700 font-bold [clamp(0.25rem,5vw,1rem)]">
                                 Observacion
@@ -81,32 +86,37 @@ export const TablaJornadas: React.FC<TablaJornadasProps> = ({
                                     </div>
                                 </TableCell>
                                 <TableCell align="center" size="small">
-                                    <div className="flex items-center justify-start">
+                                    <div className="flex items-center justify-center">
                                         <Skeleton variant="text" width={100} />
                                     </div>
                                 </TableCell>
                                 <TableCell align="center" size="small">
-                                    <div className="flex items-center justify-start">
+                                    <div className="flex items-center justify-center">
                                         <Skeleton variant="text" width={100} />
                                     </div>
                                 </TableCell>
                                 <TableCell align="center" size="small">
-                                    <div className="flex items-center justify-start">
+                                    <div className="flex items-center justify-center">
                                         <Skeleton variant="text" width={100} />
                                     </div>
                                 </TableCell>
                                 <TableCell align="center" size="small">
-                                    <div className="flex items-center justify-start">
+                                    <div className="flex items-center justify-center">
                                         <Skeleton variant="text" width={100} />
                                     </div>
                                 </TableCell>
                                 <TableCell align="center" size="small">
-                                    <div className="flex items-center justify-start">
+                                    <div className="flex items-center justify-center">
                                         <Skeleton variant="text" width={100} />
                                     </div>
                                 </TableCell>
-                                <TableCell align="left" size="small">
-                                    <div className="flex items-center justify-start">
+                                <TableCell align="center" size="small">
+                                    <div className="flex items-center justify-center">
+                                        <Skeleton variant="text" width={100} />
+                                    </div>
+                                </TableCell>
+                                <TableCell align="right" size="small">
+                                    <div className="flex items-center justify-end">
                                         <Skeleton variant="text" width={100} />
                                     </div>
                                 </TableCell>
@@ -160,19 +170,24 @@ export const TablaJornadas: React.FC<TablaJornadasProps> = ({
                                             </div>
                                         </TableCell>
                                         <TableCell align="center" size="small">
-                                            <TooltipObservaciones row={row}/>
+                                            <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.8rem)]" style={{ userSelect: "none" }}>
+                                                {row.tipoausencia === null ? "" : row.tipoausencia}
+                                            </div>
+                                        </TableCell>
+                                        <TableCell align="center" size="small">
+                                            <TooltipObservaciones row={row} />
                                         </TableCell>
                                     </TableRow>
                                 </React.Fragment>
                             ))
                         ) : (
                             <TableRow>
-                                <TableCell colSpan={8} align="center" />
+                                <TableCell colSpan={9} align="center" />
                             </TableRow>
                         )}
                         {Array.from({ length: filasPorPagina - (jornadasDatos?.jornadas?.length || 0) }).map((_, index) => (
                             <TableRow key={`empty-row-${index}`}>
-                                <TableCell colSpan={8} />
+                                <TableCell colSpan={9} />
                             </TableRow>
                         ))}
                     </TableBody>

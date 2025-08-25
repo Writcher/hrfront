@@ -24,14 +24,14 @@ export default function PantallaInicioSesion() {
     };
 
     return (
-        <div className="flex flex-col gap-4 items-center justify-center w-full h-full" >
-            <div className="flex items-center justify-center text-gray-800 text-center font-bold">
-                <p className="text-[clamp(1rem,5vw,2rem)]">
-                    Iniciar Sesión
-                </p>
-            </div>
-            <form onSubmit={handleSubmit(onSubmit)} className="w-[95%] space-y-4">
-                <div className="flex flex-col justify-center items-center gap-4 w-full" >
+        <div className="flex flex-col gap-4 items-center justify-center w-full h-full bg-orange-100">
+            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center justify-center bg-white w-[40vw] h-[50vh] space-y-4 rounded" style={{ border: "2px solid #ED6C02" }}>
+                <div className="flex items-center justify-center text-gray-800 text-center font-bold">
+                    <p className="text-[clamp(1rem,5vw,2rem)]">
+                        Iniciar Sesión
+                    </p>
+                </div>
+                <div className="flex flex-col justify-center items-center gap-4 w-full">
                     <FormularioInicioSesion
                         control={control}
                     />

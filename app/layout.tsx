@@ -21,7 +21,7 @@ export default function RootLayout({
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <QueryClientProvider client={queryClient}>
             <DrawerProvider>
-              <div className="flex flex-grow">
+              <div className="flex flex-grow h-screen w-screen">
                 {children}
               </div>
             </DrawerProvider>
