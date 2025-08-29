@@ -13,7 +13,7 @@ export const Formulario: React.FC<FormularioProps> = ({
     selectCargando,
     selectDatos,
 }) => (
-    <div className="flex items-center justify-start w-full gap-4">
+    <div className="flex items-center justify-start w-full gap-2">
         {selectCargando ? (
             <Skeleton
                 variant="rectangular"
@@ -39,16 +39,15 @@ export const Formulario: React.FC<FormularioProps> = ({
                         error={!!error}
                         helperText={error?.message}
                     >
-                        {selectDatos.proyectos.map((proyecto: { id: number, nombre: string }) => (
+                        {selectDatos?.proyectos?.map((proyecto: { id: number, nombre: string }) => (
                             <MenuItem key={proyecto.id} value={proyecto.id}>
                                 {proyecto.nombre}
                             </MenuItem>
-                        ))}
+                        )) || []}
                     </TextField>
                 )}
             />
         )}
-
         {selectCargando ? (
             <Skeleton
                 variant="rectangular"
@@ -74,11 +73,11 @@ export const Formulario: React.FC<FormularioProps> = ({
                         error={!!error}
                         helperText={error?.message}
                     >
-                        {selectDatos.tiposJornada.map((tipo: { id: number, nombre: string }) => (
+                        {selectDatos?.tiposJornada?.map((tipo: { id: number, nombre: string }) => (
                             <MenuItem key={tipo.id} value={tipo.id}>
                                 {tipo.nombre}
                             </MenuItem>
-                        ))}
+                        )) || []}
                     </TextField>
                 )}
             />

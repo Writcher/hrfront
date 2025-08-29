@@ -7,7 +7,7 @@ import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import FilterAltOffRoundedIcon from '@mui/icons-material/FilterAltOffRounded';
 import { FormularioFiltros } from "./formularioFiltrosInteriores";
 import { TablaJornadas } from "./tablaJornadas";
-import { fetchDatosSelectFormularioJornada } from "@/services/jornadas/service.jornadas";
+import { fetchDatosSelectFormularioJornada } from "@/services/jornada/service.jornadas";
 import { useMostrarFormulario } from "../hooks/useMostrarFormulario";
 import { useTablaJornadaFormulario } from "../hooks/useTablaJornadasFormulario";
 import { CrearJornadaFormulario } from "./crearJornadaFormulario";
@@ -18,6 +18,7 @@ import { useSwitchFormulario } from "../hooks/useSwitchFormulario";
 import FeedbackSnackbar from "@/components/ui/feedback";
 import { fetchJornadas, insertJornada } from "@/services/jornada/service.jornada";
 import { fetchMeses } from "@/services/mes/service.mes";
+import SyncIcon from '@mui/icons-material/Sync';
 
 interface ContenidoFilaExpandidaProps {
     idFilaExpandida: number,
@@ -35,7 +36,7 @@ export function ContenidoFilaExpandida({
     const formularioVisible = useMostrarFormulario(setValue, watch);
     const switchFormulario = useSwitchFormulario(setValue, watch);
 
-    const { data: selectDatos, isLoading: selectCargando } = useQuery({
+    const { data: selectDatos, isLoading: selectCargando, isError: selectError } = useQuery({
         queryKey: ["fetchDatosSelectTablaJornadas"],
         queryFn: () => fetchMeses(),
         refetchOnWindowFocus: false,
@@ -43,7 +44,7 @@ export function ContenidoFilaExpandida({
         gcTime: 60 * 60 * 1000,
     });
 
-    const { data: formularioDatos, isLoading: formularioCargando } = useQuery({
+    const { data: formularioDatos, isLoading: formularioCargando, isError: formularioError } = useQuery({
         queryKey: ["fetchDatosSelectFormularioJornada"],
         queryFn: () => fetchDatosSelectFormularioJornada(),
         refetchOnWindowFocus: false,
@@ -53,12 +54,12 @@ export function ContenidoFilaExpandida({
 
     const { data: jornadasDatos, isLoading: jornadasCargando, isError: jornadasError, refetch: jornadasRefetch } = useQuery({
         queryKey: [
-            "fetchJornadasEmpleado", 
-            idFilaExpandida, 
-            watch("filtroMes"), 
-            watch("filtroQuincena"), 
-            watch("filtroMarcasIncompletas"), 
-            paginacion.pagina, 
+            "fetchJornadasEmpleado",
+            idFilaExpandida,
+            watch("filtroMes"),
+            watch("filtroQuincena"),
+            watch("filtroMarcasIncompletas"),
+            paginacion.pagina,
             paginacion.filasPorPagina
         ],
         queryFn: () => fetchJornadas({
@@ -94,7 +95,7 @@ export function ContenidoFilaExpandida({
         });
     };
     return (
-        <TableRow className={`cursor-pointer ${idFilaExpandida === idFilaExpandidaProp ? 'bg-orange-100' : ''}`}>
+        <TableRow className={`${idFilaExpandida === idFilaExpandidaProp ? 'bg-orange-100' : ''}`}>
             <TableCell colSpan={3} sx={{ padding: "4px" }}>
                 <div className="flex flex-col gap-2 items-start justify-center h-full rounded bg-white p-[5px] pt-[10px]" style={{ border: "2px solid #ED6C02", }}>
                     <div className="flex flex-row gap-2 w-full h-11 items-center">
@@ -147,11 +148,15 @@ export function ContenidoFilaExpandida({
                                     size="small"
                                     className="!h-[40px]"
                                     disableElevation
-                                    endIcon={<SaveAsRoundedIcon />}
+                                    endIcon={
+                                        mutacion.isPending ? (
+                                            <SyncIcon className="animate-spin" />
+                                        ) : <SaveAsRoundedIcon />
+                                    }
                                     onClick={handleSubmit(onSubmit)}
-                                    loading={mutacion.isPending}
+                                    disabled={mutacion.isPending}
                                 >
-                                    Guardar
+                                    {!mutacion.isPending ? "Guardar" : "Guaardando"}
                                 </Button>
                             </>
                         ) :
@@ -206,9 +211,27 @@ export function ContenidoFilaExpandida({
                         )}
                     </div>
                     <FeedbackSnackbar
-                        open={mutacion.isSuccess || mutacion.isError}
-                        severity={mutacion.isSuccess ? "success" : "error"}
-                        message={mutacion.isSuccess ? "Jornada creada correctamente" : mutacion.error instanceof Error ? mutacion.error.message : "Error al crear jornada"}
+                        open={mutacion.isSuccess || mutacion.isError || formularioError || jornadasError || selectError}
+                        severity={
+                            mutacion.isSuccess 
+                            ? "success" 
+                            : mutacion.isError
+                                ? "error"
+                                : "warning"
+                        }
+                        message={
+                            mutacion.isSuccess 
+                            ? "Jornada creada correctamente"
+                            : formularioError
+                                ? "Error al cargar los datos"
+                                : jornadasError
+                                    ? "Error al cargar las jornadas"
+                                    : selectError
+                                        ? "Error al cargar los datos"
+                                        : mutacion.error instanceof Error 
+                                            ? mutacion.error.message 
+                                            : "Error al crear jornada"
+                        }
                     />
                 </div>
             </TableCell>

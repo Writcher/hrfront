@@ -8,7 +8,7 @@ function SlideTransition(props: SlideProps) {
     return <Slide {...props} direction="up" />;
 };
 
-export default function FeedbackSnackbar({ open, severity, message }: { open: boolean, severity: "success" | "error", message: string }) {
+export default function FeedbackSnackbar({ open, severity, message }: { open: boolean, severity: "success" | "error" | "warning", message: string }) {
     const { watch: watchFeedback, setValue: setValueFeedback } = useForm({
         defaultValues: {
             feedbackOpen: false

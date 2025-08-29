@@ -1,12 +1,12 @@
 export default function InicioRRHH() {
     return(
-        <div className="flex flex-col w-full h-full gap-4">
-            <div className="flex flex-col items-center justify-center text-3xl text-gray-800 text-center font-bold h-[10%]">
-                <p>
+        <div className="flex flex-col gap-2 w-full h-full">
+            <div className="flex items-center justify-center h-[10%] text-gray-800 text-center font-bold">
+                <p className="text-[clamp(1rem,5vw,2rem)]">
                     Recursos Humanos
                 </p>
             </div>
-            <div className="flex flex-col items-center justify-center w-full h-[90%]">
+            <div className="flex items-center justify-center h-[90%]">
                 
             </div>
         </div>

@@ -19,6 +19,7 @@ import { TablaEmpleados } from "./components/tablaEmpleados";
 import { ContenidoFilaExpandida } from "./components/contenidoFilaExpandida";
 import { fetchProyectos } from "@/services/proyecto/service.proyecto";
 import { fetchEmpleados } from "@/services/empleado/service.empleado";
+import FeedbackSnackbar from "@/components/ui/feedback";
 
 export default function TablaEmpleadosJornadas() {
   const { watch, setValue, getValues } = useTablaEmpleadosFormulario();
@@ -28,20 +29,20 @@ export default function TablaEmpleadosJornadas() {
   const ordenacion = useOrdenacion(setValue, watch);
   const expansion = useExpansion(setValue, watch);
 
-  const { data: selectDatos } = useQuery({
+  const { data: selectDatos, isError: selectError } = useQuery({
     queryKey: ["fetchDatosSelectTablaEmpleados"],
     queryFn: () => fetchProyectos(),
     refetchOnWindowFocus: false
   });
 
-  const { data: empleadosDatos, isLoading: empleadosCargando } = useQuery({
+  const { data: empleadosDatos, isLoading: empleadosCargando, isError: empleadosError } = useQuery({
     queryKey: [
-      "fetchEmpleadosTablaJornadas", 
-      paginacion.pagina, 
-      paginacion.filasPorPagina, 
-      ordenacion.ordenColumna, 
-      ordenacion.ordenDireccion, 
-      watch("busquedaNombre"), 
+      "fetchEmpleadosTablaJornadas",
+      paginacion.pagina,
+      paginacion.filasPorPagina,
+      ordenacion.ordenColumna,
+      ordenacion.ordenDireccion,
+      watch("busquedaNombre"),
       watch("filtroProyecto")
     ],
     queryFn: () => fetchEmpleados({
@@ -109,7 +110,7 @@ export default function TablaEmpleadosJornadas() {
         <div className="flex grow" />
         <Button
           component={Link}
-          href={"/administrativo/importacion/excel"}
+          href={"/administrativo/importacion/importar"}
           variant="contained"
           color="success"
           disableElevation
@@ -170,6 +171,17 @@ export default function TablaEmpleadosJornadas() {
           />
         </div>
       </div>
+      <FeedbackSnackbar
+        open={empleadosError || selectError}
+        severity={
+          "warning"
+        }
+        message={
+          empleadosError
+            ? "Error al cargar empleados"
+            : "Error al cargar los datos"
+        }
+      />
     </div>
   );
 }

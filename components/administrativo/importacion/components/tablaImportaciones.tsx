@@ -40,7 +40,7 @@ export const TablaListaImportaciones: React.FC<TablaImportacionesProps> = ({
                     </TableCell>
                     <TableCell align="right" width="33%">
                         <div style={{ userSelect: "none" }}
-                            className={`text-gray-700 font-medium md:font-bold text-[17px]`}>
+                            className={`text-gray-700 font-medium md:font-bold text-[17px] pr-[12px]`}>
                             Acciones
                         </div>
                     </TableCell>
@@ -51,13 +51,19 @@ export const TablaListaImportaciones: React.FC<TablaImportacionesProps> = ({
                     {Array.from({ length: filasPorPagina }).map((_, index) => (
                         <TableRow key={index}>
                             <TableCell align="left" size="small" width="33%">
-                                <Skeleton variant="text" width={100} />
+                                <div className="flex items-center justify-start">
+                                    <Skeleton variant="text" width={100} />
+                                </div>
                             </TableCell>
                             <TableCell align="center" size="small" width="33%">
-                                <Skeleton variant="text" width={100} />
+                                <div className="flex items-center justify-center">
+                                    <Skeleton variant="text" width={100} />
+                                </div>
                             </TableCell>
                             <TableCell align="right" size="small" width="33%">
-                                <Skeleton variant="text" width={100} />
+                                <div className="flex items-center justify-end">
+                                    <Skeleton variant="rectangular" className="!rounded" width={80} height={30} />
+                                </div>
                             </TableCell>
                         </TableRow>
                     ))}
@@ -79,7 +85,7 @@ export const TablaListaImportaciones: React.FC<TablaImportacionesProps> = ({
                                 </TableCell>
                                 <TableCell align="center" size="small">
                                     <div className="text-gray-700 font-medium text-[15px]" style={{ userSelect: "none" }}>
-                                        <Chip label={row.nombreestado} color={row.nombreestado.toLowerCase() !== 'incompleta' ? "success" : "error"} />
+                                        <Chip label={row.nombreestado} className="!rounded" color={row.nombreestado.toLowerCase() !== 'incompleta' ? "success" : "error"} />
                                     </div>
                                 </TableCell>
                                 <TableCell align="right" size="small">
@@ -94,7 +100,7 @@ export const TablaListaImportaciones: React.FC<TablaImportacionesProps> = ({
                                             size="small"
                                             disabled={row.nombreestado.toLowerCase() !== 'incompleta'}
                                         >
-                                            COMPLETAR
+                                            Revisar
                                         </Button>
                                     </div>
                                 </TableCell>

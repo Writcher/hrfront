@@ -1,7 +1,8 @@
 /* eslint-disable import/no-anonymous-default-export */
 export default {
     URL_BASE: process.env.URL_BASE,
-    URL_EXCEL: process.env.URL_EXCEL,
+    URL_EXCEL_IMPORT: process.env.URL_EXCEL_IMPORT,
+    URL_EXCEL_EXPORT: process.env.URL_EXCEL_EXPORT,
     URL_PROYECTOS: process.env.URL_PROYECTOS,
     URL_TIPOSJORNADA: process.env.URL_TIPOSJORNADA,
     URL_MESES: process.env.URL_MESES,
@@ -14,5 +15,6 @@ export default {
     URL_TIPOSAUSENCIA: process.env.URL_TIPOSAUSENCIA,
     URL_CREAR_JORNADA: process.env.URL_CREAR_JORNADA,
     URL_USUARIOS: process.env.URL_USUARIOS,
-    URL_TIPOUSUARIO: process.env.URL_TIPOUSUARIO
+    URL_TIPOUSUARIO: process.env.URL_TIPOUSUARIO,
+    URL_CREAR_EMPLEADO: process.env.URL_CREAR_EMPLEADO,
 };

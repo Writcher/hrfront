@@ -64,7 +64,7 @@ export const TablaJornadas: React.FC<TablaJornadasProps> = ({
                                 Tipo de Ausencia
                             </div>
                         </TableCell>
-                        <TableCell align="right">
+                        <TableCell align="center">
                             <div style={{ userSelect: "none" }} className="text-gray-700 font-bold [clamp(0.25rem,5vw,1rem)]">
                                 Observacion
                             </div>
@@ -115,9 +115,9 @@ export const TablaJornadas: React.FC<TablaJornadasProps> = ({
                                         <Skeleton variant="text" width={100} />
                                     </div>
                                 </TableCell>
-                                <TableCell align="right" size="small">
-                                    <div className="flex items-center justify-end">
-                                        <Skeleton variant="text" width={100} />
+                                <TableCell align="center" size="small">
+                                    <div className="flex items-center justify-center">
+                                        <Skeleton variant="rectangular" className="!rounded" width={45} height={30} />
                                     </div>
                                 </TableCell>
                             </TableRow>

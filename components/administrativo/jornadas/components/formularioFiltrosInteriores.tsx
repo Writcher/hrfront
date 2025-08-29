@@ -46,9 +46,9 @@ export const FormularioFiltros: React.FC<FormularioFiltrosProps> = ({
                 value={filtroMes}
                 onChange={onCambioFiltroMes}
             >
-                {selectDatos.map((mes: any) => (
+                {selectDatos?.map((mes: any) => (
                     <MenuItem key={mes.id} value={mes.id}>{getNombreMes(mes.mes)} de {mes.id_año}</MenuItem>
-                ))}
+                )) || []}
             </TextField>
         }
         <TextField

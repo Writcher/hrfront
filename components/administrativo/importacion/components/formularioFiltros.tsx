@@ -44,7 +44,7 @@ export const FormularioFiltros: React.FC<FormularioFiltrosProps> = ({
                     <MenuItem key={proyectos.id} value={proyectos.id}>
                         {proyectos.nombre}
                     </MenuItem>
-                ))}
+                )) || []}
             </TextField>
         }
         <FormControlLabel

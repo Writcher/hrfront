@@ -13,6 +13,7 @@ import { fetchImportaciones } from "@/services/importacion/service.importacion";
 import { TablaListaImportaciones } from "./components/tablaImportaciones";
 import { FormularioFiltros } from "./components/formularioFiltros";
 import { fetchProyectos } from "@/services/proyecto/service.proyecto";
+import FeedbackSnackbar from "@/components/ui/feedback";
 
 export default function TablaImportaciones() {
     const { setValue, watch } = useTablaImportacionesFormulario();
@@ -20,18 +21,18 @@ export default function TablaImportaciones() {
     const filtros = useFiltros(setValue, watch);
     const paginacion = usePaginacion(setValue, watch);
 
-    const { data: selectDatos, isLoading: selectCargando } = useQuery({
+    const { data: selectDatos, isLoading: selectCargando, isError: selectError } = useQuery({
         queryKey: ["fetchDatosSelectTablaEmpleados"],
         queryFn: () => fetchProyectos(),
         refetchOnWindowFocus: false
     });
 
-    const { data: importacionesDatos, isLoading: importacionesCargando } = useQuery({
+    const { data: importacionesDatos, isLoading: importacionesCargando, isError: importacionesError } = useQuery({
         queryKey: [
-            "fetchImportaciones", 
-            paginacion.pagina, 
-            paginacion.filasPorPagina, 
-            watch("filtroProyecto"), 
+            "fetchImportaciones",
+            paginacion.pagina,
+            paginacion.filasPorPagina,
+            watch("filtroProyecto"),
             watch("filtroIncompletas")
         ],
         queryFn: () => fetchImportaciones({
@@ -66,7 +67,7 @@ export default function TablaImportaciones() {
                 <div className="flex grow" />
                 <Button
                     component={Link}
-                    href={"/administrativo/importacion/excel"}
+                    href={"/administrativo/importacion/importar"}
                     variant="contained"
                     color="success"
                     disableElevation
@@ -112,6 +113,15 @@ export default function TablaImportaciones() {
                     />
                 </div>
             </div>
+            <FeedbackSnackbar
+                open={selectError || importacionesError}
+                severity={"warning"}
+                message={
+                    selectError
+                        ? "Error al cargar los datos"
+                        : "Error al cargar las importaciones"
+                }
+            />
         </div>
     );
 }

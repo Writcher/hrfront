@@ -13,6 +13,8 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import SaveAsRoundedIcon from '@mui/icons-material/SaveAsRounded';
 import { fetchJornadasPorImportacion } from "@/services/jornada/service.jornada";
+import SyncIcon from '@mui/icons-material/Sync';
+import FeedbackSnackbar from "@/components/ui/feedback";
 
 interface CompletarInformacionProps {
     id_importacion: number
@@ -25,11 +27,11 @@ export default function TablaCompletarImportacion({ id_importacion }: CompletarI
     const paginacion = usePaginacion(setValue, watch);
     const router = useRouter();
 
-    const { data: jornadasDatos, isLoading: jornadasCargando } = useQuery({
+    const { data: jornadasDatos, isLoading: jornadasCargando, isError: jornadasError } = useQuery({
         queryKey: [
-            "fetchImportacionJornadas", 
-            paginacion.pagina, 
-            paginacion.filasPorPagina, 
+            "fetchImportacionJornadas",
+            paginacion.pagina,
+            paginacion.filasPorPagina,
             watch("filtroMarcasIncompletas")
         ],
         queryFn: () => fetchJornadasPorImportacion({
@@ -71,7 +73,7 @@ export default function TablaCompletarImportacion({ id_importacion }: CompletarI
             </div>
             <div className="flex flex-col justify-between w-full h-full overflow-y-auto rounded" style={{ border: "2px solid #ED6C02" }}>
                 <TablaImportacionJornadas
-                    jornadasDatos={jornadasDatos}
+                    jornadasDatos={jornadasError ? [] : jornadasDatos}
                     jornadasCargando={jornadasCargando}
                     filasPorPagina={paginacion.filasPorPagina}
                 />
@@ -121,13 +123,36 @@ export default function TablaCompletarImportacion({ id_importacion }: CompletarI
                     variant="contained"
                     color="success"
                     disableElevation
-                    disabled={botonDeshabilitado || jornadasCargando}
                     onClick={() => mutacion.mutate(id_importacion)}
-                    endIcon={<SaveAsRoundedIcon/>}
+                    endIcon={
+                        mutacion.isPending ? (
+                            <SyncIcon className="animate-spin" />
+                        ) : <SaveAsRoundedIcon />
+                    }
+                    disabled={mutacion.isPending || botonDeshabilitado || jornadasCargando}
                 >
-                    Confirmar
+                    {!mutacion.isPending ? "Confirmar" : "Guardando"}
                 </Button>
             </div>
+            <FeedbackSnackbar
+                open={mutacion.isSuccess || mutacion.isError || jornadasError}
+                severity={
+                    mutacion.isSuccess
+                        ? "success"
+                        : mutacion.isError
+                            ? "error"
+                            : "warning"
+                }
+                message={
+                    mutacion.isSuccess
+                        ? "Importación completada correctamente"
+                        : mutacion.isError
+                            ? mutacion.error instanceof Error
+                                ? mutacion.error.message
+                                : "Error al completar importación"
+                            : "Error al cargar las jornadas"
+                }
+            />
         </div>
     );
 };

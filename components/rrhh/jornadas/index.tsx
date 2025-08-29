@@ -4,8 +4,7 @@ import React from "react";
 import { Button, ButtonGroup, TablePagination } from "@mui/material";
 import FilterAltRoundedIcon from '@mui/icons-material/FilterAltRounded';
 import FilterAltOffRoundedIcon from '@mui/icons-material/FilterAltOffRounded';
-import UploadFileRoundedIcon from '@mui/icons-material/UploadFileRounded';
-import Link from "next/link";
+import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
 import { useQuery } from "@tanstack/react-query";
 import { useTablaEmpleadosFormulario } from "./hooks/useTablaEmpleadosFormulario";
 import { useFiltros } from "./hooks/useFiltros";
@@ -19,6 +18,8 @@ import { TablaEmpleados } from "./components/tablaEmpleados";
 import { fetchProyectos } from "@/services/proyecto/service.proyecto";
 import { fetchEmpleados } from "@/services/empleado/service.empleado";
 import { ContenidoFilaExpandida } from "./components/contenidoFilaExpandida";
+import Link from "next/link";
+import FeedbackSnackbar from "@/components/ui/feedback";
 
 export default function TablaEmpleadosJornadasResumen() {
   const { watch, setValue, getValues } = useTablaEmpleadosFormulario();
@@ -28,20 +29,20 @@ export default function TablaEmpleadosJornadasResumen() {
   const ordenacion = useOrdenacion(setValue, watch);
   const expansion = useExpansion(setValue, watch);
 
-  const { data: selectDatos } = useQuery({
+  const { data: selectDatos, isError: selectError } = useQuery({
     queryKey: ["fetchDatosSelectTablaEmpleados"],
     queryFn: () => fetchProyectos(),
     refetchOnWindowFocus: false
   });
 
-  const { data: empleadosDatos, isLoading: empleadosCargando } = useQuery({
+  const { data: empleadosDatos, isLoading: empleadosCargando, isError: empleadosError } = useQuery({
     queryKey: [
-      "fetchEmpleadosTablaJornadas", 
-      paginacion.pagina, 
-      paginacion.filasPorPagina, 
-      ordenacion.ordenColumna, 
-      ordenacion.ordenDireccion, 
-      watch("busquedaNombre"), 
+      "fetchEmpleadosTablaJornadas",
+      paginacion.pagina,
+      paginacion.filasPorPagina,
+      ordenacion.ordenColumna,
+      ordenacion.ordenDireccion,
+      watch("busquedaNombre"),
       watch("filtroProyecto")
     ],
     queryFn: () => fetchEmpleados({
@@ -109,13 +110,13 @@ export default function TablaEmpleadosJornadasResumen() {
         <div className="flex grow" />
         <Button
           component={Link}
-          href={"/administrativo/importacion/excel"}
+          href={"/rrhh/jornadas/exportar"}
           variant="contained"
           color="success"
           disableElevation
-          endIcon={<UploadFileRoundedIcon />}
+          endIcon={<DownloadRoundedIcon />}
         >
-          Importar Informe
+          Exportar Informe
         </Button>
       </div>
       <FiltrosActivos
@@ -170,6 +171,17 @@ export default function TablaEmpleadosJornadasResumen() {
           />
         </div>
       </div>
+      <FeedbackSnackbar
+        open={empleadosError || selectError}
+        severity={
+          "warning"
+        }
+        message={
+          empleadosError
+            ? "Error al cargar empleados"
+            : "Error al cargar los datos"
+        }
+      />
     </div>
   );
 }

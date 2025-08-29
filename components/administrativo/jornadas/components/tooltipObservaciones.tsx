@@ -1,6 +1,6 @@
 import LightTooltip from "@/components/ui/tooltip";
 import { InfoOutlined } from "@mui/icons-material";
-import { Box, IconButton, Menu, MenuItem, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 
 interface TooltipObservacionesProps {
     row: any
@@ -9,13 +9,7 @@ interface TooltipObservacionesProps {
 export const TooltipObservaciones: React.FC<TooltipObservacionesProps> = ({
     row
 }) => (
-    <Box display="flex" alignItems="center" justifyContent="flex-end" gap={1}>
-        <div
-            className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.8rem)]"
-            style={{ userSelect: "none" }}
-        >
-            {row.observaciones?.length || 0}
-        </div>
+    <Box className="flex items-center justify-center">
         {row.observaciones && row.observaciones.length > 0 && (
             <LightTooltip
                 title={
@@ -37,14 +31,17 @@ export const TooltipObservaciones: React.FC<TooltipObservacionesProps> = ({
                 arrow
                 placement="left"
             >
-                <IconButton
+                <Button
                     size="small"
-                    className="!items-center !justify-center !text-gray-800 !font-medium hover:!bg-orange-100 hover:!text-orange-600"
+                    disableRipple
+                    disableElevation
+                    className="!items-center !justify-center !text-white !font-medium hover:!bg-orange-100 hover:!text-orange-600"
                     color="warning"
+                    variant="contained"
                     disabled={row.observaciones.length === 0}
                 >
                     <InfoOutlined fontSize="small" />
-                </IconButton>
+                </Button>
             </LightTooltip>
         )}
     </Box>

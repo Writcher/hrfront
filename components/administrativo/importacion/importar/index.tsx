@@ -1,7 +1,7 @@
 "use client";
 
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { fetchSelectDataExcelImport, insertJornadasExcel } from "@/services/importacion/service.excel";
+import { fetchSelectDataExcelImport, insertJornadasExcel } from "@/services/importacion/service.importar";
 import { Button } from "@mui/material";
 import UploadFileRoundedIcon from '@mui/icons-material/UploadFileRounded';
 import SyncIcon from '@mui/icons-material/Sync';
@@ -21,7 +21,7 @@ export default function ExcelImportform() {
     const dropzone = useDropzoneH(setValue, setError, clearErrors);
     const router = useRouter();
 
-    const { data: selectDatos, isLoading: selectCargando } = useQuery({
+    const { data: selectDatos, isLoading: selectCargando, isError: selectError } = useQuery({
         queryKey: ["fetchSelectDataExcelImport"],
         queryFn: () => fetchSelectDataExcelImport(),
         refetchOnWindowFocus: false
@@ -52,7 +52,7 @@ export default function ExcelImportform() {
     return (
         <div className="flex flex-col gap-4 items-center justify-center w-full h-full">
             <form onSubmit={handleSubmit(onSubmit)} className="w-[95%] space-y-4">
-                <div className="flex flex-row gap-2 w-full h-18">
+                <div className="flex flex-row gap-2 w-full">
                     <Formulario
                         control={control}
                         selectCargando={selectCargando}
@@ -102,9 +102,23 @@ export default function ExcelImportform() {
                 </div>
             </form>
             <FeedbackSnackbar
-                open={mutacion.isSuccess || mutacion.isError}
-                severity={mutacion.isSuccess ? "success" : "error"}
-                message={mutacion.isSuccess ? "Archivo importado correctamente" : mutacion.error instanceof Error ? mutacion.error.message : "Error al importar el archivo"}
+                open={mutacion.isSuccess || mutacion.isError || selectError}
+                severity={
+                    mutacion.isSuccess
+                        ? "success"
+                        : mutacion.isError
+                            ? "error"
+                            : "warning"
+                }
+                message={
+                    mutacion.isSuccess
+                        ? "Archivo importado correctamente"
+                        : mutacion.isError
+                            ? mutacion.error instanceof Error
+                                ? mutacion.error.message
+                                : "Error al importar el archivo"
+                            : "Error al cargar los datos"
+                }
             />
         </div>
     );

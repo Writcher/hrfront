@@ -74,7 +74,7 @@ export const TablaImportacionJornadas: React.FC<TablaImportacionJornadasProps> =
                                 <Skeleton variant="text" width={100} />
                             </TableCell>
                             <TableCell align="right" size="small">
-                                <Skeleton variant="text" width={100} />
+                                <Skeleton variant="rectangular" className="!rounded" width={45} height={30} />
                             </TableCell>
                         </TableRow>
                     ))}

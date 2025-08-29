@@ -8,6 +8,7 @@ import { TablaJornadas } from "./tablaJornadas";
 import { useTablaJornadaFormulario } from "../hooks/useTablaJornadasFormulario";
 import { fetchMeses } from "@/services/mes/service.mes";
 import { fetchJornadas } from "@/services/jornada/service.jornada";
+import FeedbackSnackbar from "@/components/ui/feedback";
 
 interface ContenidoFilaExpandidaProps {
     idFilaExpandida: number,
@@ -18,7 +19,7 @@ export function ContenidoFilaExpandida({
     idFilaExpandida,
     idFilaExpandidaProp
 }: ContenidoFilaExpandidaProps) {
-    const { data: selectDatos, isLoading: selectCargando } = useQuery({
+    const { data: selectDatos, isLoading: selectCargando, isError: selectError } = useQuery({
         queryKey: ["fetchDatosSelectTablaJornadas"],
         queryFn: () => fetchMeses(),
         refetchOnWindowFocus: false,
@@ -45,7 +46,7 @@ export function ContenidoFilaExpandida({
         refetchOnWindowFocus: false
     });
     return (
-        <TableRow className={`cursor-pointer ${idFilaExpandida === idFilaExpandidaProp ? 'bg-orange-100' : ''}`}>
+        <TableRow className={`${idFilaExpandida === idFilaExpandidaProp ? 'bg-orange-100' : ''}`}>
             <TableCell colSpan={3} sx={{ padding: "4px" }}>
                 <div className="flex flex-col gap-2 items-start justify-center h-full rounded bg-white p-[5px] pt-[10px]" style={{ border: "2px solid #ED6C02", }}>
                     <div className="flex flex-row gap-2 w-full h-11 items-center">
@@ -77,7 +78,18 @@ export function ContenidoFilaExpandida({
                         />
                     </div>
                 </div>
+                <FeedbackSnackbar
+                    open={jornadasError || selectError}
+                    severity={
+                        "warning"
+                    }
+                    message={
+                        jornadasError
+                            ? "Error al cargar las jornadas"
+                            : "Error al cargar los datos"
+                    }
+                />
             </TableCell>
-        </TableRow>
+        </TableRow >
     )
 };

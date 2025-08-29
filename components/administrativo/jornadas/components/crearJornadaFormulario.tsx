@@ -57,11 +57,11 @@ export const CrearJornadaFormulario: React.FC<CrearJornadaFormularioProps> = ({
                                 select
                                 error={!!error}
                             >
-                                {formularioDatos?.tiposJornada.map((tipo: { id: number, nombre: string }) => (
+                                {formularioDatos?.tiposJornada?.map((tipo: { id: number, nombre: string }) => (
                                     <MenuItem key={tipo.id} value={tipo.id}>
                                         {tipo.nombre}
                                     </MenuItem>
-                                ))}
+                                )) || []}
                             </TextField>
                         )}
                     />
@@ -74,7 +74,6 @@ export const CrearJornadaFormulario: React.FC<CrearJornadaFormularioProps> = ({
                         onChange={switchFormulario.onCambioJornadaPartida}
                         checked={switchFormulario.jornadaPartida}
                     />
-
                     :
                     <></>
                 }
@@ -103,11 +102,11 @@ export const CrearJornadaFormulario: React.FC<CrearJornadaFormularioProps> = ({
                                     select
                                     error={!!error}
                                 >
-                                    {formularioDatos?.tiposAusencia.map((tipo: { id: number, nombre: string }) => (
+                                    {formularioDatos?.tiposAusencia?.map((tipo: { id: number, nombre: string }) => (
                                         <MenuItem key={tipo.id} value={tipo.id}>
                                             {tipo.nombre}
                                         </MenuItem>
-                                    ))}
+                                    )) || []}
                                 </TextField>
                             )}
                         />

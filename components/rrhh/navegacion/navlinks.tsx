@@ -5,11 +5,13 @@ import { Button, IconButton } from "@mui/material";
 import { usePathname } from 'next/navigation';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import SummarizeRoundedIcon from '@mui/icons-material/SummarizeRounded';
+import PeopleAltRoundedIcon from '@mui/icons-material/PeopleAltRounded';
 import Link from "next/link";
 
 const linksadmin = [
     { name: 'Inicio', href: '/rrhh', icon: HomeRoundedIcon },
     { name: 'Jornadas', href: '/rrhh/jornadas', icon: SummarizeRoundedIcon },
+    { name: 'Empleados', href: '/rrhh/empleados', icon: PeopleAltRoundedIcon },
 
     //Añadir links segun necesario aca.
 ];

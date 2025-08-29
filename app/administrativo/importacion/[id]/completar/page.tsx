@@ -9,7 +9,7 @@ export default async function CompletarImportacion({ params }: { params: Promise
                     Completar Importacion
                 </p>
             </div>
-            <div className="flex flex-col items-center justify-center w-full h-[90%]">
+            <div className="flex items-center justify-center h-[90%]">
                 <TablaCompletarImportacion id_importacion={id} />
             </div>
         </div>
