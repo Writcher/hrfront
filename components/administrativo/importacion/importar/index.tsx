@@ -5,7 +5,6 @@ import { fetchSelectDataExcelImport, insertJornadasExcel } from "@/services/impo
 import { Button } from "@mui/material";
 import UploadFileRoundedIcon from '@mui/icons-material/UploadFileRounded';
 import SyncIcon from '@mui/icons-material/Sync';
-import FeedbackSnackbar from "../../../ui/feedback";
 import { Formulario } from "./components/formulario";
 import { useImportarExcelForm } from "./hooks/useImportarExcelForm";
 import { useDropzoneH } from "./hooks/useDropzone";
@@ -14,10 +13,12 @@ import { Dropzone } from "./components/dropzone";
 import { useRouter } from "next/navigation";
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import Link from "next/link";
+import { useEffect } from "react";
+import { useSnackbar } from "@/lib/context/snackbarcontext";
 
 export default function ExcelImportform() {
-    const { control, handleSubmit, setError, clearErrors, setValue, watch, formState: { errors }, reset } = useImportarExcelForm();
-
+    const { control, handleSubmit, setError, clearErrors, setValue, watch, formState: { errors, isValid }, reset } = useImportarExcelForm();
+    const { showSuccess, showError, showWarning } = useSnackbar();
     const dropzone = useDropzoneH(setValue, setError, clearErrors);
     const router = useRouter();
 
@@ -30,14 +31,13 @@ export default function ExcelImportform() {
     const mutacion = useMutation({
         mutationFn: (data: importarExcelDatos) => insertJornadasExcel(data),
         onSuccess: (response) => {
-            if (!response.completa) {
-                router.push(`/administrativo/importacion/${response.importacion}/completar`);
-                reset();
-            } else {
-                router.push(`/administrativo/importacion`);
-                reset();
-            };
+            showSuccess("Archivo importado correctamente");
+            router.push(`/administrativo/importacion/${response.importacion}/completar`);
+            reset();
         },
+        onError: () => {
+            showError("Error al importar el archivo");
+        }
     });
 
     const onSubmit = (data: importarExcelDatos) => {
@@ -48,6 +48,12 @@ export default function ExcelImportform() {
 
         mutacion.mutate(data);
     };
+
+    useEffect(() => {
+        if (selectError) {
+            showWarning("Error al cargar los datos");
+        };
+    }, [selectError, showWarning]);
 
     return (
         <div className="flex flex-col gap-4 items-center justify-center w-full h-full">
@@ -78,7 +84,7 @@ export default function ExcelImportform() {
                         disableElevation
                         startIcon={
                             mutacion.isPending ? (
-                                <SyncIcon className="animate-spin" />
+                                <SyncIcon className="animate-spin" style={{ animationDirection: 'reverse' }}/>
                             ) : <ArrowBackRoundedIcon />
                         }
                         disabled={mutacion.isPending}
@@ -92,34 +98,15 @@ export default function ExcelImportform() {
                         disableElevation
                         endIcon={
                             mutacion.isPending ? (
-                                <SyncIcon className="animate-spin" />
+                                <SyncIcon className="animate-spin" style={{ animationDirection: 'reverse' }}/>
                             ) : <UploadFileRoundedIcon />
                         }
-                        disabled={mutacion.isPending}
+                        disabled={mutacion.isPending || !isValid}
                     >
                         {!mutacion.isPending ? "Guardar" : "Guardando"}
                     </Button>
                 </div>
             </form>
-            <FeedbackSnackbar
-                open={mutacion.isSuccess || mutacion.isError || selectError}
-                severity={
-                    mutacion.isSuccess
-                        ? "success"
-                        : mutacion.isError
-                            ? "error"
-                            : "warning"
-                }
-                message={
-                    mutacion.isSuccess
-                        ? "Archivo importado correctamente"
-                        : mutacion.isError
-                            ? mutacion.error instanceof Error
-                                ? mutacion.error.message
-                                : "Error al importar el archivo"
-                            : "Error al cargar los datos"
-                }
-            />
         </div>
     );
 };

@@ -10,7 +10,7 @@ const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
         fontSize: 11,
         maxWidth: 'none',
         borderRadius: '5px',
-        padding: '1.5vw',
+        padding: '0.5vw',
         border: "2px solid #ED6C02"
     },
     [`& .${tooltipClasses.arrow}`]: {

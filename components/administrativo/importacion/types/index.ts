@@ -3,4 +3,4 @@ export type TablaImportacionesFormularioDatos = {
     filtroIncompletas: boolean;
     pagina: number;
     filasPorPagina: number;
-}
+};

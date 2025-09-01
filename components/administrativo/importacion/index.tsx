@@ -4,19 +4,22 @@ import { Button, TablePagination } from "@mui/material";
 import UploadFileRoundedIcon from '@mui/icons-material/UploadFileRounded';
 import FilterAltOffRoundedIcon from '@mui/icons-material/FilterAltOffRounded';
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 import { useTablaImportacionesFormulario } from "./hooks/useTablaImportacionesForm";
 import { useFiltros } from "./hooks/useFiltros";
 import { usePaginacion } from "./hooks/usePaginacion";
-import { useQuery } from "@tanstack/react-query";
-import { fetchImportaciones } from "@/services/importacion/service.importacion";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { deleteImportacion, fetchImportaciones } from "@/services/importacion/service.importacion";
 import { TablaListaImportaciones } from "./components/tablaImportaciones";
 import { FormularioFiltros } from "./components/formularioFiltros";
 import { fetchProyectos } from "@/services/proyecto/service.proyecto";
-import FeedbackSnackbar from "@/components/ui/feedback";
+import { deleteImportacionDTO } from "@/lib/dtos/importacion";
+import { useSnackbar } from "@/lib/context/snackbarcontext";
 
 export default function TablaImportaciones() {
     const { setValue, watch } = useTablaImportacionesFormulario();
+    const { showSuccess, showError, showWarning } = useSnackbar();
+    const queryClient = useQueryClient();
 
     const filtros = useFiltros(setValue, watch);
     const paginacion = usePaginacion(setValue, watch);
@@ -41,8 +44,36 @@ export default function TablaImportaciones() {
             pagina: paginacion.pagina,
             filasPorPagina: paginacion.filasPorPagina
         }),
-        refetchOnWindowFocus: false
+        refetchOnWindowFocus: false,
     });
+
+    const mutacion = useMutation({
+        mutationFn: (data: deleteImportacionDTO) => deleteImportacion(data),
+        onSuccess: (respuesta) => {
+            queryClient.invalidateQueries({
+                queryKey: ["fetchImportaciones"]
+            });
+            showSuccess("Importación borrada correctamente");
+        },
+        onError: () => {
+            showError("Error al borrar la importación");
+        }
+    });
+
+    const onDelete = (id: number) => {
+        mutacion.mutate({
+            id: id
+        });
+    };
+
+    useEffect(() => {
+        if (selectError) {
+            showWarning("Error al cargar los datos");
+        };
+        if (importacionesError) {
+            showWarning("Error al cargar importaciones");
+        };
+    }, [selectError, importacionesError, showWarning]);
 
     return (
         <div className="flex flex-col gap-1 items-start w-full h-full">
@@ -81,6 +112,8 @@ export default function TablaImportaciones() {
                     importacionesDatos={importacionesDatos}
                     importacionesCargando={importacionesCargando}
                     filasPorPagina={paginacion.filasPorPagina}
+                    handleBorrar={onDelete}
+                    borrando={mutacion.isPending}
                 />
                 <div className="flex justify-end items-center overflow-x-hide"
                     style={{ borderTop: "2px solid #ED6C02" }}>
@@ -113,15 +146,6 @@ export default function TablaImportaciones() {
                     />
                 </div>
             </div>
-            <FeedbackSnackbar
-                open={selectError || importacionesError}
-                severity={"warning"}
-                message={
-                    selectError
-                        ? "Error al cargar los datos"
-                        : "Error al cargar las importaciones"
-                }
-            />
         </div>
     );
 }

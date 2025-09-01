@@ -5,7 +5,6 @@ import { exportJornadasExcel, fetchSelectDataExcelExport } from "@/services/impo
 import { Button } from "@mui/material";
 import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
 import SyncIcon from '@mui/icons-material/Sync';
-import FeedbackSnackbar from "../../../ui/feedback";
 import { Formulario } from "./components/formulario";
 import { useExportarExcelFormulario } from "./hooks/useExportarExcelFormulario";
 import { exportarExcelDatos } from "./types";
@@ -13,9 +12,12 @@ import { useRouter } from "next/navigation";
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import Link from "next/link";
 import { getFileName } from "./utils/getFileName";
+import { useSnackbar } from "@/lib/context/snackbarcontext";
+import { useEffect } from "react";
 
 export default function ExcelImportform() {
     const { control, handleSubmit, watch, reset } = useExportarExcelFormulario();
+    const { showSuccess, showError, showWarning } = useSnackbar();
 
     const router = useRouter();
 
@@ -40,14 +42,25 @@ export default function ExcelImportform() {
             a.remove();
             window.URL.revokeObjectURL(url);
 
+            showSuccess("Archivo exportado correctamente");
+
             router.push(`/rrhh/jornadas`);
             reset();
         },
+        onError: () => {
+            showError("Error al exportar archivo");
+        }
     });
 
     const onSubmit = (data: exportarExcelDatos) => {
         mutacion.mutate(data);
     };
+
+    useEffect(() => {
+        if (selectError) {
+            showWarning("Error al cargar los datos");
+        };
+    }, [selectError, showWarning]);
 
     return (
         <div className="flex flex-col gap-4 items-center justify-center w-full h-full">
@@ -69,7 +82,7 @@ export default function ExcelImportform() {
                         disableElevation
                         startIcon={
                             mutacion.isPending ? (
-                                <SyncIcon className="animate-spin" />
+                                <SyncIcon className="animate-spin" style={{ animationDirection: 'reverse' }}/>
                             ) : <ArrowBackRoundedIcon />
                         }
                         disabled={mutacion.isPending}
@@ -83,7 +96,7 @@ export default function ExcelImportform() {
                         disableElevation
                         endIcon={
                             mutacion.isPending ? (
-                                <SyncIcon className="animate-spin" />
+                                <SyncIcon className="animate-spin" style={{ animationDirection: 'reverse' }}/>
                             ) : <DownloadRoundedIcon />
                         }
                         disabled={mutacion.isPending}
@@ -92,23 +105,6 @@ export default function ExcelImportform() {
                     </Button>
                 </div>
             </form>
-            <FeedbackSnackbar
-                open={mutacion.isSuccess || mutacion.isError || selectError}
-                severity={
-                    mutacion.isSuccess
-                        ? "success"
-                        : mutacion.isError
-                            ? "error"
-                            : "warning"
-                }
-                message={
-                    mutacion.isSuccess
-                        ? "Archivo exportado correctamente"
-                        : mutacion.isError
-                            ? "Error al exportar el archivo"
-                            : "Error al cargar los datos"
-                }
-            />
         </div>
     );
 };

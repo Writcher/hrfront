@@ -61,3 +61,26 @@ export async function insertEmpleado(parametros: insertempleadoParametros) {
         throw error;
     };
 };
+
+export async function deactivateEmpleado(id: number) {
+    try {
+        const token = await getToken();
+
+        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_EMPLEADO!.replace("{id}", id!.toString())}`, {
+            method: "PATCH",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        });
+
+        if (!respuestaRaw.ok) {
+            throw new Error("Error en la respuesta del servidor");
+        };
+
+        const respuesta = await respuestaRaw.json();
+
+        return respuesta;
+    } catch (error) {
+        throw error;
+    };
+};

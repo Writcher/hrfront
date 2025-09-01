@@ -7,6 +7,7 @@ import queryClient from "./queryprovider";
 import { DrawerProvider } from "@/lib/context/navcontext";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { SnackbarProvider } from "@/lib/context/snackbarcontext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,9 +22,11 @@ export default function RootLayout({
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <QueryClientProvider client={queryClient}>
             <DrawerProvider>
-              <div className="flex flex-grow h-screen w-screen">
-                {children}
-              </div>
+              <SnackbarProvider>
+                <div className="flex flex-grow h-screen w-screen">
+                  {children}
+                </div>
+              </SnackbarProvider>
             </DrawerProvider>
           </QueryClientProvider>
         </LocalizationProvider>

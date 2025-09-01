@@ -8,7 +8,8 @@ import { TablaJornadas } from "./tablaJornadas";
 import { useTablaJornadaFormulario } from "../hooks/useTablaJornadasFormulario";
 import { fetchMeses } from "@/services/mes/service.mes";
 import { fetchJornadas } from "@/services/jornada/service.jornada";
-import FeedbackSnackbar from "@/components/ui/feedback";
+import { useEffect } from "react";
+import { useSnackbar } from "@/lib/context/snackbarcontext";
 
 interface ContenidoFilaExpandidaProps {
     idFilaExpandida: number,
@@ -19,6 +20,8 @@ export function ContenidoFilaExpandida({
     idFilaExpandida,
     idFilaExpandidaProp
 }: ContenidoFilaExpandidaProps) {
+    const { showSuccess, showError, showWarning } = useSnackbar();
+
     const { data: selectDatos, isLoading: selectCargando, isError: selectError } = useQuery({
         queryKey: ["fetchDatosSelectTablaJornadas"],
         queryFn: () => fetchMeses(),
@@ -45,6 +48,16 @@ export function ContenidoFilaExpandida({
         }),
         refetchOnWindowFocus: false
     });
+
+    useEffect(() => {
+        if (selectError) {
+            showWarning("Error al cargar los datos");
+        };
+        if (jornadasError) {
+            showWarning("Error al cargar jornadas");
+        };
+    }, [selectError, jornadasError, showWarning]);
+
     return (
         <TableRow className={`${idFilaExpandida === idFilaExpandidaProp ? 'bg-orange-100' : ''}`}>
             <TableCell colSpan={3} sx={{ padding: "4px" }}>
@@ -78,17 +91,6 @@ export function ContenidoFilaExpandida({
                         />
                     </div>
                 </div>
-                <FeedbackSnackbar
-                    open={jornadasError || selectError}
-                    severity={
-                        "warning"
-                    }
-                    message={
-                        jornadasError
-                            ? "Error al cargar las jornadas"
-                            : "Error al cargar los datos"
-                    }
-                />
             </TableCell>
         </TableRow >
     )

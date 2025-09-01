@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, ButtonGroup, TablePagination } from "@mui/material";
 import FilterAltRoundedIcon from '@mui/icons-material/FilterAltRounded';
 import FilterAltOffRoundedIcon from '@mui/icons-material/FilterAltOffRounded';
@@ -16,18 +16,19 @@ import { FormularioFiltros } from "./components/formularioFiltros";
 import { FiltrosActivos } from "./components/filtrosActivos";
 import { TablaEmpleados } from "./components/tablaEmpleados";
 import { fetchProyectos } from "@/services/proyecto/service.proyecto";
-import { fetchEmpleados, insertEmpleado } from "@/services/empleado/service.empleado";
+import { deactivateEmpleado, fetchEmpleados, insertEmpleado } from "@/services/empleado/service.empleado";
 import { useEmpleadoFormulario } from "./hooks/useEmpleadoFormulario";
 import SaveAsRoundedIcon from '@mui/icons-material/SaveAsRounded';
 import { useMostrarFormulario } from "./hooks/useMostrarFormulario";
 import { Formulario } from "./components/formulario";
 import SyncIcon from '@mui/icons-material/Sync';
 import { empleadoFormularioDatos, insertempleadoParametros } from "./types";
-import FeedbackSnackbar from "../feedback";
+import { useSnackbar } from "@/lib/context/snackbarcontext";
 
 export default function TablaEmpleadosLista() {
   const { watch, setValue, getValues } = useTablaEmpleadosFormulario();
-  const { control, handleSubmit, setValue: setValueFormulario, watch: watchFormulario } = useEmpleadoFormulario();
+  const { control, handleSubmit, setValue: setValueFormulario, watch: watchFormulario, formState: { isValid } } = useEmpleadoFormulario();
+  const { showSuccess, showError, showWarning } = useSnackbar();
 
   const filtros = useFiltros(setValue, getValues, watch);
   const paginacion = usePaginacion(setValue, watch);
@@ -64,8 +65,12 @@ export default function TablaEmpleadosLista() {
   const mutacion = useMutation({
     mutationFn: (data: insertempleadoParametros) => insertEmpleado(data),
     onSuccess: () => {
+      showSuccess("Empleado creado correctamente");
       empleadosRefetch();
       formularioVisible.handleMostrarFormulario();
+    },
+    onError: () => {
+      showError("Error al crear empleado");
     }
   });
 
@@ -78,10 +83,37 @@ export default function TablaEmpleadosLista() {
     });
   };
 
+  const mutacionDeactivate = useMutation({
+    mutationFn: (id: number) => deactivateEmpleado(id),
+    onSuccess: () => {
+      showSuccess("Empleado dado de baja correctamente");
+      empleadosRefetch();
+    },
+    onError: () => {
+      showError("Error al dar de baja empleado");
+    },
+  });
+
+  const onDeactivate = (id: number) => {
+    mutacionDeactivate.mutate(
+      id
+    );
+  };
+
   const getNombreProyectoPorId = (id: number) => {
     const nombreProyecto = selectDatos?.find((proyecto: { id: number; }) => proyecto.id === Number(id));
     return nombreProyecto ? nombreProyecto.nombre : 'Desconocida';
   };
+
+  useEffect(() => {
+    if (selectError) {
+      showWarning("Error al cargar los datos");
+    };
+    if (empleadosError) {
+      showWarning("Error al cargar empleados");
+    };
+  }, [selectError, empleadosDatos, showWarning]);
+
   return (
     <div className="flex flex-col gap-1 items-start w-full h-full">
       <div className="flex flex-row gap-2 w-full">
@@ -178,10 +210,10 @@ export default function TablaEmpleadosLista() {
                 disableElevation
                 endIcon={
                   mutacion.isPending ? (
-                    <SyncIcon className="animate-spin" />
+                    <SyncIcon className="animate-spin" style={{ animationDirection: 'reverse' }} />
                   ) : <SaveAsRoundedIcon />
                 }
-                disabled={mutacion.isPending}
+                disabled={mutacion.isPending || !isValid}
               >
                 {mutacion.isPending ? "Guardando" : "Guardar"}
               </Button>
@@ -196,6 +228,8 @@ export default function TablaEmpleadosLista() {
               ordenColumna={ordenacion.ordenColumna}
               ordenDireccion={ordenacion.ordenDireccion}
               onOrden={ordenacion.handleOrdenacion}
+              onDeactivate={onDeactivate}
+              desactivando={mutacionDeactivate.isPending}
             />
             <div className="flex justify-end items-center overflow-x-hide"
               style={{ borderTop: "2px solid #ED6C02" }}>
@@ -230,27 +264,6 @@ export default function TablaEmpleadosLista() {
           </>
         )}
       </div>
-      <FeedbackSnackbar
-        open={empleadosError || selectError || mutacion.isError || mutacion.isSuccess}
-        severity={
-          mutacion.isSuccess
-            ? "success"
-            : mutacion.isError
-              ? "error"
-              : "warning"
-        }
-        message={
-          mutacion.isSuccess
-            ? "Jornada creada correctamente"
-            : empleadosError
-              ? "No se pudieron cargar los empleados"
-              : selectError
-                ? "No se pudieron cargar los datos"
-                : mutacion.error instanceof Error
-                  ? mutacion.error.message
-                  : "Error al crear empleado"
-        }
-      />
     </div>
   );
 }

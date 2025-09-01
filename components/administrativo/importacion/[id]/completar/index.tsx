@@ -14,7 +14,7 @@ import { useRouter } from "next/navigation";
 import SaveAsRoundedIcon from '@mui/icons-material/SaveAsRounded';
 import { fetchJornadasPorImportacion } from "@/services/jornada/service.jornada";
 import SyncIcon from '@mui/icons-material/Sync';
-import FeedbackSnackbar from "@/components/ui/feedback";
+import { useSnackbar } from "@/lib/context/snackbarcontext";
 
 interface CompletarInformacionProps {
     id_importacion: number
@@ -22,6 +22,7 @@ interface CompletarInformacionProps {
 
 export default function TablaCompletarImportacion({ id_importacion }: CompletarInformacionProps) {
     const { setValue, watch } = useTablaImportacionJornadasFormulario();
+    const { showSuccess, showError, showWarning } = useSnackbar();
 
     const filtros = useFiltros(setValue, watch);
     const paginacion = usePaginacion(setValue, watch);
@@ -53,15 +54,24 @@ export default function TablaCompletarImportacion({ id_importacion }: CompletarI
 
     const mutacion = useMutation({
         mutationFn: (id: number) => setImportacionCompleta(id),
-        onSuccess: (respuesta) => {
-            if (respuesta.ok) {
-                router.push(`/administrativo/importacion`);
-            };
+        onSuccess: () => {
+            showSuccess("Importación completada correctamente");
+            router.push(`/administrativo/importacion`);
+        },
+        onError: () => {
+            showError("Error al completar importación");
         }
     });
+
+    useEffect(() => {
+        if (jornadasError) {
+            showWarning("Error al cargar los datos");
+        };
+    }, [jornadasError, showWarning]);
+
     return (
         <div className="flex flex-col gap-1 items-start w-full h-full">
-            <div className="flex flex-row gap-2 w-full">
+            <div className="flex flex-row gap-2 w-full pl-2">
                 <FormControlLabel
                     control={<IOSSwitch sx={{ m: 1 }} />}
                     label="Solo Importaciones con Fichajes Incompletos"
@@ -126,7 +136,7 @@ export default function TablaCompletarImportacion({ id_importacion }: CompletarI
                     onClick={() => mutacion.mutate(id_importacion)}
                     endIcon={
                         mutacion.isPending ? (
-                            <SyncIcon className="animate-spin" />
+                            <SyncIcon className="animate-spin" style={{ animationDirection: 'reverse' }}/>
                         ) : <SaveAsRoundedIcon />
                     }
                     disabled={mutacion.isPending || botonDeshabilitado || jornadasCargando}
@@ -134,25 +144,6 @@ export default function TablaCompletarImportacion({ id_importacion }: CompletarI
                     {!mutacion.isPending ? "Confirmar" : "Guardando"}
                 </Button>
             </div>
-            <FeedbackSnackbar
-                open={mutacion.isSuccess || mutacion.isError || jornadasError}
-                severity={
-                    mutacion.isSuccess
-                        ? "success"
-                        : mutacion.isError
-                            ? "error"
-                            : "warning"
-                }
-                message={
-                    mutacion.isSuccess
-                        ? "Importación completada correctamente"
-                        : mutacion.isError
-                            ? mutacion.error instanceof Error
-                                ? mutacion.error.message
-                                : "Error al completar importación"
-                            : "Error al cargar las jornadas"
-                }
-            />
         </div>
     );
 };

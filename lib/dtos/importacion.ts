@@ -8,3 +8,7 @@ export type fetchImportacionesDTO = {
 export type setImportacionCompletaDTO = {
     id: number;
 };
+
+export type deleteImportacionDTO = {
+    id: number;
+};

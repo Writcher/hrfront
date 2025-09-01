@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, ButtonGroup, TablePagination } from "@mui/material";
 import FilterAltRoundedIcon from '@mui/icons-material/FilterAltRounded';
 import FilterAltOffRoundedIcon from '@mui/icons-material/FilterAltOffRounded';
@@ -19,10 +19,12 @@ import { TablaEmpleados } from "./components/tablaEmpleados";
 import { ContenidoFilaExpandida } from "./components/contenidoFilaExpandida";
 import { fetchProyectos } from "@/services/proyecto/service.proyecto";
 import { fetchEmpleados } from "@/services/empleado/service.empleado";
-import FeedbackSnackbar from "@/components/ui/feedback";
+
+import { useSnackbar } from "@/lib/context/snackbarcontext";
 
 export default function TablaEmpleadosJornadas() {
   const { watch, setValue, getValues } = useTablaEmpleadosFormulario();
+  const { showSuccess, showError, showWarning } = useSnackbar();
 
   const filtros = useFiltros(setValue, getValues, watch);
   const paginacion = usePaginacion(setValue, watch);
@@ -60,6 +62,15 @@ export default function TablaEmpleadosJornadas() {
     const nombreProyecto = selectDatos?.find((proyecto: { id: number; }) => proyecto.id === Number(id));
     return nombreProyecto ? nombreProyecto.nombre : 'Desconocida';
   };
+
+  useEffect(() => {
+    if (selectError) {
+      showWarning("Error al cargar los datos");
+    };
+    if (empleadosError) {
+      showWarning("Error al cargar empleados");
+    };
+  }, [selectError, empleadosError, showWarning]);
 
   return (
     <div className="flex flex-col gap-1 items-start w-full h-full">
@@ -171,17 +182,6 @@ export default function TablaEmpleadosJornadas() {
           />
         </div>
       </div>
-      <FeedbackSnackbar
-        open={empleadosError || selectError}
-        severity={
-          "warning"
-        }
-        message={
-          empleadosError
-            ? "Error al cargar empleados"
-            : "Error al cargar los datos"
-        }
-      />
     </div>
   );
 }

@@ -62,7 +62,7 @@ export default function Nav({ links: Links }: NavProps) {
         <Button
           variant="text"
           color="error"
-          className="!grow !items-center !justify-start !rounded !text-gray-800 !font-medium hover:!bg-red-100 hover:!text-red-600"
+          className="!grow !items-center !justify-start !rounded !text-red-600 !font-medium hover:!bg-red-100 hover:!text-red-600"
           sx={{ textTransform: "none", margin: "0.25vw", paddingLeft: "10.5%" }}
           onClick={doLogout}
           fullWidth

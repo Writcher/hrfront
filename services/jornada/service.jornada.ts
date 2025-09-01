@@ -1,7 +1,7 @@
 "use server"
 
 import CONFIG from "@/config";
-import { editJornadaDTO, fetchJornadasDTO, fetchJornadasPorImportacionDTO, insertJornadaDTO } from "@/lib/dtos/jornada";
+import { deleteJornadaDTO, editJornadaDTO, fetchJornadasDTO, fetchJornadasPorImportacionDTO, insertJornadaDTO, validateJornadaDTO } from "@/lib/dtos/jornada";
 import { getToken } from "@/lib/utils/getToken";
 
 export async function fetchJornadas(parametros: fetchJornadasDTO) {
@@ -49,6 +49,54 @@ export async function editJornada(parametros: editJornadaDTO) {
                 entrada: parametros.entrada,
                 salida: parametros.salida
             })
+        });
+
+        if (!respuestaRaw.ok) {
+            throw new Error("Error en la respuesta del servidor");
+        };
+
+        const respuesta = await respuestaRaw.json();
+
+        return respuesta;
+    } catch (error) {
+        throw error;
+    };
+};
+
+export async function deleteJornada(parametros: deleteJornadaDTO) {
+    try {
+        const token = await getToken();
+
+        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_JORNADA!.replace("{id}", parametros.id!.toString())}`, {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        });
+
+        if (!respuestaRaw.ok) {
+            throw new Error("Error en la respuesta del servidor");
+        };
+
+        const respuesta = await respuestaRaw.json();
+
+        return respuesta;
+    } catch (error) {
+        throw error;
+    };
+};
+
+export async function validateJornada(parametros: validateJornadaDTO) {
+    try {
+        const token = await getToken();
+
+        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_JORNADA!.replace("{id}", parametros.id!.toString())}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ accion: "validar" }),
         });
 
         if (!respuestaRaw.ok) {

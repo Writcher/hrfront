@@ -10,7 +10,7 @@ import { logIn } from "@/services/auth/service.auth";
 import LoginRoundedIcon from '@mui/icons-material/LoginRounded';
 
 export default function PantallaInicioSesion() {
-    const { control, handleSubmit } = useIniciarSesionFormulario();
+    const { control, handleSubmit, formState: { isValid } } = useIniciarSesionFormulario();
 
     const mutacion = useMutation({
         mutationFn: (data: iniciarSesionFormularioDatos) => logIn(data),
@@ -24,7 +24,7 @@ export default function PantallaInicioSesion() {
     };
 
     return (
-        <div className="flex flex-col gap-4 items-center justify-center w-full h-full bg-orange-100">
+        <div className="flex flex-col gap-4 items-center justify-center w-full h-full">
             <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center justify-center bg-white w-[40vw] h-[50vh] space-y-4 rounded" style={{ border: "2px solid #ED6C02" }}>
                 <div className="flex items-center justify-center text-gray-800 text-center font-bold">
                     <p className="text-[clamp(1rem,5vw,2rem)]">
@@ -44,10 +44,10 @@ export default function PantallaInicioSesion() {
                             disableElevation
                             endIcon={
                                 mutacion.isPending ? (
-                                    <SyncIcon className="animate-spin" />
+                                    <SyncIcon className="animate-spin" style={{ animationDirection: 'reverse' }}/>
                                 ) : <LoginRoundedIcon />
                             }
-                            disabled={mutacion.isPending}
+                            disabled={mutacion.isPending || !isValid}
                         >
                             {!mutacion.isPending ? "Iniciar Sesión" : "Iniciando Sesión"}
                         </Button>

@@ -17,4 +17,5 @@ export default {
     URL_USUARIOS: process.env.URL_USUARIOS,
     URL_TIPOUSUARIO: process.env.URL_TIPOUSUARIO,
     URL_CREAR_EMPLEADO: process.env.URL_CREAR_EMPLEADO,
+    URL_EMPLEADO: process.env.URL_EMPLEADO,
 };

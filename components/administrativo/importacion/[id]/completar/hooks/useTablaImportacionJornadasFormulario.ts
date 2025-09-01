@@ -7,7 +7,7 @@ export const useTablaImportacionJornadasFormulario = () => {
             filtroMarcasIncompletas: false,
             pagina: 0,
             filasPorPagina: 25,
-            totalIncompleto: 0
+            totalIncompleto: 0,
         }
     })
 }

@@ -13,6 +13,14 @@ export type editJornadaDTO = {
     salida: string | null, 
 };
 
+export type deleteJornadaDTO = {
+    id: number,
+};
+
+export type validateJornadaDTO = {
+    id: number,
+};
+
 export type insertJornadaDTO = {
     entrada: string | null,
     salida: string | null,

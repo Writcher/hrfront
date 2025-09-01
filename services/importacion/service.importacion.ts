@@ -1,6 +1,7 @@
 "use server"
 
 import CONFIG from "@/config";
+import { deleteImportacionDTO } from "@/lib/dtos/importacion";
 import { fetchImportacionesParams, fetchImportacionJornadasParams } from "@/lib/dtos/importaciones";
 import { getToken } from "@/lib/utils/getToken";
 
@@ -71,6 +72,29 @@ export async function setImportacionCompleta(id: number) {
         });
 
         const respuesta = await respuestaRaw.json()
+
+        return respuesta;
+    } catch (error) {
+        throw error;
+    };
+};
+
+export async function deleteImportacion(parametros: deleteImportacionDTO) {
+    try {
+        const token = await getToken();
+
+        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_IMPORTACION!.replace("{id}", parametros.id!.toString())}`, {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        });
+
+        if (!respuestaRaw.ok) {
+            throw new Error("Error en la respuesta del servidor");
+        };
+
+        const respuesta = await respuestaRaw.json();
 
         return respuesta;
     } catch (error) {

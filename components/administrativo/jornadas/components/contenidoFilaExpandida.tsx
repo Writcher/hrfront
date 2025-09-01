@@ -15,10 +15,11 @@ import SaveAsRoundedIcon from '@mui/icons-material/SaveAsRounded';
 import { SubmitHandler } from "react-hook-form";
 import { insertJornadaParametros, tablaJornadasFormularioDatos } from "../types";
 import { useSwitchFormulario } from "../hooks/useSwitchFormulario";
-import FeedbackSnackbar from "@/components/ui/feedback";
 import { fetchJornadas, insertJornada } from "@/services/jornada/service.jornada";
 import { fetchMeses } from "@/services/mes/service.mes";
 import SyncIcon from '@mui/icons-material/Sync';
+import { useSnackbar } from "@/lib/context/snackbarcontext";
+import { useEffect } from "react";
 
 interface ContenidoFilaExpandidaProps {
     idFilaExpandida: number,
@@ -29,7 +30,8 @@ export function ContenidoFilaExpandida({
     idFilaExpandida,
     idFilaExpandidaProp
 }: ContenidoFilaExpandidaProps) {
-    const { watch, setValue, control, handleSubmit } = useTablaJornadaFormulario();
+    const { watch, setValue, control, handleSubmit, formState: { isValid }} = useTablaJornadaFormulario();
+    const { showSuccess, showError, showWarning } = useSnackbar();
 
     const filtros = useFiltrosInteriores(setValue, watch);
     const paginacion = usePaginacion(setValue, watch);
@@ -76,8 +78,12 @@ export function ContenidoFilaExpandida({
     const mutacion = useMutation({
         mutationFn: (datos: insertJornadaParametros) => insertJornada(datos),
         onSuccess: () => {
+            showSuccess("Jornada creada correctamente");
             jornadasRefetch();
             formularioVisible.handleMostrarFormulario();
+        },
+        onError: (error) => {
+            showError("Error al crear jornada");
         }
     });
 
@@ -94,6 +100,16 @@ export function ContenidoFilaExpandida({
             id_empleado: idFilaExpandida,
         });
     };
+
+    useEffect(() => {
+        if (selectError || formularioError) {
+            showWarning("Error al cargar los datos");
+        };
+        if (jornadasError) {
+            showWarning("Error al cargar jornadas");
+        };
+    }, [selectError, formularioDatos, jornadasDatos, showWarning]);
+
     return (
         <TableRow className={`${idFilaExpandida === idFilaExpandidaProp ? 'bg-orange-100' : ''}`}>
             <TableCell colSpan={3} sx={{ padding: "4px" }}>
@@ -150,13 +166,13 @@ export function ContenidoFilaExpandida({
                                     disableElevation
                                     endIcon={
                                         mutacion.isPending ? (
-                                            <SyncIcon className="animate-spin" />
+                                            <SyncIcon className="animate-spin" style={{ animationDirection: 'reverse' }}/>
                                         ) : <SaveAsRoundedIcon />
                                     }
                                     onClick={handleSubmit(onSubmit)}
-                                    disabled={mutacion.isPending}
+                                    disabled={mutacion.isPending || !isValid}
                                 >
-                                    {!mutacion.isPending ? "Guardar" : "Guaardando"}
+                                    {!mutacion.isPending ? "Guardar" : "Guardando"}
                                 </Button>
                             </>
                         ) :
@@ -210,29 +226,6 @@ export function ContenidoFilaExpandida({
                             </>
                         )}
                     </div>
-                    <FeedbackSnackbar
-                        open={mutacion.isSuccess || mutacion.isError || formularioError || jornadasError || selectError}
-                        severity={
-                            mutacion.isSuccess 
-                            ? "success" 
-                            : mutacion.isError
-                                ? "error"
-                                : "warning"
-                        }
-                        message={
-                            mutacion.isSuccess 
-                            ? "Jornada creada correctamente"
-                            : formularioError
-                                ? "Error al cargar los datos"
-                                : jornadasError
-                                    ? "Error al cargar las jornadas"
-                                    : selectError
-                                        ? "Error al cargar los datos"
-                                        : mutacion.error instanceof Error 
-                                            ? mutacion.error.message 
-                                            : "Error al crear jornada"
-                        }
-                    />
                 </div>
             </TableCell>
         </TableRow>
