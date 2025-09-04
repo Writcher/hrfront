@@ -1,4 +1,7 @@
-export const useFiltros = (setValue: any, watch: any) => {
+import { hookGenericoPadreProps } from "../types";
+
+export const useFiltros = ({ setValue, watch }: hookGenericoPadreProps<'setValue' | 'watch'>) => {
+
     const filtroIncompletas = watch("filtroIncompletas");
 
     const handleLimpiarFiltros = () => {
@@ -13,6 +16,7 @@ export const useFiltros = (setValue: any, watch: any) => {
     const handleCambioFiltroProyecto = (event: React.ChangeEvent<HTMLInputElement>) => {
         setValue("filtroProyecto", Number(event.target.value));
     };
+    
     return {
         handleCambioFiltroIncompletas,
         handleCambioFiltroProyecto,

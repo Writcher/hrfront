@@ -1,34 +1,34 @@
 "use client"
 
 import React, { useEffect } from "react";
-import { Button, ButtonGroup, TablePagination } from "@mui/material";
-import FilterAltRoundedIcon from '@mui/icons-material/FilterAltRounded';
-import FilterAltOffRoundedIcon from '@mui/icons-material/FilterAltOffRounded';
+import { Button, TablePagination } from "@mui/material";
 import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
 import { useQuery } from "@tanstack/react-query";
-import { useTablaEmpleadosFormulario } from "./hooks/useTablaEmpleadosFormulario";
-import { useFiltros } from "./hooks/useFiltros";
+import { useTablaResumenEmpleadosFormulario } from "./hooks/useTablaEmpleadosFormulario";
+import { useFiltros } from "./hooks/useFiltrosPadre";
 import { usePaginacion } from "./hooks/usePaginacion";
 import { useOrdenacion } from "./hooks/useOrdenacion";
 import { useExpansion } from "./hooks/useExpansion";
 import { MenuFiltros } from "./components/menuFiltros";
-import { FormularioFiltros } from "./components/formularioFiltros";
+import { FormularioFiltrosPadre } from "./components/formularioFiltrosPadre";
 import { FiltrosActivos } from "./components/filtrosActivos";
 import { TablaEmpleados } from "./components/tablaEmpleados";
 import { fetchProyectos } from "@/services/proyecto/service.proyecto";
 import { fetchEmpleados } from "@/services/empleado/service.empleado";
-import { ContenidoFilaExpandida } from "./components/contenidoFilaExpandida";
 import Link from "next/link";
 import { useSnackbar } from "@/lib/context/snackbarcontext";
+import { getNombreProyecto } from "./utils";
+import { BotonesFiltros } from "./components/botonesFiltros";
 
-export default function TablaEmpleadosJornadasResumen() {
-  const { watch, setValue, getValues } = useTablaEmpleadosFormulario();
-  const { showSuccess, showError, showWarning } = useSnackbar();
+export default function TablaResumenEmpleados() {
 
-  const filtros = useFiltros(setValue, getValues, watch);
-  const paginacion = usePaginacion(setValue, watch);
-  const ordenacion = useOrdenacion(setValue, watch);
-  const expansion = useExpansion(setValue, watch);
+  const { watch, setValue, getValues } = useTablaResumenEmpleadosFormulario();
+  const { showWarning } = useSnackbar();
+
+  const filtros = useFiltros({ setValue, getValues, watch });
+  const paginacion = usePaginacion({ setValue, watch });
+  const ordenacion = useOrdenacion({ setValue, watch });
+  const expansion = useExpansion({ setValue, watch });
 
   const { data: selectDatos, isError: selectError } = useQuery({
     queryKey: ["fetchDatosSelectTablaEmpleados"],
@@ -44,7 +44,8 @@ export default function TablaEmpleadosJornadasResumen() {
       ordenacion.ordenColumna,
       ordenacion.ordenDireccion,
       watch("busquedaNombre"),
-      watch("filtroProyecto")
+      watch("filtroProyecto"),
+      watch("busquedaLegajo"),
     ],
     queryFn: () => fetchEmpleados({
       busquedaNombre: watch("busquedaNombre"),
@@ -52,15 +53,13 @@ export default function TablaEmpleadosJornadasResumen() {
       pagina: paginacion.pagina,
       filasPorPagina: paginacion.filasPorPagina,
       ordenColumna: ordenacion.ordenColumna,
-      ordenDireccion: ordenacion.ordenDireccion
+      ordenDireccion: ordenacion.ordenDireccion,
+      busquedaLegajo: watch("busquedaLegajo"),
     }),
     refetchOnWindowFocus: false
   });
 
-  const getNombreProyectoPorId = (id: number) => {
-    const nombreProyecto = selectDatos?.find((proyecto: { id: number; }) => proyecto.id === Number(id));
-    return nombreProyecto ? nombreProyecto.nombre : 'Desconocida';
-  };
+  const getNombreProyectoPorId = getNombreProyecto(selectDatos);
 
   useEffect(() => {
     if (selectError) {
@@ -71,29 +70,13 @@ export default function TablaEmpleadosJornadasResumen() {
     };
   }, [selectError, empleadosError, showWarning]);
 
-
   return (
     <div className="flex flex-col gap-1 items-start w-full h-full">
       <div className="flex flex-row gap-2 w-full">
-        <ButtonGroup variant="outlined" color="inherit">
-          <Button
-            variant="contained"
-            className="!bg-gray-800 hover:!bg-gray-700 !text-white"
-            disableElevation
-            endIcon={<FilterAltRoundedIcon />}
-            onClick={filtros.handleClickFiltros}
-          >
-            Filtros
-          </Button>
-          <Button
-            variant="contained"
-            color="error"
-            disableElevation
-            onClick={filtros.handleLimpiarFiltros}
-          >
-            <FilterAltOffRoundedIcon />
-          </Button>
-        </ButtonGroup>
+        <BotonesFiltros
+          onClick={filtros.handleClickFiltros}
+          onClean={filtros.handleLimpiarFiltros}
+        />
         <MenuFiltros
           anchorEl={filtros.filtrosAncla}
           open={filtros.abrirMenuFiltro}
@@ -101,22 +84,33 @@ export default function TablaEmpleadosJornadasResumen() {
           onSeleccionBusquedaNombre={() => {
             setValue("mostrarBusquedaNombre", true);
             setValue("mostrarFiltroProyecto", false);
+            setValue("mostrarBusquedaLegajo", false);
             filtros.handleCerrarFiltros();
           }}
           onSeleccionFiltroProyecto={() => {
             setValue("mostrarBusquedaNombre", false);
             setValue("mostrarFiltroProyecto", true);
+            setValue("mostrarBusquedaLegajo", false);
+            filtros.handleCerrarFiltros();
+          }}
+          onSeleccionBusquedaLegajo={() => {
+            setValue("mostrarBusquedaNombre", false);
+            setValue("mostrarFiltroProyecto", false);
+            setValue("mostrarBusquedaLegajo", true);
             filtros.handleCerrarFiltros();
           }}
         />
-        <FormularioFiltros
+        <FormularioFiltrosPadre
           mostrarBusquedaNombre={watch("mostrarBusquedaNombre")}
           mostrarFiltroProyecto={watch("mostrarFiltroProyecto")}
+          mostrarBusquedaLegajo={watch("mostrarBusquedaLegajo")}
           busquedaNombreNormal={watch("busquedaNombreNormal")}
+          busquedaLegajoNormal={watch("busquedaLegajoNormal")}
           filtroProyecto={watch("filtroProyecto")}
           selectDatos={selectDatos || []}
           onCambioBusquedaNombre={filtros.handleCambioBusquedaNombre}
           onCambioFiltroProyecto={filtros.handleCambioFiltroProyecto}
+          onCambioBusquedaLegajo={filtros.handleCambioBusquedaLegajo}
         />
         <div className="flex grow" />
         <Button
@@ -144,12 +138,6 @@ export default function TablaEmpleadosJornadasResumen() {
           ordenDireccion={ordenacion.ordenDireccion}
           onOrden={ordenacion.handleOrdenacion}
           onExpandirFila={expansion.toggleExpandirFila}
-          renderFilaExpandida={(idFilaExpandidaProp) => (
-            <ContenidoFilaExpandida
-              idFilaExpandida={expansion.idFilaExpandida}
-              idFilaExpandidaProp={idFilaExpandidaProp}
-            />
-          )}
         />
         <div className="flex justify-end items-center overflow-x-hide"
           style={{ borderTop: "2px solid #ED6C02" }}>
@@ -168,14 +156,8 @@ export default function TablaEmpleadosJornadasResumen() {
             slotProps={{
               select: {
                 MenuProps: {
-                  anchorOrigin: {
-                    vertical: "top",
-                    horizontal: "right",
-                  },
-                  transformOrigin: {
-                    vertical: "top",
-                    horizontal: "left",
-                  }
+                  anchorOrigin: { vertical: "top", horizontal: "right" },
+                  transformOrigin: { vertical: "top", horizontal: "left" }
                 },
               }
             }}

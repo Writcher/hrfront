@@ -1,12 +1,8 @@
 import { useForm } from "react-hook-form";
-import { tablaJornadasFormularioDatos } from "../types";
+import { tablaJornadasFormularioDatos, useTablaJornadaFormularioProps } from "../types";
 import { useEffect } from "react";
 
-interface UseTablaJornadaFormularioProps {
-  meses: any
-}
-
-export const useTablaJornadaFormulario = ({ meses }: UseTablaJornadaFormularioProps) => {
+export const useTablaJornadaFormulario = ({ meses }: useTablaJornadaFormularioProps) => {
   const fechaActual = new Date();
   const dia = fechaActual.getDate();
   const mes = fechaActual.getMonth() + 1;

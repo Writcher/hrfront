@@ -1,23 +1,15 @@
 import { IconButton } from "@mui/material";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import { dropzoneProps } from "../types";
 
-interface DropzoneProps {
-    getRootProps: any;
-    getInputProps: any;
-    isDragActive: boolean;
-    borrarArchivo: () => void;
-    archivo: File | null;
-    errores: any;
-}
-
-export const Dropzone: React.FC<DropzoneProps> = ({
+export const Dropzone = ({
     getRootProps,
     getInputProps,
     isDragActive,
     borrarArchivo,
     archivo,
     errores
-}) => (
+}: dropzoneProps) => (
     <div className="flex items-center justify-start w-full gap-4">
         <div
             {...getRootProps()}
@@ -26,7 +18,7 @@ export const Dropzone: React.FC<DropzoneProps> = ({
                     ? 'border-orange-500 bg-orange-100'
                     : 'border-gray-300 hover:border-gray-900'
                 }
-                            ${errores.file ? 'border-red-300 bg-red-100' : ''}
+                            ${errores.archivo ? 'border-red-300 bg-red-100' : ''}
                         `}
         >
             <input {...getInputProps()} />
@@ -67,8 +59,8 @@ export const Dropzone: React.FC<DropzoneProps> = ({
                 </div>
             )}
         </div>
-        {errores.file && (
-            <p className="text-red-500 text-sm mt-2">{errores.file.message}</p>
+        {errores.archivo && (
+            <p className="text-red-500 text-sm mt-2">{errores.archivo.message}</p>
         )}
     </div>
 );

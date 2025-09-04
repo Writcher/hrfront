@@ -1,4 +1,7 @@
-export const useFiltros = (setValue: any, watch: any) => {
+import { hookGenericoPadreProps } from "../types";
+
+export const useFiltros = ({ setValue, watch }: hookGenericoPadreProps<'setValue' | 'watch'>) => {
+    
     const filtroMarcasIncompletas = watch("filtroMarcasIncompletas");
 
     const handleCambioFiltroIncompletas = () => {

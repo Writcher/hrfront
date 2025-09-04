@@ -1,20 +1,13 @@
-import { Control, Controller } from "react-hook-form";
-import { empleadoFormularioDatos } from "../types";
+import { Controller } from "react-hook-form";
+import { formularioProps } from "../types";
 import { MenuItem, Skeleton, TextField } from "@mui/material";
 
-interface FormularioProps {
-    control: Control<empleadoFormularioDatos>;
-    selectCargando: boolean;
-    selectDatos: any;
-}
-
-
-export const Formulario: React.FC<FormularioProps> = ({
+export const Formulario = ({
     control,
     selectCargando,
     selectDatos,
-}) => (
-    <div className="flex flex-col items-center justify-center w-[95%] h-full gap-4">
+}: formularioProps) => (
+    <div className="flex flex-col items-center justify-center w-[80%] h-full gap-4">
         <div className="flex flex-row w-full gap-4">
             <Controller
                 name="legajo"

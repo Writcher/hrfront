@@ -1,18 +1,12 @@
 import { TextField, MenuItem, Skeleton } from "@mui/material";
-import { Controller, Control } from "react-hook-form";
-import { importarExcelDatos } from "../types";
+import { Controller } from "react-hook-form";
+import { formularioProps, proyecto, tipoJornada } from "../types";
 
-interface FormularioProps {
-    control: Control<importarExcelDatos>;
-    selectCargando: boolean;
-    selectDatos: any;
-}
-
-export const Formulario: React.FC<FormularioProps> = ({
+export const Formulario = ({
     control,
     selectCargando,
     selectDatos,
-}) => (
+}: formularioProps) => (
     <div className="flex items-center justify-start w-full gap-2">
         {selectCargando ? (
             <Skeleton
@@ -39,7 +33,7 @@ export const Formulario: React.FC<FormularioProps> = ({
                         error={!!error}
                         helperText={error?.message}
                     >
-                        {selectDatos?.proyectos?.map((proyecto: { id: number, nombre: string }) => (
+                        {selectDatos?.proyectos?.map((proyecto: proyecto) => (
                             <MenuItem key={proyecto.id} value={proyecto.id}>
                                 {proyecto.nombre}
                             </MenuItem>
@@ -73,7 +67,7 @@ export const Formulario: React.FC<FormularioProps> = ({
                         error={!!error}
                         helperText={error?.message}
                     >
-                        {selectDatos?.tiposJornada?.map((tipo: { id: number, nombre: string }) => (
+                        {selectDatos?.tiposJornada?.map((tipo: tipoJornada) => (
                             <MenuItem key={tipo.id} value={tipo.id}>
                                 {tipo.nombre}
                             </MenuItem>

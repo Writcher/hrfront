@@ -1,8 +1,10 @@
 import { useCallback } from "react";
-import { useDropzone } from "react-dropzone";
+import { FileRejection, useDropzone } from "react-dropzone";
+import { hookProps } from "../types";
 
-export const useDropzoneH = (setValue: any, setError: any, clearErrors: any) => {
-    const onDrop = useCallback((acceptedFiles: File[], rejectedFiles: any[]) => {
+export const useDropzoneH = ({ setValue, setError, clearErrors }: hookProps) => {
+
+    const onDrop = useCallback((acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
         clearErrors("archivo");
 
         if (rejectedFiles.length > 0) {
@@ -29,10 +31,11 @@ export const useDropzoneH = (setValue: any, setError: any, clearErrors: any) => 
         setValue("archivo", null);
         clearErrors("archivo");
     };
+    
     return {
         isDragActive,
         borrarArchivo,
         getRootProps,
         getInputProps
-    }
-}
+    };
+};

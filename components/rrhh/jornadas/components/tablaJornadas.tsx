@@ -1,21 +1,13 @@
-import { Skeleton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import React from "react";
+import { formatHorasMinutos } from "../utils";
+import { Esqueleto } from "./esqueletoTablaJornada";
+import { tablaJornadasProps } from "../types";
 
-interface TablaJornadasProps {
-    jornadasDatos: any;
-    jornadasCargando: boolean;
-}
-
-export const TablaJornadas: React.FC<TablaJornadasProps> = ({
+export const TablaJornadas = ({
     jornadasDatos,
     jornadasCargando
-}) => {
-    function formatHorasMinutos(total: number) {
-        const horas = Math.floor(total);
-        const minutos = Math.round((total - horas) * 60);
-        const minutosFormateados = String(minutos).padStart(2, "0");
-        return `${horas}:${minutosFormateados} hs`;
-    };
+}: tablaJornadasProps) => {
     return (
         <TableContainer className="inner-table-container">
             <Table stickyHeader size="small">
@@ -49,35 +41,7 @@ export const TablaJornadas: React.FC<TablaJornadasProps> = ({
                     </TableRow>
                 </TableHead>
                 {jornadasCargando ? (
-                    <TableBody>
-                        <TableRow>
-                            <TableCell align="center" size="small">
-                                <div className="flex items-center justify-center">
-                                    <Skeleton variant="text" width={100} />
-                                </div>
-                            </TableCell>
-                            <TableCell align="center" size="small">
-                                <div className="flex items-center justify-center">
-                                    <Skeleton variant="text" width={100} />
-                                </div>
-                            </TableCell>
-                            <TableCell align="center" size="small">
-                                <div className="flex items-center justify-center">
-                                    <Skeleton variant="text" width={100} />
-                                </div>
-                            </TableCell>
-                            <TableCell align="center" size="small">
-                                <div className="flex items-center justify-center">
-                                    <Skeleton variant="text" width={100} />
-                                </div>
-                            </TableCell>
-                            <TableCell align="center" size="small">
-                                <div className="flex items-center justify-center">
-                                    <Skeleton variant="text" width={100} />
-                                </div>
-                            </TableCell>
-                        </TableRow>
-                    </TableBody>
+                    <Esqueleto/>
                 ) : (
                     <TableBody>
                         <TableRow>

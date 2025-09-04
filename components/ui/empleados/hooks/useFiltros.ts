@@ -1,7 +1,8 @@
 import { useCallback } from "react";
 import debounce from "lodash.debounce";
+import { hookGenericoPadreProps } from "../types";
 
-export const useFiltros = (setValue: any, getValues: any, watch: any) => {
+export const useFiltros = ({ setValue, watch, getValues }: hookGenericoPadreProps<'setValue' | 'watch' | 'getValues'>) => {
   const filtrosAncla = watch("filtrosAncla");
   const abrirMenuFiltro = Boolean(filtrosAncla);
   const filtrosActivos = watch("filtrosActivos");
@@ -18,9 +19,11 @@ export const useFiltros = (setValue: any, getValues: any, watch: any) => {
     setValue("busquedaNombre", "");
     setValue("busquedaNombreNormal", "");
     setValue("filtroProyecto", '');
-    setValue("idFilaExpandida", null);
-    setValue("mostrarBusquedaNombre", true);
+    setValue("busquedaLegajo", '');
+    setValue("busquedaLegajoNormal", '');
+    setValue("mostrarBusquedaNombre", false);
     setValue("mostrarFiltroProyecto", false);
+    setValue("mostrarBusquedaLegajo", true);
     setValue("filtrosActivos", {});
     handleCerrarFiltros();
   };
@@ -31,15 +34,25 @@ export const useFiltros = (setValue: any, getValues: any, watch: any) => {
   }, 500), []);
 
   const handleCambioBusquedaNombre = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue("idFilaExpandida", null);
     setValue("busquedaNombreNormal", event.target.value);
     handleBusquedaNombre(event.target.value);
     const filtrosActuales = getValues("filtrosActivos");
     setValue("filtrosActivos", { ...filtrosActuales, busquedaNombre: event.target.value });
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const handleBusquedaLegajo = useCallback(debounce((searchTerm: number) => {
+    setValue("busquedaLegajo", searchTerm);
+  }, 500), []);
+
+  const handleCambioBusquedaLegajo = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValue("busquedaLegajoNormal", Number(event.target.value));
+    handleBusquedaLegajo(Number(event.target.value));
+    const filtrosActuales = getValues("filtrosActivos");
+    setValue("filtrosActivos", { ...filtrosActuales, busquedaLegajo: Number(event.target.value) });
+  };
+
   const handleCambioFiltroProyecto = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue("idFilaExpandida", null);
     setValue("filtroProyecto", Number(event.target.value));
     const filtrosActuales = getValues("filtrosActivos");
     setValue("filtrosActivos", { ...filtrosActuales, filtroProyecto: Number(event.target.value) });
@@ -53,6 +66,7 @@ export const useFiltros = (setValue: any, getValues: any, watch: any) => {
     handleCerrarFiltros,
     handleLimpiarFiltros,
     handleCambioBusquedaNombre,
+    handleCambioBusquedaLegajo,
     handleCambioFiltroProyecto
   };
 };

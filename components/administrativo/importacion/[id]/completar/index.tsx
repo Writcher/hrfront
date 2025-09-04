@@ -3,29 +3,27 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useFiltros } from "./hooks/useFiltros";
 import { usePaginacion } from "./hooks/usePaginacion";
-import { useTablaImportacionJornadasFormulario } from "./hooks/useTablaImportacionJornadasFormulario";
+import { useImportacionJornadasFormulario } from "./hooks/useImportacionJornadasFormulario";
 import { setImportacionCompleta } from "@/services/importacion/service.importacion";
-import { Button, FormControlLabel, Link, TablePagination } from "@mui/material";
+import { FormControlLabel, TablePagination } from "@mui/material";
 import { IOSSwitch } from "@/components/ui/switch";
-import { TablaImportacionJornadas } from "./components/tablaJornadas";
-import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
+import { TablaImportacionJornadas } from "./components/tablaImportacionJornadas";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import SaveAsRoundedIcon from '@mui/icons-material/SaveAsRounded';
 import { fetchJornadasPorImportacion } from "@/services/jornada/service.jornada";
-import SyncIcon from '@mui/icons-material/Sync';
 import { useSnackbar } from "@/lib/context/snackbarcontext";
+import { importacionJornadasProps } from "./types";
+import { useDeshabilitarBoton } from "./hooks/useDeshabilitarBoton";
+import { BotonesTabla } from "./components/botonesTabla";
 
-interface CompletarInformacionProps {
-    id_importacion: number
-}
+export default function ImportacionJornadas({ id_importacion }: importacionJornadasProps) {
 
-export default function TablaCompletarImportacion({ id_importacion }: CompletarInformacionProps) {
-    const { setValue, watch } = useTablaImportacionJornadasFormulario();
+    const { setValue, watch } = useImportacionJornadasFormulario();
     const { showSuccess, showError, showWarning } = useSnackbar();
 
-    const filtros = useFiltros(setValue, watch);
-    const paginacion = usePaginacion(setValue, watch);
+    const filtros = useFiltros({ setValue, watch });
+    const paginacion = usePaginacion({ setValue, watch });
+
     const router = useRouter();
 
     const { data: jornadasDatos, isLoading: jornadasCargando, isError: jornadasError } = useQuery({
@@ -44,15 +42,7 @@ export default function TablaCompletarImportacion({ id_importacion }: CompletarI
         refetchOnWindowFocus: false
     });
 
-    useEffect(() => {
-        if (jornadasDatos && jornadasDatos.totalIncompleto !== undefined && !jornadasCargando) {
-            setValue("totalIncompleto", jornadasDatos.totalIncompleto)
-        }
-    }, [jornadasDatos?.totalIncompleto])
-
-    const botonDeshabilitado = Number(watch("totalIncompleto")) !== 0
-
-    const mutacion = useMutation({
+    const mutacionComplete = useMutation({
         mutationFn: (id: number) => setImportacionCompleta(id),
         onSuccess: () => {
             showSuccess("Importación completada correctamente");
@@ -62,6 +52,12 @@ export default function TablaCompletarImportacion({ id_importacion }: CompletarI
             showError("Error al completar importación");
         }
     });
+
+    const onComplete = () => {
+        mutacionComplete.mutate(id_importacion);
+    };
+
+    const botonDeshabilitado = useDeshabilitarBoton({ setValue, watch, jornadasDatos, jornadasCargando });
 
     useEffect(() => {
         if (jornadasError) {
@@ -104,46 +100,20 @@ export default function TablaCompletarImportacion({ id_importacion }: CompletarI
                         slotProps={{
                             select: {
                                 MenuProps: {
-                                    anchorOrigin: {
-                                        vertical: "top",
-                                        horizontal: "right",
-                                    },
-                                    transformOrigin: {
-                                        vertical: "top",
-                                        horizontal: "left",
-                                    }
+                                    anchorOrigin: { vertical: "top", horizontal: "right"},
+                                    transformOrigin: { vertical: "top", horizontal: "left" }
                                 },
                             }
                         }}
                     />
                 </div>
             </div>
-            <div className="flex w-full justify-between">
-                <Button
-                    component={Link}
-                    variant="contained"
-                    color="warning"
-                    href={"/administrativo/importacion"}
-                    disableElevation
-                    startIcon={<ArrowBackRoundedIcon />}
-                >
-                    Importaciones
-                </Button>
-                <Button
-                    variant="contained"
-                    color="success"
-                    disableElevation
-                    onClick={() => mutacion.mutate(id_importacion)}
-                    endIcon={
-                        mutacion.isPending ? (
-                            <SyncIcon className="animate-spin" style={{ animationDirection: 'reverse' }}/>
-                        ) : <SaveAsRoundedIcon />
-                    }
-                    disabled={mutacion.isPending || botonDeshabilitado || jornadasCargando}
-                >
-                    {!mutacion.isPending ? "Confirmar" : "Guardando"}
-                </Button>
-            </div>
+            <BotonesTabla 
+                onSubmit={onComplete}
+                mutacionPendiente={mutacionComplete.isPending}
+                botonDeshabilitado={botonDeshabilitado}
+                jornadasCargando={jornadasCargando}
+            />
         </div>
     );
 };

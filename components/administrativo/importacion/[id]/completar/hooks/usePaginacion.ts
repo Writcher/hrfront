@@ -1,4 +1,7 @@
-export const usePaginacion = (setValue: any, watch: any) => {
+import { hookGenericoPadreProps } from "../types";
+
+export const usePaginacion = ({ setValue, watch }: hookGenericoPadreProps<'setValue' | 'watch'>) => {
+    
     const pagina = watch("pagina");
     const filasPorPagina = watch("filasPorPagina");
 

@@ -1,24 +1,14 @@
-import { Skeleton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, IconButton, Tooltip, Box, Typography } from "@mui/material";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import React from "react";
-import { TooltipObservaciones } from "./tooltipObservaciones";
+import { tablaJornadasProps, jornada } from "../types";
+import { Esqueleto } from "./esqueletoTablaJornada";
+import { FilaJornada } from "./filaJornada";
 
-interface TablaJornadasProps {
-    jornadasDatos: any;
-    jornadasCargando: boolean;
-    filasPorPagina: number;
-}
-
-export const TablaJornadas: React.FC<TablaJornadasProps> = ({
+export const TablaJornadas = ({
     jornadasDatos,
     jornadasCargando,
     filasPorPagina,
-}) => {
-    function formatHorasMinutos(total: number) {
-        const horas = Math.floor(total);
-        const minutos = Math.round((total - horas) * 60);
-        const minutosFormateados = String(minutos).padStart(2, "0");
-        return `${horas}:${minutosFormateados} hs`;
-    };
+}: tablaJornadasProps) => {
     return (
         <TableContainer className="inner-table-container">
             <Table stickyHeader size="small">
@@ -64,7 +54,7 @@ export const TablaJornadas: React.FC<TablaJornadasProps> = ({
                                 Tipo de Ausencia
                             </div>
                         </TableCell>
-                        <TableCell align="center">
+                        <TableCell align="right">
                             <div style={{ userSelect: "none" }} className="text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]">
                                 Observacion
                             </div>
@@ -74,111 +64,14 @@ export const TablaJornadas: React.FC<TablaJornadasProps> = ({
                 {jornadasCargando ? (
                     <TableBody>
                         {Array.from({ length: filasPorPagina }).map((_, index) => (
-                            <TableRow key={index}>
-                                <TableCell align="left" size="small">
-                                    <div className="flex items-center justify-start">
-                                        <Skeleton variant="text" width={100} />
-                                    </div>
-                                </TableCell>
-                                <TableCell align="center" size="small">
-                                    <div className="flex items-center justify-center">
-                                        <Skeleton variant="text" width={100} />
-                                    </div>
-                                </TableCell>
-                                <TableCell align="center" size="small">
-                                    <div className="flex items-center justify-center">
-                                        <Skeleton variant="text" width={100} />
-                                    </div>
-                                </TableCell>
-                                <TableCell align="center" size="small">
-                                    <div className="flex items-center justify-center">
-                                        <Skeleton variant="text" width={100} />
-                                    </div>
-                                </TableCell>
-                                <TableCell align="center" size="small">
-                                    <div className="flex items-center justify-center">
-                                        <Skeleton variant="text" width={100} />
-                                    </div>
-                                </TableCell>
-                                <TableCell align="center" size="small">
-                                    <div className="flex items-center justify-center">
-                                        <Skeleton variant="text" width={100} />
-                                    </div>
-                                </TableCell>
-                                <TableCell align="center" size="small">
-                                    <div className="flex items-center justify-center">
-                                        <Skeleton variant="text" width={100} />
-                                    </div>
-                                </TableCell>
-                                <TableCell align="center" size="small">
-                                    <div className="flex items-center justify-center">
-                                        <Skeleton variant="text" width={100} />
-                                    </div>
-                                </TableCell>
-                                <TableCell align="center" size="small">
-                                    <div className="flex items-center justify-center">
-                                        <Skeleton variant="rectangular" className="!rounded" width={45} height={30} />
-                                    </div>
-                                </TableCell>
-                            </TableRow>
+                            <Esqueleto key={index} />
                         ))}
                     </TableBody>
                 ) : (
                     <TableBody>
                         {jornadasDatos && jornadasDatos.jornadas && jornadasDatos.jornadas.length > 0 ? (
-                            jornadasDatos.jornadas.map((row: any) => (
-                                <React.Fragment key={row.id}>
-                                    <TableRow>
-                                        <TableCell align="left" size="small">
-                                            <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.8rem)]" style={{ userSelect: "none" }}>
-                                                {new Intl.DateTimeFormat('es-AR', {
-                                                    weekday: 'long',
-                                                    day: 'numeric',
-                                                    month: 'numeric',
-                                                    year: '2-digit'
-                                                }).format(new Date(row.fecha)).replace(/\//g, '-')}
-                                            </div>
-                                        </TableCell>
-                                        <TableCell align="center" size="small">
-                                            <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.8rem)]">
-                                                {row.entrada}
-                                            </div>
-                                        </TableCell>
-                                        <TableCell align="center" size="small">
-                                            <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.8rem)]">
-                                                {row.salida}
-                                            </div>
-                                        </TableCell>
-                                        <TableCell align="center" size="small">
-                                            <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.8rem)]" style={{ userSelect: "none" }}>
-                                                {row.entrada_r}
-                                            </div>
-                                        </TableCell>
-                                        <TableCell align="center" size="small">
-                                            <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.8rem)]" style={{ userSelect: "none" }}>
-                                                {row.salida_r}
-                                            </div>
-                                        </TableCell>
-                                        <TableCell align="center" size="small">
-                                            <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.8rem)]" style={{ userSelect: "none" }}>
-                                                {formatHorasMinutos(row.total)}
-                                            </div>
-                                        </TableCell>
-                                        <TableCell align="center" size="small">
-                                            <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.8rem)]" style={{ userSelect: "none" }}>
-                                                {row.tipojornada}
-                                            </div>
-                                        </TableCell>
-                                        <TableCell align="center" size="small">
-                                            <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.8rem)]" style={{ userSelect: "none" }}>
-                                                {row.tipoausencia === null ? "" : row.tipoausencia}
-                                            </div>
-                                        </TableCell>
-                                        <TableCell align="center" size="small">
-                                            <TooltipObservaciones row={row} />
-                                        </TableCell>
-                                    </TableRow>
-                                </React.Fragment>
+                            jornadasDatos.jornadas.map((jornada: jornada) => (
+                                <FilaJornada jornada={jornada} key={jornada.id} />
                             ))
                         ) : (
                             <TableRow>

@@ -1,30 +1,17 @@
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Skeleton, Button, Chip } from "@mui/material";
 import React from "react";
-import LightTooltip from "../../tooltip";
-import SyncIcon from '@mui/icons-material/Sync';
-import PersonRemoveRoundedIcon from '@mui/icons-material/PersonRemoveRounded';
+import FormularioEditarEmpleado from "./formularioFila";
+import { tablaEmpleadosProps, empleado } from "../types";
+import { Esqueleto } from "./esqueletoTabla";
 
-interface TablaEmpleadosProps {
-  empleadosDatos: any;
-  empleadosCargando: boolean;
-  filasPorPagina: number;
-  ordenColumna: string;
-  ordenDireccion: string;
-  onOrden: (column: string) => void;
-  onDeactivate: (id: number) => void;
-  desactivando: boolean;
-}
-
-export const TablaEmpleados: React.FC<TablaEmpleadosProps> = ({
+export const TablaEmpleados = ({
   empleadosDatos,
   empleadosCargando,
   filasPorPagina,
   ordenColumna,
   ordenDireccion,
-  onOrden,
-  onDeactivate,
-  desactivando,
-}) => (
+  onOrden
+}: tablaEmpleadosProps) => (
   <TableContainer className="outer-table-container">
     <Table stickyHeader>
       <TableHead
@@ -80,97 +67,20 @@ export const TablaEmpleados: React.FC<TablaEmpleadosProps> = ({
           </TableCell>
         </TableRow>
       </TableHead>
-
       {empleadosCargando ? (
         <TableBody>
           {Array.from({ length: filasPorPagina }).map((_, index) => (
-            <TableRow key={index}>
-              <TableCell align="left" size="small" width="10%">
-                <div className="flex items-center justify-center">
-                  <Skeleton variant="text" width={100} />
-                </div>
-              </TableCell>
-              <TableCell align="center" size="small" width="10%">
-                <div className="flex items-center justify-center">
-                  <Skeleton variant="text" width={100} />
-                </div>
-              </TableCell>
-              <TableCell align="center" size="small" width="30%">
-                <div className="flex items-center justify-start">
-                  <Skeleton variant="text" width={300} />
-                </div>
-              </TableCell>
-              <TableCell align="center" size="small" width="20%">
-                <div className="flex items-center justify-center">
-                  <Skeleton variant="text" width={300} />
-                </div>
-              </TableCell>
-              <TableCell align="center" size="small" width="10%">
-                <div className="flex items-center justify-center">
-                  <Skeleton variant="text" width={300} />
-                </div>
-              </TableCell>
-              <TableCell align="right" size="small" width="20%">
-                <Skeleton variant="rectangular" className="!rounded" width={45} height={30} />
-              </TableCell>
-            </TableRow>
+            <Esqueleto key={index}/>
           ))}
         </TableBody>
       ) : (
         <TableBody>
           {empleadosDatos?.empleados?.length > 0 ? (
-            empleadosDatos.empleados.map((row: any) => (
-              <React.Fragment key={row.id}>
-                <TableRow>
-                  <TableCell align="center" size="small">
-                    <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.75rem)]" style={{ userSelect: "none" }}>
-                      {row.legajo}
-                    </div>
-                  </TableCell>
-                  <TableCell align="center" size="small">
-                    <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]" style={{ userSelect: "none" }}>
-                      {row.id_reloj}
-                    </div>
-                  </TableCell>
-                  <TableCell align="center" size="small">
-                    <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]" style={{ userSelect: "none" }}>
-                      {row.nombre}
-                    </div>
-                  </TableCell>
-                  <TableCell align="center" size="small">
-                    <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]" style={{ userSelect: "none" }}>
-                      {row.nombreproyecto}
-                    </div>
-                  </TableCell>
-                  <TableCell align="center" size="small">
-                    <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.75rem)]" style={{ userSelect: "none" }}>
-                      <Chip
-                        label={row.estadoempleado}
-                        className="!rounded"
-                        color={
-                          row.estadoempleado.toLowerCase() === 'activo' ? 'success' : 'error'
-                        }
-                      />
-                    </div>
-                  </TableCell>
-                  <TableCell align="right" size="small">
-                    <div className="flex gap-2 items-center justify-end text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.8rem)]">
-                      <LightTooltip title="Dar Baja" placement="left" arrow>
-                        <Button
-                          variant="contained"
-                          color="error"
-                          disableElevation
-                          size="small"
-                          disabled={desactivando || row.estadoempleado.toLowerCase() === 'baja'}
-                          onClick={() => onDeactivate(row.id)}
-                        >
-                          {!desactivando ? <PersonRemoveRoundedIcon /> : <SyncIcon className="animate-spin" style={{ animationDirection: 'reverse' }} />}
-                        </Button>
-                      </LightTooltip>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              </React.Fragment>
+            empleadosDatos.empleados.map((empleado: empleado) => (
+              <FormularioEditarEmpleado
+                empleado={empleado}
+                key={empleado.id}
+              />
             ))
           ) : (
             <TableRow>

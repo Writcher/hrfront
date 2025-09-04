@@ -1,4 +1,6 @@
-export const useMostrarFormulario = (setValue: any, watch: any ) => {
+import { hookGenericoHijoProps } from "../types";
+
+export const useMostrarFormulario = ({ setValue, watch }: hookGenericoHijoProps<'setValue' | 'watch'>) => {
     const formularioVisible = watch("formularioVisible");
 
     const handleMostrarFormulario = () => {
@@ -11,7 +13,6 @@ export const useMostrarFormulario = (setValue: any, watch: any ) => {
         setValue("tipoAusencia", '');
         setValue("fecha", "");
         setValue("observacion", '');
-        setValue("feriado", false);
     };
 
     return {

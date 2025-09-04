@@ -13,10 +13,7 @@ export default function PantallaInicioSesion() {
     const { control, handleSubmit, formState: { isValid } } = useIniciarSesionFormulario();
 
     const mutacion = useMutation({
-        mutationFn: (data: iniciarSesionFormularioDatos) => logIn(data),
-        onSuccess: (response) => {
-            console.log("logged In")
-        },
+        mutationFn: (data: iniciarSesionFormularioDatos) => logIn(data)
     });
 
     const onSubmit = (data: iniciarSesionFormularioDatos) => {

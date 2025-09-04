@@ -2,7 +2,7 @@
 
 import { insertempleadoParametros } from "@/components/ui/empleados/types";
 import CONFIG from "@/config";
-import { fetchEmpleadosDTO } from "@/lib/dtos/empleado";
+import { editEmpleadoDTO, fetchEmpleadosDTO } from "@/lib/dtos/empleado";
 import { getToken } from "@/lib/utils/getToken";
 
 export async function fetchEmpleados(parametros: fetchEmpleadosDTO) {
@@ -15,8 +15,11 @@ export async function fetchEmpleados(parametros: fetchEmpleadosDTO) {
             pagina: parametros.pagina.toString(),
             filasPorPagina: parametros.filasPorPagina.toString(),
             ordenColumna: parametros.ordenColumna,
-            ordenDireccion: parametros.ordenDireccion
+            ordenDireccion: parametros.ordenDireccion,
+            busquedaLegajo: parametros.busquedaLegajo.toString() === '' ? '0' : parametros.busquedaLegajo.toString(),
         });
+
+        console.log(parametros.busquedaLegajo)
 
         const empleadosRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_EMPLEADOS}?${empleadosParametros.toString()}`, {
             method: "GET",
@@ -71,6 +74,36 @@ export async function deactivateEmpleado(id: number) {
             headers: {
                 Authorization: `Bearer ${token}`,
             }
+        });
+
+        if (!respuestaRaw.ok) {
+            throw new Error("Error en la respuesta del servidor");
+        };
+
+        const respuesta = await respuestaRaw.json();
+
+        return respuesta;
+    } catch (error) {
+        throw error;
+    };
+};
+
+export async function editEmpleado(parametros: editEmpleadoDTO) {
+    try {
+        const token = await getToken();
+
+        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_EMPLEADO!.replace("{id}", parametros.id!.toString())}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ 
+                accion: "editar" ,
+                nombre: parametros.nombre,
+                legajo: parametros.legajo,
+                id_reloj: parametros. id_reloj
+            }),
         });
 
         if (!respuestaRaw.ok) {

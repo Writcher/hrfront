@@ -14,8 +14,6 @@ const linksadmin = [
     { name: 'Jornadas', href: '/administrativo/jornadas', icon: SummarizeRoundedIcon },
     { name: 'Informes', href: '/administrativo/importacion', icon: UploadFileRoundedIcon },
     { name: 'Empleados', href: '/administrativo/empleados', icon: PeopleAltRoundedIcon },
-
-    //Añadir links segun necesario aca.
 ];
 
 export default function NavLinksAdministrativo() {

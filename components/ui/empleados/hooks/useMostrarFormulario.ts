@@ -1,4 +1,8 @@
-export const useMostrarFormulario = (setValue: any, watch: any ) => {
+import { UseFormSetValue, UseFormWatch } from "react-hook-form";
+import { empleadoFormularioDatos, hookGenericoHijoProps } from "../types";
+
+export const useMostrarFormulario = ({ setValue, watch }: hookGenericoHijoProps) => {
+
     const formularioVisible = watch("formularioVisible");
 
     const handleMostrarFormulario = () => {

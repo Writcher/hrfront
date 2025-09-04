@@ -1,24 +1,18 @@
 import { TextField, MenuItem } from "@mui/material";
+import { formularioFiltrosProps } from "../types";
 
-interface FormularioFiltrosProps {
-  mostrarBusquedaNombre: boolean;
-  mostrarFiltroProyecto: boolean;
-  busquedaNombreNormal: string;
-  filtroProyecto: number | '';
-  selectDatos: any[];
-  onCambioBusquedaNombre: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  onCambioFiltroProyecto: (event: React.ChangeEvent<HTMLInputElement>) => void;
-}
-
-export const FormularioFiltros: React.FC<FormularioFiltrosProps> = ({
-  mostrarBusquedaNombre,
+export const FormularioFiltros = ({
+mostrarBusquedaNombre,
   mostrarFiltroProyecto,
+  mostrarBusquedaLegajo,
   busquedaNombreNormal,
   filtroProyecto,
+  busquedaLegajoNormal,
   selectDatos,
   onCambioBusquedaNombre,
-  onCambioFiltroProyecto
-}) => (
+  onCambioFiltroProyecto,
+  onCambioBusquedaLegajo
+}: formularioFiltrosProps) => (
   <form className="flex items-center justify-start w-2/6">
     {mostrarBusquedaNombre && (
       <TextField
@@ -32,6 +26,20 @@ export const FormularioFiltros: React.FC<FormularioFiltrosProps> = ({
         fullWidth
         value={busquedaNombreNormal}
         onChange={onCambioBusquedaNombre}
+      />
+    )}
+    {mostrarBusquedaLegajo && (
+      <TextField
+        id="busquedaLegajo"
+        name="busquedaLegajo"
+        label="Buscar por Legajo"
+        type="number"
+        variant="outlined"
+        color="warning"
+        size="small"
+        fullWidth
+        value={busquedaLegajoNormal}
+        onChange={onCambioBusquedaLegajo}
       />
     )}
     {mostrarFiltroProyecto && (

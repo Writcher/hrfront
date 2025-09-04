@@ -6,9 +6,9 @@ import { Button } from "@mui/material";
 import UploadFileRoundedIcon from '@mui/icons-material/UploadFileRounded';
 import SyncIcon from '@mui/icons-material/Sync';
 import { Formulario } from "./components/formulario";
-import { useImportarExcelForm } from "./hooks/useImportarExcelForm";
+import { useImportarExcelFormulario } from "./hooks/useImportarExcelFormulario";
 import { useDropzoneH } from "./hooks/useDropzone";
-import { importarExcelDatos } from "./types";
+import { importarExcelFormularioDatos } from "./types";
 import { Dropzone } from "./components/dropzone";
 import { useRouter } from "next/navigation";
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
@@ -16,10 +16,11 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { useSnackbar } from "@/lib/context/snackbarcontext";
 
-export default function ExcelImportform() {
-    const { control, handleSubmit, setError, clearErrors, setValue, watch, formState: { errors, isValid }, reset } = useImportarExcelForm();
+export default function ImportarExcel() {
+
+    const { control, handleSubmit, setError, clearErrors, setValue, watch, formState: { errors, isValid }, reset } = useImportarExcelFormulario();
     const { showSuccess, showError, showWarning } = useSnackbar();
-    const dropzone = useDropzoneH(setValue, setError, clearErrors);
+    const dropzone = useDropzoneH({ setValue, setError, clearErrors });
     const router = useRouter();
 
     const { data: selectDatos, isLoading: selectCargando, isError: selectError } = useQuery({
@@ -28,8 +29,8 @@ export default function ExcelImportform() {
         refetchOnWindowFocus: false
     });
 
-    const mutacion = useMutation({
-        mutationFn: (data: importarExcelDatos) => insertJornadasExcel(data),
+    const mutacionImport = useMutation({
+        mutationFn: (data: importarExcelFormularioDatos) => insertJornadasExcel(data),
         onSuccess: (response) => {
             showSuccess("Archivo importado correctamente");
             router.push(`/administrativo/importacion/${response.importacion}/completar`);
@@ -40,13 +41,13 @@ export default function ExcelImportform() {
         }
     });
 
-    const onSubmit = (data: importarExcelDatos) => {
+    const onSubmit = (data: importarExcelFormularioDatos) => {
         if (!watch("archivo")) {
             setError("archivo", { message: "Debe seleccionar un archivo Excel" });
             return;
         };
 
-        mutacion.mutate(data);
+        mutacionImport.mutate(data);
     };
 
     useEffect(() => {
@@ -57,15 +58,13 @@ export default function ExcelImportform() {
 
     return (
         <div className="flex flex-col gap-4 items-center justify-center w-full h-full">
-            <form onSubmit={handleSubmit(onSubmit)} className="w-[95%] space-y-4">
-                <div className="flex flex-row gap-2 w-full">
+            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col justify-between items-center w-full h-full gap-2">
+                <div className="flex flex-col pt-[25vh] gap-2 w-[80%]">
                     <Formulario
                         control={control}
                         selectCargando={selectCargando}
                         selectDatos={selectDatos}
                     />
-                </div>
-                <div className="w-full">
                     <Dropzone
                         getRootProps={dropzone.getRootProps}
                         getInputProps={dropzone.getInputProps}
@@ -75,7 +74,7 @@ export default function ExcelImportform() {
                         errores={errors}
                     />
                 </div>
-                <div className="flex justify-between">
+                <div className="flex justify-between w-full">
                     <Button
                         component={Link}
                         variant="contained"
@@ -83,11 +82,11 @@ export default function ExcelImportform() {
                         href={"/administrativo/importacion"}
                         disableElevation
                         startIcon={
-                            mutacion.isPending ? (
+                            mutacionImport.isPending ? (
                                 <SyncIcon className="animate-spin" style={{ animationDirection: 'reverse' }}/>
                             ) : <ArrowBackRoundedIcon />
                         }
-                        disabled={mutacion.isPending}
+                        disabled={mutacionImport.isPending}
                     >
                         Importaciones
                     </Button>
@@ -97,13 +96,13 @@ export default function ExcelImportform() {
                         color="success"
                         disableElevation
                         endIcon={
-                            mutacion.isPending ? (
+                            mutacionImport.isPending ? (
                                 <SyncIcon className="animate-spin" style={{ animationDirection: 'reverse' }}/>
                             ) : <UploadFileRoundedIcon />
                         }
-                        disabled={mutacion.isPending || !isValid}
+                        disabled={mutacionImport.isPending || !isValid}
                     >
-                        {!mutacion.isPending ? "Guardar" : "Guardando"}
+                        {!mutacionImport.isPending ? "Guardar" : "Guardando"}
                     </Button>
                 </div>
             </form>

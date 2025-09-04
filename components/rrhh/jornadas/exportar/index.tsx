@@ -11,12 +11,13 @@ import { exportarExcelDatos } from "./types";
 import { useRouter } from "next/navigation";
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import Link from "next/link";
-import { getFileName } from "./utils/getFileName";
+import { getFileName } from "./utils";
 import { useSnackbar } from "@/lib/context/snackbarcontext";
 import { useEffect } from "react";
 
-export default function ExcelImportform() {
-    const { control, handleSubmit, watch, reset } = useExportarExcelFormulario();
+export default function ExcelExportFormulario() {
+
+    const { control, handleSubmit, watch, reset, formState: { isValid } } = useExportarExcelFormulario();
     const { showSuccess, showError, showWarning } = useSnackbar();
 
     const router = useRouter();
@@ -29,7 +30,7 @@ export default function ExcelImportform() {
 
     const nombreArchivo = getFileName(watch, selectDatos);
 
-    const mutacion = useMutation({
+    const mutacionExport = useMutation({
         mutationFn: (data: exportarExcelDatos) => exportJornadasExcel(data),
         onSuccess: (response) => {
 
@@ -53,7 +54,7 @@ export default function ExcelImportform() {
     });
 
     const onSubmit = (data: exportarExcelDatos) => {
-        mutacion.mutate(data);
+        mutacionExport.mutate(data);
     };
 
     useEffect(() => {
@@ -64,8 +65,8 @@ export default function ExcelImportform() {
 
     return (
         <div className="flex flex-col gap-4 items-center justify-center w-full h-full">
-            <form onSubmit={handleSubmit(onSubmit)} className="w-[95%] space-y-4">
-                <div className="flex flex-row w-full">
+            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col justify-between items-center w-full h-full gap-2">
+                <div className="flex flex-col pt-[25vh] w-[80%] gap-2">
                     <Formulario
                         control={control}
                         selectCargando={selectCargando}
@@ -73,7 +74,7 @@ export default function ExcelImportform() {
                         watch={watch}
                     />
                 </div>
-                <div className="flex justify-between">
+                <div className="flex justify-between w-full">
                     <Button
                         component={Link}
                         variant="contained"
@@ -81,11 +82,11 @@ export default function ExcelImportform() {
                         href={"/rrhh/jornadas"}
                         disableElevation
                         startIcon={
-                            mutacion.isPending ? (
+                            mutacionExport.isPending ? (
                                 <SyncIcon className="animate-spin" style={{ animationDirection: 'reverse' }}/>
                             ) : <ArrowBackRoundedIcon />
                         }
-                        disabled={mutacion.isPending}
+                        disabled={mutacionExport.isPending}
                     >
                         Resumen
                     </Button>
@@ -95,13 +96,13 @@ export default function ExcelImportform() {
                         color="success"
                         disableElevation
                         endIcon={
-                            mutacion.isPending ? (
+                            mutacionExport.isPending ? (
                                 <SyncIcon className="animate-spin" style={{ animationDirection: 'reverse' }}/>
                             ) : <DownloadRoundedIcon />
                         }
-                        disabled={mutacion.isPending}
+                        disabled={mutacionExport.isPending || !isValid}
                     >
-                        {!mutacion.isPending ? "Descargar" : "Descargando"}
+                        {!mutacionExport.isPending ? "Descargar" : "Descargando"}
                     </Button>
                 </div>
             </form>

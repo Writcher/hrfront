@@ -1,11 +1,10 @@
-export const useExpansion = (setValue: any, watch: any) => {
+import { hookGenericoPadreProps } from "../types";
+
+export const useExpansion = ({ setValue, watch }: hookGenericoPadreProps<'setValue' | 'watch'>) => {
  const idFilaExpandida = watch("idFilaExpandida");
 
   const toggleExpandirFila = (id: number) => {
     setValue("idFilaExpandida", idFilaExpandida === id ? null : id);
-    setValue("filtroMes", '');
-    setValue("filtroQuincena", '');
-    setValue("filtroMarcasIncompletas", false);
   };
 
   return {

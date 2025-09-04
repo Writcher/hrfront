@@ -1,4 +1,6 @@
-export const useOrdenacion = (setValue: any, watch: any) => {
+import { hookGenericoPadreProps } from "../types";
+
+export const useOrdenacion = ({ setValue, watch }: hookGenericoPadreProps<'setValue' | 'watch'>) => {
   const ordenDireccion = watch("ordenDireccion");
 
   const ordenColumna = watch("ordenColumna");
@@ -7,7 +9,6 @@ export const useOrdenacion = (setValue: any, watch: any) => {
     const nuevaDireccion = ordenColumna === columna && ordenDireccion === 'ASC' ? 'DESC' : 'ASC';
     setValue("ordenColumna", columna);
     setValue("ordenDireccion", nuevaDireccion);
-    setValue("idFilaExpandida", null);
   };
   return {
     ordenDireccion,

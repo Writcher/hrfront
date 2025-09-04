@@ -1,23 +1,20 @@
 import LightTooltip from "@/components/ui/tooltip";
 import { InfoOutlined } from "@mui/icons-material";
 import { Box, Button, Typography } from "@mui/material";
+import { tooltipObservacionesProps } from "../types";
 
-interface TooltipObservacionesProps {
-    row: any
-}
-
-export const TooltipObservaciones: React.FC<TooltipObservacionesProps> = ({
-    row
-}) => (
-    <Box className="flex items-center justify-center">
-        {row.observaciones && row.observaciones.length > 0 && (
+export const TooltipObservaciones = ({
+    observaciones
+}: tooltipObservacionesProps) => (
+    <Box className="flex items-center justify-end">
+        {observaciones && observaciones.length > 0 && (
             <LightTooltip
                 title={
                     <Box sx={{ maxWidth: 300 }}>
                         <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: 'bold' }}>
                             Observaciones:
                         </Typography>
-                        {row.observaciones.map((observacion: any, index: any) => (
+                        {observaciones.map((observacion: any, index: any) => (
                             <Typography
                                 key={index}
                                 variant="body2"
@@ -38,7 +35,7 @@ export const TooltipObservaciones: React.FC<TooltipObservacionesProps> = ({
                     className="!items-center !justify-center !text-white !font-medium hover:!bg-orange-100 hover:!text-orange-600"
                     color="warning"
                     variant="contained"
-                    disabled={row.observaciones.length === 0}
+                    disabled={observaciones.length === 0}
                 >
                     <InfoOutlined fontSize="small" />
                 </Button>

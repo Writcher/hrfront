@@ -1,19 +1,10 @@
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Skeleton } from "@mui/material";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import React from "react";
+import { Esqueleto } from "./esqueletoTablaEmpleado";
+import { empleado, tablaEmpleadosProps } from "../types";
+import { FilaEmpleado } from "./filaEmpleado";
 
-interface TablaEmpleadosProps {
-  empleadosDatos: any;
-  empleadosCargando: boolean;
-  idFilaExpandida: number | null;
-  filasPorPagina: number;
-  ordenColumna: string;
-  ordenDireccion: string;
-  onOrden: (column: string) => void;
-  onExpandirFila: (id: number) => void;
-  renderFilaExpandida?: (rowId: number) => React.ReactNode;
-}
-
-export const TablaEmpleados: React.FC<TablaEmpleadosProps> = ({
+export const TablaEmpleados = ({
   empleadosDatos,
   empleadosCargando,
   idFilaExpandida,
@@ -21,9 +12,8 @@ export const TablaEmpleados: React.FC<TablaEmpleadosProps> = ({
   ordenColumna,
   ordenDireccion,
   onOrden,
-  onExpandirFila,
-  renderFilaExpandida
-}) => (
+  onExpandirFila
+}: tablaEmpleadosProps) => (
   <TableContainer className="outer-table-container">
     <Table stickyHeader>
       <TableHead
@@ -59,56 +49,22 @@ export const TablaEmpleados: React.FC<TablaEmpleadosProps> = ({
           </TableCell>
         </TableRow>
       </TableHead>
-
       {empleadosCargando ? (
         <TableBody>
           {Array.from({ length: filasPorPagina }).map((_, index) => (
-            <TableRow key={index}>
-              <TableCell align="center" size="small" width="10%">
-                <div className="flex items-center justify-center">
-                  <Skeleton variant="text" width={100} />
-                </div>
-              </TableCell>
-              <TableCell align="center" size="small" width="10%">
-                <div className="flex items-center justify-center">
-                  <Skeleton variant="text" width={100} />
-                </div>
-              </TableCell>
-              <TableCell align="left" size="small" width="80%">
-                <div className="flex items-center justify-start">
-                  <Skeleton variant="text" width={300} />
-                </div>
-              </TableCell>
-            </TableRow>
+            <Esqueleto key={index}/>
           ))}
         </TableBody>
       ) : (
         <TableBody>
           {empleadosDatos?.empleados?.length > 0 ? (
-            empleadosDatos.empleados.map((row: any) => (
-              <React.Fragment key={row.id}>
-                <TableRow
-                  onClick={() => onExpandirFila(row.id)}
-                  className={`cursor-pointer ${idFilaExpandida === row.id ? 'bg-orange-100' : ''}`}
-                >
-                  <TableCell align="center" size="small">
-                    <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.75rem)]" style={{ userSelect: "none" }}>
-                      {row.legajo}
-                    </div>
-                  </TableCell>
-                  <TableCell align="center" size="small">
-                    <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]" style={{ userSelect: "none" }}>
-                      {row.id_reloj}
-                    </div>
-                  </TableCell>
-                  <TableCell align="left" size="small">
-                    <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]" style={{ userSelect: "none" }}>
-                      {row.nombre}
-                    </div>
-                  </TableCell>
-                </TableRow>
-                {idFilaExpandida === row.id && renderFilaExpandida?.(row.id)}
-              </React.Fragment>
+            empleadosDatos.empleados.map((empleado: empleado) => (
+              <FilaEmpleado
+                key={empleado.id}
+                empleado={empleado}
+                idFilaExpandidaProp={idFilaExpandida}
+                onExpandirFila={onExpandirFila}
+              />
             ))
           ) : (
             <TableRow>

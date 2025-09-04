@@ -1,4 +1,6 @@
-export const useSwitchFormulario = (setValue: any, watch: any) => {
+import { hookGenericoHijoProps } from "../types";
+
+export const useSwitchFormulario = ({ setValue, watch }: hookGenericoHijoProps<'setValue' | 'watch'>) => {
     const jornadaPartida = watch("jornadaPartida");
 
     const onCambioJornadaPartida = () => {
