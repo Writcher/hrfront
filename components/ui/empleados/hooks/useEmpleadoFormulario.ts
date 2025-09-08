@@ -9,6 +9,7 @@ export const useEmpleadoFormulario = () => {
             id_proyecto: '',
             legajo: '',
             formularioVisible: false,
+            confirmarBaja: false,
         },
     });
 };

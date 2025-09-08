@@ -5,6 +5,7 @@ export const useMostrarFormulario = ({ setValue, watch }: hookGenericoHijoProps<
 
     const handleMostrarFormulario = () => {
         setValue("formularioVisible", !formularioVisible);
+        setValue("jornadaPartida", false);
         setValue("entrada", "");
         setValue("salida", "");
         setValue("entradaTarde", "");

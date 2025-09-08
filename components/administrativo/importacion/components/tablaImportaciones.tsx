@@ -61,7 +61,7 @@ export const TablaImportaciones = ({
                         ))
                     ) : (
                         <TableRow>
-                            <TableCell colSpan={3} align="center" />
+                            <TableCell colSpan={4} align="center" />
                         </TableRow>
                     )}
                 </TableBody>

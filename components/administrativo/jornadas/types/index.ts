@@ -40,7 +40,7 @@ export type proyecto = {
 };
 
 export type tooltipObservacionesProps = {
-    observaciones: string[],
+  observaciones: string[],
 };
 
 export type jornada = {
@@ -189,17 +189,17 @@ export type filaExpandidaEmpleadoProps = {
 };
 
 export type filaJornadaProps = {
-  jornada: jornada
+  jornada: jornada,
 };
 
 export type formularioFiltrosHijoProps = {
-    filtroMes: number | '',
-    filtroQuincena: number | '',
-    filtroMarcasIncompletas: boolean,
-    selectCargando: boolean,
-    selectDatos: selectDatos[],
-    onCambioFiltroMes: (event: React.ChangeEvent<HTMLInputElement>) => void,
-    onCambioFiltroQuincena: (event: React.ChangeEvent<HTMLInputElement>) => void,
-    onCambioFiltroMarcaIncompleta: (event: SyntheticEvent<Element, Event>, checked: boolean) => void,
-    getNombreMes: (mes: number) => string,
+  filtroMes: number | '',
+  filtroQuincena: number | '',
+  filtroMarcasIncompletas: boolean,
+  selectCargando: boolean,
+  selectDatos: selectDatos[],
+  onCambioFiltroMes: (event: React.ChangeEvent<HTMLInputElement>) => void,
+  onCambioFiltroQuincena: (event: React.ChangeEvent<HTMLInputElement>) => void,
+  onCambioFiltroMarcaIncompleta: (event: SyntheticEvent<Element, Event>, checked: boolean) => void,
+  getNombreMes: (mes: number) => string,
 };

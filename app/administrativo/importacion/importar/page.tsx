@@ -1,4 +1,4 @@
-import ImportarExcel from "@/components/administrativo/importacion/importar";
+import ImportarExcel from "@/components/administrativo/importar";
 
 export default function PaginaImportarExcel() {
     return(

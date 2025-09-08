@@ -15,3 +15,9 @@ export const formatHorasMinutos = (total: number) => {
     const minutosFormateados = String(minutos).padStart(2, "0");
     return `${horas}:${minutosFormateados} hs`;
 };
+
+export const getDia = (fecha: string) => {
+    const fechaDate = new Date(fecha);
+    const dia = fechaDate.getDay();
+    return dia;
+};

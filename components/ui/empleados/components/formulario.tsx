@@ -12,7 +12,6 @@ export const Formulario = ({
             <Controller
                 name="legajo"
                 control={control}
-                rules={{ required: "Debe ingresar legajo" }}
                 render={({ field, fieldState: { error } }) => (
                     <TextField
                         {...field}

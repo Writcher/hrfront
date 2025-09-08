@@ -3,7 +3,7 @@ import { useFilaJornadaFormulario } from "../hooks/useFilaJornadaFormulario"
 import { Controller } from "react-hook-form";
 import SaveAsRoundedIcon from '@mui/icons-material/SaveAsRounded';
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { filaJornadaProps, filaJornadaFormularioDatos, validateJornadaDatos, deleteJornadaDatos } from "../types";
+import { filaJornadaProps, filaJornadaFormularioDatos, deleteJornadaDatos, editJornadaDatos } from "../types";
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import dayjs from 'dayjs';
 import { deleteJornada, editJornada, validateJornada } from "@/services/jornada/service.jornada";
@@ -11,16 +11,21 @@ import SyncIcon from '@mui/icons-material/Sync';
 import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
 import LightTooltip from "@/components/ui/tooltip";
 import { useSnackbar } from "@/lib/context/snackbarcontext";
-import BeenhereRoundedIcon from '@mui/icons-material/BeenhereRounded';
+import VerifiedUserRoundedIcon from '@mui/icons-material/VerifiedUserRounded';
+import { PulsingWarning } from "@/components/ui/prioridad";
+import DoneRoundedIcon from '@mui/icons-material/DoneRounded';
+import { useConfirmar } from "../hooks/useConfirmar";
 
 export function FilaJornada({ jornada }: filaJornadaProps) {
 
-    const { control, handleSubmit, formState: { isValid } } = useFilaJornadaFormulario(jornada);
+    const { control, handleSubmit, formState: { isValid }, setValue, watch } = useFilaJornadaFormulario(jornada);
     const { showSuccess, showError } = useSnackbar();
     const queryClient = useQueryClient();
 
+    const { confirmarBorrar, confirmarValidar, handleConfirmarBorrar, handleConfirmarValidar } = useConfirmar({ setValue, watch })
+
     const mutacionEdit = useMutation({
-        mutationFn: (data: filaJornadaFormularioDatos) => editJornada(data),
+        mutationFn: (data: editJornadaDatos) => editJornada(data),
         onSuccess: () => {
             queryClient.invalidateQueries({
                 queryKey: ["fetchImportacionJornadas"]
@@ -60,7 +65,14 @@ export function FilaJornada({ jornada }: filaJornadaProps) {
     };
 
     const mutacionValidate = useMutation({
-        mutationFn: (data: validateJornadaDatos) => validateJornada(data),
+        mutationFn: async (data: filaJornadaFormularioDatos) => {
+            await editJornada({
+                id: data.id,
+                entrada: data.entrada,
+                salida: data.salida
+            });
+            await validateJornada({ id: jornada.id });
+        },
         onSuccess: () => {
             queryClient.invalidateQueries({
                 queryKey: ["fetchImportacionJornadas"]
@@ -68,15 +80,16 @@ export function FilaJornada({ jornada }: filaJornadaProps) {
             showSuccess("Jornada validada correctamente");
         },
         onError: () => {
-            showError("Error al validar jornada");
+            showError("Error al validar la jornada");
         }
     });
 
-    const onValidate = () => {
-        mutacionValidate.mutate({
-            id: jornada.id,
-        });
+    const onValidate = (data: filaJornadaFormularioDatos) => {
+        mutacionValidate.mutate(data);
     };
+
+    const validada = jornada.estadojornada.toLowerCase() === 'validada';
+    const revision = jornada.estadojornada.toLowerCase() === 'requiere revision';
 
     return (
         <>
@@ -119,7 +132,7 @@ export function FilaJornada({ jornada }: filaJornadaProps) {
                                             size: "small",
                                             error: !!error,
                                             helperText: error?.message,
-                                            disabled: jornada.estadojornada.toLowerCase() === 'validada',
+                                            disabled: validada,
                                         }
                                     }}
                                 />
@@ -150,7 +163,7 @@ export function FilaJornada({ jornada }: filaJornadaProps) {
                                             size: "small",
                                             error: !!error,
                                             helperText: error?.message,
-                                            disabled: jornada.estadojornada.toLowerCase() === 'validada',
+                                            disabled: validada,
                                         }
                                     }}
                                 />
@@ -159,48 +172,58 @@ export function FilaJornada({ jornada }: filaJornadaProps) {
                     </div>
                 </TableCell>
                 <TableCell align="right" size="small"
-                    className={`${jornada.estadojornada.toLowerCase() === 'requiere revision'
+                    className={`${revision
                         ? 'bg-gradient-to-l from-red-600 via-red-300 to-transparent'
-                        : jornada.estadojornada.toLowerCase() === 'validada'
+                        : validada
                             ? 'bg-gradient-to-l from-green-700 via-green-300 to-transparent'
                             : ''
                         }`}
                 >
                     <div className="flex gap-2 items-center justify-end text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.8rem)]">
+                        {revision
+                            ? <PulsingWarning />
+                            : validada
+                                ? <DoneRoundedIcon color="success" className="mr-2" />
+                                : null
+                        }
                         <LightTooltip title="Guardar" placement="left" arrow>
                             <Button
                                 variant="contained"
                                 color="info"
                                 disableElevation
                                 size="small"
-                                disabled={mutacionEdit.isPending || !isValid || jornada.estadojornada.toLowerCase() === 'validada'}
+                                disabled={mutacionEdit.isPending || mutacionDelete.isPending || mutacionValidate.isPending || !isValid || validada}
                                 onClick={handleSubmit(onEdit)}
                             >
                                 {!mutacionEdit.isPending ? <SaveAsRoundedIcon /> : <SyncIcon className="animate-spin" style={{ animationDirection: 'reverse' }} />}
                             </Button>
                         </LightTooltip>
-                        <LightTooltip title="Borrar" placement="left" arrow>
+                        <LightTooltip title={confirmarBorrar ? "Confirmar" : "¿Borrar?"} placement="left" arrow>
                             <Button
-                                variant="contained"
+                                variant={confirmarBorrar ? "contained" : "outlined"}
                                 color="error"
+                                className={confirmarBorrar ? "" : "!shadow-[inset_0_0_0_2px_rgb(220_38_38)]"}
                                 disableElevation
                                 size="small"
-                                disabled={mutacionDelete.isPending || jornada.estadojornada.toLowerCase() === 'validada'}
-                                onClick={onDelete}
+                                disabled={mutacionEdit.isPending || mutacionDelete.isPending || mutacionValidate.isPending || validada}
+                                onBlur={() => handleConfirmarBorrar(false)}
+                                onClick={confirmarBorrar ? onDelete : () => handleConfirmarBorrar()}
                             >
                                 {!mutacionDelete.isPending ? <DeleteForeverRoundedIcon /> : <SyncIcon className="animate-spin" style={{ animationDirection: 'reverse' }} />}
                             </Button>
                         </LightTooltip>
-                        <LightTooltip title="Validar" placement="left" arrow>
+                        <LightTooltip title={confirmarValidar ? "Confirmar" : "¿Validar?"} placement="left" arrow>
                             <Button
-                                variant="contained"
+                                variant={confirmarValidar ? "contained" : "outlined"}
                                 color="success"
+                                className={confirmarValidar ? "" : "!shadow-[inset_0_0_0_2px_rgb(46_125_50)]"}
                                 disableElevation
                                 size="small"
-                                disabled={mutacionDelete.isPending || jornada.estadojornada.toLowerCase() === 'validada'}
-                                onClick={onValidate}
+                                disabled={mutacionEdit.isPending || mutacionDelete.isPending || mutacionValidate.isPending || !isValid || validada}
+                                onBlur={() => handleConfirmarValidar(false)}
+                                onClick={confirmarValidar ? handleSubmit(onValidate) : () => handleConfirmarValidar()}
                             >
-                                {!mutacionDelete.isPending ? <BeenhereRoundedIcon /> : <SyncIcon className="animate-spin" style={{ animationDirection: 'reverse' }} />}
+                                {!mutacionValidate.isPending ? <VerifiedUserRoundedIcon /> : <SyncIcon className="animate-spin" style={{ animationDirection: 'reverse' }} />}
                             </Button>
                         </LightTooltip>
                     </div>

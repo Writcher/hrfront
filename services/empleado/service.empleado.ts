@@ -72,8 +72,12 @@ export async function deactivateEmpleado(id: number) {
         const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_EMPLEADO!.replace("{id}", id!.toString())}`, {
             method: "PATCH",
             headers: {
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
-            }
+            },
+            body: JSON.stringify({ 
+                accion: "deshabilitar" 
+            }),
         });
 
         if (!respuestaRaw.ok) {

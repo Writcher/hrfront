@@ -7,7 +7,7 @@ import PersonRemoveRoundedIcon from '@mui/icons-material/PersonRemoveRounded';
 import SaveAsRoundedIcon from '@mui/icons-material/SaveAsRounded';
 import { filaBotonesProps } from "../types";
 
-export const BotonesFila = ({ editando, desactivando, isValid, estadoempleado, formularioVisible, handleMostrarFormulario, handleSubmit, onDeactivate }: filaBotonesProps) => (
+export const BotonesFila = ({ editando, desactivando, isValid, estadoempleado, formularioVisible, handleMostrarFormulario, handleSubmit, onDeactivate, confirmarBaja, onClickBaja }: filaBotonesProps) => (
     <div className="flex gap-2 items-center justify-end text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.8rem)]">
         {formularioVisible ? (
             <>
@@ -50,14 +50,16 @@ export const BotonesFila = ({ editando, desactivando, isValid, estadoempleado, f
                         {!desactivando ? <EditRoundedIcon /> : <SyncIcon className="animate-spin" style={{ animationDirection: 'reverse' }} />}
                     </Button>
                 </LightTooltip>
-                <LightTooltip title="Dar Baja" placement="left" arrow>
+                <LightTooltip title={confirmarBaja ? "Confirmar": "¿Dar Baja?"} placement="left" arrow>
                     <Button
-                        variant="contained"
+                        variant={estadoempleado.toLowerCase() === 'baja' ? "contained" : confirmarBaja ? "contained": "outlined"}
                         color="error"
+                        className={confirmarBaja ? "" : "!shadow-[inset_0_0_0_2px_rgb(220_38_38)]"}
                         disableElevation
                         size="small"
                         disabled={desactivando || estadoempleado.toLowerCase() === 'baja' || formularioVisible}
-                        onClick={onDeactivate}
+                        onBlur={() => onClickBaja(false)}
+                        onClick={confirmarBaja ? onDeactivate : () => onClickBaja()}
                     >
                         {!desactivando ? <PersonRemoveRoundedIcon /> : <SyncIcon className="animate-spin" style={{ animationDirection: 'reverse' }} />}
                     </Button>

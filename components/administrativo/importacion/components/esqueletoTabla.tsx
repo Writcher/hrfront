@@ -17,5 +17,11 @@ export const Esqueleto = () => (
                 <Skeleton variant="rectangular" className="!rounded" width={100} height={30} />
             </div>
         </TableCell>
+        <TableCell align="right" size="small">
+            <div className="flex items-center justify-end gap-2">
+                <Skeleton variant="rectangular" className="!rounded" width={60} height={30} />
+                <Skeleton variant="rectangular" className="!rounded" width={60} height={30} />
+            </div>
+        </TableCell>
     </TableRow>
 );

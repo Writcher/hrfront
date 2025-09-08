@@ -19,6 +19,14 @@ export type filaJornadaFormularioDatos = {
     id: number,
     entrada: string | null,
     salida: string | null,
+    confirmarBorrar: boolean,
+    confirmarValidar: boolean,
+};
+
+export type editJornadaDatos = {
+    id: number,
+    entrada: string | null,
+    salida: string | null,
 };
 
 export type deleteJornadaDatos = {
@@ -53,6 +61,12 @@ export type hookGenericoPadrePropsBase = {
     watch?: UseFormWatch<importacionJornadasFormularioDatos>,
     getValues?: UseFormGetValues<importacionJornadasFormularioDatos>,
 };
+
+export type hookGenericoHijoProps = {
+    setValue: UseFormSetValue<filaJornadaFormularioDatos>,
+    watch: UseFormWatch<filaJornadaFormularioDatos>,
+};
+
 
 export type deshabilitarBotonProps =
     Required<Pick<hookGenericoPadrePropsBase, 'setValue' | 'watch'>>

@@ -71,7 +71,10 @@ export const TablaJornadas = ({
                     <TableBody>
                         {jornadasDatos && jornadasDatos.jornadas && jornadasDatos.jornadas.length > 0 ? (
                             jornadasDatos.jornadas.map((jornada: jornada) => (
-                                <FilaJornada jornada={jornada} key={jornada.id} />
+                                <FilaJornada
+                                    jornada={jornada}
+                                    key={jornada.id}
+                                />
                             ))
                         ) : (
                             <TableRow>

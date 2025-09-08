@@ -14,12 +14,12 @@ export const Esqueleto = () => (
         </TableCell>
         <TableCell align="center" size="small">
             <div className="flex items-center justify-center">
-                <Skeleton variant="rectangular" className="!rounded" width={300} height={40} />
+                <Skeleton variant="rectangular" className="!rounded" width={250} height={40} />
             </div>
         </TableCell>
         <TableCell align="center" size="small">
             <div className="flex items-center justify-center">
-                <Skeleton variant="rectangular" className="!rounded" width={300} height={40} />
+                <Skeleton variant="rectangular" className="!rounded" width={250} height={40} />
             </div>
         </TableCell>
         <TableCell align="right" size="small">

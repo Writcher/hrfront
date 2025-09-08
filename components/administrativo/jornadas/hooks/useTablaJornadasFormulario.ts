@@ -18,7 +18,7 @@ export const useTablaJornadaFormulario = () => {
       tipoAusencia: '',
       observacion: '',
       fecha: '',
-      jornadaPartida: false
+      jornadaPartida: false,
     }
   });
 };

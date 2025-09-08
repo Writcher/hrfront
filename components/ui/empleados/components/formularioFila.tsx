@@ -8,6 +8,7 @@ import { Controller } from "react-hook-form";
 import { useEffect } from "react";
 import { editEmpleadoParametros, empleadoFormularioDatos, formularioFilaEmpleadoProps } from "../types";
 import { BotonesFila } from "./botonesFila";
+import { useConfirmarBaja } from "../hooks/useConfirmarBaja";
 
 export default function FormularioEditarEmpleado({ empleado }: formularioFilaEmpleadoProps) {
 
@@ -16,6 +17,7 @@ export default function FormularioEditarEmpleado({ empleado }: formularioFilaEmp
     const queryClient = useQueryClient();
 
     const formularioVisible = useMostrarFormulario({ setValue, watch });
+    const { confirmarBaja, handleConfirmarBaja } = useConfirmarBaja({ setValue, watch });
 
     useEffect(() => {
         if (empleado) {
@@ -51,10 +53,10 @@ export default function FormularioEditarEmpleado({ empleado }: formularioFilaEmp
     const mutacionDeactivate = useMutation({
         mutationFn: (id: number) => deactivateEmpleado(id),
         onSuccess: () => {
-            showSuccess("Empleado dado de baja correctamente");
             queryClient.invalidateQueries({
                 queryKey: ["fetchEmpleadosTablaJornadas"]
             });
+            showSuccess("Empleado dado de baja correctamente");
         },
         onError: () => {
             showError("Error al dar de baja empleado");
@@ -177,6 +179,8 @@ export default function FormularioEditarEmpleado({ empleado }: formularioFilaEmp
                     handleMostrarFormulario={formularioVisible.handleMostrarFormulario}
                     handleSubmit={handleSubmit(onEdit)}
                     onDeactivate={onDeactivate}
+                    confirmarBaja={confirmarBaja}
+                    onClickBaja={handleConfirmarBaja}
                 />
             </TableCell>
         </TableRow>

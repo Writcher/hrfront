@@ -23,6 +23,7 @@ export type empleadoFormularioDatos = {
   legajo: number | '',
   nombre: string,
   formularioVisible: boolean,
+  confirmarBaja: boolean,
 };
 
 export type insertempleadoParametros = {
@@ -75,6 +76,8 @@ export type filaBotonesProps = {
   handleMostrarFormulario: () => void,
   handleSubmit: () => void,
   onDeactivate: () => void,
+  confirmarBaja: boolean,
+  onClickBaja: (bool?: boolean) => void,
 };
 
 export type empleado = {

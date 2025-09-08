@@ -6,7 +6,9 @@ export const useFilaJornadaFormulario = (jornada: jornada) => {
         defaultValues: {
             id: jornada.id,
             entrada: jornada.entrada ? jornada.entrada : "",
-            salida: jornada.salida ? jornada.salida : ""
+            salida: jornada.salida ? jornada.salida : "",
+            confirmarBorrar: false,
+            confirmarValidar: false,
         }
     });
 };

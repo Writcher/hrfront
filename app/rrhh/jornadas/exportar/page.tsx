@@ -1,4 +1,4 @@
-import ImportarExcel from "@/components/rrhh/jornadas/exportar";
+import ImportarExcel from "@/components/rrhh/exportar";
 
 export default function PaginaExportarExcel() {
     return(

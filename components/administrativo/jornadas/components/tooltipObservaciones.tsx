@@ -37,7 +37,7 @@ export const TooltipObservaciones = ({
                     variant="contained"
                     disabled={observaciones.length === 0}
                 >
-                    <InfoOutlined fontSize="small" />
+                    <InfoOutlined />
                 </Button>
             </LightTooltip>
         )}

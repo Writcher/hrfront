@@ -29,7 +29,7 @@ export const BotonesTabla = ({ onSubmit, mutacionPendiente, botonDeshabilitado, 
             }
             disabled={mutacionPendiente || botonDeshabilitado || jornadasCargando}
         >
-            {mutacionPendiente ? "Confirmar" : "Guardando"}
+            {mutacionPendiente ? "Confirmando" : "Confirmar"}
         </Button>
     </div>
 );

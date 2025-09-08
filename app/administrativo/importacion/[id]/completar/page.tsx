@@ -1,4 +1,4 @@
-import TablaCompletarImportacion from "@/components/administrativo/importacion/[id]/completar";
+import TablaCompletarImportacion from "@/components/administrativo/[id]/completar";
 
 export default async function CompletarImportacion({ params }: { params: Promise<{ id: number }> }) {
     const { id: id } = await params;
