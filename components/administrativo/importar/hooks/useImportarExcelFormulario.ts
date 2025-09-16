@@ -7,6 +7,6 @@ export const useImportarExcelFormulario = () => {
       proyecto: '',
       tipoJornada: '',
       archivo: null
-    }
+    },
   });
 };

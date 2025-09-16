@@ -1,6 +1,6 @@
 "use server"
 
-import { insertempleadoParametros } from "@/components/ui/empleados/types";
+import { insertempleadoParametros } from "@/components/empleados/types";
 import CONFIG from "@/config";
 import { editEmpleadoDTO, fetchEmpleadosDTO } from "@/lib/dtos/empleado";
 import { getToken } from "@/lib/utils/getToken";

@@ -1,7 +1,8 @@
-import TablaCompletarImportacion from "@/components/administrativo/[id]/completar";
+import Completar from "@/components/administrativo/completar";
 
-export default async function CompletarImportacion({ params }: { params: Promise<{ id: number }> }) {
+export default async function PaginaCompletar({ params }: { params: Promise<{ id: number }> }) {
     const { id: id } = await params;
+
     return (
         <div className="flex flex-col gap-2 w-full h-full">
             <div className="flex items-center justify-center h-[10%] text-gray-800 text-center font-bold">
@@ -10,7 +11,7 @@ export default async function CompletarImportacion({ params }: { params: Promise
                 </p>
             </div>
             <div className="flex items-center justify-center h-[90%]">
-                <TablaCompletarImportacion id_importacion={id} />
+                <Completar id_importacion={id} />
             </div>
         </div>
     );

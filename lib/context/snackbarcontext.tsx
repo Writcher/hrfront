@@ -81,14 +81,13 @@ export function SnackbarProvider({ children }: { children: ReactNode }) {
             key={snackbar.id}
             open={true}
             autoHideDuration={snackbar.duration}
-            TransitionComponent={SlideTransition}
+            slots={{ transition: SlideTransition }}
             onClose={handleClose}
             anchorOrigin={{
               vertical: 'bottom',
               horizontal: 'center'
             }}
             style={{
-              // Stack them vertically with some spacing
               transform: `translateY(-${index * 70}px)`,
             }}
           >
@@ -104,12 +103,12 @@ export function SnackbarProvider({ children }: { children: ReactNode }) {
       })}
     </SnackbarContext.Provider>
   );
-}
+};
 
 export function useSnackbar() {
   const context = useContext(SnackbarContext);
   if (context === undefined) {
     throw new Error('useSnackbar must be used within a SnackbarProvider');
-  }
+  };
   return context;
-}
+};

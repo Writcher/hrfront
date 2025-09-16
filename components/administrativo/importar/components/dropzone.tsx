@@ -2,14 +2,7 @@ import { IconButton } from "@mui/material";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { dropzoneProps } from "../types";
 
-export const Dropzone = ({
-    getRootProps,
-    getInputProps,
-    isDragActive,
-    borrarArchivo,
-    archivo,
-    errores
-}: dropzoneProps) => (
+export const Dropzone = ({ getRootProps, getInputProps, isDragActive, borrarArchivo, archivo, errores }: dropzoneProps) => (
     <div className="flex items-center justify-start w-full gap-4">
         <div
             {...getRootProps()}

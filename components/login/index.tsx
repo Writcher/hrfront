@@ -10,6 +10,7 @@ import { logIn } from "@/services/auth/service.auth";
 import LoginRoundedIcon from '@mui/icons-material/LoginRounded';
 
 export default function PantallaInicioSesion() {
+    
     const { control, handleSubmit, formState: { isValid } } = useIniciarSesionFormulario();
 
     const mutacion = useMutation({

@@ -12,11 +12,12 @@ import Link from "next/link";
 const linksadmin = [
     { name: 'Inicio', href: '/administrativo', icon: HomeRoundedIcon },
     { name: 'Jornadas', href: '/administrativo/jornadas', icon: SummarizeRoundedIcon },
-    { name: 'Informes', href: '/administrativo/importacion', icon: UploadFileRoundedIcon },
+    { name: 'Informes', href: '/administrativo/importaciones', icon: UploadFileRoundedIcon },
     { name: 'Empleados', href: '/administrativo/empleados', icon: PeopleAltRoundedIcon },
 ];
 
 export default function NavLinksAdministrativo() {
+    
     const pathname = usePathname();
     const { hidden } = useDrawer();
 

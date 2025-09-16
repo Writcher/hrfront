@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import { FileRejection, useDropzone } from "react-dropzone";
 import { hookProps } from "../types";
 
-export const useDropzoneH = ({ setValue, setError, clearErrors }: hookProps) => {
+export const useDropzoneHook = ({ setValue, setError, clearErrors }: hookProps) => {
 
     const onDrop = useCallback((acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
         clearErrors("archivo");

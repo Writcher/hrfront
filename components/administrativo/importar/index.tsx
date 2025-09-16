@@ -2,31 +2,30 @@
 
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { fetchSelectDataExcelImport, insertJornadasExcel } from "@/services/importacion/service.importar";
-import { Button } from "@mui/material";
-import UploadFileRoundedIcon from '@mui/icons-material/UploadFileRounded';
-import SyncIcon from '@mui/icons-material/Sync';
 import { Formulario } from "./components/formulario";
 import { useImportarExcelFormulario } from "./hooks/useImportarExcelFormulario";
-import { useDropzoneH } from "./hooks/useDropzone";
+import { useDropzoneHook } from "./hooks/useDropzone";
 import { importarExcelFormularioDatos } from "./types";
 import { Dropzone } from "./components/dropzone";
 import { useRouter } from "next/navigation";
-import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
-import Link from "next/link";
 import { useEffect } from "react";
 import { useSnackbar } from "@/lib/context/snackbarcontext";
+import { Botones } from "./components/botones";
 
-export default function ImportarExcel() {
+export default function Importar() {
 
     const { control, handleSubmit, setError, clearErrors, setValue, watch, formState: { errors, isValid }, reset } = useImportarExcelFormulario();
+
     const { showSuccess, showError, showWarning } = useSnackbar();
-    const dropzone = useDropzoneH({ setValue, setError, clearErrors });
+
+    const { isDragActive, borrarArchivo, getRootProps, getInputProps } = useDropzoneHook({ setValue, setError, clearErrors });
+
     const router = useRouter();
 
     const { data: selectDatos, isLoading: selectCargando, isError: selectError } = useQuery({
         queryKey: ["fetchSelectDataExcelImport"],
         queryFn: () => fetchSelectDataExcelImport(),
-        refetchOnWindowFocus: false
+        refetchOnWindowFocus: false,
     });
 
     const mutacionImport = useMutation({
@@ -38,15 +37,14 @@ export default function ImportarExcel() {
         },
         onError: () => {
             showError("Error al importar el archivo");
-        }
+        },
     });
 
-    const onSubmit = (data: importarExcelFormularioDatos) => {
+    const onImport = (data: importarExcelFormularioDatos) => {
         if (!watch("archivo")) {
             setError("archivo", { message: "Debe seleccionar un archivo Excel" });
             return;
         };
-
         mutacionImport.mutate(data);
     };
 
@@ -58,53 +56,26 @@ export default function ImportarExcel() {
 
     return (
         <div className="flex flex-col gap-4 items-center justify-center w-full h-full">
-            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col justify-between items-center w-full h-full gap-2">
+            <form onSubmit={handleSubmit(onImport)} className="flex flex-col justify-between items-center w-full h-full gap-2">
                 <div className="flex flex-col pt-[25vh] gap-2 w-[80%]">
                     <Formulario
                         control={control}
-                        selectCargando={selectCargando}
+                        cargando={selectCargando}
                         selectDatos={selectDatos}
                     />
                     <Dropzone
-                        getRootProps={dropzone.getRootProps}
-                        getInputProps={dropzone.getInputProps}
-                        isDragActive={dropzone.isDragActive}
-                        borrarArchivo={dropzone.borrarArchivo}
+                        getRootProps={getRootProps}
+                        getInputProps={getInputProps}
+                        isDragActive={isDragActive}
+                        borrarArchivo={borrarArchivo}
                         archivo={watch("archivo")}
                         errores={errors}
                     />
                 </div>
-                <div className="flex justify-between w-full">
-                    <Button
-                        component={Link}
-                        variant="contained"
-                        color="warning"
-                        href={"/administrativo/importacion"}
-                        disableElevation
-                        startIcon={
-                            mutacionImport.isPending ? (
-                                <SyncIcon className="animate-spin" style={{ animationDirection: 'reverse' }}/>
-                            ) : <ArrowBackRoundedIcon />
-                        }
-                        disabled={mutacionImport.isPending}
-                    >
-                        Importaciones
-                    </Button>
-                    <Button
-                        type="submit"
-                        variant="contained"
-                        color="success"
-                        disableElevation
-                        endIcon={
-                            mutacionImport.isPending ? (
-                                <SyncIcon className="animate-spin" style={{ animationDirection: 'reverse' }}/>
-                            ) : <UploadFileRoundedIcon />
-                        }
-                        disabled={mutacionImport.isPending || !isValid}
-                    >
-                        {!mutacionImport.isPending ? "Guardar" : "Guardando"}
-                    </Button>
-                </div>
+                <Botones
+                    importando={mutacionImport.isPending}
+                    camposValidos={isValid}
+                />
             </form>
         </div>
     );

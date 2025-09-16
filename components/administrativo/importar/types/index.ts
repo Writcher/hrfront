@@ -1,11 +1,7 @@
 import { DropzoneInputProps, DropzoneRootProps } from "react-dropzone";
 import { Control, FieldErrors, UseFormClearErrors, UseFormSetError, UseFormSetValue } from "react-hook-form";
 
-export type importarExcelFormularioDatos = {
-    archivo: File | null,
-    proyecto: number | '',
-    tipoJornada: number | ''
-};
+//schema
 
 export type tipoJornada = {
     id: number,
@@ -17,14 +13,11 @@ export type proyecto = {
     nombre: string,
 };
 
-export type selectDatos = {
-    proyectos: proyecto[],
-    tiposJornada: tipoJornada[],
-};
+//props
 
 export type formularioProps = {
     control: Control<importarExcelFormularioDatos>,
-    selectCargando: boolean,
+    cargando: boolean,
     selectDatos?: selectDatos,
 };
 
@@ -41,4 +34,28 @@ export type dropzoneProps = {
     borrarArchivo: () => void;
     archivo: File | null;
     errores: FieldErrors<importarExcelFormularioDatos>,
+};
+
+export type botonesProps = {
+    importando: boolean,
+    camposValidos: boolean,
+};
+
+//useForm
+
+export type importarExcelFormularioDatos = {
+    archivo: File | null,
+    proyecto: number | '',
+    tipoJornada: number | ''
+};
+
+//mutations
+
+
+
+//responses
+
+export type selectDatos = {
+    proyectos: proyecto[],
+    tiposJornada: tipoJornada[],
 };

@@ -12,7 +12,7 @@ import Link from "next/link";
 const linksadmin = [
     { name: 'Inicio', href: '/rrhh', icon: HomeRoundedIcon },
     { name: 'Jornadas', href: '/rrhh/jornadas', icon: SummarizeRoundedIcon },
-    { name: 'Informes', href: '/rrhh/importacion', icon: UploadFileRoundedIcon },
+    { name: 'Informes', href: '/rrhh/importaciones', icon: UploadFileRoundedIcon },
     { name: 'Empleados', href: '/rrhh/empleados', icon: PeopleAltRoundedIcon },
 
     //Añadir links segun necesario aca.

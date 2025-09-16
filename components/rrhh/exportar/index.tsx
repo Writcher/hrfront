@@ -2,22 +2,19 @@
 
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { exportJornadasExcel, fetchSelectDataExcelExport } from "@/services/importacion/service.importar";
-import { Button } from "@mui/material";
-import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
-import SyncIcon from '@mui/icons-material/Sync';
 import { Formulario } from "./components/formulario";
 import { useExportarExcelFormulario } from "./hooks/useExportarExcelFormulario";
 import { exportarExcelDatos } from "./types";
 import { useRouter } from "next/navigation";
-import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
-import Link from "next/link";
 import { getFileName } from "./utils";
 import { useSnackbar } from "@/lib/context/snackbarcontext";
 import { useEffect } from "react";
+import { Botones } from "./components/botones";
 
 export default function ExcelExportFormulario() {
 
     const { control, handleSubmit, watch, reset, formState: { isValid } } = useExportarExcelFormulario();
+
     const { showSuccess, showError, showWarning } = useSnackbar();
 
     const router = useRouter();
@@ -53,7 +50,7 @@ export default function ExcelExportFormulario() {
         }
     });
 
-    const onSubmit = (data: exportarExcelDatos) => {
+    const onExport = (data: exportarExcelDatos) => {
         mutacionExport.mutate(data);
     };
 
@@ -65,7 +62,7 @@ export default function ExcelExportFormulario() {
 
     return (
         <div className="flex flex-col gap-4 items-center justify-center w-full h-full">
-            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col justify-between items-center w-full h-full gap-2">
+            <form onSubmit={handleSubmit(onExport)} className="flex flex-col justify-between items-center w-full h-full gap-2">
                 <div className="flex flex-col pt-[25vh] w-[80%] gap-2">
                     <Formulario
                         control={control}
@@ -74,37 +71,10 @@ export default function ExcelExportFormulario() {
                         watch={watch}
                     />
                 </div>
-                <div className="flex justify-between w-full">
-                    <Button
-                        component={Link}
-                        variant="contained"
-                        color="warning"
-                        href={"/rrhh/jornadas"}
-                        disableElevation
-                        startIcon={
-                            mutacionExport.isPending ? (
-                                <SyncIcon className="animate-spin" style={{ animationDirection: 'reverse' }}/>
-                            ) : <ArrowBackRoundedIcon />
-                        }
-                        disabled={mutacionExport.isPending}
-                    >
-                        Resumen
-                    </Button>
-                    <Button
-                        type="submit"
-                        variant="contained"
-                        color="success"
-                        disableElevation
-                        endIcon={
-                            mutacionExport.isPending ? (
-                                <SyncIcon className="animate-spin" style={{ animationDirection: 'reverse' }}/>
-                            ) : <DownloadRoundedIcon />
-                        }
-                        disabled={mutacionExport.isPending || !isValid}
-                    >
-                        {!mutacionExport.isPending ? "Descargar" : "Descargando"}
-                    </Button>
-                </div>
+                <Botones
+                    exportando={mutacionExport.isPending}
+                    camposValidos={isValid}
+                />
             </form>
         </div>
     );

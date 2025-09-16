@@ -1,4 +1,4 @@
-import TablaEmpleadosLista from "@/components/ui/empleados";
+import TablaEmpleadosLista from "@/components/empleados";
 
 export default function PaginaEmpleados() {
     return(

@@ -1,6 +1,10 @@
-import TablaEmpleadosJornadas from "@/components/administrativo/jornadas";
+import { auth } from "@/auth";
+import TablaEmpleadosJornadas from "@/components/jornadas";
 
-export default function PaginaJornadasEmpleados() {
+export default async function PaginaJornadasEmpleados() {
+    const sesion = await auth();
+    const tipoUsuario = sesion?.user?.tipoUsuario;
+
     return(
         <div className="flex flex-col gap-2 w-full h-full">
             <div className="flex items-center justify-center h-[10%] text-gray-800 text-center font-bold">
@@ -9,7 +13,10 @@ export default function PaginaJornadasEmpleados() {
                 </p>
             </div>
             <div className="flex items-center justify-center h-[90%]">
-                <TablaEmpleadosJornadas />
+                <TablaEmpleadosJornadas 
+                    esAdministrativo={tipoUsuario === 'Administrativo'}
+                    esRRHH={tipoUsuario === 'Recursos Humanos'}
+                />
             </div>
         </div>
     );

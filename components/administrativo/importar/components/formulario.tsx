@@ -4,11 +4,11 @@ import { formularioProps, proyecto, tipoJornada } from "../types";
 
 export const Formulario = ({
     control,
-    selectCargando,
+    cargando,
     selectDatos,
 }: formularioProps) => (
     <div className="flex items-center justify-start w-full gap-2">
-        {selectCargando ? (
+        {cargando ? (
             <Skeleton
                 variant="rectangular"
                 width="100%"
@@ -42,7 +42,7 @@ export const Formulario = ({
                 )}
             />
         )}
-        {selectCargando ? (
+        {cargando ? (
             <Skeleton
                 variant="rectangular"
                 width="100%"

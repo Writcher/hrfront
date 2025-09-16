@@ -18,4 +18,5 @@ export default {
     URL_TIPOUSUARIO: process.env.URL_TIPOUSUARIO,
     URL_CREAR_EMPLEADO: process.env.URL_CREAR_EMPLEADO,
     URL_EMPLEADO: process.env.URL_EMPLEADO,
+    URL_CREAR_OBSERVACION: process.env.URL_CREAR_OBSERVACION,
 };
