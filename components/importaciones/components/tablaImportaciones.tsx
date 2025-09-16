@@ -17,7 +17,7 @@ export const TablaImportaciones = ({
                 esAdministrativo={esAdministrativo}
             />
             {cargando ? (
-                <Esqueleto filas={filas} />
+                <Esqueleto filas={filas} esAdministrativo={esAdministrativo}/>
             ) : (
                 <TableBody>
                     {importaciones?.length > 0 ? (

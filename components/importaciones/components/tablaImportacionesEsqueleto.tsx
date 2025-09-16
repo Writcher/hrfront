@@ -1,7 +1,7 @@
 import { Skeleton, TableBody, TableCell, TableRow } from "@mui/material";
 import { esqueletoProps } from "../types";
 
-export const Esqueleto = ({ filas }: esqueletoProps) => (
+export const Esqueleto = ({ filas, esAdministrativo }: esqueletoProps) => (
     <TableBody>
         {Array.from({ length: filas }).map((_, index) => (
             <TableRow key={index}>
@@ -20,12 +20,14 @@ export const Esqueleto = ({ filas }: esqueletoProps) => (
                         <Skeleton variant="rectangular" className="!rounded" width={100} height={30} />
                     </div>
                 </TableCell>
-                <TableCell align="right" size="small" width="25%">
-                    <div className="flex items-center justify-end gap-2">
-                        <Skeleton variant="rectangular" className="!rounded" width={60} height={30} />
-                        <Skeleton variant="rectangular" className="!rounded" width={60} height={30} />
-                    </div>
-                </TableCell>
+                {esAdministrativo &&
+                    <TableCell align="right" size="small" width="25%">
+                        <div className="flex items-center justify-end gap-2">
+                            <Skeleton variant="rectangular" className="!rounded" width={60} height={30} />
+                            <Skeleton variant="rectangular" className="!rounded" width={60} height={30} />
+                        </div>
+                    </TableCell>
+                }
             </TableRow>
         ))}
     </TableBody>

@@ -52,6 +52,7 @@ export type encabezadoProps = {
 
 export type esqueletoProps = {
     filas: number,
+    esAdministrativo?: boolean,
 };
 
 export type tablaImportacionesProps = {
