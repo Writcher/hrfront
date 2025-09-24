@@ -1,4 +1,6 @@
-export default function InicioAdministrativo() {
+import InicioAdministrativo from "@/components/administrativo/inicio";
+
+export default function Inicio() {
     return(
         <div className="flex flex-col gap-2 w-full h-full">
             <div className="flex items-center justify-center h-[10%] text-gray-800 text-center font-bold">
@@ -7,7 +9,7 @@ export default function InicioAdministrativo() {
                 </p>
             </div>
             <div className="flex items-center justify-center h-[90%]">
-                
+                <InicioAdministrativo />
             </div>
         </div>
     );

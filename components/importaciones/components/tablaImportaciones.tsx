@@ -10,31 +10,36 @@ export const TablaImportaciones = ({
     cargando,
     filas,
     esAdministrativo
-}: tablaImportacionesProps) => (
-    <TableContainer className="outer-table-container">
-        <Table stickyHeader>
-            <Encabezado 
-                esAdministrativo={esAdministrativo}
-            />
-            {cargando ? (
-                <Esqueleto filas={filas} esAdministrativo={esAdministrativo}/>
-            ) : (
-                <TableBody>
-                    {importaciones?.length > 0 ? (
-                        importaciones.map((importacion: importacion) => (
-                            <Fila
-                                importacion={importacion}
-                                key={importacion.id}
-                                esAdministrativo={esAdministrativo}
-                            />
-                        ))
-                    ) : (
-                        <TableRow>
-                            <TableCell colSpan={4} align="center" />
-                        </TableRow>
-                    )}
-                </TableBody>
+}: tablaImportacionesProps) => {
+    return (
+        <>
+            {cargando || importaciones && importaciones.length > 0 ? (
+                <TableContainer className="outer-table-container">
+                    <Table stickyHeader>
+                        <Encabezado
+                            esAdministrativo={esAdministrativo}
+                        />
+                        {cargando ? (
+                            <Esqueleto filas={filas} esAdministrativo={esAdministrativo} />
+                        ) : (
+                            <TableBody>
+                                {importaciones.map((importacion: importacion) => (
+                                    <Fila
+                                        importacion={importacion}
+                                        key={importacion.id}
+                                        esAdministrativo={esAdministrativo}
+                                    />
+                                ))}
+                            </TableBody>
+                        )}
+                    </Table>
+                </TableContainer>
+            ) : null}
+            {!cargando && (!importaciones || importaciones.length === 0) && (
+                <div className="flex items-center justify-center py-[5vh] h-full w-full text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.8rem)]">
+                    No se encontraron informes
+                </div>
             )}
-        </Table>
-    </TableContainer>
-);
+        </>
+    );
+};

@@ -33,10 +33,11 @@ export const Formulario = ({
                 fullWidth
                 value={filtroMes}
                 onChange={onCambioFiltroMes}
+                disabled={meses.length === 0}
             >
-                {meses?.map((mes: mes) => (
+                {meses.map((mes: mes) => (
                     <MenuItem key={mes.id} value={mes.id}>{getNombreMes(mes.mes)} de {mes.id_año}</MenuItem>
-                )) || []}
+                ))}
             </TextField>
         }
         <TextField

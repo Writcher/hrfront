@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 import debounce from "lodash.debounce";
 import { hookGenericoPadreProps } from "../types";
 
-export const useFiltros = ({ setValue, getValues }: hookGenericoPadreProps<'setValue' | 'getValues'>) => {
+export const useFiltros = ({ setValue }: hookGenericoPadreProps<'setValue'>) => {
 
   const [filtrosActivos, setFiltrosActivos] = useState<{ [key: string]: any }>({});
 
@@ -13,6 +13,8 @@ export const useFiltros = ({ setValue, getValues }: hookGenericoPadreProps<'setV
   const [filtroProyectoVisible, setFiltroProyectoVisible] = useState<boolean>(false);
 
   const [busquedaLegajoVisible, setBusquedaLegajoVisible] = useState<boolean>(true);
+
+  const [filtroTipoEmpleadoVisible, setFiltroTipoEmpleadoVisible] = useState<boolean>(false);
 
   const abrirFiltros = Boolean(ancla);
 
@@ -30,9 +32,11 @@ export const useFiltros = ({ setValue, getValues }: hookGenericoPadreProps<'setV
     setValue("filtroProyecto", '');
     setValue("busquedaLegajo", '');
     setValue("busquedaLegajoNormal", '');
+    setValue("filtroTipoEmpleado", '');
     setBusquedaNombreVisible(false);
     setFiltroProyectoVisible(false);
     setBusquedaLegajoVisible(true);
+    setFiltroTipoEmpleadoVisible(false);
     setFiltrosActivos({});
     handleCerrarFiltros();
   };
@@ -67,6 +71,12 @@ export const useFiltros = ({ setValue, getValues }: hookGenericoPadreProps<'setV
     setFiltrosActivos({ ...filtrosActuales, filtroProyecto: Number(event.target.value) });
   };
 
+  const handleCambioFiltroTipoEmpleado = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValue("filtroTipoEmpleado", Number(event.target.value));
+    const filtrosActuales = filtrosActivos;
+    setFiltrosActivos({ ...filtrosActuales, filtroTipoEmpleado: Number(event.target.value) });
+  };
+
   return {
     ancla,
     abrirFiltros,
@@ -74,14 +84,17 @@ export const useFiltros = ({ setValue, getValues }: hookGenericoPadreProps<'setV
     busquedaNombreVisible,
     filtroProyectoVisible,
     busquedaLegajoVisible,
+    filtroTipoEmpleadoVisible,
     handleClickFiltros,
     handleCerrarFiltros,
     handleLimpiarFiltros,
     handleCambioBusquedaNombre,
     handleCambioBusquedaLegajo,
     handleCambioFiltroProyecto,
+    handleCambioFiltroTipoEmpleado,
     setBusquedaNombreVisible,
     setFiltroProyectoVisible,
-    setBusquedaLegajoVisible
+    setBusquedaLegajoVisible,
+    setFiltroTipoEmpleadoVisible
   };
 };

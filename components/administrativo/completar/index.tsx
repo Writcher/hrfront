@@ -30,7 +30,7 @@ export default function Completar({ id_importacion }: importacionJornadasProps) 
 
     const { data: jornadasDatos, isLoading: jornadasCargando, isError: jornadasError } = useQuery({
         queryKey: [
-            "fetchImportacionJornadas",
+            "fetchJornadasPorImportacion",
             pagina,
             filasPorPagina,
             watch("filtroMarcasIncompletas")

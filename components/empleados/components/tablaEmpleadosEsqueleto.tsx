@@ -15,12 +15,17 @@ export const Esqueleto = ({ filas }: esqueletoProps) => (
                         <Skeleton variant="text" width={75} />
                     </div>
                 </TableCell>
-                <TableCell align="center" size="small" width="30%">
+                <TableCell align="center" size="small" width="20%">
                     <div className="flex items-center justify-center">
                         <Skeleton variant="text" width={200} />
                     </div>
                 </TableCell>
-                <TableCell align="center" size="small" width="20%">
+                <TableCell align="center" size="small" width="15%">
+                    <div className="flex items-center justify-center">
+                        <Skeleton variant="text" width={100} />
+                    </div>
+                </TableCell>
+                <TableCell align="center" size="small" width="15%">
                     <div className="flex items-center justify-center">
                         <Skeleton variant="text" width={100} />
                     </div>

@@ -13,12 +13,19 @@ export type proyecto = {
     nombre: string,
 };
 
+export type tipoImportacion = {
+    id: number,
+    nombre: string,
+};
+
 //props
 
 export type formularioProps = {
     control: Control<importarExcelFormularioDatos>,
     cargando: boolean,
-    selectDatos?: selectDatos,
+    proyectos: proyecto[],
+    tiposJornada: tipoJornada[],
+    tiposImportacion: tipoImportacion[],
 };
 
 export type hookProps = {
@@ -46,7 +53,8 @@ export type botonesProps = {
 export type importarExcelFormularioDatos = {
     archivo: File | null,
     proyecto: number | '',
-    tipoJornada: number | ''
+    tipoJornada: number | '',
+    tipoInforme: number | '',
 };
 
 //mutations
@@ -54,8 +62,3 @@ export type importarExcelFormularioDatos = {
 
 
 //responses
-
-export type selectDatos = {
-    proyectos: proyecto[],
-    tiposJornada: tipoJornada[],
-};

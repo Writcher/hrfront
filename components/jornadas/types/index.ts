@@ -8,6 +8,11 @@ export type proyecto = {
   nombre: string,
 };
 
+export type tipoEmpleado = {
+  id: number,
+  nombre: string,
+};
+
 export type jornada = {
   fecha: string,
   nombreempleado: string,
@@ -31,6 +36,7 @@ export type empleado = {
   id_proyecto: number,
   nombreproyecto: string,
   estadoempleado: string,
+  es_mensualizado: boolean,
 };
 
 export type tipoJornada = {
@@ -68,24 +74,30 @@ export type menuFiltrosProps = {
   onSeleccionBusquedaNombre: () => void,
   onSeleccionFiltroProyecto: () => void,
   onSeleccionBusquedaLegajo: () => void,
+  onSeleccionFiltroTipoEmpleado: () => void,
 };
 
 export type formularioFiltrosPadreProps = {
   mostrarBusquedaNombre: boolean,
   mostrarFiltroProyecto: boolean,
   mostrarBusquedaLegajo: boolean,
+  mostrarFiltroTipoEmpleado: boolean,
   busquedaNombreNormal: string,
   filtroProyecto: number | '',
   busquedaLegajoNormal: number | '',
+  filtroTipoEmpleado: number | '',
   proyectos: proyecto[],
+  tiposEmpleado: tipoEmpleado[],
   onCambioBusquedaNombre: (event: React.ChangeEvent<HTMLInputElement>) => void,
   onCambioFiltroProyecto: (event: React.ChangeEvent<HTMLInputElement>) => void,
   onCambioBusquedaLegajo: (event: React.ChangeEvent<HTMLInputElement>) => void,
+  onCambioFiltroTipoEmpleado: (event: React.ChangeEvent<HTMLInputElement>) => void,
 };
 
 export type filtrosActivosProps = {
   filtrosActivos: { [key: string]: any },
   getNombreProyectoPorId: (id: number) => string,
+  getNombreTipoEmpleadoPorId: (id: number) => string,
 };
 
 export type tablaEmpleadosProps = {
@@ -222,6 +234,7 @@ export type formularioCrearJornadaProps = {
 export type filaExpandidaEmpleadoProps = {
   idFilaExpandida: number,
   idFilaExpandidaProp: number | null,
+  es_mensualizado: boolean,
 };
 
 export type formularioFiltrosProps = {
@@ -234,8 +247,15 @@ export type formularioFiltrosProps = {
 };
 
 export type tablaJornadasResumenProps = {
-  resumen: resumen;
-  cargando: boolean;
+  resumen: resumen,
+  cargando: boolean,
+  es_mensualizado: boolean,
+};
+
+export type tablaJornadasResumenObservacionesProps = {
+  observaciones: observacionResumen[],
+  cargando: boolean,
+  filas: number,
 };
 
 export type useTablaJornadaResumenFormularioProps = {
@@ -246,6 +266,10 @@ export type tablaResumenFilaProps = {
   resumen: resumen
 };
 
+export type tablaObservacionesFilaProps = {
+  observacion: observacionResumen
+};
+
 //useForm
 
 export type tablaEmpleadosFiltrosDatos = {
@@ -254,6 +278,7 @@ export type tablaEmpleadosFiltrosDatos = {
   filtroProyecto: number | '',
   busquedaLegajo: number | '',
   busquedaLegajoNormal: number | '',
+  filtroTipoEmpleado: number | '',
 };
 
 export type useObservacionFormularioDatos = {
@@ -321,9 +346,20 @@ export type formularioDatos = {
 };
 
 export type resumen = {
-    suma_total: number,
-    suma_total_normal: number,
-    suma_total_50: number,
-    suma_total_100: number,
-    suma_total_feriado: number,
+  suma_total: number,
+  suma_total_normal: number,
+  suma_total_50: number,
+  suma_total_100: number,
+  suma_total_feriado: number,
+  suma_total_nocturno: number,
+  suma_total_nocturno_100: number,
+  total_asistencias: number,
+  total_ausencias_injustificadas: number,
+  total_ausencias_justificadas: number,
+};
+
+export type observacionResumen = {
+  id: number,
+  texto: string,
+  fecha: string,
 };

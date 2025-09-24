@@ -2,10 +2,11 @@ export type  fetchEmpleadosDTO = {
     busquedaNombre: string,
     filtroProyecto: number | '',
     busquedaLegajo: number | '',
+    filtroTipoEmpleado: number | '',
     pagina: number,
     filasPorPagina: number,
     ordenColumna: string,
-    ordenDireccion: "ASC" | "DESC"
+    ordenDireccion: "ASC" | "DESC",
 };
 
 export type editEmpleadoDTO = {
@@ -13,4 +14,5 @@ export type editEmpleadoDTO = {
     nombre: string,
     legajo: number | '',
     id: number,
+    id_tipoempleado: number | '',
 };

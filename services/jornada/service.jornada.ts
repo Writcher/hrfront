@@ -1,5 +1,6 @@
 "use server"
 
+import { jornada } from "@/components/jornadas/types";
 import CONFIG from "@/config";
 import { deleteJornadaDTO, editJornadaDTO, fetchJornadasDTO, fetchJornadasPorImportacionDTO, insertJornadaDTO, validateJornadaDTO } from "@/lib/dtos/jornada";
 import { getToken } from "@/lib/utils/getToken";

@@ -1,4 +1,4 @@
-import { Table, TableBody, TableCell, TableContainer, TableRow } from "@mui/material";
+import { Table, TableBody, TableContainer } from "@mui/material";
 import React from "react";
 import { tablaJornadasProps, jornada } from "../../types";
 import { Esqueleto } from "./tablaJornadasEsqueleto";
@@ -8,33 +8,35 @@ import { Encabezado } from "./tablaJornadasEncabezado";
 export const TablaJornadas = ({
     jornadas,
     cargando,
-    filas,
 }: tablaJornadasProps) => {
     return (
-        <TableContainer className="inner-table-container"  id={"tablaJornadaBody"}> 
-            <Table stickyHeader size="small">
-                <Encabezado/>
-                {cargando ? (
-                    <Esqueleto
-                        filas={filas}
-                    />
-                ) : (
-                    <TableBody>
-                        {jornadas && jornadas.length > 0 ? (
-                            jornadas.map((jornada: jornada) => (
-                                <FilaJornada
-                                    jornada={jornada}
-                                    key={jornada.id}
-                                />
-                            ))
+        <>
+            {cargando || jornadas && jornadas.length > 0 ? (
+                <TableContainer className="inner-table-container" id={"tablaJornadaBody"}>
+                    <Table stickyHeader size="small">
+                        <Encabezado />
+                        {cargando ? (
+                            <Esqueleto
+                                filas={5}
+                            />
                         ) : (
-                            <TableRow>
-                                <TableCell colSpan={9} align="center" />
-                            </TableRow>
+                            <TableBody>
+                                {jornadas.map((jornada: jornada) => (
+                                    <FilaJornada
+                                        jornada={jornada}
+                                        key={jornada.id}
+                                    />
+                                ))}
+                            </TableBody>
                         )}
-                    </TableBody>
-                )}
-            </Table>
-        </TableContainer>
+                    </Table>
+                </TableContainer>
+            ) : null}
+            {!cargando && (!jornadas || jornadas.length === 0) && (
+                <div className="flex items-center justify-center py-[5vh] h-full w-full text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.8rem)]">
+                    No se encontraron jornadas
+                </div>
+            )}
+        </>
     );
 };

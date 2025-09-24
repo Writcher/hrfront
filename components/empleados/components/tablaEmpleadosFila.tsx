@@ -1,14 +1,15 @@
-import { Chip, TableCell, TableRow, TextField } from "@mui/material";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Chip, MenuItem, TableCell, TableRow, TextField } from "@mui/material";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { deactivateEmpleado, editEmpleado } from "@/services/empleado/service.empleado";
 import { useSnackbar } from "@/lib/context/snackbarcontext";
 import { useEmpleadoFormulario } from "../hooks/useEmpleadoFormulario";
 import { useMostrarFormulario } from "../hooks/useMostrarFormulario";
 import { Controller } from "react-hook-form";
 import { useEffect } from "react";
-import { editEmpleadoParametros, empleadoFormularioDatos, formularioFilaEmpleadoProps } from "../types";
+import { editEmpleadoParametros, empleadoFormularioDatos, formularioFilaEmpleadoProps, tipoEmpleado } from "../types";
 import { BotonesFila } from "./filaEmpleadosBotones";
 import { useConfirmar } from "../../hooks/useConfirmar";
+import { fetchTiposEmpleado } from "@/services/tipoempleado/service.tipoempleado";
 
 export default function FilaEmpleado({ empleado }: formularioFilaEmpleadoProps) {
 
@@ -22,11 +23,18 @@ export default function FilaEmpleado({ empleado }: formularioFilaEmpleadoProps) 
 
     const { confirmar: confirmarBaja, handleConfirmar: handleConfirmarBaja } = useConfirmar();
 
+    const { data: selectData } = useQuery({
+        queryKey: ["fetchTiposEmpleado"],
+        queryFn: () => fetchTiposEmpleado(),
+        refetchOnWindowFocus: false
+    });
+
     useEffect(() => {
         if (empleado) {
             setValue('id_reloj', empleado.id_reloj ? empleado.id_reloj : '');
             setValue('legajo', empleado.legajo ? empleado.legajo : '');
             setValue('nombre', empleado.nombre ? empleado.nombre : '');
+            setValue('id_tipoempleado', empleado.id_tipoempleado ? empleado.id_tipoempleado : '');
         };
     }, [empleado, setValue, formularioVisible]);
 
@@ -49,7 +57,8 @@ export default function FilaEmpleado({ empleado }: formularioFilaEmpleadoProps) 
             id_reloj: data.id_reloj,
             legajo: data.legajo,
             nombre: data.nombre,
-            id: empleado.id
+            id: empleado.id,
+            id_tipoempleado: data.id_tipoempleado,
         });
     };
 
@@ -71,7 +80,7 @@ export default function FilaEmpleado({ empleado }: formularioFilaEmpleadoProps) 
             empleado.id
         );
     };
-    
+
     return (
         <TableRow>
             <TableCell align="center" size="small">
@@ -153,6 +162,42 @@ export default function FilaEmpleado({ empleado }: formularioFilaEmpleadoProps) 
                     ) : (
                         <>
                             {empleado.nombre}
+                        </>
+                    )}
+                </div>
+            </TableCell>
+            <TableCell align="center" size="small">
+                <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]" style={{ userSelect: "none" }}>
+                    {formularioVisible ? (
+                        <Controller
+                            name="id_tipoempleado"
+                            control={control}
+                            rules={{ required: "Debe seleccionar un tipo" }}
+                            render={({ field, fieldState: { error } }) => (
+                                <TextField
+                                    {...field}
+                                    id="id_tipoempleado"
+                                    label="Seleccionar Tipo de Empleado"
+                                    variant="outlined"
+                                    color="warning"
+                                    size="small"
+                                    select
+                                    fullWidth
+                                    error={!!error}
+                                    helperText={error?.message}
+                                    disabled={selectData?.length === 0 || !selectData}
+                                >
+                                    {selectData?.map((tipoEmpleado: tipoEmpleado) => (
+                                        <MenuItem key={tipoEmpleado.id} value={tipoEmpleado.id}>
+                                            {tipoEmpleado.nombre}
+                                        </MenuItem>
+                                    )) || []}
+                                </TextField>
+                            )}
+                        />
+                    ) : (
+                        <>
+                            {empleado.tipoempleado}
                         </>
                     )}
                 </div>

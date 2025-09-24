@@ -1,31 +1,21 @@
 import { TableCell, TableHead, TableRow } from "@mui/material";
 
-export const Encabezado = () => (
+export const EncabezadoMensual = () => (
     <TableHead>
         <TableRow>
             <TableCell align="center">
                 <div style={{ userSelect: "none" }} className="text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]">
-                    Total
+                    Total de Asistencias
                 </div>
             </TableCell>
             <TableCell align="center">
                 <div style={{ userSelect: "none" }} className="text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]">
-                    Total Normal
+                    Total de Ausencias Justificadas
                 </div>
             </TableCell>
             <TableCell align="center">
                 <div style={{ userSelect: "none" }} className="text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]">
-                    Total 50%
-                </div>
-            </TableCell>
-            <TableCell align="center">
-                <div style={{ userSelect: "none" }} className="text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]">
-                    Total 100%
-                </div>
-            </TableCell>
-            <TableCell align="center">
-                <div style={{ userSelect: "none" }} className="text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]">
-                    Total Feriado
+                    Total de Ausencias Injustificadas
                 </div>
             </TableCell>
         </TableRow>

@@ -29,10 +29,10 @@ export function FilaExpandidaAdministrativo({ idFilaExpandida, idFilaExpandidaPr
     const { formularioVisible, handleMostrarFormulario } = useMostrarFormulario({ reset });
 
     const { onCambioJornadaPartida, jornadaPartida } = useJornadaPartida();
-    
+
 
     const { data: selectDatos, isLoading: selectCargando, isError: selectError } = useQuery({
-        queryKey: ["fetchDatosSelectTablaJornadas"],
+        queryKey: ["fetchMeses"],
         queryFn: () => fetchMeses(),
         refetchOnWindowFocus: false,
         staleTime: 30 * 60 * 1000,
@@ -104,6 +104,10 @@ export function FilaExpandidaAdministrativo({ idFilaExpandida, idFilaExpandidaPr
         };
     }, [selectError, formularioDatos, jornadasDatos, showWarning]);
 
+    const normalizedFormularioDatos = formularioDatos
+    ? { ...formularioDatos, tiposJornada: formularioDatos.tiposJornada || [], tiposAusencia: formularioDatos.tiposAusencia || [] }
+    : undefined;
+
     return (
         <TableRow className={`${idFilaExpandida === idFilaExpandidaProp ? 'bg-orange-100' : ''}`}>
             <TableCell colSpan={3} sx={{ padding: "4px" }}>
@@ -115,7 +119,7 @@ export function FilaExpandidaAdministrativo({ idFilaExpandida, idFilaExpandidaPr
                         filtroQuincena={watch("filtroQuincena")}
                         filtroMarcasIncompletas={watch("filtroMarcasIncompletas")}
                         cargando={selectCargando}
-                        meses={selectDatos}
+                        meses={selectDatos || []}
                         creando={mutacionCreate.isPending}
                         camposValidos={isValid}
                         handleCambioFiltroMarcasIncompletas={handleCambioFiltroMarcasIncompletas}
@@ -128,7 +132,7 @@ export function FilaExpandidaAdministrativo({ idFilaExpandida, idFilaExpandidaPr
                     <div className="flex grow flex-col justify-between w-full">
                         {formularioVisible ? (
                             <Formulario
-                                formularioDatos={formularioDatos}
+                                formularioDatos={normalizedFormularioDatos}
                                 formularioCargando={formularioCargando}
                                 control={control}
                                 watch={watch}
@@ -143,27 +147,29 @@ export function FilaExpandidaAdministrativo({ idFilaExpandida, idFilaExpandidaPr
                                     cargando={jornadasCargando}
                                     filas={filasPorPagina}
                                 />
-                                <div className="flex justify-end items-end overflow-x-hide">
-                                    <TablePagination
-                                        rowsPerPageOptions={[16, 31]}
-                                        component="div"
-                                        count={jornadasDatos?.totalJornadas || 0}
-                                        rowsPerPage={filasPorPagina}
-                                        page={pagina}
-                                        onPageChange={handleCambioPagina}
-                                        onRowsPerPageChange={handleCambioFilasPorPagina}
-                                        labelRowsPerPage="Filas por página"
-                                        labelDisplayedRows={({ from, to, count }) => `${from}-${to} de ${count !== -1 ? count : `más de ${to}`}`}
-                                        slotProps={{
-                                            select: {
-                                                MenuProps: {
-                                                    anchorOrigin: { vertical: "top", horizontal: "right" },
-                                                    transformOrigin: { vertical: "top",  horizontal: "left" }
-                                                },
-                                            }
-                                        }}
-                                    />
-                                </div>
+                                {(jornadasCargando || (jornadasDatos?.jornadas.length ?? 0) > 0) && (
+                                    <div className="flex justify-end items-end overflow-x-hide">
+                                        <TablePagination
+                                            rowsPerPageOptions={[16, 31]}
+                                            component="div"
+                                            count={jornadasDatos?.totalJornadas || 0}
+                                            rowsPerPage={filasPorPagina}
+                                            page={pagina}
+                                            onPageChange={handleCambioPagina}
+                                            onRowsPerPageChange={handleCambioFilasPorPagina}
+                                            labelRowsPerPage="Filas por página"
+                                            labelDisplayedRows={({ from, to, count }) => `${from}-${to} de ${count !== -1 ? count : `más de ${to}`}`}
+                                            slotProps={{
+                                                select: {
+                                                    MenuProps: {
+                                                        anchorOrigin: { vertical: "top", horizontal: "right" },
+                                                        transformOrigin: { vertical: "top", horizontal: "left" }
+                                                    },
+                                                }
+                                            }}
+                                        />
+                                    </div>
+                                )}
                             </>
                         )}
                     </div>

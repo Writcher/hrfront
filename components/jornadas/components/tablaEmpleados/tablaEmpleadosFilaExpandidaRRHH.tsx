@@ -1,4 +1,4 @@
-import { Button, TableCell, TableRow } from "@mui/material";
+import { Button, Divider, TableCell, TablePagination, TableRow } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { fetchMeses } from "@/services/mes/service.mes";
 import { fetchJornadas } from "@/services/jornada/service.jornada";
@@ -9,16 +9,22 @@ import { TablaResumen } from "../tablaResumen/tablaResumen";
 import { filaExpandidaEmpleadoProps } from "../../types";
 import { useFiltros } from "../../hooks/useFiltrosHijoRRHH";
 import { useTablaJornadaResumenFormulario } from "../../hooks/useTablaJornadasResumenFormulario";
+import { TablaObservaciones } from "../tablaObservaciones/tablaObservaciones";
+import { fetchObservacionesEmpleado } from "@/services/observacion/service.observacion";
+import { usePaginacion } from "@/components/hooks/usePaginacion";
 
 export function FilaExpandidaRRHH({
     idFilaExpandida,
-    idFilaExpandidaProp
+    idFilaExpandidaProp,
+    es_mensualizado
 }: filaExpandidaEmpleadoProps) {
-    
+
     const { showWarning } = useSnackbar();
 
+    const { pagina, filasPorPagina, handleCambioPagina, handleCambioFilasPorPagina } = usePaginacion({ filasIniciales: 5 });
+
     const { data: selectDatos, isLoading: selectCargando, isError: selectError } = useQuery({
-        queryKey: ["fetchDatosSelectTablaJornadas"],
+        queryKey: ["fetchMeses"],
         queryFn: () => fetchMeses(),
         refetchOnWindowFocus: false,
         staleTime: 30 * 60 * 1000,
@@ -35,7 +41,7 @@ export function FilaExpandidaRRHH({
 
     const { data: jornadasDatos, isLoading: jornadasCargando, isError: jornadasError } = useQuery({
         queryKey: [
-            "fetchJornadasEmpleado",
+            "fetchResumenEmpleado",
             idFilaExpandida,
             watch("filtroMes"),
             watch("filtroQuincena"),
@@ -48,12 +54,34 @@ export function FilaExpandidaRRHH({
         refetchOnWindowFocus: false
     });
 
+    const { data: observacionesDatos, isLoading: observacionesCargando, isError: observacionesError } = useQuery({
+        queryKey: [
+            "fetchResumenEmpleado",
+            idFilaExpandida,
+            watch("filtroMes"),
+            watch("filtroQuincena"),
+            pagina,
+            filasPorPagina
+        ],
+        queryFn: () => fetchObservacionesEmpleado({
+            id_empleado: idFilaExpandida,
+            filtroMes: watch("filtroMes"),
+            filtroQuincena: watch("filtroQuincena"),
+            pagina: pagina,
+            filasPorPagina: filasPorPagina,
+        }),
+        refetchOnWindowFocus: false
+    });
+
     useEffect(() => {
         if (selectError) {
             showWarning("Error al cargar los datos");
         };
         if (jornadasError) {
             showWarning("Error al cargar jornadas");
+        };
+        if (observacionesError) {
+            showWarning("Error al cargar observaciones");
         };
     }, [selectError, jornadasError, showWarning]);
 
@@ -82,11 +110,51 @@ export function FilaExpandidaRRHH({
                         />
                         <div className="flex grow" />
                     </div>
-                    <div className="flex grow flex-col justify-between w-full">
-                        <TablaResumen
-                            resumen={jornadasDatos?.resumen}
-                            cargando={jornadasCargando}
-                        />
+                    <div className="flex grow flex-col justify-between w-full gap-2">
+                        <div className="flex w-full h-full p-[20px] pt-[10px]">
+                            <TablaResumen
+                                resumen={jornadasDatos?.resumen}
+                                cargando={jornadasCargando}
+                                es_mensualizado={es_mensualizado}
+                            />
+                        </div>
+                        <Divider variant="middle" sx={{ bgcolor: "#ED6C02" }} flexItem />
+                        {observacionesDatos?.observaciones && observacionesDatos?.observaciones.length > 0 ? (
+                            <>
+                                <div className="flex w-full h-full p-[20px] pt-[10px]">
+                                    <TablaObservaciones
+                                        observaciones={observacionesDatos?.observaciones}
+                                        cargando={observacionesCargando}
+                                        filas={filasPorPagina}
+                                    />
+                                </div>
+                                <div className="flex justify-end items-center overflow-x-hide">
+                                    <TablePagination
+                                        rowsPerPageOptions={[5, 10, 15]}
+                                        component="div"
+                                        count={observacionesDatos?.totalObservaciones || 0}
+                                        rowsPerPage={filasPorPagina}
+                                        page={pagina}
+                                        onPageChange={handleCambioPagina}
+                                        onRowsPerPageChange={handleCambioFilasPorPagina}
+                                        labelRowsPerPage="Filas por página"
+                                        labelDisplayedRows={({ from, to, count }) => `${from}-${to} de ${count !== -1 ? count : `más de ${to}`}`}
+                                        slotProps={{
+                                            select: {
+                                                MenuProps: {
+                                                    anchorOrigin: { vertical: "top", horizontal: "right" },
+                                                    transformOrigin: { vertical: "top", horizontal: "left" }
+                                                },
+                                            }
+                                        }}
+                                    />
+                                </div>
+                            </>
+                        ) : (
+                            <div className="flex items-center justify-center py-[20px] text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.8rem)]">
+                                No se encontraron observaciones
+                            </div>
+                        )}
                     </div>
                 </div>
             </TableCell>

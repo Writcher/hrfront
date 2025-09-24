@@ -1,17 +1,21 @@
 import { TextField, MenuItem } from "@mui/material";
-import { formularioFiltrosProps, proyecto } from "../types";
+import { formularioFiltrosProps, proyecto, tipoEmpleado } from "../types";
 
 export const FormularioFiltros = ({
-mostrarBusquedaNombre,
+  mostrarBusquedaNombre,
   mostrarFiltroProyecto,
   mostrarBusquedaLegajo,
+  mostrarFiltroTipoEmpleado,
   busquedaNombreNormal,
   filtroProyecto,
   busquedaLegajoNormal,
+  filtroTipoEmpleado,
   proyectos,
+  tiposEmpleado,
   onCambioBusquedaNombre,
   onCambioFiltroProyecto,
-  onCambioBusquedaLegajo
+  onCambioBusquedaLegajo,
+  onCambioFiltroTipoEmpleado,
 }: formularioFiltrosProps) => (
   <form className="flex items-center justify-start w-2/6">
     {mostrarBusquedaNombre && (
@@ -59,6 +63,27 @@ mostrarBusquedaNombre,
         {proyectos?.map((proyecto: proyecto) => (
           <MenuItem key={proyecto.id} value={proyecto.id}>
             {proyecto.nombre}
+          </MenuItem>
+        )) || []}
+      </TextField>
+    )}
+    {mostrarFiltroTipoEmpleado && (
+      <TextField
+        id="filtroTipoEmpleado"
+        name="filtroTipoEmpleado"
+        label="Filtrar por Tipo de Empleado"
+        type="text"
+        variant="outlined"
+        color="warning"
+        size="small"
+        select
+        fullWidth
+        value={filtroTipoEmpleado}
+        onChange={onCambioFiltroTipoEmpleado}
+      >
+        {tiposEmpleado?.map((tipoEmpleado: tipoEmpleado) => (
+          <MenuItem key={tipoEmpleado.id} value={tipoEmpleado.id}>
+            {tipoEmpleado.nombre}
           </MenuItem>
         )) || []}
       </TextField>

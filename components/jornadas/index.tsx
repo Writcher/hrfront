@@ -12,15 +12,15 @@ import { MenuFiltros } from "./components/tablaEmpleados/tablaEmpleadosFiltrosMe
 import { Formulario } from "./components/tablaEmpleados/tablaEmpleadosFiltrosFormulario";
 import { FiltrosActivos } from "./components/tablaEmpleados/tablaEmpleadosFiltrosActivos";
 import { TablaEmpleados } from "./components/tablaEmpleados/tablaEmpleados";
-import { fetchProyectos } from "@/services/proyecto/service.proyecto";
 import { fetchEmpleados } from "@/services/empleado/service.empleado";
 import { useSnackbar } from "@/lib/context/snackbarcontext";
-import { getNombreProyecto } from "./utils";
+import { getNombreProyecto, getNombreTipoEmpleado } from "./utils";
 import { Botones } from "./components/tablaEmpleados/tablaEmpleadosFiltrosBotones";
 import { usePaginacion } from "@/components/hooks/usePaginacion";
 import { tablaJornadasEmpleadosProps } from "./types";
 import { useOrdenacion } from "../hooks/useOrdenacion";
 import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
+import { fetchDatosSelectTablaEmpleados } from "@/services/jornada/service.jornadas";
 
 export default function TablaJornadasEmpleados({ esAdministrativo, esRRHH }: tablaJornadasEmpleadosProps) {
 
@@ -35,15 +35,18 @@ export default function TablaJornadasEmpleados({ esAdministrativo, esRRHH }: tab
     busquedaNombreVisible,
     filtroProyectoVisible,
     busquedaLegajoVisible,
+    filtroTipoEmpleadoVisible,
     handleClickFiltros,
     handleCerrarFiltros,
     handleLimpiarFiltros,
     handleCambioBusquedaNombre,
     handleCambioFiltroProyecto,
     handleCambioBusquedaLegajo,
+    handleCambioFiltroTipoEmpleado,
     setBusquedaNombreVisible,
     setFiltroProyectoVisible,
-    setBusquedaLegajoVisible
+    setBusquedaLegajoVisible,
+    setFiltroTipoEmpleadoVisible
   } = useFiltros({ setValue });
 
   const { pagina, filasPorPagina, handleCambioPagina, handleCambioFilasPorPagina } = usePaginacion({ filasIniciales: 25 });
@@ -54,7 +57,7 @@ export default function TablaJornadasEmpleados({ esAdministrativo, esRRHH }: tab
 
   const { data: selectDatos, isError: selectError } = useQuery({
     queryKey: ["fetchDatosSelectTablaEmpleados"],
-    queryFn: () => fetchProyectos(),
+    queryFn: () => fetchDatosSelectTablaEmpleados(),
     refetchOnWindowFocus: false
   });
 
@@ -68,6 +71,7 @@ export default function TablaJornadasEmpleados({ esAdministrativo, esRRHH }: tab
       watch("busquedaNombre"),
       watch("filtroProyecto"),
       watch("busquedaLegajo"),
+      watch("filtroTipoEmpleado"),
     ],
     queryFn: () => fetchEmpleados({
       busquedaNombre: watch("busquedaNombre"),
@@ -77,11 +81,13 @@ export default function TablaJornadasEmpleados({ esAdministrativo, esRRHH }: tab
       ordenColumna: columna,
       ordenDireccion: direccion,
       busquedaLegajo: watch("busquedaLegajo"),
+      filtroTipoEmpleado: watch("filtroTipoEmpleado"),
     }),
     refetchOnWindowFocus: false
   });
 
-  const getNombreProyectoPorId = getNombreProyecto(selectDatos);
+  const getNombreProyectoPorId = getNombreProyecto(selectDatos?.proyectos);
+  const getNombreTipoEmpleadoPorId = getNombreTipoEmpleado(selectDatos?.tiposEmpleado);
 
   useEffect(() => {
     if (selectError) {
@@ -107,18 +113,28 @@ export default function TablaJornadasEmpleados({ esAdministrativo, esRRHH }: tab
             setBusquedaNombreVisible(true);
             setFiltroProyectoVisible(false);
             setBusquedaLegajoVisible(false);
+            setFiltroTipoEmpleadoVisible(false);
             handleCerrarFiltros();
           }}
           onSeleccionFiltroProyecto={() => {
             setBusquedaNombreVisible(false);
             setFiltroProyectoVisible(true);
             setBusquedaLegajoVisible(false);
+            setFiltroTipoEmpleadoVisible(false);
             handleCerrarFiltros();
           }}
           onSeleccionBusquedaLegajo={() => {
             setBusquedaNombreVisible(false);
             setFiltroProyectoVisible(false);
             setBusquedaLegajoVisible(true);
+            setFiltroTipoEmpleadoVisible(false);
+            handleCerrarFiltros();
+          }}
+          onSeleccionFiltroTipoEmpleado={() => {
+            setBusquedaNombreVisible(false);
+            setFiltroProyectoVisible(false);
+            setBusquedaLegajoVisible(false);
+            setFiltroTipoEmpleadoVisible(true);
             handleCerrarFiltros();
           }}
         />
@@ -126,44 +142,49 @@ export default function TablaJornadasEmpleados({ esAdministrativo, esRRHH }: tab
           mostrarBusquedaNombre={busquedaNombreVisible}
           mostrarFiltroProyecto={filtroProyectoVisible}
           mostrarBusquedaLegajo={busquedaLegajoVisible}
+          mostrarFiltroTipoEmpleado={filtroTipoEmpleadoVisible}
           busquedaNombreNormal={watch("busquedaNombreNormal")}
           filtroProyecto={watch("filtroProyecto")}
           busquedaLegajoNormal={watch("busquedaLegajoNormal")}
-          proyectos={selectDatos || []}
+          filtroTipoEmpleado={watch("filtroTipoEmpleado")}
+          proyectos={selectDatos?.proyectos || []}
+          tiposEmpleado={selectDatos?.tiposEmpleado || []}
           onCambioBusquedaNombre={handleCambioBusquedaNombre}
           onCambioFiltroProyecto={handleCambioFiltroProyecto}
           onCambioBusquedaLegajo={handleCambioBusquedaLegajo}
+          onCambioFiltroTipoEmpleado={handleCambioFiltroTipoEmpleado}
         />
         <div className="flex grow" />
         {esAdministrativo
           ? <Button
+            component={Link}
+            href={"/administrativo/importaciones/importar"}
+            variant="contained"
+            color="success"
+            disableElevation
+            endIcon={<UploadFileRoundedIcon />}
+          >
+            Importar Informe
+          </Button>
+          : esRRHH
+            ? <Button
               component={Link}
-              href={"/administrativo/importaciones/importar"}
+              href={"/rrhh/jornadas/exportar"}
               variant="contained"
               color="success"
               disableElevation
-              endIcon={<UploadFileRoundedIcon />}
+              endIcon={<DownloadRoundedIcon />}
             >
-              Importar Informe
+              Exportar Informe
             </Button>
-          : esRRHH
-            ? <Button
-                component={Link}
-                href={"/rrhh/jornadas/exportar"}
-                variant="contained"
-                color="success"
-                disableElevation
-                endIcon={<DownloadRoundedIcon />}
-              >
-                Exportar Informe
-              </Button>
             : <></>
-            
+
         }
       </div>
       <FiltrosActivos
         filtrosActivos={filtrosActivos}
         getNombreProyectoPorId={getNombreProyectoPorId}
+        getNombreTipoEmpleadoPorId={getNombreTipoEmpleadoPorId}
       />
       <div className="flex flex-col justify-between w-full h-full overflow-y-auto rounded" style={{ border: "2px solid #ED6C02" }}>
         <TablaEmpleados
@@ -178,30 +199,32 @@ export default function TablaJornadasEmpleados({ esAdministrativo, esRRHH }: tab
           esAdministrativo={esAdministrativo}
           esRRHH={esRRHH}
         />
-        <div className="flex justify-end items-center overflow-x-hide"
-          style={{ borderTop: "2px solid #ED6C02" }}>
-          <TablePagination
-            rowsPerPageOptions={[25, 50, 75, 100]}
-            component="div"
-            count={empleadosDatos?.totalEmpleados || 0}
-            rowsPerPage={filasPorPagina}
-            page={pagina}
-            onPageChange={handleCambioPagina}
-            onRowsPerPageChange={handleCambioFilasPorPagina}
-            labelRowsPerPage="Filas por página"
-            labelDisplayedRows={({ from, to, count }) =>
-              `${from}-${to} de ${count !== -1 ? count : `más de ${to}`}`
-            }
-            slotProps={{
-              select: {
-                MenuProps: {
-                  anchorOrigin: { vertical: "top", horizontal: "right" },
-                  transformOrigin: { vertical: "top", horizontal: "left" }
-                },
+        {(empleadosCargando || (empleadosDatos?.empleados.length ?? 0) > 0) && (
+          <div className="flex justify-end items-center overflow-x-hide"
+            style={{ borderTop: "2px solid #ED6C02" }}>
+            <TablePagination
+              rowsPerPageOptions={[25, 50, 75, 100]}
+              component="div"
+              count={empleadosDatos?.totalEmpleados || 0}
+              rowsPerPage={filasPorPagina}
+              page={pagina}
+              onPageChange={handleCambioPagina}
+              onRowsPerPageChange={handleCambioFilasPorPagina}
+              labelRowsPerPage="Filas por página"
+              labelDisplayedRows={({ from, to, count }) =>
+                `${from}-${to} de ${count !== -1 ? count : `más de ${to}`}`
               }
-            }}
-          />
-        </div>
+              slotProps={{
+                select: {
+                  MenuProps: {
+                    anchorOrigin: { vertical: "top", horizontal: "right" },
+                    transformOrigin: { vertical: "top", horizontal: "left" }
+                  },
+                }
+              }}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

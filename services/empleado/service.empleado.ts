@@ -17,9 +17,8 @@ export async function fetchEmpleados(parametros: fetchEmpleadosDTO) {
             ordenColumna: parametros.ordenColumna,
             ordenDireccion: parametros.ordenDireccion,
             busquedaLegajo: parametros.busquedaLegajo.toString() === '' ? '0' : parametros.busquedaLegajo.toString(),
+            filtroTipoEmpleado: parametros.filtroTipoEmpleado.toString() === '' ? '0' : parametros.filtroTipoEmpleado.toString(),
         });
-
-        console.log(parametros.busquedaLegajo)
 
         const empleadosRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_EMPLEADOS}?${empleadosParametros.toString()}`, {
             method: "GET",
@@ -106,7 +105,8 @@ export async function editEmpleado(parametros: editEmpleadoDTO) {
                 accion: "editar" ,
                 nombre: parametros.nombre,
                 legajo: parametros.legajo,
-                id_reloj: parametros. id_reloj
+                id_reloj: parametros. id_reloj,
+                id_tipoempleado: parametros.id_tipoempleado,
             }),
         });
 

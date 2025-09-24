@@ -14,6 +14,8 @@ export const useFiltros = ({ setValue }: hookGenericoPadreProps<'setValue'>) => 
 
   const [busquedaLegajoVisible, setBusquedaLegajoVisible] = useState<boolean>(false);
 
+  const [filtroTipoEmpleadoVisible, setFiltroTipoEmpleadoVisible] = useState<boolean>(false);
+
   const abrirFiltros = Boolean(ancla);
 
   const handleClickFiltros = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -30,9 +32,11 @@ export const useFiltros = ({ setValue }: hookGenericoPadreProps<'setValue'>) => 
     setValue("filtroProyecto", '');
     setValue("busquedaLegajo", '');
     setValue("busquedaLegajoNormal", '');
+    setValue("filtroTipoEmpleado", '');
     setBusquedaNombreVisible(true);
     setFiltroProyectoVisible(false);
     setBusquedaLegajoVisible(false);
+    setFiltroTipoEmpleadoVisible(false);
     setFiltrosActivos({});
     handleCerrarFiltros();
   };
@@ -67,6 +71,11 @@ export const useFiltros = ({ setValue }: hookGenericoPadreProps<'setValue'>) => 
     setFiltrosActivos({ ...filtrosActuales, busquedaLegajo: Number(event.target.value) });
   };
 
+  const handleCambioFiltroTipoEmpleado = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValue("filtroTipoEmpleado", Number(event.target.value));
+    const filtrosActuales = filtrosActivos;
+    setFiltrosActivos({ ...filtrosActuales, filtroTipoEmpleado: Number(event.target.value) });
+  };
 
   return {
     ancla,
@@ -75,14 +84,17 @@ export const useFiltros = ({ setValue }: hookGenericoPadreProps<'setValue'>) => 
     busquedaNombreVisible,
     filtroProyectoVisible,
     busquedaLegajoVisible,
+    filtroTipoEmpleadoVisible,
     handleClickFiltros,
     handleCerrarFiltros,
     handleLimpiarFiltros,
     handleCambioBusquedaNombre,
     handleCambioFiltroProyecto,
     handleCambioBusquedaLegajo,
+    handleCambioFiltroTipoEmpleado,
     setBusquedaNombreVisible,
     setFiltroProyectoVisible,
-    setBusquedaLegajoVisible
+    setBusquedaLegajoVisible,
+    setFiltroTipoEmpleadoVisible
   };
 };

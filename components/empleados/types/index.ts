@@ -4,7 +4,12 @@ import { Control, UseFormGetValues, UseFormReset, UseFormSetValue, UseFormWatch 
 
 export type proyecto = {
   id: number,
-  nombre: string
+  nombre: string,
+};
+
+export type tipoEmpleado = {
+  id: number,
+  nombre: string,
 };
 
 export type empleado = {
@@ -15,6 +20,8 @@ export type empleado = {
   id_proyecto: number,
   nombreproyecto: string,
   estadoempleado: string,
+  tipoempleado: string,
+  id_tipoempleado: number | '',
 };
 
 //props
@@ -32,10 +39,6 @@ export type hookGenericoHijoProps = {
   reset: UseFormReset<empleadoFormularioDatos>,
 };
 
-export type getNombreProyectoProps = {
-  selectDatos: proyecto[],
-};
-
 export type botonesFiltrosProps = {
   onClick: (event: React.MouseEvent<HTMLButtonElement>) => void,
   onClean: (event: React.MouseEvent<HTMLButtonElement>) => void,
@@ -48,30 +51,37 @@ export type menuFiltrosProps = {
   onSeleccionBusquedaNombre: () => void,
   onSeleccionFiltroProyecto: () => void,
   onSeleccionBusquedaLegajo: () => void,
+  onSeleccionFiltroTipoEmpleado: () => void,
 };
 
 export type formularioFiltrosProps = {
   mostrarBusquedaNombre: boolean,
   mostrarFiltroProyecto: boolean,
   mostrarBusquedaLegajo: boolean,
+  mostrarFiltroTipoEmpleado: boolean,
   busquedaNombreNormal: string,
-  busquedaLegajoNormal: number | '',
   filtroProyecto: number | '',
+  busquedaLegajoNormal: number | '',
+  filtroTipoEmpleado: number | '',
   proyectos: proyecto[],
-  onCambioBusquedaLegajo: (event: React.ChangeEvent<HTMLInputElement>) => void,
+  tiposEmpleado: tipoEmpleado[],
   onCambioBusquedaNombre: (event: React.ChangeEvent<HTMLInputElement>) => void,
   onCambioFiltroProyecto: (event: React.ChangeEvent<HTMLInputElement>) => void,
+  onCambioBusquedaLegajo: (event: React.ChangeEvent<HTMLInputElement>) => void,
+  onCambioFiltroTipoEmpleado: (event: React.ChangeEvent<HTMLInputElement>) => void,
 };
 
 export type filtrosActivosProps = {
   filtrosActivos: { [key: string]: any },
   getNombreProyectoPorId: (id: number) => string,
+  getNombreTipoEmpleadoPorId: (id: number) => string,
 };
 
 export type formularioProps = {
   control: Control<empleadoFormularioDatos>,
   cargando: boolean,
   proyectos: proyecto[],
+  tiposEmpleado: tipoEmpleado[],
 };
 
 export type botonesFormularioProps = {
@@ -124,6 +134,7 @@ export type tablaEmpleadosFormularioDatos = {
   filtroProyecto: number | '',
   busquedaLegajo: number | '',
   busquedaLegajoNormal: number | '',
+  filtroTipoEmpleado: number | '',
 };
 
 export type empleadoFormularioDatos = {
@@ -131,6 +142,7 @@ export type empleadoFormularioDatos = {
   id_proyecto: number | '',
   legajo: number | '',
   nombre: string,
+  id_tipoempleado: number | '',
 };
 
 //mutations
@@ -140,6 +152,7 @@ export type insertempleadoParametros = {
   id_proyecto: number | '',
   legajo: number | '',
   nombre: string,
+  id_tipoempleado: number | '',
 };
 
 export type editEmpleadoParametros = {
@@ -147,6 +160,7 @@ export type editEmpleadoParametros = {
   nombre: string,
   legajo: number | '',
   id: number,
+  id_tipoempleado: number | '',
 };
 
 //responses

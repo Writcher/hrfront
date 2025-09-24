@@ -6,7 +6,8 @@ export const useImportarExcelFormulario = () => {
     defaultValues: {
       proyecto: '',
       tipoJornada: '',
-      archivo: null
+      archivo: null,
+      tipoInforme: '',
     },
   });
 };

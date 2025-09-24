@@ -8,6 +8,7 @@ export const useEmpleadoFormulario = () => {
             id_reloj: '',
             id_proyecto: '',
             legajo: '',
+            id_tipoempleado: '',
         },
     });
 };

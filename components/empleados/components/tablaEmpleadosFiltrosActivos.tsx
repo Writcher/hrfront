@@ -2,7 +2,8 @@ import { filtrosActivosProps } from "../types";
 
 export const FiltrosActivos = ({
   filtrosActivos,
-  getNombreProyectoPorId
+  getNombreProyectoPorId,
+  getNombreTipoEmpleadoPorId,
 }: filtrosActivosProps) => (
   <div className="flex flex-row flex-wrap gap-2">
     {Object.entries(filtrosActivos).map(([key, value]) => (
@@ -11,6 +12,7 @@ export const FiltrosActivos = ({
           {key === "busquedaNombre" && `${value}`}
           {key === "filtroProyecto" && `${getNombreProyectoPorId(value)}`}
           {key === "busquedaLegajo" && `${value}`}
+          {key === "filtroTipoEmpleado" && `${getNombreTipoEmpleadoPorId(value)}`}
         </span>
       )
     ))}

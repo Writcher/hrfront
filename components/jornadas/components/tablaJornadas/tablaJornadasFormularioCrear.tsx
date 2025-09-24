@@ -4,7 +4,7 @@ import { DatePicker, TimePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import { useEffect } from "react";
 import { Controller } from "react-hook-form";
-import { formularioCrearJornadaProps } from "../../types";
+import { formularioCrearJornadaProps, tipoAusencia, tipoJornada } from "../../types";
 
 export const Formulario = ({
     formularioDatos,
@@ -51,8 +51,9 @@ export const Formulario = ({
                                 className="!w-[50%]"
                                 select
                                 error={!!error}
+                                disabled={!formularioDatos?.tiposJornada || formularioDatos.tiposJornada.length === 0}
                             >
-                                {formularioDatos?.tiposJornada?.map((tipo: { id: number, nombre: string }) => (
+                                {formularioDatos?.tiposJornada.map((tipo: tipoJornada) => (
                                     <MenuItem key={tipo.id} value={tipo.id}>
                                         {tipo.nombre}
                                     </MenuItem>
@@ -94,8 +95,9 @@ export const Formulario = ({
                                     className="!w-[50%]"
                                     select
                                     error={!!error}
+                                    disabled={!formularioDatos?.tiposAusencia || formularioDatos.tiposAusencia.length === 0}
                                 >
-                                    {formularioDatos?.tiposAusencia?.map((tipo: { id: number, nombre: string }) => (
+                                    {formularioDatos?.tiposAusencia.map((tipo: tipoAusencia) => (
                                         <MenuItem key={tipo.id} value={tipo.id}>
                                             {tipo.nombre}
                                         </MenuItem>

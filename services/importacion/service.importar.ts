@@ -6,6 +6,7 @@ import { fetchProyectos } from "../proyecto/service.proyecto";
 import { fetchTiposJornada } from "../tipojornada/service.tipojornada";
 import { getToken } from "@/lib/utils/getToken";
 import { fetchMeses } from "../mes/service.mes";
+import { fetchTiposImportacion } from "../tipoimportacion/service.tipoimportacion";
 
 export async function insertJornadasExcel(data: insertJornadasExcelDTO) {
     try {
@@ -16,6 +17,7 @@ export async function insertJornadasExcel(data: insertJornadasExcelDTO) {
         formData.append("file", data.archivo!);
         formData.append("id_proyecto", data.proyecto.toString() === '' ? '0' : data.proyecto.toString());
         formData.append("id_tipojornada", data.tipoJornada.toString() === '' ? '0' : data.tipoJornada.toString());
+        formData.append("id_tipoimportacion", data.tipoInforme.toString() === '' ? '0' : data.tipoInforme.toString());
 
         const responseRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_EXCEL_IMPORT}`, {
             method: "POST",
@@ -41,8 +43,9 @@ export async function fetchSelectDataExcelImport() {
     try {
         const proyectos = await fetchProyectos()
         const tiposJornada = await fetchTiposJornada()
+        const tiposImportacion = await fetchTiposImportacion()
 
-        return { proyectos, tiposJornada };
+        return { proyectos, tiposJornada, tiposImportacion};
     } catch (error) {
         throw error;
     };

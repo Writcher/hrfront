@@ -37,6 +37,7 @@ export const Fila = ({ empleado, idFilaExpandidaProp, onExpandirFila, esAdminist
             <FilaExpandidaRRHH
                 idFilaExpandida={empleado.id}
                 idFilaExpandidaProp={idFilaExpandidaProp}
+                es_mensualizado={empleado.es_mensualizado}
             />
         }
     </React.Fragment>

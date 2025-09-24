@@ -9,6 +9,7 @@ export const useTablaEmpleadosFormulario = () => {
       filtroProyecto: '',
       busquedaLegajo: '',
       busquedaLegajoNormal: '',
+      filtroTipoEmpleado: '',
     }
   });
 };

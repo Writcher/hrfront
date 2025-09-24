@@ -35,8 +35,8 @@ export default function Importar() {
             router.push(`/administrativo/importacion/${response.importacion}/completar`);
             reset();
         },
-        onError: () => {
-            showError("Error al importar el archivo");
+        onError: (error: any) => {
+            showError(error.message || "Error al importar informe");
         },
     });
 
@@ -61,7 +61,9 @@ export default function Importar() {
                     <Formulario
                         control={control}
                         cargando={selectCargando}
-                        selectDatos={selectDatos}
+                        proyectos={selectDatos?.proyectos || []}
+                        tiposJornada={selectDatos?.tiposJornada || []}
+                        tiposImportacion={selectDatos?.tiposImportacion || []}
                     />
                     <Dropzone
                         getRootProps={getRootProps}

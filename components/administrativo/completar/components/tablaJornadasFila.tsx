@@ -27,7 +27,7 @@ export function Fila({ jornada }: filaJornadaProps) {
         mutationFn: (data: editJornadaDatos) => editJornada(data),
         onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: ["fetchImportacionJornadas"]
+                queryKey: ["fetchImportacionJorfetchJornadasPorImportacionnadas"]
             });
             showSuccess("Jornada editada correctamente");
         },
@@ -48,7 +48,7 @@ export function Fila({ jornada }: filaJornadaProps) {
         mutationFn: (data: deleteJornadaDatos) => deleteJornada(data),
         onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: ["fetchImportacionJornadas"]
+                queryKey: ["fetchJornadasPorImportacion"]
             });
             showSuccess("Jornada borrada correctamente");
         },
@@ -74,7 +74,7 @@ export function Fila({ jornada }: filaJornadaProps) {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: ["fetchImportacionJornadas"]
+                queryKey: ["fetchJornadasPorImportacion"]
             });
             showSuccess("Jornada validada correctamente");
         },

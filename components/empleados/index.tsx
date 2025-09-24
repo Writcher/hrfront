@@ -10,28 +10,47 @@ import { MenuFiltros } from "./components/tablaEmpleadosFiltrosMenu";
 import { FormularioFiltros } from "./components/tablaEmpleadosFiltrosFormulario";
 import { FiltrosActivos } from "./components/tablaEmpleadosFiltrosActivos";
 import { TablaEmpleados } from "./components/tablaEmpleados";
-import { fetchProyectos } from "@/services/proyecto/service.proyecto";
 import { fetchEmpleados, insertEmpleado } from "@/services/empleado/service.empleado";
 import { useEmpleadoFormulario } from "./hooks/useEmpleadoFormulario";
 import { useMostrarFormulario } from "./hooks/useMostrarFormulario";
 import { Formulario } from "./components/tablaEmpleadosFormularioCrear";
 import { empleadoFormularioDatos, insertempleadoParametros } from "./types";
 import { useSnackbar } from "@/lib/context/snackbarcontext";
-import { getNombreProyecto } from "./utils";
+import { getNombreProyecto, getNombreTipoEmpleado } from "./utils";
 import { BotonesFiltros } from "./components/tablaEmpleadosFiltrosBotones";
 import { usePaginacion } from "../hooks/usePaginacion";
 import { useOrdenacion } from "../hooks/useOrdenacion";
 import { Botones } from "./components/tablaEmpleadosFormularioCrearBotones";
+import { fetchDatosSelectTablaEmpleados } from "@/services/jornada/service.jornadas";
 
 export default function TablaEmpleadosLista() {
 
-  const { watch, setValue, getValues } = useTablaEmpleadosFormulario();
+  const { watch, setValue } = useTablaEmpleadosFormulario();
 
   const { control, handleSubmit, formState: { isValid }, reset } = useEmpleadoFormulario();
 
   const { showSuccess, showError, showWarning } = useSnackbar();
 
-  const { ancla, abrirFiltros, filtrosActivos, busquedaNombreVisible, filtroProyectoVisible, busquedaLegajoVisible, handleClickFiltros, handleCerrarFiltros, handleLimpiarFiltros, handleCambioBusquedaNombre, handleCambioBusquedaLegajo, handleCambioFiltroProyecto, setBusquedaNombreVisible, setFiltroProyectoVisible, setBusquedaLegajoVisible } = useFiltros({ setValue, getValues });
+  const {
+    ancla,
+    abrirFiltros,
+    filtrosActivos,
+    busquedaNombreVisible,
+    filtroProyectoVisible,
+    busquedaLegajoVisible,
+    filtroTipoEmpleadoVisible,
+    handleClickFiltros,
+    handleCerrarFiltros,
+    handleLimpiarFiltros,
+    handleCambioBusquedaNombre,
+    handleCambioBusquedaLegajo,
+    handleCambioFiltroProyecto,
+    handleCambioFiltroTipoEmpleado,
+    setBusquedaNombreVisible,
+    setFiltroProyectoVisible,
+    setBusquedaLegajoVisible,
+    setFiltroTipoEmpleadoVisible
+  } = useFiltros({ setValue });
 
   const { pagina, filasPorPagina, handleCambioPagina, handleCambioFilasPorPagina } = usePaginacion({ filasIniciales: 25 });
 
@@ -41,7 +60,7 @@ export default function TablaEmpleadosLista() {
 
   const { data: selectDatos, isLoading: selectCargando, isError: selectError } = useQuery({
     queryKey: ["fetchDatosSelectTablaEmpleados"],
-    queryFn: () => fetchProyectos(),
+    queryFn: () => fetchDatosSelectTablaEmpleados(),
     refetchOnWindowFocus: false
   });
 
@@ -55,6 +74,7 @@ export default function TablaEmpleadosLista() {
       watch("busquedaNombre"),
       watch("filtroProyecto"),
       watch("busquedaLegajo"),
+      watch("filtroTipoEmpleado"),
     ],
     queryFn: () => fetchEmpleados({
       pagina: pagina,
@@ -64,11 +84,13 @@ export default function TablaEmpleadosLista() {
       busquedaNombre: watch("busquedaNombre"),
       filtroProyecto: watch("filtroProyecto"),
       busquedaLegajo: watch("busquedaLegajo"),
+      filtroTipoEmpleado: watch("filtroTipoEmpleado"),
     }),
     refetchOnWindowFocus: false
   });
 
-  const getNombreProyectoPorId = getNombreProyecto({ selectDatos });
+  const getNombreProyectoPorId = getNombreProyecto(selectDatos?.proyectos);
+  const getNombreTipoEmpleadoPorId = getNombreTipoEmpleado(selectDatos?.tiposEmpleado);
 
   const mutacionCreate = useMutation({
     mutationFn: (data: insertempleadoParametros) => insertEmpleado(data),
@@ -88,6 +110,7 @@ export default function TablaEmpleadosLista() {
       id_reloj: data.id_reloj,
       id_proyecto: data.id_proyecto,
       legajo: data.legajo,
+      id_tipoempleado: data.id_tipoempleado,
     });
   };
 
@@ -120,18 +143,28 @@ export default function TablaEmpleadosLista() {
                 setBusquedaNombreVisible(true);
                 setFiltroProyectoVisible(false);
                 setBusquedaLegajoVisible(false);
+                setFiltroTipoEmpleadoVisible(false);
                 handleCerrarFiltros();
               }}
               onSeleccionFiltroProyecto={() => {
                 setBusquedaNombreVisible(false);
                 setFiltroProyectoVisible(true);
                 setBusquedaLegajoVisible(false);
+                setFiltroTipoEmpleadoVisible(false);
                 handleCerrarFiltros();
               }}
               onSeleccionBusquedaLegajo={() => {
                 setBusquedaNombreVisible(false);
                 setFiltroProyectoVisible(false);
                 setBusquedaLegajoVisible(true);
+                setFiltroTipoEmpleadoVisible(false);
+                handleCerrarFiltros();
+              }}
+              onSeleccionFiltroTipoEmpleado={() => {
+                setBusquedaNombreVisible(false);
+                setFiltroProyectoVisible(false);
+                setBusquedaLegajoVisible(false);
+                setFiltroTipoEmpleadoVisible(true);
                 handleCerrarFiltros();
               }}
             />
@@ -139,13 +172,17 @@ export default function TablaEmpleadosLista() {
               mostrarBusquedaNombre={busquedaNombreVisible}
               mostrarFiltroProyecto={filtroProyectoVisible}
               mostrarBusquedaLegajo={busquedaLegajoVisible}
+              mostrarFiltroTipoEmpleado={filtroTipoEmpleadoVisible}
               busquedaNombreNormal={watch("busquedaNombreNormal")}
-              busquedaLegajoNormal={watch("busquedaLegajoNormal")}
               filtroProyecto={watch("filtroProyecto")}
-              proyectos={selectDatos || []}
+              busquedaLegajoNormal={watch("busquedaLegajoNormal")}
+              filtroTipoEmpleado={watch("filtroTipoEmpleado")}
+              proyectos={selectDatos?.proyectos || []}
+              tiposEmpleado={selectDatos?.tiposEmpleado || []}
               onCambioBusquedaNombre={handleCambioBusquedaNombre}
               onCambioFiltroProyecto={handleCambioFiltroProyecto}
               onCambioBusquedaLegajo={handleCambioBusquedaLegajo}
+              onCambioFiltroTipoEmpleado={handleCambioFiltroTipoEmpleado}
             />
             <div className="flex grow" />
             <Button
@@ -165,6 +202,7 @@ export default function TablaEmpleadosLista() {
       <FiltrosActivos
         filtrosActivos={filtrosActivos}
         getNombreProyectoPorId={getNombreProyectoPorId}
+        getNombreTipoEmpleadoPorId={getNombreTipoEmpleadoPorId}
       />
       <div className="flex flex-col justify-between w-full h-full overflow-y-auto rounded" style={{ border: `${formularioVisible ? "" : "2px solid #ED6C02"}` }}>
         {formularioVisible ? (
@@ -172,7 +210,8 @@ export default function TablaEmpleadosLista() {
             <Formulario
               control={control}
               cargando={selectCargando}
-              proyectos={selectDatos || []}
+              proyectos={selectDatos?.proyectos || []}
+              tiposEmpleado={selectDatos?.tiposEmpleado || []}
             />
             <Botones
               creando={mutacionCreate.isPending}
@@ -190,30 +229,32 @@ export default function TablaEmpleadosLista() {
               direccion={direccion}
               onOrden={handleOrdenacion}
             />
-            <div className="flex justify-end items-center overflow-x-hide"
-              style={{ borderTop: "2px solid #ED6C02" }}>
-              <TablePagination
-                rowsPerPageOptions={[25, 50, 75, 100]}
-                component="div"
-                count={empleadosDatos?.totalEmpleados || 0}
-                rowsPerPage={filasPorPagina}
-                page={pagina}
-                onPageChange={handleCambioPagina}
-                onRowsPerPageChange={handleCambioFilasPorPagina}
-                labelRowsPerPage="Filas por página"
-                labelDisplayedRows={({ from, to, count }) =>
-                  `${from}-${to} de ${count !== -1 ? count : `más de ${to}`}`
-                }
-                slotProps={{
-                  select: {
-                    MenuProps: {
-                      anchorOrigin: { vertical: "top", horizontal: "right" },
-                      transformOrigin: { vertical: "top", horizontal: "left" }
-                    },
+            {(empleadosCargando || (empleadosDatos?.empleados.length ?? 0) > 0) && (
+              <div className="flex justify-end items-center overflow-x-hide"
+                style={{ borderTop: "2px solid #ED6C02" }}>
+                <TablePagination
+                  rowsPerPageOptions={[25, 50, 75, 100]}
+                  component="div"
+                  count={empleadosDatos?.totalEmpleados || 0}
+                  rowsPerPage={filasPorPagina}
+                  page={pagina}
+                  onPageChange={handleCambioPagina}
+                  onRowsPerPageChange={handleCambioFilasPorPagina}
+                  labelRowsPerPage="Filas por página"
+                  labelDisplayedRows={({ from, to, count }) =>
+                    `${from}-${to} de ${count !== -1 ? count : `más de ${to}`}`
                   }
-                }}
-              />
-            </div>
+                  slotProps={{
+                    select: {
+                      MenuProps: {
+                        anchorOrigin: { vertical: "top", horizontal: "right" },
+                        transformOrigin: { vertical: "top", horizontal: "left" }
+                      },
+                    }
+                  }}
+                />
+              </div>
+            )}
           </>
         )}
       </div>
