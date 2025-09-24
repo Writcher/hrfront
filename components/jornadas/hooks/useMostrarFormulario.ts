@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { hookGenericoHijoProps } from "../types";
+import { hookGenericoHijoAdministrativoProps } from "../types";
 
-export const useMostrarFormulario = ({ reset }: hookGenericoHijoProps<'reset'>) => {
+
+export const useMostrarFormulario = ({ reset }: hookGenericoHijoAdministrativoProps<'reset'>) => {
 
     const [ formularioVisible, setFormularioVisible ] = useState<boolean>(false);
 
