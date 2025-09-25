@@ -13,44 +13,50 @@ export default auth((req) => {
     // Permitir archivos estáticos y rutas API sin verificación
     if (isStaticFile || isApiRoute) {
         return NextResponse.next();
-    }
+    };
    
-    const protectedRoutes = ['/administrativo', '/rrhh'];
+    const protectedRoutes = ['/administrativo', '/rrhh', '/administrador'];
     const isProtectedRoute = protectedRoutes.some(route => nextUrl.pathname.startsWith(route));
    
-    // Manejar la ruta raíz PRIMERO
+    // Manejar la ruta raíz
     if (nextUrl.pathname === '/') {
         if (isLoggedIn) {
             if (userType === 'Administrativo') {
                 return NextResponse.redirect(new URL('/administrativo', nextUrl));
             } else if (userType === 'Recursos Humanos') {
                 return NextResponse.redirect(new URL('/rrhh', nextUrl));
-            }
+            } else if (userType === 'Administrador') {
+                return NextResponse.redirect(new URL('/administrador', nextUrl));
+            };
         } else {
             return NextResponse.redirect(new URL('/inicio', nextUrl));
-        }
-    }
+        };
+    };
    
     // Verificar autenticación en rutas protegidas
     if (!isLoggedIn && isProtectedRoute) {
         return NextResponse.redirect(new URL('/login', nextUrl));
-    }
+    };
    
     // Verificar permisos de usuario en rutas protegidas
     if (isLoggedIn) {
         if (nextUrl.pathname.startsWith('/administrativo') && userType !== 'Administrativo') {
             return NextResponse.redirect(new URL('/403', nextUrl));
-        }      
+        };      
         if (nextUrl.pathname.startsWith('/rrhh') && userType !== 'Recursos Humanos') {
             return NextResponse.redirect(new URL('/403', nextUrl));
-        }
-    }
+        };
+        if (nextUrl.pathname.startsWith('/administrador') && userType !== 'Administrador') {
+            return NextResponse.redirect(new URL('/403', nextUrl));
+        };
+    };
    
     // Lista de rutas válidas
     const validRoutes = [
         '/login',
         '/inicio',
         '/administrativo',
+        '/administrador',
         '/rrhh',
         '/403',
         '/404',
@@ -64,7 +70,7 @@ export default auth((req) => {
     // Si no es una ruta válida, redirigir a 404
     if (!isValidRoute) {
         return NextResponse.redirect(new URL('/404', nextUrl));
-    }
+    };
    
     return NextResponse.next();
 });

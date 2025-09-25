@@ -9,7 +9,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         Credentials({
             authorize: async (credentials) => {
                 //en authorize se ubica la logica que determina si las credenciales proporcionadas son validas.
-
                 if (!credentials?.email || !credentials?.password) {
                     return null;
                 };
@@ -19,24 +18,24 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                         correo: credentials.email as string
                     });
 
-                    if (usuario && usuario.contraseña === credentials.password) {
+                    if (usuario) {
+
                         const tipoUsuario = await fetchTipoUsuarioPorId({
                             id: usuario.id_tipousuario
                         });
 
                         return {
                             id: usuario.id.toString(),
-                            correo: usuario.correo,
+                            correo: credentials.email,
                             tipoUsuario: tipoUsuario.nombre,
                         };
                     };
 
                     return null;
                 } catch (error) {
-                    console.error("Error en authorize:", error);
+                    console.error("Error en authorize: ", error);
                     return null;
                 };
-
             },
         }),
     ],

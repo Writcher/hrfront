@@ -37,7 +37,7 @@ export function SnackbarProvider({ children }: { children: ReactNode }) {
   const showSnackbar = useCallback((message: string, severity: SnackbarSeverity, duration = 4000) => {
     const id = Date.now().toString() + Math.random().toString(36).substr(2, 9);
     const newSnackbar = { id, message, severity, duration };
-    
+   
     setSnackbars(prev => [...prev, newSnackbar]);
   }, []);
 
@@ -87,8 +87,11 @@ export function SnackbarProvider({ children }: { children: ReactNode }) {
               vertical: 'bottom',
               horizontal: 'center'
             }}
-            style={{
-              transform: `translateY(-${index * 70}px)`,
+            sx={{
+              bottom: `${20 + (index * 70)}px !important`,
+              left: '50%',
+              transform: 'translateX(-50%)',
+              position: 'fixed'
             }}
           >
             <Alert
