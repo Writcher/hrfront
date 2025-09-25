@@ -1,5 +1,5 @@
 import { TextField, MenuItem } from "@mui/material";
-import { formularioFiltrosProps, proyecto, tipoUsuario } from "../types";
+import { formularioFiltrosProps, tipoUsuario } from "../types";
 
 export const FormularioFiltros = ({
   mostrarBusquedaNombre,
