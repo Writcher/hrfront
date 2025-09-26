@@ -25,5 +25,4 @@ export default {
     URL_TIPOSUSUARIO: process.env.URL_TIPOSUSUARIO,
     URL_CREAR_USUARIO: process.env.URL_CREAR_USUARIO,
     URL_USUARIO: process.env.URL_USUARIO,
-    URL_AUTH: process.env.URL_AUTH,
 };

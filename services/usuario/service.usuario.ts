@@ -15,9 +15,10 @@ export async function fetchUsuarioPorCorreo(parametros: fetchUsuarioPorCorreoDTO
             method: "GET"
         });
         
-        if (!datosUsuarioRaw.ok) {
-            const errorData = await datosUsuarioRaw.json();
-            throw new Error(errorData.error || "Error en la respuesta del servidor");
+        if (datosUsuarioRaw.status === 404) {
+            throw new Error("Usuario no registrado");
+        } else if (!datosUsuarioRaw.ok) {
+            throw new Error("Error en la respuesta del servidor")
         };
 
         const datosUsuario = await datosUsuarioRaw.json();

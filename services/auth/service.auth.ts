@@ -1,66 +1,47 @@
 "use server"
 
-import CONFIG from "@/config";
 import { signIn, signOut } from "@/auth";
-import { compareContraseñaDTO, logInDTO } from "@/lib/dtos/auth";
+import { logInDTO } from "@/lib/dtos/auth";
+import bcrypt from "bcryptjs";
 import { fetchUsuarioPorCorreo } from "../usuario/service.usuario";
 
 export async function logIn(parametros: logInDTO) {
     try {
-
         const usuario = await fetchUsuarioPorCorreo({
-            correo: parametros.correo as string
+            correo: parametros.correo
         });
+        
+        if (!usuario) {
+            throw new Error("Usuario no registrado");
+        };
 
-        if (usuario) {
+        const match = await bcrypt.compare(parametros.contraseña, usuario.contraseña);
 
-            const compareContraseñaParametros = {
-                id: usuario.id,
-                contraseña: parametros.contraseña as string,
-            };
-
-            const contraseñaCorrecta = await compareContraseña(compareContraseñaParametros);
-
-            if (contraseñaCorrecta) {
-
-                await signIn("credentials", {
-                    email: parametros.correo,
-                    password: parametros.contraseña,
-                    redirect: false,
-                });
-
-                return { success: true };
-            };
+        if (!match) {
+            throw new Error("Contraseña incorrecta");
         };
 
     } catch (error) {
-        throw error;
+        if (error instanceof Error) {
+            throw new Error(error.message);
+        } else {
+            throw new Error("Error de validación");
+        };
     };
+
+    const result = await signIn("credentials", {
+        email: parametros.correo,
+        password: parametros.contraseña,
+        redirect: false,
+    });
+
+    if (result?.error) {
+        throw new Error("Error de autenticación");
+    };
+
+    return { success: true };
 };
 
 export async function doLogout() {
     await signOut({ redirectTo: "/inicio" });
-};
-
-export async function compareContraseña(parametros: compareContraseñaDTO) {
-    try {
-        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_AUTH}`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(parametros),
-        });
-
-        if (!respuestaRaw.ok) {
-            const errorData = await respuestaRaw.json();
-            throw new Error(errorData.error || "Error en la respuesta del servidor");
-        };
-
-        const respuesta = await respuestaRaw.json();
-
-        return respuesta;
-    } catch (error) {
-        throw error;
-    };
 };

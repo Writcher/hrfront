@@ -21,11 +21,13 @@ export default function PantallaInicioSesion() {
 
     const mutacion = useMutation({
         mutationFn: (data: iniciarSesionFormularioDatos) => logIn(data),
-        onSuccess: () => {
-            router.push('/');
+        onSuccess: (result) => {
+            if (result.success) {
+                router.push('/');
+            };
         },
         onError: (error: any) => {
-            showError(error.message || "Error al iniciar sesión");
+            showError(error.message || "Error interno. Inténtalo de nuevo.");
         },
     });
 
