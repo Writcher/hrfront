@@ -188,18 +188,6 @@ export type filaJornadaProps = {
   jornada: jornada,
 };
 
-export type formularioFiltrosHijoProps = {
-  filtroMes: number | '',
-  filtroQuincena: number | '',
-  filtroMarcasIncompletas: boolean,
-  cargando: boolean,
-  meses: mes[],
-  onCambioFiltroMes: (event: React.ChangeEvent<HTMLInputElement>) => void,
-  onCambioFiltroQuincena: (event: React.ChangeEvent<HTMLInputElement>) => void,
-  onCambioFiltroMarcaIncompleta: (event: SyntheticEvent<Element, Event>, checked: boolean) => void,
-  getNombreMes: (mes: number) => string,
-};
-
 export type hookGenericoPadreProps<T extends keyof hookGenericoPadrePropsBase = keyof hookGenericoPadrePropsBase> = Required<Pick<hookGenericoPadrePropsBase, T>>;
 
 export type hookGenericoPadrePropsBase = {
