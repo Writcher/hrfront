@@ -12,20 +12,20 @@ export async function logIn(parametros: logInDTO) {
         });
         
         if (!usuario) {
-            throw new Error("Usuario no registrado");
+            throw new Error("1");
         };
 
         const match = await bcrypt.compare(parametros.contraseña, usuario.contraseña);
 
         if (!match) {
-            throw new Error("Contraseña incorrecta");
+            throw new Error("2");
         };
 
     } catch (error) {
         if (error instanceof Error) {
             throw new Error(error.message);
         } else {
-            throw new Error("Error de validación");
+            throw new Error("3");
         };
     };
 
@@ -36,7 +36,7 @@ export async function logIn(parametros: logInDTO) {
     });
 
     if (result?.error) {
-        throw new Error("Error de autenticación");
+        throw new Error("3");
     };
 
     return { success: true };

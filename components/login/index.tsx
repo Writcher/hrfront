@@ -27,7 +27,17 @@ export default function PantallaInicioSesion() {
             };
         },
         onError: (error: any) => {
-            showError(error.message || "Error interno. Inténtalo de nuevo.");
+            let mensaje;
+
+            if (error.message === "1") {
+                mensaje = "Usuario no registrado"
+            } else if (error.message === "2") {
+                mensaje = "Contraseña incorrecta"
+            } else {
+                mensaje = "Error interno. Inténtalo de nuevo."
+            };
+
+            showError(mensaje);
         },
     });
 
