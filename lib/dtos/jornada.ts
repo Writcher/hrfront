@@ -5,12 +5,14 @@ export type fetchJornadasDTO = {
     filtroMarcasIncompletas?: boolean,
     pagina?: number,
     filasPorPagina?: number,
+    ausencias?: boolean,
+    filtroTipoAusencia?: number | '',
 };
 
 export type editJornadaDTO = {
     id: number,
-    entrada: string | null, 
-    salida: string | null, 
+    entrada: string | null,
+    salida: string | null,
 };
 
 export type deleteJornadaDTO = {
@@ -19,6 +21,11 @@ export type deleteJornadaDTO = {
 
 export type validateJornadaDTO = {
     id: number,
+};
+
+export type updateJornadaTipoAusenciaDTO = {
+    tipoAusencia: number | '',
+    id_jornada: number,
 };
 
 export type insertJornadaDTO = {

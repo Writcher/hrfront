@@ -77,6 +77,21 @@ export const useFiltros = ({ setValue }: hookGenericoPadreProps<'setValue'>) => 
     setFiltrosActivos({ ...filtrosActuales, filtroTipoEmpleado: Number(event.target.value) });
   };
 
+  const handleLimpiarFiltro = (key: string) => {
+    const filtrosActuales = { ...filtrosActivos };
+    delete filtrosActuales[key];
+    setFiltrosActivos(filtrosActuales);
+
+    setValue(key as any, '');
+
+    if (key === 'busquedaNombre') {
+      setValue('busquedaNombreNormal', '');
+    };
+    if (key === 'busquedaLegajo') {
+      setValue('busquedaLegajoNormal', '');
+    };
+  };
+
   return {
     ancla,
     abrirFiltros,
@@ -92,6 +107,7 @@ export const useFiltros = ({ setValue }: hookGenericoPadreProps<'setValue'>) => 
     handleCambioBusquedaLegajo,
     handleCambioFiltroProyecto,
     handleCambioFiltroTipoEmpleado,
+    handleLimpiarFiltro,
     setBusquedaNombreVisible,
     setFiltroProyectoVisible,
     setBusquedaLegajoVisible,

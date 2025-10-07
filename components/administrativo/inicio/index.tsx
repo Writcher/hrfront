@@ -57,7 +57,7 @@ export default function InicioAdministrativo() {
                 <Divider variant="middle" sx={{ bgcolor: "#ED6C02" }} flexItem />
                 <CardContent className="flex flex-col grow justify-center gap-4">
                     <div className="text-center text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]" style={{ userSelect: "none" }}>
-                        Visualizar la lista de jornadas registradas por empleado y cargar jornadas manualmente en caso de ausencias o errores de importación. <br /><br />
+                        Visualizar la lista de jornadas registradas por empleado y cargar jornadas manualmente o visualizar listado de ausencias. <br /><br />
                         Recuerda que las ausencias deben cargarse manualmente por empleado en el día correspondiente. En el caso de ausencias prolongadas, solo es necesario registrarlas en el primer día. <br />
                     </div>
                 </CardContent>
@@ -74,6 +74,17 @@ export default function InicioAdministrativo() {
                             endIcon={<SummarizeRoundedIcon />}
                         >
                             Listado de Jornadas
+                        </Button>
+                        <Button
+                            component={Link}
+                            href={"/administrativo/ausencias"}
+                            variant="contained"
+                            className="!bg-gray-800 !text-white hover:!bg-orange-100 hover:!text-orange-600"
+                            disableElevation
+                            fullWidth
+                            endIcon={<SummarizeRoundedIcon />}
+                        >
+                            Listado de Ausencias
                         </Button>
                     </div>
                 </CardActions>

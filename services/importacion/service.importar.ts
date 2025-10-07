@@ -2,11 +2,7 @@
 
 import CONFIG from "@/config";
 import { exportJornadasExcelDTO, insertJornadasExcelDTO } from "@/lib/dtos/excel";
-import { fetchProyectos } from "../proyecto/service.proyecto";
-import { fetchTiposJornada } from "../tipojornada/service.tipojornada";
 import { getToken } from "@/lib/utils/getToken";
-import { fetchMeses } from "../mes/service.mes";
-import { fetchTiposImportacion } from "../tipoimportacion/service.tipoimportacion";
 
 export async function insertJornadasExcel(data: insertJornadasExcelDTO) {
     try {
@@ -34,29 +30,6 @@ export async function insertJornadasExcel(data: insertJornadasExcelDTO) {
         };
 
         return respuesta;
-    } catch (error) {
-        throw error;
-    };
-};
-
-export async function fetchSelectDataExcelImport() {
-    try {
-        const proyectos = await fetchProyectos()
-        const tiposJornada = await fetchTiposJornada()
-        const tiposImportacion = await fetchTiposImportacion()
-
-        return { proyectos, tiposJornada, tiposImportacion};
-    } catch (error) {
-        throw error;
-    };
-};
-
-export async function fetchSelectDataExcelExport() {
-    try {
-        const proyectos = await fetchProyectos()
-        const meses = await fetchMeses()
-
-        return { proyectos, meses };
     } catch (error) {
         throw error;
     };

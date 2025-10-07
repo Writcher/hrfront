@@ -56,6 +56,7 @@ export type formularioFiltrosProps = {
 export type filtrosActivosProps = {
   filtrosActivos: { [key: string]: any },
   getNombreTipoUsuarioPorId: (id: number) => string,
+  handleLimpiarFiltro: (key: string) => void,
 };
 
 export type formularioProps = {

@@ -50,6 +50,18 @@ export const useFiltros = ({ setValue }: hookGenericoPadreProps<'setValue'>) => 
     setFiltrosActivos({ ...filtrosActuales, filtroTipoUsuario: Number(event.target.value) });
   };
 
+  const handleLimpiarFiltro = (key: string) => {
+    const filtrosActuales = { ...filtrosActivos };
+    delete filtrosActuales[key];
+    setFiltrosActivos(filtrosActuales);
+
+    setValue(key as any, '');
+
+    if (key === 'busquedaNombre') {
+      setValue('busquedaNombreNormal', '');
+    };
+  };
+
   return {
     ancla,
     abrirFiltros,
@@ -61,6 +73,7 @@ export const useFiltros = ({ setValue }: hookGenericoPadreProps<'setValue'>) => 
     handleLimpiarFiltros,
     handleCambioBusquedaNombre,
     handleCambioFiltroTipoUsuario,
+    handleLimpiarFiltro,
     setBusquedaNombreVisible,
     setFiltroTipoUsuarioVisible
   };

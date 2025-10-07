@@ -35,11 +35,6 @@ export const FilaNoMensual = ({ resumen }: tablaResumenFilaProps) => (
                     {formatHorasMinutos(resumen.suma_total_nocturno)}
                 </div>
             </TableCell>
-            <TableCell align="center" size="small">
-                <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.8rem)]">
-                    {formatHorasMinutos(resumen.suma_total_nocturno_100)}
-                </div>
-            </TableCell>
         </TableRow>
     </TableBody>
 );

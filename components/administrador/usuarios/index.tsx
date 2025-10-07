@@ -42,6 +42,7 @@ export default function TablaUsuariosLista() {
     handleLimpiarFiltros,
     handleCambioBusquedaNombre,
     handleCambioFiltroTipoUsuario,
+    handleLimpiarFiltro,
     setBusquedaNombreVisible,
     setFiltroTipoUsuarioVisible
   } = useFiltros({ setValue });
@@ -164,6 +165,7 @@ export default function TablaUsuariosLista() {
       <FiltrosActivos
         filtrosActivos={filtrosActivos}
         getNombreTipoUsuarioPorId={getNombreTipoUsuarioPorId}
+        handleLimpiarFiltro={handleLimpiarFiltro}
       />
       <div className="flex flex-col justify-between w-full h-full overflow-y-auto rounded" style={{ border: `${formularioVisible ? "" : "2px solid #ED6C02"}` }}>
         {formularioVisible ? (

@@ -27,7 +27,7 @@ export function Fila({ jornada }: filaJornadaProps) {
         mutationFn: (data: editJornadaDatos) => editJornada(data),
         onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: ["fetchImportacionJorfetchJornadasPorImportacionnadas"]
+                queryKey: ["fetchJornadasPorImportacion"]
             });
             showSuccess("Jornada editada correctamente");
         },

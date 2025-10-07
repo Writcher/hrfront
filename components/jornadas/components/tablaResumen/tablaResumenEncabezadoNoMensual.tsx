@@ -33,11 +33,6 @@ export const EncabezadoNoMensual = () => (
                     Total Nocturno
                 </div>
             </TableCell>
-            <TableCell align="center">
-                <div style={{ userSelect: "none" }} className="text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]">
-                    Total Nocturno 100%
-                </div>
-            </TableCell>
         </TableRow>
     </TableHead>
 );

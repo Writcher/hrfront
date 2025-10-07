@@ -2,7 +2,6 @@ import { TableCell, TablePagination, TableRow } from "@mui/material";
 import { useFiltrosInteriores } from "../../hooks/useFiltrosHijoAdministrativo";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { TablaJornadas } from "../tablaJornadas/tablaJornadas";
-import { fetchDatosSelectFormularioJornada } from "@/services/jornada/service.jornadas";
 import { useTablaJornadaFormulario } from "../../hooks/useTablaJornadasFormulario";
 import { Formulario } from "../tablaJornadas/tablaJornadasFormularioCrear";
 import { SubmitHandler } from "react-hook-form";
@@ -15,6 +14,7 @@ import { useEffect } from "react";
 import { usePaginacion } from "@/components/hooks/usePaginacion";
 import { Botones } from "../tablaJornadas/tablaJornadasFiltrosBotones";
 import { useMostrarFormulario } from "../../hooks/useMostrarFormulario";
+import { useSelectDatosFormulario } from "../../hooks/useSelectDatosFormulario";
 
 export function FilaExpandidaAdministrativo({ idFilaExpandida, idFilaExpandidaProp, estadoEmpleado }: filaExpandidaProps) {
 
@@ -35,17 +35,16 @@ export function FilaExpandidaAdministrativo({ idFilaExpandida, idFilaExpandidaPr
         queryKey: ["fetchMeses"],
         queryFn: () => fetchMeses(),
         refetchOnWindowFocus: false,
-        staleTime: 30 * 60 * 1000,
-        gcTime: 60 * 60 * 1000,
     });
 
-    const { data: formularioDatos, isLoading: formularioCargando, isError: formularioError } = useQuery({
-        queryKey: ["fetchDatosSelectFormularioJornada"],
-        queryFn: () => fetchDatosSelectFormularioJornada(),
-        refetchOnWindowFocus: false,
-        staleTime: 30 * 60 * 1000,
-        gcTime: 60 * 60 * 1000,
-    });
+    const {
+        tiposJornada,
+        tiposAusencia,
+        id_ausencia,
+        id_jornadaNormal,
+        cargando,
+        error
+    } = useSelectDatosFormulario();
 
     const { data: jornadasDatos, isLoading: jornadasCargando, isError: jornadasError, refetch: jornadasRefetch } = useQuery({
         queryKey: [
@@ -96,17 +95,13 @@ export function FilaExpandidaAdministrativo({ idFilaExpandida, idFilaExpandidaPr
     };
 
     useEffect(() => {
-        if (selectError || formularioError) {
+        if (selectError || error) {
             showWarning("Error al cargar los datos");
         };
         if (jornadasError) {
             showWarning("Error al cargar jornadas");
         };
-    }, [selectError, formularioDatos, jornadasDatos, showWarning]);
-
-    const normalizedFormularioDatos = formularioDatos
-    ? { ...formularioDatos, tiposJornada: formularioDatos.tiposJornada || [], tiposAusencia: formularioDatos.tiposAusencia || [] }
-    : undefined;
+    }, [selectError, error, jornadasDatos, showWarning]);
 
     return (
         <TableRow className={`${idFilaExpandida === idFilaExpandidaProp ? 'bg-orange-100' : ''}`}>
@@ -132,8 +127,13 @@ export function FilaExpandidaAdministrativo({ idFilaExpandida, idFilaExpandidaPr
                     <div className="flex grow flex-col justify-between w-full">
                         {formularioVisible ? (
                             <Formulario
-                                formularioDatos={normalizedFormularioDatos}
-                                formularioCargando={formularioCargando}
+                                formularioDatos={{
+                                    tiposJornada: tiposJornada || [],
+                                    tiposAusencia: tiposAusencia || [],
+                                    id_ausencia,
+                                    id_jornadaNormal
+                                }}
+                                formularioCargando={cargando}
                                 control={control}
                                 watch={watch}
                                 jornadaPartida={jornadaPartida}

@@ -16,7 +16,7 @@ export default function InicioRRHH() {
                 <Divider variant="middle" sx={{ bgcolor: "#ED6C02" }} flexItem />
                 <CardContent className="flex flex-col grow justify-center gap-4">
                     <div className="text-center text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]" style={{ userSelect: "none" }}>
-                        Visualizar el resumen de jornadas por empleado, o exportar el mismo en formato excel. <br />
+                        Visualizar el resumen de jornadas por empleado, exportar el mismo en formato excel o visualizar listado de ausencias. <br />
                     </div>
                 </CardContent>
                 <Divider variant="middle" sx={{ bgcolor: "#ED6C02" }} flexItem />
@@ -43,6 +43,17 @@ export default function InicioRRHH() {
                             endIcon={<DownloadRoundedIcon />}
                         >
                             Exportar Resumen
+                        </Button>
+                        <Button
+                            component={Link}
+                            href={"/rrhh/ausencias"}
+                            variant="contained"
+                            className="!bg-gray-800 !text-white hover:!bg-orange-100 hover:!text-orange-600"
+                            disableElevation
+                            fullWidth
+                            endIcon={<SummarizeRoundedIcon />}
+                        >
+                            Listado de Ausencias
                         </Button>
                     </div>
                 </CardActions>

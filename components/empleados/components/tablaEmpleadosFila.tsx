@@ -3,13 +3,13 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { deactivateEmpleado, editEmpleado } from "@/services/empleado/service.empleado";
 import { useSnackbar } from "@/lib/context/snackbarcontext";
 import { useEmpleadoFormulario } from "../hooks/useEmpleadoFormulario";
-import { useMostrarFormulario } from "../hooks/useMostrarFormulario";
 import { Controller } from "react-hook-form";
 import { useEffect } from "react";
 import { editEmpleadoParametros, empleadoFormularioDatos, formularioFilaEmpleadoProps, tipoEmpleado } from "../types";
 import { BotonesFila } from "./filaEmpleadosBotones";
 import { useConfirmar } from "../../hooks/useConfirmar";
 import { fetchTiposEmpleado } from "@/services/tipoempleado/service.tipoempleado";
+import { useMostrarFormulario } from "../hooks/useMostrarFormulario";
 
 export default function FilaEmpleado({ empleado }: formularioFilaEmpleadoProps) {
 
@@ -177,7 +177,6 @@ export default function FilaEmpleado({ empleado }: formularioFilaEmpleadoProps) 
                                 <TextField
                                     {...field}
                                     id="id_tipoempleado"
-                                    label="Seleccionar Tipo de Empleado"
                                     variant="outlined"
                                     color="warning"
                                     size="small"
