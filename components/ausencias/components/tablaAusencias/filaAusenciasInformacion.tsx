@@ -22,7 +22,7 @@ export const Informacion = ({ jornada, dia, setObservacionFormulario, setTipoAus
                 {jornada.tipoausencia === null ? "" : jornada.tipoausencia}
             </div>
         </TableCell>
-        <TableCell align="center" size="small" className={`${dia === 0 ? 'bg-gradient-to-r from-gray-300 via-gray-300 to-transparent' : dia === 1 ? 'bg-gradient-to-r from-green-300 via-green-300 to-transparent' : ''}`}>
+        <TableCell align="center" size="small" className={`${dia === 0 ? 'bg-gray-300' : dia === 1 ? 'bg-green-300' : ''}`}>
             <div className="flex w-full items-center justify-center gap-2">
                 <Tooltip observaciones={jornada.observaciones} />
             </div>
