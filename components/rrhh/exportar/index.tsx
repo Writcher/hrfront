@@ -27,7 +27,9 @@ export default function ExcelExportFormulario() {
         error
     } = useSelectDatos();
 
-    const nombreArchivo = getFileName(watch, {proyectos, meses});
+    const nombreArchivo = proyectos && meses
+        ? getFileName(watch, { proyectos, meses })
+        : "exportacion.xlsx";
 
     const mutacionExport = useMutation({
         mutationFn: (data: exportarExcelDatos) => exportJornadasExcel(data),
@@ -69,7 +71,7 @@ export default function ExcelExportFormulario() {
                     <Formulario
                         control={control}
                         selectCargando={cargando}
-                        selectDatos={{proyectos, meses}}
+                        selectDatos={{ proyectos, meses }}
                         watch={watch}
                     />
                 </div>
