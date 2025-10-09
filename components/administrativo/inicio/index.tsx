@@ -7,12 +7,14 @@ import PeopleAltRoundedIcon from '@mui/icons-material/PeopleAltRounded';
 export default function InicioAdministrativo() {
     return (
         <div className="flex flex-row gap-2 items-center justify-center w-full h-full">
-            <Card raised={false} className="flex flex-col gap-2 w-[25%] h-auto border-2 border-[#ED6C02] !shadow-none">
+            <Card raised={false} className="flex flex-col justify-between gap-2 w-[25%] h-[50%] border-2 border-[#ED6C02] !shadow-none">
                 <CardContent className="flex flex-col gap-4">
                     <div className='text-center text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]'>
                         Informes de Jornadas
                     </div>
-                    <Divider variant="middle" sx={{ bgcolor: "#ED6C02" }} flexItem />
+                </CardContent>
+                <Divider variant="middle" sx={{ bgcolor: "#ED6C02" }} flexItem />
+                <CardContent className="flex flex-col grow justify-center gap-4">
                     <div className="text-center text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]" style={{ userSelect: "none" }}>
                         Importar archivo Excel con el informe diario de marcas del control de acceso, o revisar y validar los informes previamente cargados. <br /><br />
                         Tener en cuenta que cada informe debe ser validado manualmente para garantizar la exactitud en el cálculo de las horas. <br />
@@ -46,14 +48,16 @@ export default function InicioAdministrativo() {
                     </div>
                 </CardActions>
             </Card>
-            <Card raised={false} className="flex flex-col gap-2 w-[25%] h-auto border-2 border-[#ED6C02] !shadow-none">
+            <Card raised={false} className="flex flex-col justify-between gap-2 w-[25%] h-[50%] border-2 border-[#ED6C02] !shadow-none">
                 <CardContent className="flex flex-col gap-4">
                     <div className='text-center text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]'>
                         Jornadas Cargadas
                     </div>
-                    <Divider variant="middle" sx={{ bgcolor: "#ED6C02" }} flexItem />
+                </CardContent>
+                <Divider variant="middle" sx={{ bgcolor: "#ED6C02" }} flexItem />
+                <CardContent className="flex flex-col grow justify-center gap-4">
                     <div className="text-center text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]" style={{ userSelect: "none" }}>
-                        Visualizar la lista de jornadas registradas por empleado y cargar jornadas manualmente en caso de ausencias o errores de importación. <br /><br />
+                        Visualizar la lista de jornadas registradas por empleado y cargar jornadas manualmente o visualizar listado de ausencias. <br /><br />
                         Recuerda que las ausencias deben cargarse manualmente por empleado en el día correspondiente. En el caso de ausencias prolongadas, solo es necesario registrarlas en el primer día. <br />
                     </div>
                 </CardContent>
@@ -71,15 +75,28 @@ export default function InicioAdministrativo() {
                         >
                             Listado de Jornadas
                         </Button>
+                        <Button
+                            component={Link}
+                            href={"/administrativo/ausencias"}
+                            variant="contained"
+                            className="!bg-gray-800 !text-white hover:!bg-orange-100 hover:!text-orange-600"
+                            disableElevation
+                            fullWidth
+                            endIcon={<SummarizeRoundedIcon />}
+                        >
+                            Listado de Ausencias
+                        </Button>
                     </div>
                 </CardActions>
             </Card>
-            <Card raised={false} className="flex flex-col gap-2 w-[25%] h-auto border-2 border-[#ED6C02] !shadow-none">
+            <Card raised={false} className="flex flex-col justify-between gap-2 w-[25%] h-[50%] border-2 border-[#ED6C02] !shadow-none">
                 <CardContent className="flex flex-col gap-4">
                     <div className='text-center text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]'>
                         Listado de Empleados
                     </div>
-                    <Divider variant="middle" sx={{ bgcolor: "#ED6C02" }} flexItem />
+                </CardContent>
+                <Divider variant="middle" sx={{ bgcolor: "#ED6C02" }} flexItem />
+                <CardContent className="flex flex-col grow justify-center gap-4">
                     <div className="text-center text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]" style={{ userSelect: "none" }}>
                         Editar la información de empleados, dar de alta nuevos de forma manual o dar de baja empleados antiguos. <br /><br />
                         Ten en cuenta que la carga automática de empleados durante la importación de informes no considera el número de legajo. Además, a los empleados dados de baja no se les podrán cargar jornadas manualmente.<br />

@@ -1,32 +1,45 @@
 "use server"
 
-import { auth, signIn, signOut } from "@/auth";
+import { signIn, signOut } from "@/auth";
 import { logInDTO } from "@/lib/dtos/auth";
-import { AuthError } from "next-auth";
+import bcrypt from "bcryptjs";
+import { fetchUsuarioPorCorreo } from "../usuario/service.usuario";
 
 export async function logIn(parametros: logInDTO) {
     try {
-        await signIn("credentials", {
-            email: parametros.correo,
-            password: parametros.contraseña,
-            redirectTo: "/",
+        const usuario = await fetchUsuarioPorCorreo({
+            correo: parametros.correo
         });
         
-        return { success: true };
-        
-    } catch (error) {
-        if (error instanceof AuthError) {
-            console.error("Auth error:", error.type);
-            return { 
-                success: false, 
-                error: error.type === "CredentialsSignin" 
-                    ? "Invalid credentials" 
-                    : "Authentication error" 
-            };
+        if (!usuario) {
+            throw new Error("1");
         };
-        
-        throw error;
+
+        const match = await bcrypt.compare(parametros.contraseña, usuario.contraseña);
+
+        if (!match) {
+            throw new Error("2");
+        };
+
+    } catch (error) {
+        if (error instanceof Error) {
+            throw new Error(error.message);
+        } else {
+            throw new Error("3");
+        };
     };
+
+    const result = await signIn("credentials", {
+        email: parametros.correo,
+        password: parametros.contraseña,
+        redirect: false,
+    });
+
+    if (result?.error) {
+        throw new Error("3");
+    };
+
+    return { success: true };
 };
 
 export async function doLogout() {

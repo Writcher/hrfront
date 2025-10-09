@@ -1,4 +1,4 @@
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Skeleton, Button, Chip } from "@mui/material";
+import { Table, TableBody, TableContainer } from "@mui/material";
 import React from "react";
 import FilaEmpleado from "./tablaEmpleadosFila";
 import { tablaEmpleadosProps, empleado } from "../types";

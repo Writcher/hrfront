@@ -1,6 +1,6 @@
 "use client"
 
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useFiltros } from "./hooks/useFiltros";
 import { usePaginacion } from "../../hooks/usePaginacion";
 import { useTablaJornadasFiltro } from "./hooks/useTablaJornadasFiltro";
@@ -28,6 +28,8 @@ export default function Completar({ id_importacion }: importacionJornadasProps) 
 
     const router = useRouter();
 
+    const queryClient = useQueryClient();
+
     const { data: jornadasDatos, isLoading: jornadasCargando, isError: jornadasError } = useQuery({
         queryKey: [
             "fetchJornadasPorImportacion",
@@ -48,6 +50,9 @@ export default function Completar({ id_importacion }: importacionJornadasProps) 
         mutationFn: (id: number) => setImportacionCompleta(id),
         onSuccess: () => {
             showSuccess("Importación completada correctamente");
+            queryClient.invalidateQueries({
+                queryKey: ["fetchImportaciones"]
+            });
             router.push(`/administrativo/importaciones`);
         },
         onError: () => {
@@ -64,7 +69,7 @@ export default function Completar({ id_importacion }: importacionJornadasProps) 
             showWarning("Error al cargar los datos");
         };
     }, [jornadasError, showWarning]);
-    
+
     const deshabilitado = useEstadoBoton({ totalIncompletoProp: jornadasDatos?.totalIncompleto, cargando: jornadasCargando });
 
     return (

@@ -146,7 +146,7 @@ export const Formulario = ({
                                 render={({ field: { onChange, value, ...restField }, fieldState: { error } }) => (
                                     <TimePicker
                                         {...restField}
-                                        label={watch("tipoJornada") === formularioDatos?.id_jornadaPartida ? "Marca de Entrada de Mañana" : "Marca de Entrada"}
+                                        label={jornadaPartida ? "Marca de Entrada de Mañana" : "Marca de Entrada"}
                                         className="!w-[50%]"
                                         value={value ? dayjs(value, 'HH:mm:ss') : null}
                                         onChange={(newValue) => {
@@ -173,7 +173,7 @@ export const Formulario = ({
                                 render={({ field: { onChange, value, ...restField }, fieldState: { error } }) => (
                                     <TimePicker
                                         {...restField}
-                                        label={watch("tipoJornada") === formularioDatos?.id_jornadaPartida ? "Marca de Salida de Mañana" : "Marca de Salida"}
+                                        label={jornadaPartida ? "Marca de Salida de Mañana" : "Marca de Salida"}
                                         className="!w-[50%]"
                                         value={value ? dayjs(value, 'HH:mm:ss') : null}
                                         onChange={(newValue) => {

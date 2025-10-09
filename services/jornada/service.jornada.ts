@@ -1,8 +1,7 @@
 "use server"
 
-import { jornada } from "@/components/jornadas/types";
 import CONFIG from "@/config";
-import { deleteJornadaDTO, editJornadaDTO, fetchJornadasDTO, fetchJornadasPorImportacionDTO, insertJornadaDTO, validateJornadaDTO } from "@/lib/dtos/jornada";
+import { deleteJornadaDTO, editJornadaDTO, fetchJornadasDTO, fetchJornadasPorImportacionDTO, insertJornadaDTO, updateJornadaTipoAusenciaDTO, validateJornadaDTO } from "@/lib/dtos/jornada";
 import { getToken } from "@/lib/utils/getToken";
 
 export async function fetchJornadas(parametros: fetchJornadasDTO) {
@@ -13,8 +12,10 @@ export async function fetchJornadas(parametros: fetchJornadasDTO) {
             filtroMes: parametros.filtroMes.toString() === '' ? '0' : parametros.filtroMes.toString(),
             filtroQuincena: parametros.filtroQuincena.toString() === '' ? '0' : parametros.filtroQuincena.toString(),
             filtroMarcasIncompletas: parametros.filtroMarcasIncompletas ? parametros.filtroMarcasIncompletas.toString() : "false",
-            pagina: parametros.pagina !== null && parametros.pagina !== undefined ? parametros.pagina.toString() : '',
-            filasPorPagina: parametros.filasPorPagina !== null && parametros.filasPorPagina !== undefined ? parametros.filasPorPagina.toString() : '',
+            pagina: parametros.pagina != null ? parametros.pagina.toString() : '',
+            filasPorPagina: parametros.filasPorPagina != null ? parametros.filasPorPagina.toString() : '',
+            ausencias: parametros.ausencias ? parametros.ausencias.toString() : "false",
+            filtroTipoAusencia: parametros.filtroTipoAusencia != null ? parametros.filtroTipoAusencia.toString() : '0'
         });
 
         const jornadasRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_EMPLEADOJORNADAS!.replace("{id}", parametros.id_empleado!.toString())}?${jornadasParametros.toString()}`, {
@@ -98,6 +99,34 @@ export async function validateJornada(parametros: validateJornadaDTO) {
                 Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({ accion: "validar" }),
+        });
+
+        if (!respuestaRaw.ok) {
+            throw new Error("Error en la respuesta del servidor");
+        };
+
+        const respuesta = await respuestaRaw.json();
+
+        return respuesta;
+    } catch (error) {
+        throw error;
+    };
+};
+
+export async function updateJornadaTipoAusencia(parametros: updateJornadaTipoAusenciaDTO) {
+    try {
+        const token = await getToken();
+
+        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_JORNADA!.replace("{id}", parametros.id_jornada!.toString())}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ 
+                accion: "justificar",
+                tipoAusencia: parametros.tipoAusencia
+            }),
         });
 
         if (!respuestaRaw.ok) {

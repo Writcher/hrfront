@@ -1,7 +1,7 @@
 "use client";
 
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { exportJornadasExcel, fetchSelectDataExcelExport } from "@/services/importacion/service.importar";
+import { useMutation } from "@tanstack/react-query";
+import { exportJornadasExcel } from "@/services/importacion/service.importar";
 import { Formulario } from "./components/formulario";
 import { useExportarExcelFormulario } from "./hooks/useExportarExcelFormulario";
 import { exportarExcelDatos } from "./types";
@@ -10,6 +10,7 @@ import { getFileName } from "./utils";
 import { useSnackbar } from "@/lib/context/snackbarcontext";
 import { useEffect } from "react";
 import { Botones } from "./components/botones";
+import { useSelectDatos } from "./hooks/useSelectDatos";
 
 export default function ExcelExportFormulario() {
 
@@ -19,13 +20,16 @@ export default function ExcelExportFormulario() {
 
     const router = useRouter();
 
-    const { data: selectDatos, isLoading: selectCargando, isError: selectError } = useQuery({
-        queryKey: ["fetchSelectDataExcelExport"],
-        queryFn: () => fetchSelectDataExcelExport(),
-        refetchOnWindowFocus: false
-    });
+    const {
+        proyectos,
+        meses,
+        cargando,
+        error
+    } = useSelectDatos();
 
-    const nombreArchivo = getFileName(watch, selectDatos);
+    const nombreArchivo = proyectos && meses
+        ? getFileName(watch, { proyectos, meses })
+        : "exportacion.xlsx";
 
     const mutacionExport = useMutation({
         mutationFn: (data: exportarExcelDatos) => exportJornadasExcel(data),
@@ -55,10 +59,10 @@ export default function ExcelExportFormulario() {
     };
 
     useEffect(() => {
-        if (selectError) {
+        if (error) {
             showWarning("Error al cargar los datos");
         };
-    }, [selectError, showWarning]);
+    }, [error, showWarning]);
 
     return (
         <div className="flex flex-col gap-4 items-center justify-center w-full h-full">
@@ -66,8 +70,8 @@ export default function ExcelExportFormulario() {
                 <div className="flex flex-col pt-[25vh] w-[80%] gap-2">
                     <Formulario
                         control={control}
-                        selectCargando={selectCargando}
-                        selectDatos={selectDatos}
+                        selectCargando={cargando}
+                        selectDatos={{ proyectos, meses }}
                         watch={watch}
                     />
                 </div>

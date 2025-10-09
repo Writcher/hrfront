@@ -27,8 +27,6 @@ export function FilaExpandidaRRHH({
         queryKey: ["fetchMeses"],
         queryFn: () => fetchMeses(),
         refetchOnWindowFocus: false,
-        staleTime: 30 * 60 * 1000,
-        gcTime: 60 * 60 * 1000,
     });
 
     const { watch, setValue } = useTablaJornadaResumenFormulario({ meses: selectDatos });

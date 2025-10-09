@@ -8,13 +8,37 @@ import { iniciarSesionFormularioDatos } from "./types";
 import { useMutation } from "@tanstack/react-query";
 import { logIn } from "@/services/auth/service.auth";
 import LoginRoundedIcon from '@mui/icons-material/LoginRounded';
+import { useSnackbar } from "@/lib/context/snackbarcontext";
+import { useRouter } from "next/navigation";
 
 export default function PantallaInicioSesion() {
-    
+
+    const { showError } = useSnackbar();
+
     const { control, handleSubmit, formState: { isValid } } = useIniciarSesionFormulario();
 
+    const router = useRouter();
+
     const mutacion = useMutation({
-        mutationFn: (data: iniciarSesionFormularioDatos) => logIn(data)
+        mutationFn: (data: iniciarSesionFormularioDatos) => logIn(data),
+        onSuccess: (result) => {
+            if (result.success) {
+                router.push('/');
+            };
+        },
+        onError: (error: any) => {
+            let mensaje;
+
+            if (error.message === "1") {
+                mensaje = "Usuario no registrado"
+            } else if (error.message === "2") {
+                mensaje = "Contraseña incorrecta"
+            } else {
+                mensaje = "Error interno. Inténtalo de nuevo."
+            };
+
+            showError(mensaje);
+        },
     });
 
     const onSubmit = (data: iniciarSesionFormularioDatos) => {
@@ -42,7 +66,7 @@ export default function PantallaInicioSesion() {
                             disableElevation
                             endIcon={
                                 mutacion.isPending ? (
-                                    <SyncIcon className="animate-spin" style={{ animationDirection: 'reverse' }}/>
+                                    <SyncIcon className="animate-spin" style={{ animationDirection: 'reverse' }} />
                                 ) : <LoginRoundedIcon />
                             }
                             disabled={mutacion.isPending || !isValid}

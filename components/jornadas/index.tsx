@@ -7,7 +7,7 @@ import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { useTablaEmpleadosFiltros } from "./hooks/useTablaEmpleadosFiltros";
 import { useFiltros } from "./hooks/useFiltrosPadre";
-import { useExpansion } from "./hooks/useExpansion";
+import { useExpansion } from "../hooks/useExpansion";
 import { MenuFiltros } from "./components/tablaEmpleados/tablaEmpleadosFiltrosMenu";
 import { Formulario } from "./components/tablaEmpleados/tablaEmpleadosFiltrosFormulario";
 import { FiltrosActivos } from "./components/tablaEmpleados/tablaEmpleadosFiltrosActivos";
@@ -20,7 +20,7 @@ import { usePaginacion } from "@/components/hooks/usePaginacion";
 import { tablaJornadasEmpleadosProps } from "./types";
 import { useOrdenacion } from "../hooks/useOrdenacion";
 import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
-import { fetchDatosSelectTablaEmpleados } from "@/services/jornada/service.jornadas";
+import { useSelectDatos } from "./hooks/useSelectDatosPadre";
 
 export default function TablaJornadasEmpleados({ esAdministrativo, esRRHH }: tablaJornadasEmpleadosProps) {
 
@@ -43,6 +43,7 @@ export default function TablaJornadasEmpleados({ esAdministrativo, esRRHH }: tab
     handleCambioFiltroProyecto,
     handleCambioBusquedaLegajo,
     handleCambioFiltroTipoEmpleado,
+    handleLimpiarFiltro,
     setBusquedaNombreVisible,
     setFiltroProyectoVisible,
     setBusquedaLegajoVisible,
@@ -55,11 +56,12 @@ export default function TablaJornadasEmpleados({ esAdministrativo, esRRHH }: tab
 
   const { idFila, handleExpansionFila } = useExpansion();
 
-  const { data: selectDatos, isError: selectError } = useQuery({
-    queryKey: ["fetchDatosSelectTablaEmpleados"],
-    queryFn: () => fetchDatosSelectTablaEmpleados(),
-    refetchOnWindowFocus: false
-  });
+  const {
+    proyectos,
+    tiposEmpleado,
+    cargando,
+    error
+  } = useSelectDatos();
 
   const { data: empleadosDatos, isLoading: empleadosCargando, isError: empleadosError } = useQuery({
     queryKey: [
@@ -86,17 +88,17 @@ export default function TablaJornadasEmpleados({ esAdministrativo, esRRHH }: tab
     refetchOnWindowFocus: false
   });
 
-  const getNombreProyectoPorId = getNombreProyecto(selectDatos?.proyectos);
-  const getNombreTipoEmpleadoPorId = getNombreTipoEmpleado(selectDatos?.tiposEmpleado);
+  const getNombreProyectoPorId = getNombreProyecto(proyectos);
+  const getNombreTipoEmpleadoPorId = getNombreTipoEmpleado(tiposEmpleado);
 
   useEffect(() => {
-    if (selectError) {
+    if (error) {
       showWarning("Error al cargar los datos");
     };
     if (empleadosError) {
       showWarning("Error al cargar empleados");
     };
-  }, [selectError, empleadosError, showWarning]);
+  }, [error, empleadosError, showWarning]);
 
   return (
     <div className="flex flex-col gap-1 items-start w-full h-full">
@@ -147,8 +149,8 @@ export default function TablaJornadasEmpleados({ esAdministrativo, esRRHH }: tab
           filtroProyecto={watch("filtroProyecto")}
           busquedaLegajoNormal={watch("busquedaLegajoNormal")}
           filtroTipoEmpleado={watch("filtroTipoEmpleado")}
-          proyectos={selectDatos?.proyectos || []}
-          tiposEmpleado={selectDatos?.tiposEmpleado || []}
+          proyectos={proyectos || []}
+          tiposEmpleado={tiposEmpleado || []}
           onCambioBusquedaNombre={handleCambioBusquedaNombre}
           onCambioFiltroProyecto={handleCambioFiltroProyecto}
           onCambioBusquedaLegajo={handleCambioBusquedaLegajo}
@@ -185,6 +187,7 @@ export default function TablaJornadasEmpleados({ esAdministrativo, esRRHH }: tab
         filtrosActivos={filtrosActivos}
         getNombreProyectoPorId={getNombreProyectoPorId}
         getNombreTipoEmpleadoPorId={getNombreTipoEmpleadoPorId}
+        handleLimpiarFiltro={handleLimpiarFiltro}
       />
       <div className="flex flex-col justify-between w-full h-full overflow-y-auto rounded" style={{ border: "2px solid #ED6C02" }}>
         <TablaEmpleados

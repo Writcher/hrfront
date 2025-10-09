@@ -12,7 +12,6 @@ import { FiltrosActivos } from "./components/tablaEmpleadosFiltrosActivos";
 import { TablaEmpleados } from "./components/tablaEmpleados";
 import { fetchEmpleados, insertEmpleado } from "@/services/empleado/service.empleado";
 import { useEmpleadoFormulario } from "./hooks/useEmpleadoFormulario";
-import { useMostrarFormulario } from "./hooks/useMostrarFormulario";
 import { Formulario } from "./components/tablaEmpleadosFormularioCrear";
 import { empleadoFormularioDatos, insertempleadoParametros } from "./types";
 import { useSnackbar } from "@/lib/context/snackbarcontext";
@@ -21,7 +20,8 @@ import { BotonesFiltros } from "./components/tablaEmpleadosFiltrosBotones";
 import { usePaginacion } from "../hooks/usePaginacion";
 import { useOrdenacion } from "../hooks/useOrdenacion";
 import { Botones } from "./components/tablaEmpleadosFormularioCrearBotones";
-import { fetchDatosSelectTablaEmpleados } from "@/services/jornada/service.jornadas";
+import { useSelectDatos } from "./hooks/useSelectDatos";
+import { useMostrarFormulario } from "./hooks/useMostrarFormulario";
 
 export default function TablaEmpleadosLista() {
 
@@ -46,6 +46,7 @@ export default function TablaEmpleadosLista() {
     handleCambioBusquedaLegajo,
     handleCambioFiltroProyecto,
     handleCambioFiltroTipoEmpleado,
+    handleLimpiarFiltro,
     setBusquedaNombreVisible,
     setFiltroProyectoVisible,
     setBusquedaLegajoVisible,
@@ -58,11 +59,12 @@ export default function TablaEmpleadosLista() {
 
   const { formularioVisible, handleMostrarFormulario } = useMostrarFormulario({ reset });
 
-  const { data: selectDatos, isLoading: selectCargando, isError: selectError } = useQuery({
-    queryKey: ["fetchDatosSelectTablaEmpleados"],
-    queryFn: () => fetchDatosSelectTablaEmpleados(),
-    refetchOnWindowFocus: false
-  });
+  const {
+    proyectos,
+    tiposEmpleado,
+    cargando,
+    error
+  } = useSelectDatos();
 
   const { data: empleadosDatos, isLoading: empleadosCargando, isError: empleadosError, refetch: empleadosRefetch } = useQuery({
     queryKey: [
@@ -89,8 +91,8 @@ export default function TablaEmpleadosLista() {
     refetchOnWindowFocus: false
   });
 
-  const getNombreProyectoPorId = getNombreProyecto(selectDatos?.proyectos);
-  const getNombreTipoEmpleadoPorId = getNombreTipoEmpleado(selectDatos?.tiposEmpleado);
+  const getNombreProyectoPorId = getNombreProyecto(proyectos);
+  const getNombreTipoEmpleadoPorId = getNombreTipoEmpleado(tiposEmpleado);
 
   const mutacionCreate = useMutation({
     mutationFn: (data: insertempleadoParametros) => insertEmpleado(data),
@@ -115,13 +117,13 @@ export default function TablaEmpleadosLista() {
   };
 
   useEffect(() => {
-    if (selectError) {
+    if (error) {
       showWarning("Error al cargar los datos");
     };
     if (empleadosError) {
       showWarning("Error al cargar empleados");
     };
-  }, [selectError, empleadosDatos, showWarning]);
+  }, [error, empleadosDatos, showWarning]);
 
   return (
     <div className="flex flex-col gap-1 items-start w-full h-full">
@@ -177,8 +179,8 @@ export default function TablaEmpleadosLista() {
               filtroProyecto={watch("filtroProyecto")}
               busquedaLegajoNormal={watch("busquedaLegajoNormal")}
               filtroTipoEmpleado={watch("filtroTipoEmpleado")}
-              proyectos={selectDatos?.proyectos || []}
-              tiposEmpleado={selectDatos?.tiposEmpleado || []}
+              proyectos={proyectos || []}
+              tiposEmpleado={tiposEmpleado || []}
               onCambioBusquedaNombre={handleCambioBusquedaNombre}
               onCambioFiltroProyecto={handleCambioFiltroProyecto}
               onCambioBusquedaLegajo={handleCambioBusquedaLegajo}
@@ -203,15 +205,16 @@ export default function TablaEmpleadosLista() {
         filtrosActivos={filtrosActivos}
         getNombreProyectoPorId={getNombreProyectoPorId}
         getNombreTipoEmpleadoPorId={getNombreTipoEmpleadoPorId}
+        handleLimpiarFiltro={handleLimpiarFiltro}
       />
       <div className="flex flex-col justify-between w-full h-full overflow-y-auto rounded" style={{ border: `${formularioVisible ? "" : "2px solid #ED6C02"}` }}>
         {formularioVisible ? (
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col justify-between items-center w-full h-full">
             <Formulario
               control={control}
-              cargando={selectCargando}
-              proyectos={selectDatos?.proyectos || []}
-              tiposEmpleado={selectDatos?.tiposEmpleado || []}
+              cargando={cargando}
+              proyectos={proyectos || []}
+              tiposEmpleado={tiposEmpleado || []}
             />
             <Botones
               creando={mutacionCreate.isPending}

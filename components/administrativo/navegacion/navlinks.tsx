@@ -12,6 +12,7 @@ import Link from "next/link";
 const linksadmin = [
     { name: 'Inicio', href: '/administrativo', icon: HomeRoundedIcon },
     { name: 'Jornadas', href: '/administrativo/jornadas', icon: SummarizeRoundedIcon },
+    { name: 'Ausencias', href: '/administrativo/ausencias', icon: SummarizeRoundedIcon },
     { name: 'Informes', href: '/administrativo/importaciones', icon: UploadFileRoundedIcon },
     { name: 'Empleados', href: '/administrativo/empleados', icon: PeopleAltRoundedIcon },
 ];

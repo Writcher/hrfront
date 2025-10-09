@@ -1,7 +1,7 @@
 "use client";
 
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { fetchSelectDataExcelImport, insertJornadasExcel } from "@/services/importacion/service.importar";
+import { useMutation } from "@tanstack/react-query";
+import { insertJornadasExcel } from "@/services/importacion/service.importar";
 import { Formulario } from "./components/formulario";
 import { useImportarExcelFormulario } from "./hooks/useImportarExcelFormulario";
 import { useDropzoneHook } from "./hooks/useDropzone";
@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useSnackbar } from "@/lib/context/snackbarcontext";
 import { Botones } from "./components/botones";
+import { useSelectDatos } from "./hooks/useSelectDatos";
 
 export default function Importar() {
 
@@ -22,11 +23,13 @@ export default function Importar() {
 
     const router = useRouter();
 
-    const { data: selectDatos, isLoading: selectCargando, isError: selectError } = useQuery({
-        queryKey: ["fetchSelectDataExcelImport"],
-        queryFn: () => fetchSelectDataExcelImport(),
-        refetchOnWindowFocus: false,
-    });
+    const {
+        proyectos,
+        tiposJornada,
+        tiposImportacion,
+        cargando,
+        error
+    } = useSelectDatos()
 
     const mutacionImport = useMutation({
         mutationFn: (data: importarExcelFormularioDatos) => insertJornadasExcel(data),
@@ -49,10 +52,10 @@ export default function Importar() {
     };
 
     useEffect(() => {
-        if (selectError) {
+        if (error) {
             showWarning("Error al cargar los datos");
         };
-    }, [selectError, showWarning]);
+    }, [error, showWarning]);
 
     return (
         <div className="flex flex-col gap-4 items-center justify-center w-full h-full">
@@ -60,10 +63,10 @@ export default function Importar() {
                 <div className="flex flex-col pt-[25vh] gap-2 w-[80%]">
                     <Formulario
                         control={control}
-                        cargando={selectCargando}
-                        proyectos={selectDatos?.proyectos || []}
-                        tiposJornada={selectDatos?.tiposJornada || []}
-                        tiposImportacion={selectDatos?.tiposImportacion || []}
+                        cargando={cargando}
+                        proyectos={proyectos || []}
+                        tiposJornada={tiposJornada || []}
+                        tiposImportacion={tiposImportacion || []}
                     />
                     <Dropzone
                         getRootProps={getRootProps}
