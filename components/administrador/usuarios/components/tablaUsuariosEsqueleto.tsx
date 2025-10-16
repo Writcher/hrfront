@@ -20,6 +20,11 @@ export const Esqueleto = ({ filas }: esqueletoProps) => (
                         <Skeleton variant="text" width={75} />
                     </div>
                 </TableCell>
+                <TableCell align="center" size="small" width="10%">
+                    <div className="flex items-center justify-center">
+                        <Skeleton variant="rectangular" className="!rounded" width={60} height={30} />
+                    </div>
+                </TableCell>
                 <TableCell align="right" size="small" width="20%">
                     <div className="flex items-center justify-end gap-2">
                         <Skeleton variant="rectangular" className="!rounded" width={60} height={30} />

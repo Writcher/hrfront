@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import { Button, TablePagination } from "@mui/material";
 import UploadFileRoundedIcon from '@mui/icons-material/UploadFileRounded';
 import Link from "next/link";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useTablaEmpleadosFiltros } from "./hooks/useTablaEmpleadosFiltros";
 import { useFiltros } from "./hooks/useFiltrosPadre";
 import { useExpansion } from "../hooks/useExpansion";
@@ -52,6 +52,15 @@ export default function TablaJornadasEmpleados({ esAdministrativo, esRRHH }: tab
 
   const { pagina, filasPorPagina, handleCambioPagina, handleCambioFilasPorPagina } = usePaginacion({ filasIniciales: 25 });
 
+  useEffect(() => {
+    handleCambioPagina(null, 0);
+  }, [
+    watch("busquedaNombre"),
+    watch("filtroProyecto"),
+    watch("busquedaLegajo"),
+    watch("filtroTipoEmpleado"),
+  ]);
+
   const { direccion, columna, handleOrdenacion } = useOrdenacion({ columnaInicial: "nombreapellido" });
 
   const { idFila, handleExpansionFila } = useExpansion();
@@ -85,7 +94,8 @@ export default function TablaJornadasEmpleados({ esAdministrativo, esRRHH }: tab
       busquedaLegajo: watch("busquedaLegajo"),
       filtroTipoEmpleado: watch("filtroTipoEmpleado"),
     }),
-    refetchOnWindowFocus: false
+    refetchOnWindowFocus: false,
+    placeholderData: keepPreviousData,
   });
 
   const getNombreProyectoPorId = getNombreProyecto(proyectos);

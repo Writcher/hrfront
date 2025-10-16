@@ -1,6 +1,6 @@
 import { TableCell, TablePagination, TableRow } from "@mui/material";
 import { useFiltrosInteriores } from "../../hooks/useFiltrosHijoAdministrativo";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useMutation, useQuery } from "@tanstack/react-query";
 import { TablaJornadas } from "../tablaJornadas/tablaJornadas";
 import { useTablaJornadaFormulario } from "../../hooks/useTablaJornadasFormulario";
 import { Formulario } from "../tablaJornadas/tablaJornadasFormularioCrear";
@@ -26,10 +26,17 @@ export function FilaExpandidaAdministrativo({ idFilaExpandida, idFilaExpandidaPr
 
     const { pagina, filasPorPagina, handleCambioPagina, handleCambioFilasPorPagina } = usePaginacion({ filasIniciales: 16 });
 
+    useEffect(() => {
+        handleCambioPagina(null, 0);
+    }, [
+        watch("filtroMes"),
+        watch("filtroQuincena"),
+        watch("filtroMarcasIncompletas"),
+    ]);
+
     const { formularioVisible, handleMostrarFormulario } = useMostrarFormulario({ reset });
 
     const { onCambioJornadaPartida, jornadaPartida } = useJornadaPartida();
-
 
     const { data: selectDatos, isLoading: selectCargando, isError: selectError } = useQuery({
         queryKey: ["fetchMeses"],
@@ -64,7 +71,8 @@ export function FilaExpandidaAdministrativo({ idFilaExpandida, idFilaExpandidaPr
             pagina: pagina,
             filasPorPagina: filasPorPagina
         }),
-        refetchOnWindowFocus: false
+        refetchOnWindowFocus: false,
+        placeholderData: keepPreviousData,
     });
 
     const mutacionCreate = useMutation({

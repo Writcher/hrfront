@@ -4,7 +4,7 @@ import { TablePagination } from "@mui/material";
 import React, { useEffect } from "react";
 import { useTablaImportacionesFiltros } from "./hooks/useTablaImportacionesFiltros";
 import { useFiltros } from "./hooks/useFiltros";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { fetchImportaciones } from "@/services/importacion/service.importacion";
 import { TablaImportaciones } from "./components/tablaImportaciones";
 import { fetchProyectos } from "@/services/proyecto/service.proyecto";
@@ -22,6 +22,13 @@ export default function Importaciones({ esAdministrativo }: importacionesProps) 
     const { handleCambioFiltroIncompletas, handleCambioFiltroProyecto, handleLimpiarFiltros } = useFiltros({ setValue, watch });
 
     const { pagina, filasPorPagina, handleCambioPagina, handleCambioFilasPorPagina } = usePaginacion({ filasIniciales: 16 });
+
+    useEffect(() => {
+        handleCambioPagina(null, 0);
+    }, [
+        watch("filtroProyecto"),
+        watch("filtroIncompletas")
+    ]);
 
     const { data: selectDatos, isLoading: selectCargando, isError: selectError } = useQuery({
         queryKey: ["fetchProyectos"],
@@ -44,6 +51,7 @@ export default function Importaciones({ esAdministrativo }: importacionesProps) 
             filasPorPagina: filasPorPagina
         }),
         refetchOnWindowFocus: false,
+        placeholderData: keepPreviousData,
     });
 
     useEffect(() => {

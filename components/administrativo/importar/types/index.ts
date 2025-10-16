@@ -1,5 +1,5 @@
 import { DropzoneInputProps, DropzoneRootProps } from "react-dropzone";
-import { Control, FieldErrors, UseFormClearErrors, UseFormSetError, UseFormSetValue } from "react-hook-form";
+import { Control, FieldErrors, UseFormClearErrors, UseFormSetError, UseFormSetValue, UseFormWatch } from "react-hook-form";
 
 //schema
 
@@ -22,6 +22,7 @@ export type tipoImportacion = {
 
 export type formularioProps = {
     control: Control<importarExcelFormularioDatos>,
+    watch: UseFormWatch<importarExcelFormularioDatos>,
     cargando: boolean,
     proyectos: proyecto[],
     tiposJornada: tipoJornada[],
@@ -55,6 +56,7 @@ export type importarExcelFormularioDatos = {
     proyecto: number | '',
     tipoJornada: number | '',
     tipoInforme: number | '',
+    fecha: string,
 };
 
 //mutations

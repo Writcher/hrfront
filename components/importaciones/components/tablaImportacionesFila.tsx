@@ -52,6 +52,16 @@ export default function Fila({ importacion, esAdministrativo }: filaImportacionP
             </TableCell>
             <TableCell align="center" size="small">
                 <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.75rem)]" style={{ userSelect: "none" }}>
+                    {importacion.nombreproyecto}
+                </div>
+            </TableCell>
+            <TableCell align="center" size="small">
+                <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.75rem)]" style={{ userSelect: "none" }}>
+                    {importacion.nombreusuario}
+                </div>
+            </TableCell>
+            <TableCell align="center" size="small">
+                <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.75rem)]" style={{ userSelect: "none" }}>
                     <Chip
                         label={importacion.nombreestado}
                         className="!rounded"

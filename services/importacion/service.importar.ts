@@ -14,6 +14,7 @@ export async function insertJornadasExcel(data: insertJornadasExcelDTO) {
         formData.append("id_proyecto", data.proyecto.toString() === '' ? '0' : data.proyecto.toString());
         formData.append("id_tipojornada", data.tipoJornada.toString() === '' ? '0' : data.tipoJornada.toString());
         formData.append("id_tipoimportacion", data.tipoInforme.toString() === '' ? '0' : data.tipoInforme.toString());
+        formData.append("fecha", data.fecha);
 
         const responseRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_EXCEL_IMPORT}`, {
             method: "POST",

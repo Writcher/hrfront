@@ -25,6 +25,11 @@ export const Esqueleto = ({ filas }: esqueletoProps) => (
                         <Skeleton variant="text" width={100} />
                     </div>
                 </TableCell>
+                <TableCell align="center" size="small" width="10%">
+                    <div className="flex items-center justify-center">
+                        <Skeleton variant="text" width={100} />
+                    </div>
+                </TableCell>
                 <TableCell align="center" size="small" width="15%">
                     <div className="flex items-center justify-center">
                         <Skeleton variant="text" width={100} />
@@ -35,7 +40,7 @@ export const Esqueleto = ({ filas }: esqueletoProps) => (
                         <Skeleton variant="rectangular" className="!rounded" width={60} height={30} />
                     </div>
                 </TableCell>
-                <TableCell align="right" size="small" width="20%">
+                <TableCell align="right" size="small" width="10%">
                     <div className="flex items-center justify-end gap-2">
                         <Skeleton variant="rectangular" className="!rounded" width={60} height={30} />
                         <Skeleton variant="rectangular" className="!rounded" width={60} height={30} />

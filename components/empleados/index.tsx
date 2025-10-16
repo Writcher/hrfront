@@ -3,7 +3,7 @@
 import React, { useEffect } from "react";
 import { Button, TablePagination } from "@mui/material";
 import PersonAddAltRoundedIcon from '@mui/icons-material/PersonAddAltRounded';
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useMutation, useQuery } from "@tanstack/react-query";
 import { useTablaEmpleadosFormulario } from "./hooks/useTablaEmpleadosFormulario";
 import { useFiltros } from "./hooks/useFiltros";
 import { MenuFiltros } from "./components/tablaEmpleadosFiltrosMenu";
@@ -22,8 +22,10 @@ import { useOrdenacion } from "../hooks/useOrdenacion";
 import { Botones } from "./components/tablaEmpleadosFormularioCrearBotones";
 import { useSelectDatos } from "./hooks/useSelectDatos";
 import { useMostrarFormulario } from "./hooks/useMostrarFormulario";
+import NumbersRoundedIcon from '@mui/icons-material/NumbersRounded';
+import Link from "next/link";
 
-export default function TablaEmpleadosLista() {
+export default function TablaEmpleadosLista({ esAdministrativo }: { esAdministrativo: boolean }) {
 
   const { watch, setValue } = useTablaEmpleadosFormulario();
 
@@ -55,6 +57,15 @@ export default function TablaEmpleadosLista() {
 
   const { pagina, filasPorPagina, handleCambioPagina, handleCambioFilasPorPagina } = usePaginacion({ filasIniciales: 25 });
 
+  useEffect(() => {
+    handleCambioPagina(null, 0);
+  }, [
+    watch("busquedaNombre"),
+    watch("filtroProyecto"),
+    watch("busquedaLegajo"),
+    watch("filtroTipoEmpleado"),
+  ]);
+
   const { direccion, columna, handleOrdenacion } = useOrdenacion({ columnaInicial: "nombreapellido" });
 
   const { formularioVisible, handleMostrarFormulario } = useMostrarFormulario({ reset });
@@ -62,6 +73,7 @@ export default function TablaEmpleadosLista() {
   const {
     proyectos,
     tiposEmpleado,
+    turnos,
     cargando,
     error
   } = useSelectDatos();
@@ -88,7 +100,8 @@ export default function TablaEmpleadosLista() {
       busquedaLegajo: watch("busquedaLegajo"),
       filtroTipoEmpleado: watch("filtroTipoEmpleado"),
     }),
-    refetchOnWindowFocus: false
+    refetchOnWindowFocus: false,
+    placeholderData: keepPreviousData,
   });
 
   const getNombreProyectoPorId = getNombreProyecto(proyectos);
@@ -187,6 +200,20 @@ export default function TablaEmpleadosLista() {
               onCambioFiltroTipoEmpleado={handleCambioFiltroTipoEmpleado}
             />
             <div className="flex grow" />
+            {esAdministrativo &&
+              <Button
+                variant="contained"
+                color="info"
+                size="small"
+                className="!h-[40px]"
+                disableElevation
+                component={Link}
+                href={`/administrativo/empleados/presentes`}
+                endIcon={<NumbersRoundedIcon />}
+              >
+                Consultar Presentes
+              </Button>
+            }
             <Button
               variant="contained"
               color="success"

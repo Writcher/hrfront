@@ -7,7 +7,7 @@ import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
 export default function InicioRRHH() {
     return (
         <div className="flex flex-row gap-2 items-center justify-center w-full h-full">
-            <Card raised={false} className="flex flex-col justify-between gap-2 w-[25%] h-[50%] border-2 border-[#ED6C02] !shadow-none">
+            <Card raised={false} className="flex flex-col justify-between gap-2 w-[25%] h-[60%] border-2 border-[#ED6C02] !shadow-none">
                 <CardContent className="flex flex-col gap-4">
                     <div className='text-center text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]'>
                         Resumen de Jornadas
@@ -58,7 +58,7 @@ export default function InicioRRHH() {
                     </div>
                 </CardActions>
             </Card>
-            <Card raised={false} className="flex flex-col justify-between gap-2 w-[25%] h-[50%] border-2 border-[#ED6C02] !shadow-none">
+            <Card raised={false} className="flex flex-col justify-between gap-2 w-[25%] h-[60%] border-2 border-[#ED6C02] !shadow-none">
                 <CardContent className="flex flex-col gap-4">
                     <div className='text-center text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]'>
                         Informe de Jornadas
@@ -88,7 +88,7 @@ export default function InicioRRHH() {
                     </div>
                 </CardActions>
             </Card>
-            <Card raised={false} className="flex flex-col justify-between gap-2 w-[25%] h-[50%] border-2 border-[#ED6C02] !shadow-none">
+            <Card raised={false} className="flex flex-col justify-between gap-2 w-[25%] h-[60%] border-2 border-[#ED6C02] !shadow-none">
                 <CardContent className="flex flex-col gap-4">
                     <div className='text-center text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]'>
                         Listado de Empleados

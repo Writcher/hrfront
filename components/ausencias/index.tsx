@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react";
 import { TablePagination } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useTablaEmpleadosFiltros } from "./hooks/useTablaEmpleadosFiltros";
 import { useFiltros } from "./hooks/useFiltrosPadre";
 import { useExpansion } from "../hooks/useExpansion";
@@ -54,6 +54,18 @@ export default function TablaAusenciasEmpleados({ esAdministrativo, esRRHH }: ta
 
   const { pagina, filasPorPagina, handleCambioPagina, handleCambioFilasPorPagina } = usePaginacion({ filasIniciales: 25 });
 
+  useEffect(() => {
+    handleCambioPagina(null, 0);
+  }, [
+    watch("busquedaNombre"),
+    watch("filtroProyecto"),
+    watch("busquedaLegajo"),
+    watch("filtroTipoEmpleado"),
+    watch("filtroTipoAusencia"),
+    watch("filtroMes"),
+    watch("filtroQuincena"),
+  ]);
+
   const { direccion, columna, handleOrdenacion } = useOrdenacion({ columnaInicial: "nombreapellido" });
 
   const { idFila, handleExpansionFila } = useExpansion();
@@ -95,7 +107,8 @@ export default function TablaAusenciasEmpleados({ esAdministrativo, esRRHH }: ta
       filtroMes: watch("filtroMes"),
       filtroQuincena: watch("filtroQuincena"),
     }),
-    refetchOnWindowFocus: false
+    refetchOnWindowFocus: false,
+    placeholderData: keepPreviousData,
   });
 
   const getNombreProyectoPorId = getNombreProyecto(proyectos);

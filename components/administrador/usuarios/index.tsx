@@ -3,7 +3,7 @@
 import React, { useEffect } from "react";
 import { Button, TablePagination } from "@mui/material";
 import PersonAddAltRoundedIcon from '@mui/icons-material/PersonAddAltRounded';
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useMutation, useQuery } from "@tanstack/react-query";
 import { useTablaUsuariosFormulario } from "./hooks/useTablaUsuariosFormulario";
 import { useFiltros } from "./hooks/useFiltros";
 import { MenuFiltros } from "./components/tablaUsuariosFiltrosMenu";
@@ -31,6 +31,8 @@ export default function TablaUsuariosLista() {
 
   const { showSuccess, showError, showWarning } = useSnackbar();
 
+  const { pagina, filasPorPagina, handleCambioPagina, handleCambioFilasPorPagina } = usePaginacion({ filasIniciales: 25 });
+
   const {
     ancla,
     abrirFiltros,
@@ -47,7 +49,9 @@ export default function TablaUsuariosLista() {
     setFiltroTipoUsuarioVisible
   } = useFiltros({ setValue });
 
-  const { pagina, filasPorPagina, handleCambioPagina, handleCambioFilasPorPagina } = usePaginacion({ filasIniciales: 25 });
+  useEffect(() => {
+    handleCambioPagina(null, 0);
+  }, [watch("busquedaNombre"), watch("filtroTipoUsuario")]);
 
   const { direccion, columna, handleOrdenacion } = useOrdenacion({ columnaInicial: "id_tipousuario" });
 
@@ -66,6 +70,7 @@ export default function TablaUsuariosLista() {
       filasPorPagina,
       columna,
       direccion,
+      watch("busquedaNombre"),
       watch("filtroTipoUsuario"),
     ],
     queryFn: () => fetchUsuarios({
@@ -76,7 +81,8 @@ export default function TablaUsuariosLista() {
       busquedaNombre: watch("busquedaNombre"),
       filtroTipoUsuario: watch("filtroTipoUsuario"),
     }),
-    refetchOnWindowFocus: false
+    refetchOnWindowFocus: false,
+    placeholderData: keepPreviousData,
   });
 
   const getNombreTipoUsuarioPorId = getNombreTipoUsuario(selectDatos);

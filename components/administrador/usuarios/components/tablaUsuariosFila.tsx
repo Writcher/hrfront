@@ -1,4 +1,4 @@
-import { MenuItem, TableCell, TableRow, TextField } from "@mui/material";
+import { Chip, MenuItem, TableCell, TableRow, TextField } from "@mui/material";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSnackbar } from "@/lib/context/snackbarcontext";
 import { useUsuarioFormulario } from "../hooks/useUsuarioFormulario";
@@ -171,6 +171,17 @@ export default function FilaUsuario({ usuario }: formularioFilaUsuarioProps) {
                     )}
                 </div>
             </TableCell>
+            <TableCell align="center" size="small">
+                <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.75rem)]" style={{ userSelect: "none" }}>
+                    <Chip
+                        label={usuario.estadousuario}
+                        className="!rounded"
+                        color={
+                            usuario.estadousuario.toLowerCase() === 'activo' ? 'success' : 'error'
+                        }
+                    />
+                </div>
+            </TableCell>
             <TableCell align="right" size="small">
                 <BotonesFila
                     editando={mutacionEdit.isPending}
@@ -182,6 +193,7 @@ export default function FilaUsuario({ usuario }: formularioFilaUsuarioProps) {
                     onDelete={onDelete}
                     confirmarBorrar={confirmarBorrar}
                     onClickBorrar={handleConfirmarBorrar}
+                    estado={usuario.estadousuario}
                 />
             </TableCell>
         </TableRow>

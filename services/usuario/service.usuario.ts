@@ -14,7 +14,7 @@ export async function fetchUsuarioPorCorreo(parametros: fetchUsuarioPorCorreoDTO
         const datosUsuarioRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_USUARIOS}?${datosUsuarioParams.toString()}&accion=login`, {
             method: "GET"
         });
-        
+
         if (datosUsuarioRaw.status === 404) {
             throw new Error("Usuario no registrado");
         } else if (!datosUsuarioRaw.ok) {
@@ -91,10 +91,14 @@ export async function deleteUsuario(id: number) {
         const token = await getToken();
 
         const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_USUARIO!.replace("{id}", id!.toString())}`, {
-            method: "DELETE",
+            method: "PATCH",
             headers: {
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
+            body: JSON.stringify({
+                accion: "baja",
+            }),
         });
 
         if (!respuestaRaw.ok) {

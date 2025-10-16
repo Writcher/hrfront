@@ -12,6 +12,11 @@ export type tipoEmpleado = {
   nombre: string,
 };
 
+export type turno = {
+  id: number,
+  nombre: string,
+};
+
 export type empleado = {
   id: number,
   legajo: number,
@@ -22,6 +27,8 @@ export type empleado = {
   estadoempleado: string,
   tipoempleado: string,
   id_tipoempleado: number | '',
+  id_turno: number | '',
+  turno: string | null,
 };
 
 //props
@@ -144,6 +151,7 @@ export type empleadoFormularioDatos = {
   legajo: number | '',
   nombre: string,
   id_tipoempleado: number | '',
+  id_turno: number | ''
 };
 
 //mutations
@@ -162,6 +170,8 @@ export type editEmpleadoParametros = {
   legajo: number | '',
   id: number,
   id_tipoempleado: number | '',
+  id_turno: number | '',
+  id_proyecto: number | '',
 };
 
 //responses

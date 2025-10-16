@@ -1,5 +1,5 @@
 import { TableCell, TablePagination, TableRow } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { TablaAusencias } from "../tablaAusencias/tablaAusencias";
 import { filaExpandidaProps } from "../../types";
 import { fetchJornadas } from "@/services/jornada/service.jornada";
@@ -12,6 +12,14 @@ export function FilaExpandida({ idFilaExpandida, idFilaExpandidaProp, filtroTipo
     const { showWarning } = useSnackbar();
 
     const { pagina, filasPorPagina, handleCambioPagina, handleCambioFilasPorPagina } = usePaginacion({ filasIniciales: 16 });
+
+    useEffect(() => {
+        handleCambioPagina(null, 0);
+    }, [
+        filtroMes,
+        filtroQuincena,
+        filtroTipoAusencia,
+    ]);
 
     const { data: jornadasDatos, isLoading: jornadasCargando, isError: jornadasError, refetch: jornadasRefetch } = useQuery({
         queryKey: [
@@ -33,7 +41,8 @@ export function FilaExpandida({ idFilaExpandida, idFilaExpandidaProp, filtroTipo
             ausencias: true,
             filtroTipoAusencia: filtroTipoAusencia,
         }),
-        refetchOnWindowFocus: false
+        refetchOnWindowFocus: false,
+        placeholderData: keepPreviousData,
     });
 
     useEffect(() => {

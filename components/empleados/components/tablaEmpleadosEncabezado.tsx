@@ -40,6 +40,13 @@ export const Encabezado = ({ onOrden, columna, direccion }: encabezadoProps) => 
                     Tipo de Empleado
                 </div>
             </TableCell>
+            <TableCell align="center" onClick={() => onOrden('id_turno')} width="10%">
+                <div style={{ userSelect: "none" }}
+                    className={`text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)] ${columna === 'id_turno' ? (direccion === 'ASC' ? 'text-orange-500' : 'text-red-500') : ''
+                        }`}>
+                    Turno
+                </div>
+            </TableCell>
             <TableCell align="center" onClick={() => onOrden('id_proyecto')} width="15%">
                 <div style={{ userSelect: "none" }}
                     className={`text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)] ${columna === 'id_proyecto' ? (direccion === 'ASC' ? 'text-orange-500' : 'text-red-500') : ''
@@ -54,7 +61,7 @@ export const Encabezado = ({ onOrden, columna, direccion }: encabezadoProps) => 
                     Estado
                 </div>
             </TableCell>
-            <TableCell align="right" width="20%">
+            <TableCell align="right" width="10%">
                 <div style={{ userSelect: "none" }}
                     className={`text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]`}>
                     Acciones

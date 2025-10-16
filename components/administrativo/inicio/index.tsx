@@ -3,11 +3,12 @@ import UploadFileRoundedIcon from '@mui/icons-material/UploadFileRounded';
 import SearchIcon from '@mui/icons-material/Search';
 import SummarizeRoundedIcon from '@mui/icons-material/SummarizeRounded';
 import PeopleAltRoundedIcon from '@mui/icons-material/PeopleAltRounded';
+import NumbersRoundedIcon from '@mui/icons-material/NumbersRounded';
 
 export default function InicioAdministrativo() {
     return (
         <div className="flex flex-row gap-2 items-center justify-center w-full h-full">
-            <Card raised={false} className="flex flex-col justify-between gap-2 w-[25%] h-[50%] border-2 border-[#ED6C02] !shadow-none">
+            <Card raised={false} className="flex flex-col justify-between gap-2 w-[25%] h-[60%] border-2 border-[#ED6C02] !shadow-none">
                 <CardContent className="flex flex-col gap-4">
                     <div className='text-center text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]'>
                         Informes de Jornadas
@@ -48,7 +49,7 @@ export default function InicioAdministrativo() {
                     </div>
                 </CardActions>
             </Card>
-            <Card raised={false} className="flex flex-col justify-between gap-2 w-[25%] h-[50%] border-2 border-[#ED6C02] !shadow-none">
+            <Card raised={false} className="flex flex-col justify-between gap-2 w-[25%] h-[60%] border-2 border-[#ED6C02] !shadow-none">
                 <CardContent className="flex flex-col gap-4">
                     <div className='text-center text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]'>
                         Jornadas Cargadas
@@ -89,7 +90,7 @@ export default function InicioAdministrativo() {
                     </div>
                 </CardActions>
             </Card>
-            <Card raised={false} className="flex flex-col justify-between gap-2 w-[25%] h-[50%] border-2 border-[#ED6C02] !shadow-none">
+            <Card raised={false} className="flex flex-col justify-between gap-2 w-[25%] h-[60%] border-2 border-[#ED6C02] !shadow-none">
                 <CardContent className="flex flex-col gap-4">
                     <div className='text-center text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]'>
                         Listado de Empleados
@@ -98,7 +99,7 @@ export default function InicioAdministrativo() {
                 <Divider variant="middle" sx={{ bgcolor: "#ED6C02" }} flexItem />
                 <CardContent className="flex flex-col grow justify-center gap-4">
                     <div className="text-center text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]" style={{ userSelect: "none" }}>
-                        Editar la información de empleados, dar de alta nuevos de forma manual o dar de baja empleados antiguos. <br /><br />
+                        Editar la información de empleados, dar de alta nuevos de forma manual, dar de baja empleados antiguos, o consultar el número de empleados presentes por proyecto. <br /><br />
                         Ten en cuenta que la carga automática de empleados durante la importación de informes no considera el número de legajo. Además, a los empleados dados de baja no se les podrán cargar jornadas manualmente.<br />
                     </div>
                 </CardContent>
@@ -115,6 +116,17 @@ export default function InicioAdministrativo() {
                             endIcon={<PeopleAltRoundedIcon />}
                         >
                             Listado de Empleados
+                        </Button>
+                        <Button
+                            component={Link}
+                            href={"/administrativo/empleados/presentes"}
+                            variant="contained"
+                            className="!bg-gray-800 !text-white hover:!bg-orange-100 hover:!text-orange-600"
+                            disableElevation
+                            fullWidth
+                            endIcon={<NumbersRoundedIcon />}
+                        >
+                            Consultar Presentes
                         </Button>
                     </div>
                 </CardActions>

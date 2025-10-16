@@ -9,6 +9,7 @@ export const useEmpleadoFormulario = () => {
             id_proyecto: '',
             legajo: '',
             id_tipoempleado: '',
+            id_turno: '',
         },
     });
 };
