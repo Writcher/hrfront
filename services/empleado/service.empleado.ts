@@ -2,7 +2,7 @@
 
 import { insertempleadoParametros } from "@/components/empleados/types";
 import CONFIG from "@/config";
-import { editEmpleadoDTO, fetchEmpleadosDTO } from "@/lib/dtos/empleado";
+import { editEmpleadoDTO, fetchEmpleadosDTO, fetchPresentesDTO } from "@/lib/dtos/empleado";
 import { getToken } from "@/lib/utils/getToken";
 
 export async function fetchEmpleados(parametros: fetchEmpleadosDTO) {
@@ -107,9 +107,11 @@ export async function editEmpleado(parametros: editEmpleadoDTO) {
             body: JSON.stringify({ 
                 accion: "editar" ,
                 nombre: parametros.nombre,
-                legajo: parametros.legajo,
+                legajo: parametros.legajo === '' ? null : parametros.legajo,
                 id_reloj: parametros. id_reloj,
-                id_tipoempleado: parametros.id_tipoempleado,
+                id_tipoempleado: parametros.id_tipoempleado === '' ? null : parametros.id_tipoempleado,
+                id_turno: parametros.id_turno === '' ? null : parametros.id_turno,
+                id_proyecto: parametros.id_proyecto === '' ? null : parametros.id_proyecto,
             }),
         });
 
@@ -120,6 +122,37 @@ export async function editEmpleado(parametros: editEmpleadoDTO) {
         const respuesta = await respuestaRaw.json();
 
         return respuesta;
+    } catch (error) {
+        throw error;
+    };
+};
+
+export async function fetchPresentes(parametros: fetchPresentesDTO) {
+    try {
+        const token = await getToken();
+
+        const presentesParametros = new URLSearchParams({
+            accion: "presentes",
+            filtroProyecto: parametros.proyecto.toString() === '' ? '0' : parametros.proyecto.toString(),
+            fecha: parametros.fecha,
+            pagina: parametros.pagina.toString(),
+            filasPorPagina: parametros.filasPorPagina.toString(),
+        });
+
+        const empleadosRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_EMPLEADOS}?${presentesParametros.toString()}`, {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        });
+
+        if (!empleadosRaw.ok) {
+            throw new Error("Error en la respuesta del servidor");
+        };
+
+        const empleados = await empleadosRaw.json();
+
+        return empleados;
     } catch (error) {
         throw error;
     };

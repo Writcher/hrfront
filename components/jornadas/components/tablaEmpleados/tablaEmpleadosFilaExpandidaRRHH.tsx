@@ -1,5 +1,5 @@
 import { Button, Divider, TableCell, TablePagination, TableRow } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { fetchMeses } from "@/services/mes/service.mes";
 import { fetchJornadas } from "@/services/jornada/service.jornada";
 import { useEffect } from "react";
@@ -37,6 +37,13 @@ export function FilaExpandidaRRHH({
         handleCambioFiltroQuincena
     } = useFiltros({ setValue });
 
+    useEffect(() => {
+        handleCambioPagina(null, 0);
+    }, [
+        watch("filtroMes"),
+        watch("filtroQuincena"),
+    ]);
+
     const { data: jornadasDatos, isLoading: jornadasCargando, isError: jornadasError } = useQuery({
         queryKey: [
             "fetchResumenEmpleado",
@@ -49,7 +56,7 @@ export function FilaExpandidaRRHH({
             filtroMes: watch("filtroMes"),
             filtroQuincena: watch("filtroQuincena"),
         }),
-        refetchOnWindowFocus: false
+        refetchOnWindowFocus: false,
     });
 
     const { data: observacionesDatos, isLoading: observacionesCargando, isError: observacionesError } = useQuery({
@@ -68,7 +75,8 @@ export function FilaExpandidaRRHH({
             pagina: pagina,
             filasPorPagina: filasPorPagina,
         }),
-        refetchOnWindowFocus: false
+        refetchOnWindowFocus: false,
+        placeholderData: keepPreviousData,
     });
 
     useEffect(() => {

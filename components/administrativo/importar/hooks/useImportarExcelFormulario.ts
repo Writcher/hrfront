@@ -8,6 +8,7 @@ export const useImportarExcelFormulario = () => {
       tipoJornada: '',
       archivo: null,
       tipoInforme: '',
+      fecha: '',
     },
   });
 };

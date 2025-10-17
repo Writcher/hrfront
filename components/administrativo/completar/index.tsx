@@ -1,6 +1,6 @@
 "use client"
 
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useFiltros } from "./hooks/useFiltros";
 import { usePaginacion } from "../../hooks/usePaginacion";
 import { useTablaJornadasFiltro } from "./hooks/useTablaJornadasFiltro";
@@ -26,6 +26,10 @@ export default function Completar({ id_importacion }: importacionJornadasProps) 
 
     const { pagina, filasPorPagina, handleCambioPagina, handleCambioFilasPorPagina } = usePaginacion({ filasIniciales: 25 });
 
+    useEffect(() => {
+        handleCambioPagina(null, 0);
+    }, [watch("filtroMarcasIncompletas")]);
+
     const router = useRouter();
 
     const queryClient = useQueryClient();
@@ -44,6 +48,7 @@ export default function Completar({ id_importacion }: importacionJornadasProps) 
             filasPorPagina: filasPorPagina,
         }),
         refetchOnWindowFocus: false,
+        placeholderData: keepPreviousData,
     });
 
     const mutacionComplete = useMutation({

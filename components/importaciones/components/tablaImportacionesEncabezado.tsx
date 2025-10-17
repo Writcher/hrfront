@@ -12,26 +12,38 @@ export const Encabezado = ({ esAdministrativo }: encabezadoProps) => (
         }}
     >
         <TableRow>
-            <TableCell align="left" width="25%">
+            <TableCell align="left" width="20%">
                 <div style={{ userSelect: "none" }}
                     className={`text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]`}>
                     Nombre del Archivo
                 </div>
             </TableCell>
-            <TableCell align="center" width="25%">
+            <TableCell align="center" width="20%">
                 <div style={{ userSelect: "none" }}
                     className={`text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]`}>
                     Fecha de Importacion
                 </div>
             </TableCell>
-            <TableCell align="center" width="25%">
+            <TableCell align="center" width="20%">
+                <div style={{ userSelect: "none" }}
+                    className={`text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]`}>
+                    Proyecto
+                </div>
+            </TableCell>
+            <TableCell align="center" width="20%">
+                <div style={{ userSelect: "none" }}
+                    className={`text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]`}>
+                    Usuario que Importo
+                </div>
+            </TableCell>
+            <TableCell align="center" width="10%">
                 <div style={{ userSelect: "none" }}
                     className={`text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]`}>
                     Estado
                 </div>
             </TableCell>
             {esAdministrativo &&
-                <TableCell align="right" width="25%">
+                <TableCell align="right" width="10%">
                     <div style={{ userSelect: "none" }}
                         className={`text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]`}>
                         Acciones

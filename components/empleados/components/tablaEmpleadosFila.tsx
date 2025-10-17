@@ -1,15 +1,15 @@
 import { Chip, MenuItem, TableCell, TableRow, TextField } from "@mui/material";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deactivateEmpleado, editEmpleado } from "@/services/empleado/service.empleado";
 import { useSnackbar } from "@/lib/context/snackbarcontext";
 import { useEmpleadoFormulario } from "../hooks/useEmpleadoFormulario";
 import { Controller } from "react-hook-form";
 import { useEffect } from "react";
-import { editEmpleadoParametros, empleadoFormularioDatos, formularioFilaEmpleadoProps, tipoEmpleado } from "../types";
+import { editEmpleadoParametros, empleadoFormularioDatos, formularioFilaEmpleadoProps, tipoEmpleado, turno, proyecto } from "../types";
 import { BotonesFila } from "./filaEmpleadosBotones";
 import { useConfirmar } from "../../hooks/useConfirmar";
-import { fetchTiposEmpleado } from "@/services/tipoempleado/service.tipoempleado";
 import { useMostrarFormulario } from "../hooks/useMostrarFormulario";
+import { useSelectDatos } from "../hooks/useSelectDatos";
 
 export default function FilaEmpleado({ empleado }: formularioFilaEmpleadoProps) {
 
@@ -23,11 +23,13 @@ export default function FilaEmpleado({ empleado }: formularioFilaEmpleadoProps) 
 
     const { confirmar: confirmarBaja, handleConfirmar: handleConfirmarBaja } = useConfirmar();
 
-    const { data: selectData } = useQuery({
-        queryKey: ["fetchTiposEmpleado"],
-        queryFn: () => fetchTiposEmpleado(),
-        refetchOnWindowFocus: false
-    });
+    const {
+        proyectos,
+        tiposEmpleado,
+        turnos,
+        cargando,
+        error
+    } = useSelectDatos();
 
     useEffect(() => {
         if (empleado) {
@@ -35,6 +37,8 @@ export default function FilaEmpleado({ empleado }: formularioFilaEmpleadoProps) 
             setValue('legajo', empleado.legajo ? empleado.legajo : '');
             setValue('nombre', empleado.nombre ? empleado.nombre : '');
             setValue('id_tipoempleado', empleado.id_tipoempleado ? empleado.id_tipoempleado : '');
+            setValue('id_turno', empleado.id_turno ? empleado.id_turno : '');
+            setValue('id_proyecto', empleado.id_proyecto ? empleado.id_proyecto : '');
         };
     }, [empleado, setValue, formularioVisible]);
 
@@ -59,6 +63,8 @@ export default function FilaEmpleado({ empleado }: formularioFilaEmpleadoProps) 
             nombre: data.nombre,
             id: empleado.id,
             id_tipoempleado: data.id_tipoempleado,
+            id_turno: data.id_turno,
+            id_proyecto: data.id_proyecto
         });
     };
 
@@ -89,7 +95,6 @@ export default function FilaEmpleado({ empleado }: formularioFilaEmpleadoProps) 
                         <Controller
                             name="legajo"
                             control={control}
-                            rules={{ required: "Debe ingresar legajo" }}
                             render={({ field, fieldState: { error } }) => (
                                 <TextField
                                     {...field}
@@ -172,7 +177,6 @@ export default function FilaEmpleado({ empleado }: formularioFilaEmpleadoProps) 
                         <Controller
                             name="id_tipoempleado"
                             control={control}
-                            rules={{ required: "Debe seleccionar un tipo" }}
                             render={({ field, fieldState: { error } }) => (
                                 <TextField
                                     {...field}
@@ -184,9 +188,9 @@ export default function FilaEmpleado({ empleado }: formularioFilaEmpleadoProps) 
                                     fullWidth
                                     error={!!error}
                                     helperText={error?.message}
-                                    disabled={selectData?.length === 0 || !selectData}
+                                    disabled={tiposEmpleado?.length === 0 || !tiposEmpleado}
                                 >
-                                    {selectData?.map((tipoEmpleado: tipoEmpleado) => (
+                                    {tiposEmpleado?.map((tipoEmpleado: tipoEmpleado) => (
                                         <MenuItem key={tipoEmpleado.id} value={tipoEmpleado.id}>
                                             {tipoEmpleado.nombre}
                                         </MenuItem>
@@ -203,7 +207,70 @@ export default function FilaEmpleado({ empleado }: formularioFilaEmpleadoProps) 
             </TableCell>
             <TableCell align="center" size="small">
                 <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]" style={{ userSelect: "none" }}>
-                    {empleado.nombreproyecto}
+                    {formularioVisible ? (
+                        <Controller
+                            name="id_turno"
+                            control={control}
+                            render={({ field, fieldState: { error } }) => (
+                                <TextField
+                                    {...field}
+                                    id="id_turno"
+                                    variant="outlined"
+                                    color="warning"
+                                    size="small"
+                                    select
+                                    fullWidth
+                                    error={!!error}
+                                    helperText={error?.message}
+                                    disabled={turnos?.length === 0 || !turnos}
+                                >
+                                    {turnos?.map((turno: turno) => (
+                                        <MenuItem key={turno.id} value={turno.id}>
+                                            {turno.nombre}
+                                        </MenuItem>
+                                    )) || []}
+                                </TextField>
+                            )}
+                        />
+                    ) : (
+                        <>
+                            {empleado.turno}
+                        </>
+                    )}
+                </div>
+            </TableCell>
+            <TableCell align="center" size="small">
+                <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]" style={{ userSelect: "none" }}>
+                    {formularioVisible ? (
+                        <Controller
+                            name="id_proyecto"
+                            control={control}
+                            render={({ field, fieldState: { error } }) => (
+                                <TextField
+                                    {...field}
+                                    id="id_proyecto"
+                                    variant="outlined"
+                                    color="warning"
+                                    size="small"
+                                    select
+                                    fullWidth
+                                    error={!!error}
+                                    helperText={error?.message}
+                                    disabled={proyectos?.length === 0 || !proyectos} 
+                                >
+                                    {proyectos?.map((proyecto: proyecto) => (
+                                        <MenuItem key={proyecto.id} value={proyecto.id}>
+                                            {proyecto.nombre}
+                                        </MenuItem>
+                                    )) || []}
+                                </TextField>
+                            )}
+                        />
+                    ) : (
+                        <>
+                            {empleado.nombreproyecto}
+                        </>
+                    )}
                 </div>
             </TableCell>
             <TableCell align="center" size="small">

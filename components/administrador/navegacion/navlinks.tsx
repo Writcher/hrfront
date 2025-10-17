@@ -6,11 +6,12 @@ import { usePathname } from 'next/navigation';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import PeopleAltRoundedIcon from '@mui/icons-material/PeopleAltRounded';
 import Link from "next/link";
+import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 
 const linksadmin = [
     { name: 'Inicio', href: '/administrador', icon: HomeRoundedIcon },
     { name: 'Usuarios', href: '/administrador/usuarios', icon: PeopleAltRoundedIcon },
-
+    { name: 'Parametros', href: '/administrador/parametros', icon: SettingsRoundedIcon },
 ];
 
 export default function NavLinksAdministrador() {

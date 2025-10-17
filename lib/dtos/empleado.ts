@@ -18,4 +18,13 @@ export type editEmpleadoDTO = {
     legajo: number | '',
     id: number,
     id_tipoempleado: number | '',
+    id_turno: number | '',
+    id_proyecto: number | '',
+};
+
+export type fetchPresentesDTO = {
+    fecha: string,
+    proyecto: number | '',
+    pagina: number,
+    filasPorPagina: number,
 };

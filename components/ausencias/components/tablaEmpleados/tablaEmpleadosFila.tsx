@@ -25,7 +25,7 @@ export const Fila = ({ empleado, idFilaExpandidaProp, onExpandirFila, esAdminist
                 </div>
             </TableCell>
         </TableRow>
-        {idFilaExpandidaProp === empleado.id && esAdministrativo &&
+        {idFilaExpandidaProp === empleado.id &&
             <FilaExpandida
                 idFilaExpandida={empleado.id}
                 idFilaExpandidaProp={idFilaExpandidaProp}

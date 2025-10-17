@@ -3,6 +3,7 @@ export type insertJornadasExcelDTO = {
     proyecto: number | '';
     tipoJornada: number | '';
     tipoInforme: number | '';
+    fecha: string;
 };
 
 export type exportJornadasExcelDTO = {

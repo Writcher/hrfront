@@ -13,6 +13,7 @@ export type usuario = {
   correo: string,
   id_tipousuario: number,
   tipousuario: string,
+  estadousuario: string,
 };
 
 //props
@@ -104,6 +105,7 @@ export type filaBotonesProps = {
   onDelete: () => void,
   confirmarBorrar: boolean,
   onClickBorrar: (bool?: boolean) => void,
+  estado: string,
 };
 
 //useForm

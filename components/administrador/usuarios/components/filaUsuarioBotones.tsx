@@ -7,7 +7,7 @@ import SaveAsRoundedIcon from '@mui/icons-material/SaveAsRounded';
 import { filaBotonesProps } from "../types";
 import LightTooltip from "@/components/ui/tooltip";
 
-export const BotonesFila = ({ editando, borrando, isValid, formularioVisible, handleMostrarFormulario, handleSubmit, onDelete, confirmarBorrar, onClickBorrar }: filaBotonesProps) => (
+export const BotonesFila = ({ editando, borrando, isValid, formularioVisible, handleMostrarFormulario, handleSubmit, onDelete, confirmarBorrar, onClickBorrar, estado }: filaBotonesProps) => (
     <div className="flex gap-2 items-center justify-end text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.8rem)]">
         {formularioVisible ? (
             <>
@@ -44,19 +44,19 @@ export const BotonesFila = ({ editando, borrando, isValid, formularioVisible, ha
                         color="success"
                         disableElevation
                         size="small"
-                        disabled={borrando}
+                        disabled={borrando || estado === "Baja"}
                         onClick={handleMostrarFormulario}
                     >
                         {!borrando ? <EditRoundedIcon /> : <SyncIcon className="animate-spin" style={{ animationDirection: 'reverse' }} />}
                     </Button>
                 </LightTooltip>
-                <LightTooltip title={confirmarBorrar ? "Confirmar": "¿Borrar?"} placement="left" arrow>
+                <LightTooltip title={confirmarBorrar ? "Confirmar": "¿Dar Baja?"} placement="left" arrow>
                     <Button
                         variant={confirmarBorrar ? "contained": "outlined"}
                         color="error"
                         disableElevation
                         size="small"
-                        disabled={borrando || formularioVisible}
+                        disabled={borrando || formularioVisible || estado === "Baja"}
                         onBlur={() => onClickBorrar(false)}
                         onClick={confirmarBorrar ? onDelete : () => onClickBorrar()}
                     >

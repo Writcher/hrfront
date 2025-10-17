@@ -8,6 +8,8 @@ export type importacion = {
     nombre: string,
     fecha: string,
     nombreestado: string,
+    nombreusuario: string,
+    nombreproyecto: string,
 };
 
 export type proyecto = {
