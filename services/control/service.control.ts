@@ -1,33 +1,10 @@
 "use server"
 
 import CONFIG from "@/config";
-import { deleteProyectoDTO, editProyectoDTO, fetchProyectosABMDTO, insertProyectoDTO } from "@/lib/dtos/proyecto";
+import { createControlDTO, deleteControlDTO, editControlDTO, fetchControlesABMDTO } from "@/lib/dtos/control";
 import { getToken } from "@/lib/utils/getToken";
 
-export async function fetchProyectos() {
-    try {
-        const token = await getToken();
-
-        const proyectosRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_PROYECTOS}`, {
-            method: "GET",
-            headers: {
-                Authorization: `Bearer ${token}`,
-            }
-        });
-
-        if (!proyectosRaw.ok) {
-            throw new Error("Error en alguna de las respuestas del servidor");
-        };
-
-        const proyectos = await proyectosRaw.json();
-
-        return proyectos;
-    } catch (error) {
-        throw error;
-    };
-};
-
-export async function fetchProyectosABM(parametros: fetchProyectosABMDTO) {
+export async function fetchControlesABM(parametros: fetchControlesABMDTO) {
     try {
         const token = await getToken();
 
@@ -36,7 +13,7 @@ export async function fetchProyectosABM(parametros: fetchProyectosABMDTO) {
             filasPorPagina: parametros.filasPorPagina != null ? parametros.filasPorPagina.toString() : '',
         });
 
-        const proyectosRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_PROYECTOS}?${proyectosParametros.toString()}&accion=abm`, {
+        const proyectosRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_CONTROLES}?${proyectosParametros.toString()}`, {
             method: "GET",
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -55,11 +32,11 @@ export async function fetchProyectosABM(parametros: fetchProyectosABMDTO) {
     };
 };
 
-export async function insertProyecto(parametros: insertProyectoDTO) {
+export async function insertControl(parametros: createControlDTO) {
     try {
         const token = await getToken();
 
-        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_CREAR_PROYECTO}`, {
+        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_CREAR_CONTROL}`, {
             method: "POST",
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -80,19 +57,15 @@ export async function insertProyecto(parametros: insertProyectoDTO) {
     };
 };
 
-export async function deleteProyecto(parametros: deleteProyectoDTO) {
+export async function deleteControl(parametros: deleteControlDTO) {
     try {
         const token = await getToken();
 
-        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_PROYECTO!.replace("{id}", parametros.id_proyecto!.toString())}`, {
-            method: "PATCH",
+        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_CONTROL!.replace("{id}", parametros.id_control!.toString())}`, {
+            method: "DELETE",
             headers: {
-                "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
-            body: JSON.stringify({
-                accion: "baja",
-            }),
         });
 
         if (!respuestaRaw.ok) {
@@ -107,20 +80,19 @@ export async function deleteProyecto(parametros: deleteProyectoDTO) {
     };
 };
 
-export async function editProyecto(parametros: editProyectoDTO) {
+export async function editControl(parametros: editControlDTO) {
     try {
         const token = await getToken();
 
-        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_PROYECTO!.replace("{id}", parametros.id_proyecto!.toString())}`, {
+        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_CONTROL!.replace("{id}", parametros.id_control!.toString())}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({
-                accion: "editar",
-                nombre: parametros.nombre,
-                id_modalidadtrabajo: parametros.id_modalidadtrabajo,
+                serie: parametros.serie,
+                id_proyecto: parametros.id_proyecto
             }),
         });
 

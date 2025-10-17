@@ -1,21 +1,21 @@
 import { Chip, MenuItem, TableCell, TableRow, TextField } from "@mui/material";
-import { deleteProyectoParametros, editProyectoParametros, filaProyectoProps, modalidadTrabajo, proyectoFormularioDatos } from "../../types";
+import { controlFormularioDatos, deleteControlParametros, deleteProyectoParametros, editControlParametros, editProyectoParametros, filaControlProps, filaProyectoProps, modalidadTrabajo, proyectoSelect } from "../../types";
 import { useSnackbar } from "@/lib/context/snackbarcontext";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { deleteProyecto, editProyecto } from "@/services/proyecto/service.proyecto";
-import { useProyectoFormulario } from "../../hooks/useProyectoFormulario";
+import { deleteProyecto, editProyecto, fetchProyectos } from "@/services/proyecto/service.proyecto";
 import { useConfirmar } from "@/components/hooks/useConfirmar";
-import { fetchModalidadesTrabajo } from "@/services/modalidadtrabajo/service.modalidadtrabajo";
 import { useEffect } from "react";
 import { useMostrarFormulario } from "../../hooks/useMostrarFormulario";
 import { Controller } from "react-hook-form";
-import { BotonesFila } from "./filaProyectoBotones";
+import { BotonesFila } from "./filaControlesBotones";
+import { useControlFormulario } from "../../hooks/useControlFormulario";
+import { deleteControl, editControl } from "@/services/control/service.control";
 
-export default function FilaProyecto({ proyecto }: filaProyectoProps) {
+export default function FilaControl({ control }: filaControlProps) {
 
     const { showError, showWarning, showSuccess } = useSnackbar();
 
-    const { control, formState: { isValid }, setValue, handleSubmit, reset } = useProyectoFormulario()
+    const { control: controlForm, formState: { isValid }, setValue, handleSubmit, reset } = useControlFormulario()
 
     const { confirmar: confirmarBorrar, handleConfirmar: handleConfirmarBorrar } = useConfirmar();
 
@@ -24,58 +24,58 @@ export default function FilaProyecto({ proyecto }: filaProyectoProps) {
     const queryClient = useQueryClient();
 
     const { data: selectDatos, isLoading: selectCargando, isError: selectError } = useQuery({
-        queryKey: ["fetchModalidadesTrabajo"],
-        queryFn: () => fetchModalidadesTrabajo(),
+        queryKey: ["fetchProyectos"],
+        queryFn: () => fetchProyectos(),
         refetchOnWindowFocus: false,
     });
 
     useEffect(() => {
-        if (proyecto) {
-            setValue('nombre', proyecto.nombre ? proyecto.nombre : '');
-            setValue('id_modalidadtrabajo', proyecto.id_modalidadtrabajo ? proyecto.id_modalidadtrabajo : '');
+        if (control) {
+            setValue('serie', control.serie ? control.serie : '');
+            setValue('id_proyecto', control.id_proyecto ? control.id_proyecto : '');
         };
-    }, [proyecto, setValue, formularioVisible]);
+    }, [control, setValue, formularioVisible]);
 
     const mutacionEdit = useMutation({
-        mutationFn: (data: editProyectoParametros) => editProyecto(data),
+        mutationFn: (data: editControlParametros) => editControl(data),
         onSuccess: () => {
             reset();
             setFormularioVisible(!formularioVisible)
-            showSuccess("Proyecto editado correctamente");
+            showSuccess("Control editado correctamente");
             queryClient.invalidateQueries({
-                queryKey: ["fetchProyectosABM"]
+                queryKey: ["fetchControlesABM"]
             });
         },
         onError: () => {
-            showError("Error al eliminar proyecto");
+            showError("Error al eliminar control");
         },
     });
 
-    const onEdit = (data: proyectoFormularioDatos) => {
+    const onEdit = (data: controlFormularioDatos) => {
         mutacionEdit.mutate({
-            id_proyecto: proyecto.id,
-            nombre: data.nombre,
-            id_modalidadtrabajo: data.id_modalidadtrabajo as number,
+            id_control: control.id,
+            serie: data.serie,
+            id_proyecto: data.id_proyecto as number,
         });
     };
 
     const mutacionDelete = useMutation({
-        mutationFn: (data: deleteProyectoParametros) => deleteProyecto(data),
+        mutationFn: (data: deleteControlParametros) => deleteControl(data),
         onSuccess: () => {
             reset();
-            showSuccess("Proyecto eliminado correctamente");
+            showSuccess("Control eliminado correctamente");
             queryClient.invalidateQueries({
-                queryKey: ["fetchProyectosABM"]
+                queryKey: ["fetchControlesABM"]
             });
         },
         onError: () => {
-            showError("Error al eliminar proyecto");
+            showError("Error al eliminar control");
         },
     });
 
     const onDelete = () => {
         mutacionDelete.mutate({
-            id_proyecto: proyecto.id
+            id_control: control.id
         });
     };
 
@@ -89,20 +89,20 @@ export default function FilaProyecto({ proyecto }: filaProyectoProps) {
         <TableRow>
             <TableCell align="left" size="small">
                 <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.75rem)]" style={{ userSelect: "none" }}>
-                    {proyecto.id}
+                    {control.id}
                 </div>
             </TableCell>
             <TableCell align="center" size="small">
                 <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]" style={{ userSelect: "none" }}>
                     {formularioVisible ? (
                         <Controller
-                            name="nombre"
-                            control={control}
-                            rules={{ required: "Debe ingresar un nombre" }}
+                            name="serie"
+                            control={controlForm}
+                            rules={{ required: "Debe ingresar un numero de serie" }}
                             render={({ field, fieldState: { error } }) => (
                                 <TextField
                                     {...field}
-                                    id="nombre"
+                                    id="serie"
                                     variant="outlined"
                                     color="warning"
                                     size="small"
@@ -114,7 +114,7 @@ export default function FilaProyecto({ proyecto }: filaProyectoProps) {
                         />
                     ) : (
                         <>
-                            {proyecto.nombre}
+                            {control.serie}
                         </>
                     )}
                 </div>
@@ -123,13 +123,13 @@ export default function FilaProyecto({ proyecto }: filaProyectoProps) {
                 <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]" style={{ userSelect: "none" }}>
                     {formularioVisible ? (
                         <Controller
-                            name="id_modalidadtrabajo"
-                            control={control}
-                            rules={{ required: "Debe seleccionar una modalidad" }}
+                            name="id_proyecto"
+                            control={controlForm}
+                            rules={{ required: "Debe seleccionar un proyecto" }}
                             render={({ field, fieldState: { error } }) => (
                                 <TextField
                                     {...field}
-                                    id="id_tipoempleado"
+                                    id="id_proyecto"
                                     variant="outlined"
                                     color="warning"
                                     size="small"
@@ -139,9 +139,9 @@ export default function FilaProyecto({ proyecto }: filaProyectoProps) {
                                     helperText={error?.message}
                                     disabled={selectDatos?.length === 0 || !selectDatos}
                                 >
-                                    {selectDatos?.map((modalidadtrabajo: modalidadTrabajo) => (
-                                        <MenuItem key={modalidadtrabajo.id} value={modalidadtrabajo.id}>
-                                            {modalidadtrabajo.nombre}
+                                    {selectDatos?.map((proyecto: proyectoSelect) => (
+                                        <MenuItem key={proyecto.id} value={proyecto.id}>
+                                            {proyecto.nombre}
                                         </MenuItem>
                                     )) || []}
                                 </TextField>
@@ -149,18 +149,9 @@ export default function FilaProyecto({ proyecto }: filaProyectoProps) {
                         />
                     ) : (
                         <>
-                            {proyecto.modalidadtrabajo}
+                            {control.proyectonombre}
                         </>
                     )}
-                </div>
-            </TableCell>
-            <TableCell align="center" size="small">
-                <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.75rem)]" style={{ userSelect: "none" }}>
-                    <Chip
-                        label={proyecto.estadoparametro}
-                        className="!rounded"
-                        color={proyecto.estadoparametro.toLowerCase() === 'activo' ? 'success' : 'error'}
-                    />
                 </div>
             </TableCell>
             <TableCell align="right" size="small">
@@ -177,7 +168,6 @@ export default function FilaProyecto({ proyecto }: filaProyectoProps) {
                     onDelete={onDelete}
                     confirmarBorrar={confirmarBorrar}
                     onClickBorrar={handleConfirmarBorrar}
-                    estado={proyecto.estadoparametro}
                 />
             </TableCell>
         </TableRow>

@@ -12,3 +12,8 @@ export type editProyectoDTO = {
 export type deleteProyectoDTO = {
     id_proyecto: number,
 };
+
+export type fetchProyectosABMDTO = {
+    pagina: number,
+    filasPorPagina: number,
+};
