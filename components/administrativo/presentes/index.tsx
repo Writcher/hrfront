@@ -50,9 +50,11 @@ export default function Presentes() {
         placeholderData: keepPreviousData,
     });
 
-    const nombreProyecto = proyectosDatos.find(
-        (p: { id: number; nombre: string }) => p.id === watch("proyecto")
-    )?.nombre;
+    const nombreProyecto = proyectosDatos && proyectosCargando === false
+        ? proyectosDatos.find(
+            (p: { id: number; nombre: string }) => p.id === watch("proyecto")
+        )?.nombre
+        : '';
 
 
     const mutacionExport = useMutation({
