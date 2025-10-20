@@ -2,7 +2,7 @@
 
 import { insertempleadoParametros } from "@/components/empleados/types";
 import CONFIG from "@/config";
-import { editEmpleadoDTO, fetchEmpleadosDTO, fetchPresentesDTO } from "@/lib/dtos/empleado";
+import { editEmpleadoDTO, exportPresentesExcelDTO, fetchEmpleadosDTO, fetchPresentesDTO } from "@/lib/dtos/empleado";
 import { getToken } from "@/lib/utils/getToken";
 
 export async function fetchEmpleados(parametros: fetchEmpleadosDTO) {
@@ -154,6 +154,35 @@ export async function fetchPresentes(parametros: fetchPresentesDTO) {
         const empleados = await empleadosRaw.json();
 
         return empleados;
+    } catch (error) {
+        throw error;
+    };
+};
+
+export async function exportPresentesExcel(data: exportPresentesExcelDTO) {
+    try {
+        const token = await getToken();
+
+        const presentesParametros = new URLSearchParams({
+            proyecto: data.proyecto.toString(),
+            fecha: data.fecha,
+            accion: "presentes",
+        });
+
+        const presentesRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_EXCEL_EXPORT}?${presentesParametros.toString()}`, {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        });
+
+        if (!presentesRaw.ok) {
+            throw new Error("Error en la respuesta del servidor");
+        };
+
+        const presentes = await presentesRaw.blob();
+
+        return presentes;
     } catch (error) {
         throw error;
     };

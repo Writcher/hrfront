@@ -29,3 +29,8 @@ export type fetchPresentesDTO = {
     pagina: number,
     filasPorPagina: number,
 };
+
+export type exportPresentesExcelDTO = {
+    fecha: string,
+    proyecto: number | '',
+};
