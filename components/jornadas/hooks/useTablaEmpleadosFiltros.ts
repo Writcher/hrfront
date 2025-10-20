@@ -10,6 +10,7 @@ export const useTablaEmpleadosFiltros = () => {
       busquedaLegajo: '',
       busquedaLegajoNormal: '',
       filtroTipoEmpleado: '',
+      filtroMarcaManual: false,
     },
   });
 };

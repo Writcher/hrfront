@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useEffect } from "react";
-import { Button, TablePagination } from "@mui/material";
+import { Button, FormControlLabel, TablePagination } from "@mui/material";
 import UploadFileRoundedIcon from '@mui/icons-material/UploadFileRounded';
 import Link from "next/link";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
@@ -21,6 +21,7 @@ import { tablaJornadasEmpleadosProps } from "./types";
 import { useOrdenacion } from "../hooks/useOrdenacion";
 import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
 import { useSelectDatos } from "./hooks/useSelectDatosPadre";
+import { IOSSwitch } from "../ui/switch";
 
 export default function TablaJornadasEmpleados({ esAdministrativo, esRRHH }: tablaJornadasEmpleadosProps) {
 
@@ -44,11 +45,12 @@ export default function TablaJornadasEmpleados({ esAdministrativo, esRRHH }: tab
     handleCambioBusquedaLegajo,
     handleCambioFiltroTipoEmpleado,
     handleLimpiarFiltro,
+    handleCambioFiltroMarcaManual,
     setBusquedaNombreVisible,
     setFiltroProyectoVisible,
     setBusquedaLegajoVisible,
     setFiltroTipoEmpleadoVisible
-  } = useFiltros({ setValue });
+  } = useFiltros({ setValue, watch });
 
   const { pagina, filasPorPagina, handleCambioPagina, handleCambioFilasPorPagina } = usePaginacion({ filasIniciales: 25 });
 
@@ -83,6 +85,7 @@ export default function TablaJornadasEmpleados({ esAdministrativo, esRRHH }: tab
       watch("filtroProyecto"),
       watch("busquedaLegajo"),
       watch("filtroTipoEmpleado"),
+      watch("filtroMarcaManual"),
     ],
     queryFn: () => fetchEmpleados({
       busquedaNombre: watch("busquedaNombre"),
@@ -93,6 +96,7 @@ export default function TablaJornadasEmpleados({ esAdministrativo, esRRHH }: tab
       ordenDireccion: direccion,
       busquedaLegajo: watch("busquedaLegajo"),
       filtroTipoEmpleado: watch("filtroTipoEmpleado"),
+      filtroMarcaManual: watch("filtroMarcaManual")
     }),
     refetchOnWindowFocus: false,
     placeholderData: keepPreviousData,
@@ -159,12 +163,14 @@ export default function TablaJornadasEmpleados({ esAdministrativo, esRRHH }: tab
           filtroProyecto={watch("filtroProyecto")}
           busquedaLegajoNormal={watch("busquedaLegajoNormal")}
           filtroTipoEmpleado={watch("filtroTipoEmpleado")}
+          filtroMarcaManual={watch("filtroMarcaManual")}
           proyectos={proyectos || []}
           tiposEmpleado={tiposEmpleado || []}
           onCambioBusquedaNombre={handleCambioBusquedaNombre}
           onCambioFiltroProyecto={handleCambioFiltroProyecto}
           onCambioBusquedaLegajo={handleCambioBusquedaLegajo}
           onCambioFiltroTipoEmpleado={handleCambioFiltroTipoEmpleado}
+          onCambioFiltroMarcaManual={handleCambioFiltroMarcaManual}
         />
         <div className="flex grow" />
         {esAdministrativo

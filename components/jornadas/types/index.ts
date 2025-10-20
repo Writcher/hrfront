@@ -26,6 +26,7 @@ export type jornada = {
   tipoausencia: number
   id: number,
   observaciones: string[],
+  es_manual: boolean,
 };
 
 export type empleado = {
@@ -82,6 +83,7 @@ export type formularioFiltrosPadreProps = {
   mostrarFiltroProyecto: boolean,
   mostrarBusquedaLegajo: boolean,
   mostrarFiltroTipoEmpleado: boolean,
+  filtroMarcaManual: boolean,
   busquedaNombreNormal: string,
   filtroProyecto: number | '',
   busquedaLegajoNormal: number | '',
@@ -92,6 +94,7 @@ export type formularioFiltrosPadreProps = {
   onCambioFiltroProyecto: (event: React.ChangeEvent<HTMLInputElement>) => void,
   onCambioBusquedaLegajo: (event: React.ChangeEvent<HTMLInputElement>) => void,
   onCambioFiltroTipoEmpleado: (event: React.ChangeEvent<HTMLInputElement>) => void,
+  onCambioFiltroMarcaManual: (event: SyntheticEvent<Element, Event>, checked: boolean) => void,
 };
 
 export type filtrosActivosProps = {
@@ -280,6 +283,7 @@ export type tablaEmpleadosFiltrosDatos = {
   busquedaLegajo: number | '',
   busquedaLegajoNormal: number | '',
   filtroTipoEmpleado: number | '',
+  filtroMarcaManual: boolean,
 };
 
 export type useObservacionFormularioDatos = {

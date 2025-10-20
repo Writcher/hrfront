@@ -6,6 +6,7 @@ export type  fetchEmpleadosDTO = {
     filtroTipoAusencia?: number | '',
     filtroMes?: number | '',
     filtroQuincena?: number | '',
+    filtroMarcaManual?: boolean,
     pagina: number,
     filasPorPagina: number,
     ordenColumna: string,
