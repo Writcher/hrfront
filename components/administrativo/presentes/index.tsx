@@ -4,21 +4,24 @@ import { useSnackbar } from "@/lib/context/snackbarcontext";
 import { useConsultaFormulario } from "./hooks/useConsultaFormulario";
 import { usePaginacion } from "@/components/hooks/usePaginacion";
 import { fetchProyectos } from "@/services/proyecto/service.proyecto";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useMutation, useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
-import { fetchPresentes } from "@/services/empleado/service.empleado";
+import { exportPresentesExcel, fetchPresentes } from "@/services/empleado/service.empleado";
 import { Button, TablePagination } from "@mui/material";
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import { TablaPresentes } from "./components/tablaPresentes";
 import Link from "next/link";
 import { Formulario } from "./components/tablaPresentesFormulario";
+import { consultaFormularioDatos } from "./types";
+import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
+import SyncIcon from '@mui/icons-material/Sync';
 
 export default function Presentes() {
 
-    const { control, watch, formState: { isValid } } = useConsultaFormulario();
+    const { control, watch, formState: { isValid }, handleSubmit } = useConsultaFormulario();
 
-    const { showWarning } = useSnackbar();
+    const { showWarning, showSuccess, showError } = useSnackbar();
 
     const { pagina, filasPorPagina, handleCambioPagina, handleCambioFilasPorPagina } = usePaginacion({ filasIniciales: 50 });
 
@@ -47,6 +50,40 @@ export default function Presentes() {
         placeholderData: keepPreviousData,
     });
 
+    const nombreProyecto = proyectosDatos && proyectosCargando === false
+        ? proyectosDatos.find(
+            (p: { id: number; nombre: string }) => p.id === watch("proyecto")
+        )?.nombre
+        : '';
+
+
+    const mutacionExport = useMutation({
+        mutationFn: (data: consultaFormularioDatos) => exportPresentesExcel(data),
+        onSuccess: (response) => {
+
+            const url = window.URL.createObjectURL(response);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `Listado de Presentes - ${nombreProyecto} - ${watch("fecha")}`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(url);
+
+            showSuccess("Archivo exportado correctamente");
+        },
+        onError: () => {
+            showError("Error al exportar archivo");
+        }
+    });
+
+    const onExport = (data: consultaFormularioDatos) => {
+        mutacionExport.mutate({
+            fecha: data.fecha,
+            proyecto: data.proyecto as number
+        });
+    };
+
     useEffect(() => {
         if (proyectosError) {
             showWarning("Error al cargar los datos");
@@ -65,6 +102,20 @@ export default function Presentes() {
                     proyectos={proyectosDatos || []}
                 />
                 <div className="flex grow" />
+                <Button
+                    variant="contained"
+                    color="success"
+                    disableElevation
+                    onClick={handleSubmit(onExport)}
+                    endIcon={
+                        mutacionExport.isPending ? (
+                            <SyncIcon className="animate-spin" style={{ animationDirection: 'reverse' }} />
+                        ) : <DownloadRoundedIcon />
+                    }
+                    disabled={mutacionExport.isPending || !isValid}
+                >
+                    {!mutacionExport.isPending ? "Descargar" : "Descargando"}
+                </Button>
                 <Button
                     variant="contained"
                     color="success"
