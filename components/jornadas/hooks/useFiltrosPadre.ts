@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 import debounce from "lodash.debounce";
 import { hookGenericoPadreProps } from "../types";
 
-export const useFiltros = ({ setValue }: hookGenericoPadreProps<'setValue'>) => {
+export const useFiltros = ({ setValue, watch }: hookGenericoPadreProps<'setValue' | 'watch'>) => {
 
   const [filtrosActivos, setFiltrosActivos] = useState<{ [key: string]: any }>({});
 
@@ -33,6 +33,7 @@ export const useFiltros = ({ setValue }: hookGenericoPadreProps<'setValue'>) => 
     setValue("busquedaLegajo", '');
     setValue("busquedaLegajoNormal", '');
     setValue("filtroTipoEmpleado", '');
+    setValue("filtroMarcaManual", false);
     setBusquedaNombreVisible(true);
     setFiltroProyectoVisible(false);
     setBusquedaLegajoVisible(false);
@@ -92,6 +93,12 @@ export const useFiltros = ({ setValue }: hookGenericoPadreProps<'setValue'>) => 
     };
   };
 
+  const filtroMarcaManual = watch("filtroMarcaManual");
+
+  const handleCambioFiltroMarcaManual = () => {
+    setValue("filtroMarcaManual", !filtroMarcaManual)
+  };
+
   return {
     ancla,
     abrirFiltros,
@@ -108,6 +115,7 @@ export const useFiltros = ({ setValue }: hookGenericoPadreProps<'setValue'>) => 
     handleCambioBusquedaLegajo,
     handleCambioFiltroTipoEmpleado,
     handleLimpiarFiltro,
+    handleCambioFiltroMarcaManual,
     setBusquedaNombreVisible,
     setFiltroProyectoVisible,
     setBusquedaLegajoVisible,

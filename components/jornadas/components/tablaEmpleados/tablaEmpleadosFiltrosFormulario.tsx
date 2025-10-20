@@ -1,5 +1,6 @@
-import { TextField, MenuItem } from "@mui/material";
+import { TextField, MenuItem, FormControlLabel } from "@mui/material";
 import { formularioFiltrosPadreProps, proyecto, tipoEmpleado } from "../../types";
+import { IOSSwitch } from "@/components/ui/switch";
 
 export const Formulario = ({
   mostrarBusquedaNombre,
@@ -10,14 +11,16 @@ export const Formulario = ({
   filtroProyecto,
   busquedaLegajoNormal,
   filtroTipoEmpleado,
+  filtroMarcaManual,
   proyectos,
   tiposEmpleado,
   onCambioBusquedaNombre,
   onCambioFiltroProyecto,
   onCambioBusquedaLegajo,
   onCambioFiltroTipoEmpleado,
+  onCambioFiltroMarcaManual,
 }: formularioFiltrosPadreProps) => (
-  <form className="flex items-center justify-start w-2/6">
+  <form className="flex items-center justify-start w-3/6 gap-3">
     {mostrarBusquedaNombre && (
       <TextField
         id="busquedaNombre"
@@ -90,5 +93,12 @@ export const Formulario = ({
         ))}
       </TextField>
     )}
+    <FormControlLabel
+      control={<IOSSwitch sx={{ m: 1 }} />}
+      label="Fichajes Manuales"
+      className="w-full !text-gray-700"
+      onChange={onCambioFiltroMarcaManual}
+      checked={filtroMarcaManual}
+    />
   </form>
 );

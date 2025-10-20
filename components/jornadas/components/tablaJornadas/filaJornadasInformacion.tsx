@@ -4,6 +4,7 @@ import { Tooltip } from "./filaJornadasTooltip";
 import { formatHorasMinutos } from "../../utils";
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import { informacionProps } from "../../types";
+import { PulsingWarning } from "@/components/ui/prioridad";
 
 export const Informacion = ({ jornada, dia, setObservacionFormulario }: informacionProps) => (
     <>
@@ -54,6 +55,13 @@ export const Informacion = ({ jornada, dia, setObservacionFormulario }: informac
         </TableCell>
         <TableCell align="right" size="small" className={`${dia === 0 ? 'bg-gradient-to-r from-gray-300 via-gray-300 to-transparent' : dia === 1 ? 'bg-gradient-to-r from-green-300 via-green-300 to-transparent' : ''}`}>
             <div className="flex w-full items-center justify-end gap-2">
+                {jornada.es_manual &&
+                    <LightTooltip title="Entrada Manual" placement="left" arrow>
+                        <span>
+                            <PulsingWarning />
+                        </span>
+                    </LightTooltip>
+                }
                 <Tooltip observaciones={jornada.observaciones} />
                 <LightTooltip title="Añadir Observación" placement="left" arrow>
                     <Button

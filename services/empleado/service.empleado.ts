@@ -21,6 +21,7 @@ export async function fetchEmpleados(parametros: fetchEmpleadosDTO) {
             filtroTipoAusencia: parametros.filtroTipoAusencia != null ? parametros.filtroTipoAusencia.toString() === '' ? '0' : parametros.filtroTipoAusencia.toString() : '-1',
             filtroMes: parametros.filtroMes != null ? parametros.filtroMes.toString() === '' ? '0' : parametros.filtroMes.toString() : '0',
             filtroQuincena: parametros.filtroQuincena != null ? parametros.filtroQuincena.toString() === '' ? '0' : parametros.filtroQuincena.toString() : '0',
+            filtroMarcaManual: parametros.filtroMarcaManual ? parametros.filtroMarcaManual.toString() : "false",
         });
 
         const empleadosRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_EMPLEADOS}?${empleadosParametros.toString()}`, {
