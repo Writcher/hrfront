@@ -41,6 +41,9 @@ export default function Importar() {
             queryClient.invalidateQueries({
                 queryKey: ["fetchImportaciones"]
             });
+            queryClient.invalidateQueries({
+                queryKey: ["fetchJornadasPorImportacion"]
+            });
             reset();
         },
         onError: (error: any) => {
