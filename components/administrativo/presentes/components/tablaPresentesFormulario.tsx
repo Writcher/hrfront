@@ -1,8 +1,10 @@
 import { MenuItem, Skeleton, TextField } from "@mui/material";
 import { formularioProps, proyecto } from "../types"
 import { Controller } from "react-hook-form";
-import { DatePicker } from "@mui/x-date-pickers";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
+import 'dayjs/locale/es';
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 export const Formulario = ({ control, cargando, proyectos }: formularioProps) => (
     <form className="flex items-center justify-start w-[40%] gap-1">
@@ -49,32 +51,34 @@ export const Formulario = ({ control, cargando, proyectos }: formularioProps) =>
                 sx={{ borderRadius: "5px" }}
             />
         ) : (
-            <Controller
-                name="fecha"
-                control={control}
-                rules={{ required: "Debe seleccionar una fecha" }}
-                render={({ field: { onChange, value, ...restField }, fieldState: { error } }) => (
-                    <DatePicker
-                        {...restField}
-                        label="Fecha"
-                        className="!w-[50%]"
-                        value={value ? dayjs(value, 'DD-MM-YYYY') : null}
-                        onChange={(newValue) => {
-                            onChange(newValue ? newValue.format('DD-MM-YYYY') : '');
-                        }}
-                        format="DD-MM-YYYY"
-                        slotProps={{
-                            textField: {
-                                variant: "outlined",
-                                color: "warning",
-                                size: "small",
-                                error: !!error,
-                                helperText: error?.message,
-                            }
-                        }}
-                    />
-                )}
-            />
+            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="es">
+                <Controller
+                    name="fecha"
+                    control={control}
+                    rules={{ required: "Debe seleccionar una fecha" }}
+                    render={({ field: { onChange, value, ...restField }, fieldState: { error } }) => (
+                        <DatePicker
+                            {...restField}
+                            label="Fecha"
+                            className="!w-[50%]"
+                            value={value ? dayjs(value, 'DD-MM-YYYY') : null}
+                            onChange={(newValue) => {
+                                onChange(newValue ? newValue.format('DD-MM-YYYY') : '');
+                            }}
+                            format="DD-MM-YYYY"
+                            slotProps={{
+                                textField: {
+                                    variant: "outlined",
+                                    color: "warning",
+                                    size: "small",
+                                    error: !!error,
+                                    helperText: error?.message,
+                                }
+                            }}
+                        />
+                    )}
+                />
+            </LocalizationProvider>
         )}
     </form>
 );

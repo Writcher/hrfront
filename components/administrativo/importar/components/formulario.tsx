@@ -1,8 +1,10 @@
 import { TextField, MenuItem, Skeleton } from "@mui/material";
 import { Controller } from "react-hook-form";
 import { formularioProps, proyecto, tipoJornada, tipoImportacion } from "../types";
-import { DatePicker } from "@mui/x-date-pickers";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
+import 'dayjs/locale/es';
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 export const Formulario = ({
     control,
@@ -122,31 +124,33 @@ export const Formulario = ({
         </div>
         {watch("tipoInforme") === 2 &&
             <div className="flex items-center justify-start w-full gap-2">
-                <Controller
-                    name="fecha"
-                    control={control}
-                    render={({ field: { onChange, value, ...restField }, fieldState: { error } }) => (
-                        <DatePicker
-                            {...restField}
-                            label="Fecha"
-                            className="!w-[33%]"
-                            value={value ? dayjs(value, 'DD-MM-YYYY') : null}
-                            onChange={(newValue) => {
-                                onChange(newValue ? newValue.format('DD-MM-YYYY') : '');
-                            }}
-                            format="DD-MM-YYYY"
-                            slotProps={{
-                                textField: {
-                                    variant: "outlined",
-                                    color: "warning",
-                                    size: "small",
-                                    error: !!error,
-                                    helperText: error?.message,
-                                }
-                            }}
-                        />
-                    )}
-                />
+                <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="es">
+                    <Controller
+                        name="fecha"
+                        control={control}
+                        render={({ field: { onChange, value, ...restField }, fieldState: { error } }) => (
+                            <DatePicker
+                                {...restField}
+                                label="Fecha"
+                                className="!w-[33%]"
+                                value={value ? dayjs(value, 'DD-MM-YYYY') : null}
+                                onChange={(newValue) => {
+                                    onChange(newValue ? newValue.format('DD-MM-YYYY') : '');
+                                }}
+                                format="DD-MM-YYYY"
+                                slotProps={{
+                                    textField: {
+                                        variant: "outlined",
+                                        color: "warning",
+                                        size: "small",
+                                        error: !!error,
+                                        helperText: error?.message,
+                                    }
+                                }}
+                            />
+                        )}
+                    />
+                </LocalizationProvider>
             </div>
         }
     </>

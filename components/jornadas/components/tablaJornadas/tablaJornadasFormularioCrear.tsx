@@ -1,10 +1,12 @@
 import { IOSSwitch } from "@/components/ui/switch";
 import { Divider, FormControlLabel, MenuItem, Skeleton, TextField } from "@mui/material";
-import { DatePicker, TimePicker } from "@mui/x-date-pickers";
+import { DatePicker, LocalizationProvider, TimePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import { useEffect } from "react";
 import { Controller } from "react-hook-form";
 import { formularioCrearJornadaProps, tipoAusencia, tipoJornada } from "../../types";
+import 'dayjs/locale/es';
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 export const Formulario = ({
     formularioDatos,
@@ -111,32 +113,34 @@ export const Formulario = ({
             </div>
             <Divider variant="middle" sx={{ bgcolor: "#ED6C02" }} flexItem />
             <div className="flex flex-row justify-start items-start gap-2 w-full">
-                <Controller
-                    name="fecha"
-                    control={control}
-                    rules={{ required: "Este campo es requerido" }}
-                    render={({ field: { onChange, value, ...restField }, fieldState: { error } }) => (
-                        <DatePicker
-                            {...restField}
-                            label="Fecha"
-                            className="!w-[33%]"
-                            value={value ? dayjs(value, 'DD-MM-YYYY') : null}
-                            onChange={(newValue) => {
-                                onChange(newValue ? newValue.format('DD-MM-YYYY') : '');
-                            }}
-                            format="DD-MM-YYYY"
-                            slotProps={{
-                                textField: {
-                                    variant: "outlined",
-                                    color: "warning",
-                                    size: "small",
-                                    error: !!error,
-                                    helperText: error?.message,
-                                }
-                            }}
-                        />
-                    )}
-                />
+                <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="es">
+                    <Controller
+                        name="fecha"
+                        control={control}
+                        rules={{ required: "Este campo es requerido" }}
+                        render={({ field: { onChange, value, ...restField }, fieldState: { error } }) => (
+                            <DatePicker
+                                {...restField}
+                                label="Fecha"
+                                className="!w-[33%]"
+                                value={value ? dayjs(value, 'DD-MM-YYYY') : null}
+                                onChange={(newValue) => {
+                                    onChange(newValue ? newValue.format('DD-MM-YYYY') : '');
+                                }}
+                                format="DD-MM-YYYY"
+                                slotProps={{
+                                    textField: {
+                                        variant: "outlined",
+                                        color: "warning",
+                                        size: "small",
+                                        error: !!error,
+                                        helperText: error?.message,
+                                    }
+                                }}
+                            />
+                        )}
+                    />
+                </LocalizationProvider>
                 <div className="flex flex-col justify-start items-center gap-2 w-[67%]">
                     {watch("tipoJornada") !== formularioDatos?.id_ausencia ? (
                         <div className="flex flex-row justify-start items-center gap-2 w-full">
@@ -198,23 +202,23 @@ export const Formulario = ({
                     ) : (
                         <div className="flex flex-row justify-start items-center gap-2 w-full">
                             <Controller
-                            name="duracionAusencia"
-                            control={control}
-                            rules={{ required: "Debe ingresar una duración" }}
-                            render={({ field, fieldState: { error } }) => (
-                                <TextField
-                                    {...field}
-                                    id="duracionAusencia"
-                                    label="Duracion de la Ausencia (dias)"
-                                    variant="outlined"
-                                    color="warning"
-                                    size="small"
-                                    type="number"
-                                    className="!w-[50%]"
-                                    error={!!error}
-                                />
-                            )}
-                        />
+                                name="duracionAusencia"
+                                control={control}
+                                rules={{ required: "Debe ingresar una duración" }}
+                                render={({ field, fieldState: { error } }) => (
+                                    <TextField
+                                        {...field}
+                                        id="duracionAusencia"
+                                        label="Duracion de la Ausencia (dias)"
+                                        variant="outlined"
+                                        color="warning"
+                                        size="small"
+                                        type="number"
+                                        className="!w-[50%]"
+                                        error={!!error}
+                                    />
+                                )}
+                            />
                         </div>
                     )}
                     {jornadaPartida === true ? (
