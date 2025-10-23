@@ -25,6 +25,7 @@ export const Botones = ({ editando, borrando, validando, validada, camposValidos
                 variant={confirmarBorrar ? "contained" : "outlined"}
                 color="error"
                 disableElevation
+                className={confirmarBorrar ? "" : validada ? "" : "!bg-white"}
                 size="small"
                 disabled={editando || borrando || validando || validada}
                 onBlur={() => handleConfirmarBorrar(false)}
@@ -38,6 +39,7 @@ export const Botones = ({ editando, borrando, validando, validada, camposValidos
                 variant={confirmarValidar ? "contained" : "outlined"}
                 color="success"
                 disableElevation
+                className={confirmarValidar ? "" : validada ? "" : !camposValidos ? "" : "!bg-white"}
                 size="small"
                 disabled={editando || borrando || validando || !camposValidos || validada}
                 onBlur={() => handleConfirmarValidar(false)}

@@ -187,3 +187,26 @@ export async function exportPresentesExcel(data: exportPresentesExcelDTO) {
         throw error;
     };
 };
+
+export async function syncNomina() {
+    try {
+        const token = await getToken();
+
+        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_EMPLEADOS}`, {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+
+        if (!respuestaRaw.ok) {
+            throw new Error("Error en la respuesta del servidor");
+        };
+
+        const respuesta = await respuestaRaw.json();
+
+        return respuesta;
+    } catch (error) {
+        throw error;
+    };
+};
