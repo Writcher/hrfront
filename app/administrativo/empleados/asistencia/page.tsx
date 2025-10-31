@@ -1,15 +1,15 @@
-import Presentes from "@/components/administrativo/presentes";
+import Asistencia from "@/components/administrativo/asistencia";
 
 export default function PaginaPresentes() {
     return(
         <div className="flex flex-col gap-2 w-full h-full">
             <div className="flex items-center justify-center h-[10%] text-gray-800 text-center font-bold">
                 <p className="text-[clamp(1rem,5vw,2rem)]">
-                    Presentes
+                    Asistencia
                 </p>
             </div>
             <div className="flex items-center justify-center h-[90%]">
-                <Presentes />
+                <Asistencia />
             </div>
         </div>
     );

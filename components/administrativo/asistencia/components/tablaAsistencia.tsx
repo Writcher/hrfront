@@ -1,9 +1,9 @@
 import { Table, TableBody, TableContainer } from "@mui/material";
 import React from "react";
-import FilaPresentes from "./tablaPresentesFila";
+import FilaPresentes from "./tablaAsistenciaFila";
 import { tablaPresentesProps, empleado } from "../types";
-import { Esqueleto } from "./tablaPresentesEsqueleto";
-import { Encabezado } from "./tablaPresentesEncabezado";
+import { Esqueleto } from "./tablaAsistenciaEsqueleto";
+import { Encabezado } from "./tablaAsistenciaEncabezado";
 
 export const TablaPresentes = ({
   empleados,

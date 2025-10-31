@@ -15,6 +15,7 @@ import { useSnackbar } from "@/lib/context/snackbarcontext";
 import { importacionJornadasProps } from "./types";
 import { useEstadoBoton } from "./hooks/useEstadoBoton";
 import { Botones } from "./components/tablaJornadasBotones";
+import { fetchTiposAusencia } from "@/services/tipoausencia/service.tipoausencia";
 
 export default function Completar({ id_importacion }: importacionJornadasProps) {
 
@@ -33,6 +34,12 @@ export default function Completar({ id_importacion }: importacionJornadasProps) 
     const router = useRouter();
 
     const queryClient = useQueryClient();
+
+    const { data: selectDatos, isError: selectError, isLoading: selectCargando } = useQuery({
+        queryKey: ["fetchTiposAusencia"],
+        queryFn: () => fetchTiposAusencia(),
+        refetchOnWindowFocus: false
+    });
 
     const { data: jornadasDatos, isLoading: jornadasCargando, isError: jornadasError } = useQuery({
         queryKey: [
@@ -71,9 +78,12 @@ export default function Completar({ id_importacion }: importacionJornadasProps) 
 
     useEffect(() => {
         if (jornadasError) {
+            showWarning("Error al cargar las jornadas");
+        };
+        if (selectError) {
             showWarning("Error al cargar los datos");
         };
-    }, [jornadasError, showWarning]);
+    }, [jornadasError, selectError, showWarning]);
 
     const deshabilitado = useEstadoBoton({ totalIncompletoProp: jornadasDatos?.totalIncompleto, cargando: jornadasCargando });
 
@@ -82,7 +92,7 @@ export default function Completar({ id_importacion }: importacionJornadasProps) 
             <div className="flex flex-row gap-2 w-full pl-2">
                 <FormControlLabel
                     control={<IOSSwitch sx={{ m: 1 }} />}
-                    label="Solo Importaciones con Fichajes Incompletos"
+                    label="Solo Importaciones no Validas"
                     className="w-full !text-gray-700"
                     onChange={handleCambioFiltroIncompletas}
                     checked={watch("filtroMarcasIncompletas")}
@@ -94,6 +104,8 @@ export default function Completar({ id_importacion }: importacionJornadasProps) 
                     jornadas={jornadasError ? [] : jornadasDatos?.jornadas}
                     cargando={jornadasCargando}
                     filas={filasPorPagina}
+                    tiposAusencia={selectError ? [] : selectDatos}
+                    tiposAusenciaCargando={selectCargando}
                 />
                 <div className="flex justify-end items-center overflow-x-hide"
                     style={{ borderTop: "2px solid #ED6C02" }}>

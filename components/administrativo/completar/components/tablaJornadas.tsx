@@ -5,7 +5,7 @@ import { jornada, tablaJornadasProps } from "../types";
 import { Esqueleto } from "./tablaJornadasEsqueleto";
 import { Encabezado } from "./tablaJornadasEncabezado";
 
-export const TablaJornadas = ({ jornadas, cargando }: tablaJornadasProps) => {
+export const TablaJornadas = ({ jornadas, cargando, tiposAusencia, tiposAusenciaCargando }: tablaJornadasProps) => {
     return (
         <>
             {cargando || jornadas && jornadas.length > 0 ? (
@@ -17,7 +17,7 @@ export const TablaJornadas = ({ jornadas, cargando }: tablaJornadasProps) => {
                         ) : (
                             <TableBody>
                                 {jornadas.map((jornada: jornada) => (
-                                    <Fila jornada={jornada} key={jornada.id} />
+                                    <Fila jornada={jornada} tiposAusencia={tiposAusencia} tiposAusenciaCargando={tiposAusenciaCargando} key={jornada.id} />
                                 ))}
                             </TableBody>
                         )}

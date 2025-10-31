@@ -7,6 +7,7 @@ export const useFilaJornadaFormulario = (jornada: jornada) => {
             id: jornada.id,
             entrada: jornada.entrada ? jornada.entrada : "",
             salida: jornada.salida ? jornada.salida : "",
+            tipoAusencia: jornada.id_tipoausencia ? jornada.id_tipoausencia : "",
         }
     });
 };

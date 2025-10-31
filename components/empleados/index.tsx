@@ -220,10 +220,10 @@ export default function TablaEmpleadosLista({ esAdministrativo }: { esAdministra
                 className="!h-[40px]"
                 disableElevation
                 component={Link}
-                href={`/administrativo/empleados/presentes`}
+                href={`/administrativo/empleados/asistencia`}
                 endIcon={<NumbersRoundedIcon />}
               >
-                Consultar Presentes
+                Consultar Asistencia
               </Button>
             }
             {!esAdministrativo &&

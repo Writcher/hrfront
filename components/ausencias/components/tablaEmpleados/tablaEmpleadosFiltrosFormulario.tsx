@@ -1,6 +1,9 @@
-import { TextField, MenuItem, Skeleton } from "@mui/material";
+import { TextField, MenuItem, Skeleton, Button } from "@mui/material";
 import { formularioFiltrosPadreProps, proyecto, tipoAusencia, tipoEmpleado, mes } from "../../types";
 import { getNombreMesGen } from "../../utils";
+import Link from "next/link";
+import UploadFileRoundedIcon from '@mui/icons-material/UploadFileRounded';
+
 
 export const Formulario = ({
   mostrarBusquedaNombre,
@@ -26,10 +29,11 @@ export const Formulario = ({
   onCambioFiltroTipoEmpleado,
   onCambioFiltroTipoAusencia,
   onCambioFiltroQuincena,
-  onCambioFiltroMes
+  onCambioFiltroMes,
+  esAdministrativo
 }: formularioFiltrosPadreProps) => (
   <form className="flex items-center justify-start w-full">
-    <div className="flex items-center w-2/6">
+    <div className="flex items-center w-4/6 gap-2">
       {mostrarBusquedaNombre && (
         <TextField
           id="busquedaNombre"
@@ -131,9 +135,6 @@ export const Formulario = ({
             ))}
           </TextField>
       )}
-    </div>
-    <div className="flex grow" />
-    <div className="flex items-center w-3/6 gap-2">
       {cargando ?
         <Skeleton
           variant="rectangular"
@@ -178,5 +179,6 @@ export const Formulario = ({
         <MenuItem key={2} value={2}>Segunda Quincena</MenuItem>
       </TextField>
     </div>
+    <div className="flex grow" />
   </form>
 );

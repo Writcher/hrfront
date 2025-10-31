@@ -103,6 +103,7 @@ export type formularioFiltrosPadreProps = {
   onCambioFiltroTipoAusencia: (event: React.ChangeEvent<HTMLInputElement>) => void,
   onCambioFiltroMes: (event: React.ChangeEvent<HTMLInputElement>) => void,
   onCambioFiltroQuincena: (event: React.ChangeEvent<HTMLInputElement>) => void,
+  esAdministrativo: boolean,
 };
 
 export type filtrosActivosProps = {

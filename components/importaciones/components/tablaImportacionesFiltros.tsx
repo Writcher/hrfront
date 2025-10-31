@@ -37,6 +37,5 @@ export const TablaImportacionesFiltros = ({ proyectos, cargando, filtroIncomplet
                 Importar Informe
             </Button>
         }
-
     </div>
 );
