@@ -97,7 +97,7 @@ export default function InicioRRHH() {
                 <Divider variant="middle" sx={{ bgcolor: "#ED6C02" }} flexItem />
                 <CardContent className="flex flex-col grow justify-center gap-4">
                     <div className="text-center text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]" style={{ userSelect: "none" }}>
-                        Editar la información de empleados, dar de alta nuevos de forma manual o dar de baja empleados antiguos. <br /><br />
+                        Editar la información de empleados, dar de alta nuevos de forma manual, dar de baja empleados antiguos o sincronizar legajos con nomina. <br /><br />
                     </div>
                 </CardContent>
                 <Divider variant="middle" sx={{ bgcolor: "#ED6C02" }} flexItem />
