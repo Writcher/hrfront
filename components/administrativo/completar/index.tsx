@@ -107,30 +107,32 @@ export default function Completar({ id_importacion }: importacionJornadasProps) 
                     tiposAusencia={selectError ? [] : selectDatos}
                     tiposAusenciaCargando={selectCargando}
                 />
-                <div className="flex justify-end items-center overflow-x-hide"
-                    style={{ borderTop: "2px solid #ED6C02" }}>
-                    <TablePagination
-                        rowsPerPageOptions={[25, 50]}
-                        component="div"
-                        count={jornadasDatos?.totalJornadas || 0}
-                        rowsPerPage={filasPorPagina}
-                        page={pagina}
-                        onPageChange={handleCambioPagina}
-                        onRowsPerPageChange={handleCambioFilasPorPagina}
-                        labelRowsPerPage="Filas por página"
-                        labelDisplayedRows={({ from, to, count }) =>
-                            `${from}-${to} de ${count !== -1 ? count : `más de ${to}`}`
-                        }
-                        slotProps={{
-                            select: {
-                                MenuProps: {
-                                    anchorOrigin: { vertical: "top", horizontal: "right" },
-                                    transformOrigin: { vertical: "top", horizontal: "left" }
-                                },
+                {(jornadasCargando || (jornadasDatos?.jornadas.length ?? 0) > 0) && (
+                    <div className="flex justify-end items-center overflow-x-hide"
+                        style={{ borderTop: "2px solid #ED6C02" }}>
+                        <TablePagination
+                            rowsPerPageOptions={[25, 50]}
+                            component="div"
+                            count={jornadasDatos?.totalJornadas || 0}
+                            rowsPerPage={filasPorPagina}
+                            page={pagina}
+                            onPageChange={handleCambioPagina}
+                            onRowsPerPageChange={handleCambioFilasPorPagina}
+                            labelRowsPerPage="Filas por página"
+                            labelDisplayedRows={({ from, to, count }) =>
+                                `${from}-${to} de ${count !== -1 ? count : `más de ${to}`}`
                             }
-                        }}
-                    />
-                </div>
+                            slotProps={{
+                                select: {
+                                    MenuProps: {
+                                        anchorOrigin: { vertical: "top", horizontal: "right" },
+                                        transformOrigin: { vertical: "top", horizontal: "left" }
+                                    },
+                                }
+                            }}
+                        />
+                    </div>
+                )}
             </div>
             <Botones
                 onComplete={onComplete}
