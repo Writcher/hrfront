@@ -101,7 +101,7 @@ export default function Completar({ id_importacion }: importacionJornadasProps) 
             </div>
             <div className="flex flex-col justify-between w-full h-full overflow-y-auto border-2 border-[#ED6C02] rounded">
                 <TablaJornadas
-                    jornadas={jornadasError ? [] : jornadasDatos?.jornadas}
+                    jornadas={jornadasDatos?.jornadas || []}
                     cargando={jornadasCargando}
                     filas={filasPorPagina}
                     tiposAusencia={selectError ? [] : selectDatos}
