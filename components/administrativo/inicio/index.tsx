@@ -15,8 +15,8 @@ export default function InicioAdministrativo() {
                     </div>
                 </CardContent>
                 <Divider variant="middle" sx={{ bgcolor: "#ED6C02" }} flexItem />
-                <CardContent className="flex flex-col grow justify-center gap-4">
-                    <div className="text-center text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]" style={{ userSelect: "none" }}>
+                <CardContent className="flex flex-col grow justify-center gap-4 overflow-hidden">
+                    <div className="text-center text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)] overflow-y-auto h-full px-2" style={{ userSelect: "none" }}>
                         Importar archivo Excel con el informe diario de marcas del control de acceso, cargar marcas de controles Hikvision o revisar y validar los informes previamente cargados. <br /><br />
                         Los informes tambien cargan ausencias basadas en nomina que deberan ser revisadas manualmente. <br />
                     </div>
@@ -56,8 +56,8 @@ export default function InicioAdministrativo() {
                     </div>
                 </CardContent>
                 <Divider variant="middle" sx={{ bgcolor: "#ED6C02" }} flexItem />
-                <CardContent className="flex flex-col grow justify-center gap-4">
-                    <div className="text-center text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]" style={{ userSelect: "none" }}>
+                <CardContent className="flex flex-col grow justify-center gap-4 overflow-hidden">
+                    <div className="text-center text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)] overflow-y-auto h-full px-2" style={{ userSelect: "none" }}>
                         Visualizar la lista de jornadas registradas por empleado y cargar jornadas manualmente o visualizar listado de ausencias. <br /><br />
                     </div>
                 </CardContent>
@@ -96,8 +96,8 @@ export default function InicioAdministrativo() {
                     </div>
                 </CardContent>
                 <Divider variant="middle" sx={{ bgcolor: "#ED6C02" }} flexItem />
-                <CardContent className="flex flex-col grow justify-center gap-4">
-                    <div className="text-center text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]" style={{ userSelect: "none" }}>
+                <CardContent className="flex flex-col grow justify-center gap-4 overflow-hidden">
+                    <div className="text-center text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)] overflow-y-auto h-full px-2" style={{ userSelect: "none" }}>
                         Editar la información de empleados, dar de alta nuevos de forma manual, dar de baja empleados antiguos, o consultar el número de empleados presentes y ausentes por proyecto. <br /><br />
                         La asistencia por proyecto depende solo de la entrada, por lo que puede ser consultada en cualquier momento luego de la misma. Recordar que nuevos ingresos no apareceran en el total ni en el listado a no ser que esten cargados en el sistema.<br /><br />
                         Ten en cuenta que la carga automática de empleados durante la importación de informes no considera el número de legajo. Además, a los empleados dados de baja no se les podrán cargar jornadas manualmente.<br />

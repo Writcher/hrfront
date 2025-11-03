@@ -14,8 +14,8 @@ export default function InicioRRHH() {
                     </div>
                 </CardContent>
                 <Divider variant="middle" sx={{ bgcolor: "#ED6C02" }} flexItem />
-                <CardContent className="flex flex-col grow justify-center gap-4">
-                    <div className="text-center text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]" style={{ userSelect: "none" }}>
+                <CardContent className="flex flex-col grow justify-center gap-4 overflow-hidden">
+                    <div className="text-center text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)] overflow-y-auto h-full px-2" style={{ userSelect: "none" }}>
                         Visualizar el resumen de jornadas por empleado, exportar el mismo en formato excel o visualizar listado de ausencias. <br />
                     </div>
                 </CardContent>
@@ -65,8 +65,8 @@ export default function InicioRRHH() {
                     </div>
                 </CardContent>
                 <Divider variant="middle" sx={{ bgcolor: "#ED6C02" }} flexItem />
-                <CardContent className="flex flex-col grow justify-center gap-4">
-                    <div className="text-center text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]" style={{ userSelect: "none" }}>
+                <CardContent className="flex flex-col grow justify-center gap-4 overflow-hidden">
+                    <div className="text-center text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)] overflow-y-auto h-full px-2" style={{ userSelect: "none" }}>
                         Visualizar los informes importados por el personal del proyecto y consultar su estado. <br /><br />
                         Los informes deben tener estado "Completo" para considerarce validados. <br />
                     </div>
@@ -95,8 +95,8 @@ export default function InicioRRHH() {
                     </div>
                 </CardContent>
                 <Divider variant="middle" sx={{ bgcolor: "#ED6C02" }} flexItem />
-                <CardContent className="flex flex-col grow justify-center gap-4">
-                    <div className="text-center text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]" style={{ userSelect: "none" }}>
+                <CardContent className="flex flex-col grow justify-center gap-4 overflow-hidden">
+                    <div className="text-center text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)] overflow-y-auto h-full px-2" style={{ userSelect: "none" }}>
                         Editar la información de empleados, dar de alta nuevos de forma manual, dar de baja empleados antiguos o sincronizar legajos con nomina. <br /><br />
                     </div>
                 </CardContent>
