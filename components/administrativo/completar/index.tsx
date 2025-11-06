@@ -1,12 +1,10 @@
 "use client"
 
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useFiltros } from "./hooks/useFiltros";
 import { usePaginacion } from "../../hooks/usePaginacion";
 import { useTablaJornadasFiltro } from "./hooks/useTablaJornadasFiltro";
 import { setImportacionCompleta } from "@/services/importacion/service.importacion";
-import { FormControlLabel, TablePagination } from "@mui/material";
-import { IOSSwitch } from "@/components/ui/switch";
+import { TablePagination } from "@mui/material";
 import { TablaJornadas } from "./components/tablaJornadas";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -19,11 +17,9 @@ import { fetchTiposAusencia } from "@/services/tipoausencia/service.tipoausencia
 
 export default function Completar({ id_importacion }: importacionJornadasProps) {
 
-    const { setValue, watch } = useTablaJornadasFiltro();
+    const { watch } = useTablaJornadasFiltro();
 
     const { showSuccess, showError, showWarning } = useSnackbar();
-
-    const { handleCambioFiltroIncompletas } = useFiltros({ setValue, watch });
 
     const { pagina, filasPorPagina, handleCambioPagina, handleCambioFilasPorPagina } = usePaginacion({ filasIniciales: 25 });
 
@@ -89,16 +85,6 @@ export default function Completar({ id_importacion }: importacionJornadasProps) 
 
     return (
         <div className="flex flex-col gap-1 items-start w-full h-full">
-            <div className="flex flex-row gap-2 w-full pl-2">
-                <FormControlLabel
-                    control={<IOSSwitch sx={{ m: 1 }} />}
-                    label="Solo Importaciones no Validas"
-                    className="w-full !text-gray-700"
-                    onChange={handleCambioFiltroIncompletas}
-                    checked={watch("filtroMarcasIncompletas")}
-                />
-                <div className="flex grow" />
-            </div>
             <div className="flex flex-col justify-between w-full h-full overflow-y-auto border-2 border-[#ED6C02] rounded">
                 <TablaJornadas
                     jornadas={jornadasDatos?.jornadas || []}
