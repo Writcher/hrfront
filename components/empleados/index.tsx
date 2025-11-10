@@ -237,7 +237,7 @@ export default function TablaEmpleadosLista({ esAdministrativo }: { esAdministra
                 disabled={mutacionSync.isPending}
                 endIcon= {!mutacionSync.isPending ? <SyncIcon /> : <SyncIcon className="animate-spin" style={{ animationDirection: 'reverse' }} />}
               >
-                {!mutacionSync.isPending ? "Sincronizar Legajos" : "Sincronizando"}
+                {!mutacionSync.isPending ? "Sincronizar Empleados" : "Sincronizando"}
               </Button>
             }
             <Button
