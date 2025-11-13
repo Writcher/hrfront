@@ -26,7 +26,7 @@ export const TablaJornadas = ({ jornadas, cargando, tiposAusencia, tiposAusencia
             ) : null}
             {!cargando && (!jornadas || jornadas.length === 0) && (
                 <div className="flex items-center justify-center py-[5vh] h-full w-full text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.8rem)]">
-                    No se encontraron jornadas
+                    No se encontraron jornadas sin validar
                 </div>
             )}
         </>
