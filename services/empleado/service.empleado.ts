@@ -10,6 +10,7 @@ export async function fetchEmpleados(parametros: fetchEmpleadosDTO) {
         const token = await getToken();
 
         const empleadosParametros = new URLSearchParams({
+            accion: "empleados",
             busquedaNombre: parametros.busquedaNombre,
             filtroProyecto: parametros.filtroProyecto.toString() === '' ? '0' : parametros.filtroProyecto.toString(),
             pagina: parametros.pagina.toString(),
@@ -53,7 +54,13 @@ export async function insertEmpleado(parametros: insertempleadoParametros) {
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(parametros),
+            body: JSON.stringify({
+                nombre: parametros.nombre,
+                legajo: parametros.legajo === '' ? null : parametros.legajo,
+                id_reloj: parametros.id_reloj,
+                id_tipoempleado: parametros.id_tipoempleado === '' ? null : parametros.id_tipoempleado,
+                id_proyecto: parametros.id_proyecto === '' ? null : parametros.id_proyecto,
+            }),
         });
 
         if (!respuestaRaw.ok) {

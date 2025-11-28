@@ -44,6 +44,7 @@ export async function exportJornadasExcel(data: exportJornadasExcelDTO) {
             proyecto: data.proyecto.toString(),
             mes: data.mes.toString(),
             quincena: data.quincena.toString() === '' ? '0' : data.quincena.toString(),
+            accion: "resumen",
         });
 
         const resumenRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_EXCEL_EXPORT}?${resumenParametros.toString()}`, {

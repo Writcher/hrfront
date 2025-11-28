@@ -221,7 +221,7 @@ export const Formulario = ({
                             />
                         </div>
                     )}
-                    {jornadaPartida === true ? (
+                    {jornadaPartida === true  && watch("tipoJornada") !== formularioDatos?.id_ausencia ? (
                         <div className="flex flex-row justify-start items-center gap-2 w-full">
                             <Controller
                                 name="entradaTarde"

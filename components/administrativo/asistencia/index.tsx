@@ -138,11 +138,10 @@ export default function Asistencia() {
                 <div className="flex justify-center items-center gap-2 border-2 border-[#ED6C02] p-2 rounded w-full text-gray-700">Total Indirectos: {presentesDatos ? presentesDatos.totalMensualizados : "-"}</div>
                 <div className="flex justify-center items-center gap-2 border-2 border-[#ED6C02] p-2 rounded w-full text-gray-700">Total Ausentes: {presentesDatos ? presentesDatos.totalAusentes : "-"}</div>
             </div>
-            <div className="flex flex-row gap-1 w-full text-gray-800">
+            <div className="flex flex-row items-center justify-start gap-1 w-full rounded border-2 border-[#ED6C02] p-1">
                 <Button
-                    variant={alternarLista === "presentes" ? "contained" : "outlined"}
-                    color="inherit"
-                    className={alternarLista === "presentes" ? "!bg-gray-800 hover:!bg-gray-700 !text-white" : ""}
+                    variant="contained"
+                    className={`!h-[40px] hover:!bg-orange-100 hover:!text-orange-600 ${alternarLista === "presentes" ? "!bg-orange-100 !text-orange-600" : "!bg-gray-100 !text-gray-700"}`}
                     disableElevation
                     fullWidth
                     disabled={presentesCargando || !primeraBusqueda}
@@ -155,9 +154,8 @@ export default function Asistencia() {
                     Presentes
                 </Button>
                 <Button
-                    variant={alternarLista === "ausentes" ? "contained" : "outlined"}
-                    color="inherit"
-                    className={alternarLista === "ausentes" ? "!bg-gray-800 hover:!bg-gray-700 !text-white" : ""}
+                    variant="contained"
+                    className={`!h-[40px] hover:!bg-orange-100 hover:!text-orange-600 ${alternarLista === "ausentes" ? "!bg-orange-100 !text-orange-600" : "!bg-gray-100 !text-gray-700"}`}
                     fullWidth
                     disableElevation
                     disabled={presentesCargando || !primeraBusqueda}

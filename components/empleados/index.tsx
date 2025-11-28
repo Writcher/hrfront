@@ -226,20 +226,18 @@ export default function TablaEmpleadosLista({ esAdministrativo }: { esAdministra
                 Consultar Asistencia
               </Button>
             }
-            {!esAdministrativo &&
-              <Button
-                variant="contained"
-                color="info"
-                size="small"
-                className="!h-[40px]"
-                disableElevation
-                onClick={() => mutacionSync.mutate()}
-                disabled={mutacionSync.isPending}
-                endIcon= {!mutacionSync.isPending ? <SyncIcon /> : <SyncIcon className="animate-spin" style={{ animationDirection: 'reverse' }} />}
-              >
-                {!mutacionSync.isPending ? "Sincronizar Empleados" : "Sincronizando"}
-              </Button>
-            }
+            <Button
+              variant="contained"
+              color="info"
+              size="small"
+              className="!h-[40px]"
+              disableElevation
+              onClick={() => mutacionSync.mutate()}
+              disabled={mutacionSync.isPending}
+              endIcon={!mutacionSync.isPending ? <SyncIcon /> : <SyncIcon className="animate-spin" style={{ animationDirection: 'reverse' }} />}
+            >
+              {!mutacionSync.isPending ? "Sincronizar Empleados" : "Sincronizando"}
+            </Button>
             <Button
               variant="contained"
               color="success"

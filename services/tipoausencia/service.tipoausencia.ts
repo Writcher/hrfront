@@ -8,7 +8,7 @@ export async function fetchTiposAusencia() {
     try {
         const token = await getToken();
             
-        const tiposAusenciaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_TIPOSAUSENCIA}`, {
+        const tiposAusenciaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_TIPOSAUSENCIA}?accion=select`, {
             method: "GET",
             headers: {
                 Authorization: `Bearer ${token}`,
