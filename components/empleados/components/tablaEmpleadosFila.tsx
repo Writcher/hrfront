@@ -5,7 +5,7 @@ import { useSnackbar } from "@/lib/context/snackbarcontext";
 import { useEmpleadoFormulario } from "../hooks/useEmpleadoFormulario";
 import { Controller } from "react-hook-form";
 import { useEffect } from "react";
-import { editEmpleadoParametros, empleadoFormularioDatos, formularioFilaEmpleadoProps, tipoEmpleado, turno, proyecto } from "../types";
+import { editEmpleadoParametros, empleadoFormularioDatos, formularioFilaEmpleadoProps, turno } from "../types";
 import { BotonesFila } from "./filaEmpleadosBotones";
 import { useConfirmar } from "../../hooks/useConfirmar";
 import { useMostrarFormulario } from "../hooks/useMostrarFormulario";
@@ -24,11 +24,11 @@ export default function FilaEmpleado({ empleado }: formularioFilaEmpleadoProps) 
     const { confirmar: confirmarBaja, handleConfirmar: handleConfirmarBaja } = useConfirmar();
 
     const {
-        proyectos,
-        tiposEmpleado,
+        //proyectos,
+        //tiposEmpleado,
         turnos,
-        cargando,
-        error
+        //cargando,
+        //error
     } = useSelectDatos();
 
     useEffect(() => {
@@ -91,7 +91,7 @@ export default function FilaEmpleado({ empleado }: formularioFilaEmpleadoProps) 
         <TableRow>
             <TableCell align="center" size="small">
                 <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.75rem)]" style={{ userSelect: "none" }}>
-                    {formularioVisible ? (
+                    {/**{formularioVisible ? (
                         <Controller
                             name="legajo"
                             control={control}
@@ -110,15 +110,15 @@ export default function FilaEmpleado({ empleado }: formularioFilaEmpleadoProps) 
                             )}
                         />
                     ) : (
-                        <>
+                        <>*/}
                             {empleado.legajo}
-                        </>
-                    )}
+                        {/**</>
+                    )}*/}
                 </div>
             </TableCell>
             <TableCell align="center" size="small">
                 <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]" style={{ userSelect: "none" }}>
-                    {formularioVisible ? (
+                    {/**{formularioVisible ? (
                         <Controller
                             name="id_reloj"
                             control={control}
@@ -138,15 +138,15 @@ export default function FilaEmpleado({ empleado }: formularioFilaEmpleadoProps) 
                             )}
                         />
                     ) : (
-                        <>
+                        <>*/}
                             {empleado.id_reloj}
-                        </>
-                    )}
+                        {/**</>
+                    )}*/}
                 </div>
             </TableCell>
             <TableCell align="center" size="small">
                 <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]" style={{ userSelect: "none" }}>
-                    {formularioVisible ? (
+                    {/**{formularioVisible ? (
                         <Controller
                             name="nombre"
                             control={control}
@@ -165,15 +165,15 @@ export default function FilaEmpleado({ empleado }: formularioFilaEmpleadoProps) 
                             )}
                         />
                     ) : (
-                        <>
+                        <>*/}
                             {empleado.nombre}
-                        </>
-                    )}
+                        {/**</>
+                    )}*/}
                 </div>
             </TableCell>
             <TableCell align="center" size="small">
                 <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]" style={{ userSelect: "none" }}>
-                    {formularioVisible ? (
+                    {/**{formularioVisible ? (
                         <Controller
                             name="id_tipoempleado"
                             control={control}
@@ -199,10 +199,10 @@ export default function FilaEmpleado({ empleado }: formularioFilaEmpleadoProps) 
                             )}
                         />
                     ) : (
-                        <>
+                        <>*/}
                             {empleado.tipoempleado}
-                        </>
-                    )}
+                        {/**</>
+                    )}*/}
                 </div>
             </TableCell>
             <TableCell align="center" size="small">
@@ -241,7 +241,7 @@ export default function FilaEmpleado({ empleado }: formularioFilaEmpleadoProps) 
             </TableCell>
             <TableCell align="center" size="small">
                 <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]" style={{ userSelect: "none" }}>
-                    {formularioVisible ? (
+                    {/**{formularioVisible ? (
                         <Controller
                             name="id_proyecto"
                             control={control}
@@ -267,10 +267,10 @@ export default function FilaEmpleado({ empleado }: formularioFilaEmpleadoProps) 
                             )}
                         />
                     ) : (
-                        <>
+                        <>*/}
                             {empleado.nombreproyecto}
-                        </>
-                    )}
+                        {/**</>
+                    )}*/}
                 </div>
             </TableCell>
             <TableCell align="center" size="small">

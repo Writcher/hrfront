@@ -238,18 +238,20 @@ export default function TablaEmpleadosLista({ esAdministrativo }: { esAdministra
             >
               {!mutacionSync.isPending ? "Sincronizar Empleados" : "Sincronizando"}
             </Button>
-            <Button
-              variant="contained"
-              color="success"
-              size="small"
-              className="!h-[40px]"
-              disableElevation
-              onClick={handleMostrarFormulario}
-              disabled={mutacionSync.isPending}
-              endIcon={<PersonAddAltRoundedIcon />}
-            >
-              Cargar Empleado
-            </Button>
+            {!esAdministrativo &&
+              <Button
+                variant="contained"
+                color="success"
+                size="small"
+                className="!h-[40px]"
+                disableElevation
+                onClick={handleMostrarFormulario}
+                disabled={mutacionSync.isPending}
+                endIcon={<PersonAddAltRoundedIcon />}
+              >
+                Cargar Empleado
+              </Button>
+            }
           </>
         )}
       </div>
