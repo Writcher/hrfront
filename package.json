@@ -20,10 +20,10 @@
     "dayjs": "^1.11.13",
     "jsonwebtoken": "^9.0.2",
     "lodash.debounce": "^4.0.8",
-    "next": "^15.5.6",
+    "next": "^16.0.10",
     "next-auth": "^5.0.0-beta.29",
-    "react": "19.1.0",
-    "react-dom": "19.1.0",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
     "react-dropzone": "^14.3.8",
     "react-hook-form": "^7.62.0"
   },

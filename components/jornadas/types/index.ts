@@ -159,6 +159,18 @@ export type botonesFiltrosHijoProps = {
   onCreate: (event?: React.BaseSyntheticEvent) => Promise<void>,
 };
 
+export type botonesFiltrosHijoRRHHProps = {
+  handleLimpiarFiltros: () => void,
+  filtroMes: number | '',
+  filtroQuincena: number | '',
+  filtroMarcasIncompletas: boolean,
+  cargando: boolean,
+  meses: mes[],
+  handleCambioFiltroMarcasIncompletas: () => void,
+  handleCambioFiltroQuincena: (event: React.ChangeEvent<HTMLInputElement>) => void
+  handleCambioFiltroMes: (event: React.ChangeEvent<HTMLInputElement>) => void,
+};
+
 export type tablaJornadasProps = {
   jornadas: jornada[],
   cargando: boolean,

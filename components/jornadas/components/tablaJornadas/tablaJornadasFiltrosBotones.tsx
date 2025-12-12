@@ -6,7 +6,7 @@ import { Formulario } from "./tablaJornadasFiltrosFormulario";
 import SaveAsRoundedIcon from '@mui/icons-material/SaveAsRounded';
 import SyncIcon from '@mui/icons-material/Sync';
 import { getNombreMes } from "@/components/rrhh/exportar/utils";
-import { botonesFiltrosHijoProps } from "../../types";
+import { botonesFiltrosHijoProps, botonesFiltrosHijoRRHHProps } from "../../types";
 
 export const Botones = ({ formularioVisible, handleLimpiarFiltros, filtroMes, filtroQuincena, filtroMarcasIncompletas, cargando, meses, creando, camposValidos, handleCambioFiltroMarcasIncompletas, handleCambioFiltroQuincena, handleCambioFiltroMes, handleMostrarFormulario, estado, onCreate }: botonesFiltrosHijoProps) => (
     <div className="flex flex-row gap-2 w-full h-11 items-center">
@@ -75,5 +75,33 @@ export const Botones = ({ formularioVisible, handleLimpiarFiltros, filtroMes, fi
         ) :
             <></>
         }
+    </div>
+)
+
+export const BotonesRRHH = ({ handleLimpiarFiltros, filtroMes, filtroQuincena, filtroMarcasIncompletas, cargando, meses, handleCambioFiltroMarcasIncompletas, handleCambioFiltroQuincena, handleCambioFiltroMes }: botonesFiltrosHijoRRHHProps) => (
+    <div className="flex flex-row gap-2 w-full h-11 items-center">
+        <Button
+            variant="contained"
+            color="error"
+            size="small"
+            className="!h-[40px]"
+            disableElevation
+            onClick={handleLimpiarFiltros}
+            endIcon={<FilterAltOffRoundedIcon />}
+        >
+            Limpiar Filtros
+        </Button>
+        <Formulario
+            filtroMes={filtroMes}
+            filtroQuincena={filtroQuincena}
+            filtroMarcasIncompletas={filtroMarcasIncompletas}
+            cargando={cargando}
+            meses={meses}
+            onCambioFiltroMes={handleCambioFiltroMes}
+            onCambioFiltroQuincena={handleCambioFiltroQuincena}
+            onCambioFiltroMarcaIncompleta={handleCambioFiltroMarcasIncompletas}
+            getNombreMes={getNombreMes}
+        />
+        <div className="flex grow" />
     </div>
 )

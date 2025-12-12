@@ -31,8 +31,6 @@ export async function fetchJornadas(parametros: fetchJornadasDTO) {
 
         const jornadas = await jornadasRaw.json();
 
-        console.log(jornadas)
-
         return jornadas;
     } catch (error) {
         throw error;
