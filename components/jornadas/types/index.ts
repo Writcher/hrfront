@@ -23,7 +23,7 @@ export type jornada = {
   salida_r: string,
   total: number,
   tipojornada: number,
-  tipoausencia: number
+  tipoausencia: string
   id: number,
   observaciones: string[],
   es_manual: boolean,

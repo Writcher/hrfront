@@ -47,6 +47,7 @@ export const Informacion = ({ jornada, dia, setObservacionFormulario, setTipoAus
                         disableElevation
                         size="small"
                         onClick={() => setObservacionFormulario()}
+                        disabled={jornada.tipoausencia === 'Pendiente'}
                     >
                         <AddRoundedIcon />
                     </Button>
