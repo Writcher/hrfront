@@ -116,7 +116,7 @@ export async function editEmpleado(parametros: editEmpleadoDTO) {
                 accion: "editar" ,
                 nombre: parametros.nombre,
                 legajo: parametros.legajo === '' ? null : parametros.legajo,
-                id_reloj: parametros. id_reloj,
+                id_reloj: Number(parametros.id_reloj),
                 id_tipoempleado: parametros.id_tipoempleado === '' ? null : parametros.id_tipoempleado,
                 id_turno: parametros.id_turno === '' ? null : parametros.id_turno,
                 id_proyecto: parametros.id_proyecto === '' ? null : parametros.id_proyecto,
