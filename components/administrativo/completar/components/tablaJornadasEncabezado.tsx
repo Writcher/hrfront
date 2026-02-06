@@ -11,9 +11,14 @@ export const Encabezado = () => (
         }}
     >
         <TableRow>
-            <TableCell align="left" width="20%">
+            <TableCell align="left" >
                 <div style={{ userSelect: "none" }} className="text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]">
                     Fecha
+                </div>
+            </TableCell>
+            <TableCell align="center" >
+                <div style={{ userSelect: "none" }} className="text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]">
+                    Tipo
                 </div>
             </TableCell>
             <TableCell align="center" width="25%">
@@ -21,14 +26,9 @@ export const Encabezado = () => (
                     Nombre de Empleado
                 </div>
             </TableCell>
-            <TableCell align="center" width="15%">
+            <TableCell align="center" colSpan={2}>
                 <div style={{ userSelect: "none" }} className="text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]">
-                    Entrada
-                </div>
-            </TableCell>
-            <TableCell align="center" width="15%">
-                <div style={{ userSelect: "none" }} className="text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]">
-                    Salida
+                    Entrada y Salida / Tipo de Ausencia
                 </div>
             </TableCell>
             <TableCell align="right" width="25%">

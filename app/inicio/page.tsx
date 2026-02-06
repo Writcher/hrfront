@@ -8,15 +8,15 @@ export default function Inicio() {
         <p className="text-[clamp(1rem,5vw,2rem)]">
           Registro de Jornadas
         </p>
-        <Button
-          component={Link}
-          href={"/login"}
-          variant="contained"
-          color="success"
-          disableElevation
-        >
-          Iniciar Sesión
-        </Button>
+        <Link href="/login" style={{ textDecoration: "none" }}>
+          <Button
+            variant="contained"
+            color="success"
+            disableElevation
+          >
+            Iniciar Sesión
+          </Button>
+        </Link>
       </div>
     </div>
   );

@@ -22,7 +22,7 @@ export const Botones = ({ editando, borrando, validando, validada, camposValidos
         </LightTooltip>
         <LightTooltip title={confirmarBorrar ? "Confirmar" : "¿Borrar?"} placement="left" arrow>
             <Button
-                variant={confirmarBorrar ? "contained" : "outlined"}
+                variant={confirmarBorrar ? "contained": "outlined"}
                 color="error"
                 disableElevation
                 size="small"
@@ -35,7 +35,7 @@ export const Botones = ({ editando, borrando, validando, validada, camposValidos
         </LightTooltip>
         <LightTooltip title={confirmarValidar ? "Confirmar" : "¿Validar?"} placement="left" arrow>
             <Button
-                variant={confirmarValidar ? "contained" : "outlined"}
+                variant={confirmarValidar ? "contained": "outlined"}
                 color="success"
                 disableElevation
                 size="small"

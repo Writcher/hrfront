@@ -8,7 +8,7 @@ export async function fetchProyectos() {
     try {
         const token = await getToken();
 
-        const proyectosRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_PROYECTOS}`, {
+        const proyectosRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_PROYECTOS}?accion=select`, {
             method: "GET",
             headers: {
                 Authorization: `Bearer ${token}`,

@@ -40,7 +40,6 @@ export async function fetchImportacionJornadas(params: fetchImportacionJornadasP
         const token = await getToken();
 
         const datosImportacionJornadasParams = new URLSearchParams({
-            filtroMarcasIncompletas: params.filtroMarcasIncompletas.toString(),
             pagina: params.pagina.toString(),
             filasPorPagina: params.filasPorPagina.toString()
         });

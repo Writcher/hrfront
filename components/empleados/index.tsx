@@ -10,7 +10,7 @@ import { MenuFiltros } from "./components/tablaEmpleadosFiltrosMenu";
 import { FormularioFiltros } from "./components/tablaEmpleadosFiltrosFormulario";
 import { FiltrosActivos } from "./components/tablaEmpleadosFiltrosActivos";
 import { TablaEmpleados } from "./components/tablaEmpleados";
-import { fetchEmpleados, insertEmpleado } from "@/services/empleado/service.empleado";
+import { fetchEmpleados, insertEmpleado, syncNomina } from "@/services/empleado/service.empleado";
 import { useEmpleadoFormulario } from "./hooks/useEmpleadoFormulario";
 import { Formulario } from "./components/tablaEmpleadosFormularioCrear";
 import { empleadoFormularioDatos, insertempleadoParametros } from "./types";
@@ -24,6 +24,7 @@ import { useSelectDatos } from "./hooks/useSelectDatos";
 import { useMostrarFormulario } from "./hooks/useMostrarFormulario";
 import NumbersRoundedIcon from '@mui/icons-material/NumbersRounded';
 import Link from "next/link";
+import SyncIcon from '@mui/icons-material/Sync';
 
 export default function TablaEmpleadosLista({ esAdministrativo }: { esAdministrativo: boolean }) {
 
@@ -129,6 +130,17 @@ export default function TablaEmpleadosLista({ esAdministrativo }: { esAdministra
     });
   };
 
+  const mutacionSync = useMutation({
+    mutationFn: () => syncNomina(),
+    onSuccess: () => {
+      showSuccess("Empleados sincronizados correctamente");
+      empleadosRefetch();
+    },
+    onError: () => {
+      showError("Error al sincronizar empleados");
+    },
+  })
+
   useEffect(() => {
     if (error) {
       showWarning("Error al cargar los datos");
@@ -208,23 +220,38 @@ export default function TablaEmpleadosLista({ esAdministrativo }: { esAdministra
                 className="!h-[40px]"
                 disableElevation
                 component={Link}
-                href={`/administrativo/empleados/presentes`}
+                href={`/administrativo/empleados/asistencia`}
                 endIcon={<NumbersRoundedIcon />}
               >
-                Consultar Presentes
+                Consultar Asistencia
               </Button>
             }
             <Button
               variant="contained"
-              color="success"
+              color="info"
               size="small"
               className="!h-[40px]"
               disableElevation
-              onClick={handleMostrarFormulario}
-              endIcon={<PersonAddAltRoundedIcon />}
+              onClick={() => mutacionSync.mutate()}
+              disabled={mutacionSync.isPending}
+              endIcon={!mutacionSync.isPending ? <SyncIcon /> : <SyncIcon className="animate-spin" style={{ animationDirection: 'reverse' }} />}
             >
-              Cargar Empleado
+              {!mutacionSync.isPending ? "Sincronizar Empleados" : "Sincronizando"}
             </Button>
+            {!esAdministrativo &&
+              <Button
+                variant="contained"
+                color="success"
+                size="small"
+                className="!h-[40px]"
+                disableElevation
+                onClick={handleMostrarFormulario}
+                disabled={mutacionSync.isPending}
+                endIcon={<PersonAddAltRoundedIcon />}
+              >
+                Cargar Empleado
+              </Button>
+            }
           </>
         )}
       </div>

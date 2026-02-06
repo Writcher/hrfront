@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useEffect } from "react";
-import { TablePagination } from "@mui/material";
+import { Button, TablePagination } from "@mui/material";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useTablaEmpleadosFiltros } from "./hooks/useTablaEmpleadosFiltros";
 import { useFiltros } from "./hooks/useFiltrosPadre";
@@ -202,6 +202,7 @@ export default function TablaAusenciasEmpleados({ esAdministrativo, esRRHH }: ta
           onCambioFiltroTipoAusencia={handleCambioFiltroTipoAusencia}
           onCambioFiltroQuincena={handleCambioFiltroQuincena}
           onCambioFiltroMes={handleCambioFiltroMes}
+          esAdministrativo={esAdministrativo || false}
         />
       </div>
       <FiltrosActivos

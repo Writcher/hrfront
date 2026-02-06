@@ -49,7 +49,8 @@ export async function editJornada(parametros: editJornadaDTO) {
             },
             body: JSON.stringify({
                 entrada: parametros.entrada,
-                salida: parametros.salida
+                salida: parametros.salida,
+                accion: 'editar'
             })
         });
 

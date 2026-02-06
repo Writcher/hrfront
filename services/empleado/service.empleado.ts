@@ -10,6 +10,7 @@ export async function fetchEmpleados(parametros: fetchEmpleadosDTO) {
         const token = await getToken();
 
         const empleadosParametros = new URLSearchParams({
+            accion: "empleados",
             busquedaNombre: parametros.busquedaNombre,
             filtroProyecto: parametros.filtroProyecto.toString() === '' ? '0' : parametros.filtroProyecto.toString(),
             pagina: parametros.pagina.toString(),
@@ -53,7 +54,13 @@ export async function insertEmpleado(parametros: insertempleadoParametros) {
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(parametros),
+            body: JSON.stringify({
+                nombre: parametros.nombre,
+                legajo: parametros.legajo === '' ? null : parametros.legajo,
+                id_reloj: parametros.id_reloj,
+                id_tipoempleado: parametros.id_tipoempleado === '' ? null : parametros.id_tipoempleado,
+                id_proyecto: parametros.id_proyecto === '' ? null : parametros.id_proyecto,
+            }),
         });
 
         if (!respuestaRaw.ok) {
@@ -109,7 +116,7 @@ export async function editEmpleado(parametros: editEmpleadoDTO) {
                 accion: "editar" ,
                 nombre: parametros.nombre,
                 legajo: parametros.legajo === '' ? null : parametros.legajo,
-                id_reloj: parametros. id_reloj,
+                id_reloj: Number(parametros.id_reloj),
                 id_tipoempleado: parametros.id_tipoempleado === '' ? null : parametros.id_tipoempleado,
                 id_turno: parametros.id_turno === '' ? null : parametros.id_turno,
                 id_proyecto: parametros.id_proyecto === '' ? null : parametros.id_proyecto,
@@ -183,6 +190,29 @@ export async function exportPresentesExcel(data: exportPresentesExcelDTO) {
         const presentes = await presentesRaw.blob();
 
         return presentes;
+    } catch (error) {
+        throw error;
+    };
+};
+
+export async function syncNomina() {
+    try {
+        const token = await getToken();
+
+        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_EMPLEADOS}`, {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+
+        if (!respuestaRaw.ok) {
+            throw new Error("Error en la respuesta del servidor");
+        };
+
+        const respuesta = await respuestaRaw.json();
+
+        return respuesta;
     } catch (error) {
         throw error;
     };

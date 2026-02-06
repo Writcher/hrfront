@@ -9,6 +9,13 @@ export type jornada = {
     entrada: string,
     salida: string,
     id: number,
+    id_tipoausencia: number,
+    ausencia: boolean,
+};
+
+export type tipoAusencia = {
+    id: number,
+    nombre: string,
 };
 
 //props
@@ -16,10 +23,14 @@ export type tablaJornadasProps = {
     jornadas: jornada[],
     cargando: boolean,
     filas: number,
+    tiposAusencia: tipoAusencia[],
+    tiposAusenciaCargando: boolean,
 };
 
 export type filaJornadaProps = {
     jornada: jornada,
+    tiposAusencia: tipoAusencia[],
+    tiposAusenciaCargando: boolean,
 };
 
 export type importacionJornadasProps = {
@@ -73,6 +84,7 @@ export type filaJornadaFormularioDatos = {
     id: number,
     entrada: string | null,
     salida: string | null,
+    tipoAusencia: number | '',
 };
 
 export type tablaJornadasFiltroDatos = {

@@ -23,7 +23,7 @@ export type jornada = {
   salida_r: string,
   total: number,
   tipojornada: number,
-  tipoausencia: number
+  tipoausencia: string
   id: number,
   observaciones: string[],
   es_manual: boolean,
@@ -157,6 +157,18 @@ export type botonesFiltrosHijoProps = {
   handleMostrarFormulario: () => void,
   estado: string,
   onCreate: (event?: React.BaseSyntheticEvent) => Promise<void>,
+};
+
+export type botonesFiltrosHijoRRHHProps = {
+  handleLimpiarFiltros: () => void,
+  filtroMes: number | '',
+  filtroQuincena: number | '',
+  filtroMarcasIncompletas: boolean,
+  cargando: boolean,
+  meses: mes[],
+  handleCambioFiltroMarcasIncompletas: () => void,
+  handleCambioFiltroQuincena: (event: React.ChangeEvent<HTMLInputElement>) => void
+  handleCambioFiltroMes: (event: React.ChangeEvent<HTMLInputElement>) => void,
 };
 
 export type tablaJornadasProps = {
