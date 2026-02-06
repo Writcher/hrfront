@@ -7,7 +7,7 @@ export async function fetchTurnos() {
     try {
         const token = await getToken();
 
-        const turnosRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_TURNOS}`, {
+        const turnosRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_TURNO}`, {
             method: "GET",
             headers: {
                 Authorization: `Bearer ${token}`,

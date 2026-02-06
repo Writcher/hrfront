@@ -10,7 +10,7 @@ import { Botones } from "./crearTiposAusenciaFormularioBotones";
 import { Formulario } from "./crearTiposAusenciaFormulario";
 import { usePaginacion } from "@/components/hooks/usePaginacion";
 import { useTipoAusenciaFormulario } from "../../hooks/useTipoAusenciaFormulario";
-import { fetchTiposAusenciaABM, insertTipoAusencia } from "@/services/tipoausencia/service.tipoausencia";
+import { fetchTiposAusenciaPaginated, insertTipoAusencia } from "@/services/tipoausencia/service.tipoausencia";
 
 export default function Proyectos() {
 
@@ -29,11 +29,11 @@ export default function Proyectos() {
 
     const { data: tiposAusenciaDatos, isLoading: tiposAusenciaCargando, isError: tiposAusenciaError, refetch: tiposAusenciaRefetch } = useQuery({
         queryKey: [
-            "fetchTiposAusenciaABM",
+            "fetchTiposAusenciaPaginated",
             pagina,
             filasPorPagina
         ],
-        queryFn: () => fetchTiposAusenciaABM({
+        queryFn: () => fetchTiposAusenciaPaginated({
             pagina: pagina,
             filasPorPagina: filasPorPagina,
         }),

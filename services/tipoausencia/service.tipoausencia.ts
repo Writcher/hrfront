@@ -1,14 +1,14 @@
 "use server"
 
 import CONFIG from "@/config";
-import { createTipoAusencialDTO, deleteTipoAusenciaDTO, editTipoAusenciaDTO, fetchTiposAusenciaABMDTO } from "@/lib/dtos/tipoausencia";
+import { createTipoAusencialDTO, deleteTipoAusenciaDTO, editTipoAusenciaDTO, fetchTiposAusenciaPaginatedDTO } from "@/lib/dtos/tipoausencia";
 import { getToken } from "@/lib/utils/getToken";
 
 export async function fetchTiposAusencia() {
     try {
         const token = await getToken();
             
-        const tiposAusenciaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_TIPOSAUSENCIA}?accion=select`, {
+        const tiposAusenciaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_TIPOAUSENCIA}`, {
             method: "GET",
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -27,16 +27,16 @@ export async function fetchTiposAusencia() {
     };
 };
 
-export async function fetchTiposAusenciaABM(parametros: fetchTiposAusenciaABMDTO) {
+export async function fetchTiposAusenciaPaginated(parametros: fetchTiposAusenciaPaginatedDTO) {
     try {
         const token = await getToken();
 
         const tiposAusenciaParametros = new URLSearchParams({
-            pagina: parametros.pagina != null ? parametros.pagina.toString() : '',
-            filasPorPagina: parametros.filasPorPagina != null ? parametros.filasPorPagina.toString() : '',
+            page: parametros.pagina?.toString() ?? '',
+            limit: parametros.filasPorPagina?.toString() ?? '',
         });
 
-        const tiposAusenciaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_TIPOSAUSENCIA}?${tiposAusenciaParametros.toString()}&accion=abm`, {
+        const tiposAusenciaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_TIPOAUSENCIA}/paginated?${tiposAusenciaParametros.toString()}`, {
             method: "GET",
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -59,7 +59,7 @@ export async function insertTipoAusencia(parametros: createTipoAusencialDTO) {
     try {
         const token = await getToken();
 
-        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_CREAR_TIPOAUSENCIA}`, {
+        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_TIPOAUSENCIA}`, {
             method: "POST",
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -84,15 +84,12 @@ export async function deleteTipoAusencia(parametros: deleteTipoAusenciaDTO) {
     try {
         const token = await getToken();
 
-        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_TIPOAUSENCIA!.replace("{id}", parametros.id_tipoausencia!.toString())}`, {
-            method: "PATCH",
+        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_TIPOAUSENCIA}/${parametros.id_tipoausencia}`, {
+            method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-                accion: "baja",
-            }),
+            }
         });
 
         if (!respuestaRaw.ok) {
@@ -111,14 +108,13 @@ export async function editTipoAusencia(parametros: editTipoAusenciaDTO) {
     try {
         const token = await getToken();
 
-        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_TIPOAUSENCIA!.replace("{id}", parametros.id_tipoausencia!.toString())}`, {
+        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_TIPOAUSENCIA}/${parametros.id_tipoausencia}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({
-                accion: "editar",
                 nombre: parametros.nombre,
             }),
         });

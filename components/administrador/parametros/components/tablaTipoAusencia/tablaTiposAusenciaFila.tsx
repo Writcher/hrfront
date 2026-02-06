@@ -35,7 +35,7 @@ export default function FilaTipoAusencia({ tipoAusencia }: filaTipoAusenciaProps
             setFormularioVisible(!formularioVisible)
             showSuccess("Tipo de ausencia editado correctamente");
             queryClient.invalidateQueries({
-                queryKey: ["fetchTiposAusenciaABM"]
+                queryKey: ["fetchTiposAusenciaPaginated"]
             });
         },
         onError: () => {
@@ -56,7 +56,7 @@ export default function FilaTipoAusencia({ tipoAusencia }: filaTipoAusenciaProps
             reset();
             showSuccess("Tipo de ausencia eliminado correctamente");
             queryClient.invalidateQueries({
-                queryKey: ["fetchTiposAusenciaABM"]
+                queryKey: ["fetchTiposAusenciaPaginated"]
             });
         },
         onError: () => {

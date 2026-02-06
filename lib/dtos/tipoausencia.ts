@@ -11,7 +11,7 @@ export type editTipoAusenciaDTO = {
     id_tipoausencia: number,
 };
 
-export type fetchTiposAusenciaABMDTO = {
+export type fetchTiposAusenciaPaginatedDTO = {
     pagina: number,
     filasPorPagina: number,
 };

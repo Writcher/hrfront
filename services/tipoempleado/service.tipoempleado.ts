@@ -7,7 +7,7 @@ export async function fetchTiposEmpleado() {
     try {
         const token = await getToken();
 
-        const tiposJEmpleadosRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_TIPOSEMPLEADO}`, {
+        const tiposJEmpleadosRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_TIPOEMPLEADO}`, {
             method: "GET",
             headers: {
                 Authorization: `Bearer ${token}`,

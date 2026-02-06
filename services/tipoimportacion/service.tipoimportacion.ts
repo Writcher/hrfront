@@ -7,7 +7,7 @@ export async function fetchTiposImportacion() {
     try {
         const token = await getToken();
 
-        const tiposImportacionRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_TIPOSIMPORTACION}`, {
+        const tiposImportacionRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_TIPOIMPORTACION}`, {
             method: "GET",
             headers: {
                 Authorization: `Bearer ${token}`,

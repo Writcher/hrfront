@@ -7,7 +7,7 @@ export async function fetchMeses() {
     try {
         const token = await getToken();
 
-        const mesesRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_MESES}`, {
+        const mesesRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_MES}`, {
             method: "GET",
             headers: {
                 Authorization: `Bearer ${token}`,

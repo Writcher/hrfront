@@ -6,7 +6,7 @@ import { getToken } from "@/lib/utils/getToken";
 
 export async function fetchTipoUsuarioPorId(parametros: fetchTipoUsuarioPorIdDTO) {
     try {
-        const tipoUsuarioRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_TIPOUSUARIO!.replace("{id}", parametros.id!.toString())}`, {
+        const tipoUsuarioRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_TIPOUSUARIO}/${parametros.id}`, {
             method: "GET"
         });
 
@@ -26,7 +26,7 @@ export async function fetchTiposUsuario() {
     try {
         const token = await getToken();
         
-        const tiposUsuarioRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_TIPOSUSUARIO}`, {
+        const tiposUsuarioRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_TIPOUSUARIO}`, {
             method: "GET",
             headers: {
                 Authorization: `Bearer ${token}`,

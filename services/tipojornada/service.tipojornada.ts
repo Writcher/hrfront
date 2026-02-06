@@ -7,7 +7,7 @@ export async function fetchTiposJornada() {
     try {
         const token = await getToken();
 
-        const tiposJornadaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_TIPOSJORNADA}`, {
+        const tiposJornadaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_TIPOJORNADA}`, {
             method: "GET",
             headers: {
                 Authorization: `Bearer ${token}`,
