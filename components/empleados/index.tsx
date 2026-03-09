@@ -10,10 +10,10 @@ import { MenuFiltros } from "./components/tablaEmpleadosFiltrosMenu";
 import { FormularioFiltros } from "./components/tablaEmpleadosFiltrosFormulario";
 import { FiltrosActivos } from "./components/tablaEmpleadosFiltrosActivos";
 import { TablaEmpleados } from "./components/tablaEmpleados";
-import { fetchEmpleados, insertEmpleado, syncNomina } from "@/services/empleado/service.empleado";
+import { fetchEmpleados, createEmpleado } from "@/services/empleado/service.empleado";
 import { useEmpleadoFormulario } from "./hooks/useEmpleadoFormulario";
 import { Formulario } from "./components/tablaEmpleadosFormularioCrear";
-import { empleadoFormularioDatos, insertempleadoParametros } from "./types";
+import { empleadoFormularioDatos } from "./types";
 import { useSnackbar } from "@/lib/context/snackbarcontext";
 import { getNombreProyecto, getNombreTipoEmpleado } from "./utils";
 import { BotonesFiltros } from "./components/tablaEmpleadosFiltrosBotones";
@@ -25,6 +25,8 @@ import { useMostrarFormulario } from "./hooks/useMostrarFormulario";
 import NumbersRoundedIcon from '@mui/icons-material/NumbersRounded';
 import Link from "next/link";
 import SyncIcon from '@mui/icons-material/Sync';
+import { CreateEmpleadoDto } from "@/lib/dtos/empleado";
+import { syncEmpleados } from "@/services/sync/sync.service";
 
 export default function TablaEmpleadosLista({ esAdministrativo }: { esAdministrativo: boolean }) {
 
@@ -67,7 +69,7 @@ export default function TablaEmpleadosLista({ esAdministrativo }: { esAdministra
     watch("filtroTipoEmpleado"),
   ]);
 
-  const { direccion, columna, handleOrdenacion } = useOrdenacion({ columnaInicial: "nombreapellido" });
+  const { direccion, columna, handleOrdenacion } = useOrdenacion({ columnaInicial: "nombre" });
 
   const { formularioVisible, handleMostrarFormulario } = useMostrarFormulario({ reset });
 
@@ -109,7 +111,7 @@ export default function TablaEmpleadosLista({ esAdministrativo }: { esAdministra
   const getNombreTipoEmpleadoPorId = getNombreTipoEmpleado(tiposEmpleado);
 
   const mutacionCreate = useMutation({
-    mutationFn: (data: insertempleadoParametros) => insertEmpleado(data),
+    mutationFn: (data: CreateEmpleadoDto) => createEmpleado(data),
     onSuccess: () => {
       showSuccess("Empleado creado correctamente");
       empleadosRefetch();
@@ -123,7 +125,7 @@ export default function TablaEmpleadosLista({ esAdministrativo }: { esAdministra
   const onSubmit = (data: empleadoFormularioDatos) => {
     mutacionCreate.mutate({
       nombre: data.nombre,
-      id_reloj: data.id_reloj,
+      dni: data.dni,
       id_proyecto: data.id_proyecto,
       legajo: data.legajo,
       id_tipoempleado: data.id_tipoempleado,
@@ -131,7 +133,7 @@ export default function TablaEmpleadosLista({ esAdministrativo }: { esAdministra
   };
 
   const mutacionSync = useMutation({
-    mutationFn: () => syncNomina(),
+    mutationFn: () => syncEmpleados(),
     onSuccess: () => {
       showSuccess("Empleados sincronizados correctamente");
       empleadosRefetch();
@@ -255,12 +257,14 @@ export default function TablaEmpleadosLista({ esAdministrativo }: { esAdministra
           </>
         )}
       </div>
-      <FiltrosActivos
-        filtrosActivos={filtrosActivos}
-        getNombreProyectoPorId={getNombreProyectoPorId}
-        getNombreTipoEmpleadoPorId={getNombreTipoEmpleadoPorId}
-        handleLimpiarFiltro={handleLimpiarFiltro}
-      />
+      {!formularioVisible &&
+        <FiltrosActivos
+          filtrosActivos={filtrosActivos}
+          getNombreProyectoPorId={getNombreProyectoPorId}
+          getNombreTipoEmpleadoPorId={getNombreTipoEmpleadoPorId}
+          handleLimpiarFiltro={handleLimpiarFiltro}
+        />
+      }
       <div className="flex flex-col justify-between w-full h-full overflow-y-auto rounded" style={{ border: `${formularioVisible ? "" : "2px solid #ED6C02"}` }}>
         {formularioVisible ? (
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col justify-between items-center w-full h-full">

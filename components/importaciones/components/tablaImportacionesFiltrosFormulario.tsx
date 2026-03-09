@@ -23,6 +23,20 @@ export const Formulario = ({ filtroIncompletas, filtroProyecto, proyectos, carga
                 select
                 value={filtroProyecto}
                 onChange={onCambioFiltroProyecto}
+                slotProps={{
+                    select: {
+                        MenuProps: {
+                            slotProps: {
+                                paper: {
+                                    style: {
+                                        marginTop: '4px',
+                                        maxHeight: '200px',
+                                    },
+                                },
+                            },
+                        },
+                    },
+                }}
             >
                 {proyectos?.map((proyectos: proyecto) => (
                     <MenuItem key={proyectos.id} value={proyectos.id}>

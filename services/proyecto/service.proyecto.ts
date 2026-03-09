@@ -1,14 +1,14 @@
 "use server"
 
 import CONFIG from "@/config";
-import { deleteProyectoDTO, editProyectoDTO, fetchProyectosABMDTO, insertProyectoDTO } from "@/lib/dtos/proyecto";
+import { DeleteProyectoDto, EditProyectoDto, FetchProyectosPaginatedDto, CreateProyectoDto } from "@/lib/dtos/proyecto";
 import { getToken } from "@/lib/utils/getToken";
 
 export async function fetchProyectos() {
     try {
         const token = await getToken();
 
-        const proyectosRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_PROYECTOS}?accion=select`, {
+        const proyectosRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_PROYECTO}`, {
             method: "GET",
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -16,27 +16,33 @@ export async function fetchProyectos() {
         });
 
         if (!proyectosRaw.ok) {
-            throw new Error("Error en alguna de las respuestas del servidor");
+            throw new Error(`Error fetching proyectos: ${proyectosRaw.status} - ${proyectosRaw.statusText}`);
         };
 
         const proyectos = await proyectosRaw.json();
 
         return proyectos;
     } catch (error) {
+        console.error('Fetch proyectos failed: ', {
+            timestamp: new Date().toISOString(),
+            error: error instanceof Error ? error.message : error,
+            stack: error instanceof Error ? error.stack : undefined
+        });
+
         throw error;
     };
 };
 
-export async function fetchProyectosABM(parametros: fetchProyectosABMDTO) {
+export async function fetchProyectosPaginated(params: FetchProyectosPaginatedDto) {
     try {
         const token = await getToken();
 
-        const proyectosParametros = new URLSearchParams({
-            pagina: parametros.pagina != null ? parametros.pagina.toString() : '',
-            filasPorPagina: parametros.filasPorPagina != null ? parametros.filasPorPagina.toString() : '',
+        const proyectosUrlParams = new URLSearchParams({
+            page: params.pagina.toString(),
+            limit: params.filasPorPagina.toString(),
         });
 
-        const proyectosRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_PROYECTOS}?${proyectosParametros.toString()}&accion=abm`, {
+        const proyectosRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_PROYECTO}/paginated?${proyectosUrlParams}`, {
             method: "GET",
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -44,94 +50,116 @@ export async function fetchProyectosABM(parametros: fetchProyectosABMDTO) {
         });
 
         if (!proyectosRaw.ok) {
-            throw new Error("Error en alguna de las respuestas del servidor");
+            throw new Error(`Error fetching proyectos: ${proyectosRaw.status} - ${proyectosRaw.statusText}`);
         };
 
         const proyectos = await proyectosRaw.json();
 
         return proyectos;
     } catch (error) {
+        console.error('Fetch proyectos failed: ', {
+            timestamp: new Date().toISOString(),
+            error: error instanceof Error ? error.message : error,
+            stack: error instanceof Error ? error.stack : undefined
+        });
+
         throw error;
     };
 };
 
-export async function insertProyecto(parametros: insertProyectoDTO) {
+export async function createProyecto(params: CreateProyectoDto) { //PENDING añadir nomina a parametros y formulario
     try {
         const token = await getToken();
 
-        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_CREAR_PROYECTO}`, {
+        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_PROYECTO}`, {
             method: "POST",
             headers: {
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(parametros),
+            body: JSON.stringify(params),
         });
 
         if (!respuestaRaw.ok) {
-            throw new Error("Error en la respuesta del servidor");
+            throw new Error(`Error creating proyecto: ${respuestaRaw.status} - ${respuestaRaw.statusText}`);
         };
 
         const respuesta = await respuestaRaw.json();
 
         return respuesta;
     } catch (error) {
+        console.error('Create proyecto failed: ', {
+            timestamp: new Date().toISOString(),
+            error: error instanceof Error ? error.message : error,
+            stack: error instanceof Error ? error.stack : undefined
+        });
+
         throw error;
     };
 };
 
-export async function deleteProyecto(parametros: deleteProyectoDTO) {
+export async function deleteProyecto(params: DeleteProyectoDto) {
     try {
         const token = await getToken();
 
-        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_PROYECTO!.replace("{id}", parametros.id_proyecto!.toString())}`, {
+        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_PROYECTO}/${params.id_proyecto}`, {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        });
+
+        if (!respuestaRaw.ok) {
+            throw new Error(`Error deleting proyecto with id ${params.id_proyecto}: ${respuestaRaw.status} - ${respuestaRaw.statusText}`);
+        };
+
+        const respuesta = await respuestaRaw.json();
+
+        return respuesta;
+    } catch (error) {
+        console.error('Delete proyecto failed: ', {
+            id: params.id_proyecto,
+            timestamp: new Date().toISOString(),
+            error: error instanceof Error ? error.message : error,
+            stack: error instanceof Error ? error.stack : undefined
+        });
+
+        throw error;
+    };
+};
+
+export async function editProyecto(params: EditProyectoDto) { //PENDING añadir nomina
+    try {
+        const token = await getToken();
+
+        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_PROYECTO}/${params.id_proyecto}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({
-                accion: "baja",
+                nombre: params.nombre,
+                id_modalidadtrabajo: params.id_modalidadtrabajo,
+                nomina: params.nomina
             }),
         });
 
         if (!respuestaRaw.ok) {
-            throw new Error("Error en la respuesta del servidor");
+            throw new Error(`Error editing proyecto with id ${params.id_proyecto}: ${respuestaRaw.status} - ${respuestaRaw.statusText}`);
         };
 
         const respuesta = await respuestaRaw.json();
 
         return respuesta;
     } catch (error) {
-        throw error;
-    };
-};
-
-export async function editProyecto(parametros: editProyectoDTO) {
-    try {
-        const token = await getToken();
-
-        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_PROYECTO!.replace("{id}", parametros.id_proyecto!.toString())}`, {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-                accion: "editar",
-                nombre: parametros.nombre,
-                id_modalidadtrabajo: parametros.id_modalidadtrabajo,
-            }),
+        console.error('Edit proyecto failed: ', {
+            id: params.id_proyecto,
+            timestamp: new Date().toISOString(),
+            error: error instanceof Error ? error.message : error,
+            stack: error instanceof Error ? error.stack : undefined
         });
 
-        if (!respuestaRaw.ok) {
-            throw new Error("Error en la respuesta del servidor");
-        };
-
-        const respuesta = await respuestaRaw.json();
-
-        return respuesta;
-    } catch (error) {
         throw error;
     };
 };

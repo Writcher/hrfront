@@ -11,7 +11,7 @@ export const Encabezado = () => (
         }}
     >
         <TableRow>
-            <TableCell align="left" width="20%">
+            <TableCell align="left" width="10%">
                 <div style={{ userSelect: "none" }}
                     className={`text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]`}>
                     ID
@@ -26,16 +26,22 @@ export const Encabezado = () => (
             <TableCell align="center" width="20%">
                 <div style={{ userSelect: "none" }}
                     className={`text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]`}>
-                    Modalidad de Trabajo
+                    Nombre en Nomina
                 </div>
             </TableCell>
             <TableCell align="center" width="20%">
                 <div style={{ userSelect: "none" }}
                     className={`text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]`}>
+                    Modalidad de Trabajo
+                </div>
+            </TableCell>
+            <TableCell align="center" width="15%">
+                <div style={{ userSelect: "none" }}
+                    className={`text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]`}>
                     Estado
                 </div>
             </TableCell>
-            <TableCell align="right" width="20%">
+            <TableCell align="right" width="15%">
                 <div style={{ userSelect: "none" }}
                     className={`text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]`}>
                     Acciones

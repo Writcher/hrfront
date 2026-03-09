@@ -1,11 +1,11 @@
 import { TableRow } from "@mui/material";
 import { getDia, getIdTipoAusencia } from "../../utils";
-import { filaJornadaProps, insertObservacionDatos, updateTipoAusenciaDatos, useFormularioTipoAusenciaDatos, useObservacionFormularioDatos } from "../../types";
+import { filaJornadaProps, updateTipoAusenciaDatos, useFormularioTipoAusenciaDatos, useObservacionFormularioDatos } from "../../types";
 import { SubmitHandler } from "react-hook-form";
 import { useObservacionFormulario } from "../../hooks/useFormularioObservacion";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSnackbar } from "@/lib/context/snackbarcontext";
-import { insertObservacion } from "@/services/observacion/service.observacion";
+import { createObservacion, deleteObservacion } from "@/services/observacion/service.observacion";
 import { Informacion } from "./filaAusenciasInformacion";
 import { FormularioObservacion } from "./filaAusenciasFormularioObservacion";
 import { useFormularioTipoAusencia } from "../../hooks/useFormularioTipoAusencia";
@@ -13,7 +13,8 @@ import { useMostrarFormulario } from "../../hooks/useMostrarFormulario";
 import { FormularioTipoAusencia } from "./filaAusenciasFormularioTipoAusencia";
 import { fetchTiposAusencia } from "@/services/tipoausencia/service.tipoausencia";
 import { useEffect } from "react";
-import { updateJornadaTipoAusencia } from "@/services/jornada/service.jornada";
+import { editJornadaTipoAusencia } from "@/services/jornada/service.jornada";
+import { CreateObservacionDto, DeleteObservacionDto } from "@/lib/dtos/observacion";
 
 export function FilaJornada({ jornada }: filaJornadaProps) {
 
@@ -50,7 +51,7 @@ export function FilaJornada({ jornada }: filaJornadaProps) {
     }, [jornada, tipoAusenciaSetValue, tipoAusenciaFormularioVisible]);
 
     const mutacionCreate = useMutation({
-        mutationFn: (datos: insertObservacionDatos) => insertObservacion(datos),
+        mutationFn: (datos: CreateObservacionDto) => createObservacion(datos),
         onSuccess: () => {
             showSuccess("Observacion creada correctamente");
             observacionReset();
@@ -71,8 +72,25 @@ export function FilaJornada({ jornada }: filaJornadaProps) {
         });
     };
 
+    const mutacionDelete = useMutation({
+        mutationFn: (datos: DeleteObservacionDto) => deleteObservacion(datos),
+        onSuccess: () => {
+            showSuccess('Observacion eliminada correctamente');
+            queryClient.invalidateQueries({
+                queryKey: ["fetchJornadasEmpleado"]
+            });
+        },
+        onError: () => {
+            showError("Error al eliminar observacion");
+        }
+    });
+
+    const onDelete = (id: number) => {
+        mutacionDelete.mutate({ id });
+    };
+
     const mutacionUpdate = useMutation({
-        mutationFn: (datos: updateTipoAusenciaDatos) => updateJornadaTipoAusencia(datos),
+        mutationFn: (datos: updateTipoAusenciaDatos) => editJornadaTipoAusencia(datos),
         onSuccess: () => {
             showSuccess("Jornada actualizada correctamente");
             tipoAusenciaReset();
@@ -124,6 +142,7 @@ export function FilaJornada({ jornada }: filaJornadaProps) {
                 <Informacion
                     dia={dia}
                     jornada={jornada}
+                    onDelete={onDelete}
                     setObservacionFormulario={handleMostrarObservacionFormulario}
                     setTipoAusenciaFormulario={handleMostrarTipoAusenciaFormulario}
                 />

@@ -43,7 +43,7 @@ export default function FilaProyecto({ proyecto }: filaProyectoProps) {
             setFormularioVisible(!formularioVisible)
             showSuccess("Proyecto editado correctamente");
             queryClient.invalidateQueries({
-                queryKey: ["fetchProyectosABM"]
+                queryKey: ["fetchProyectosPaginated"]
             });
         },
         onError: () => {
@@ -54,6 +54,7 @@ export default function FilaProyecto({ proyecto }: filaProyectoProps) {
     const onEdit = (data: proyectoFormularioDatos) => {
         mutacionEdit.mutate({
             id_proyecto: proyecto.id,
+            nomina: data.nomina,
             nombre: data.nombre,
             id_modalidadtrabajo: data.id_modalidadtrabajo as number,
         });
@@ -65,7 +66,7 @@ export default function FilaProyecto({ proyecto }: filaProyectoProps) {
             reset();
             showSuccess("Proyecto eliminado correctamente");
             queryClient.invalidateQueries({
-                queryKey: ["fetchProyectosABM"]
+                queryKey: ["fetchProyectosPaginated"]
             });
         },
         onError: () => {
@@ -123,6 +124,33 @@ export default function FilaProyecto({ proyecto }: filaProyectoProps) {
                 <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]" style={{ userSelect: "none" }}>
                     {formularioVisible ? (
                         <Controller
+                            name="nomina"
+                            control={control}
+                            rules={{ required: "Debe ingresar el nombre en nomina" }}
+                            render={({ field, fieldState: { error } }) => (
+                                <TextField
+                                    {...field}
+                                    id="nomina"
+                                    variant="outlined"
+                                    color="warning"
+                                    size="small"
+                                    fullWidth
+                                    error={!!error}
+                                    helperText={error?.message}
+                                />
+                            )}
+                        />
+                    ) : (
+                        <>
+                            {proyecto.nomina}
+                        </>
+                    )}
+                </div>
+            </TableCell>
+            <TableCell align="center" size="small">
+                <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]" style={{ userSelect: "none" }}>
+                    {formularioVisible ? (
+                        <Controller
                             name="id_modalidadtrabajo"
                             control={control}
                             rules={{ required: "Debe seleccionar una modalidad" }}
@@ -138,6 +166,20 @@ export default function FilaProyecto({ proyecto }: filaProyectoProps) {
                                     error={!!error}
                                     helperText={error?.message}
                                     disabled={selectDatos?.length === 0 || !selectDatos}
+                                    slotProps={{
+                                        select: {
+                                            MenuProps: {
+                                                slotProps: {
+                                                    paper: {
+                                                        style: {
+                                                            marginTop: '4px',
+                                                            maxHeight: '200px',
+                                                        },
+                                                    },
+                                                },
+                                            },
+                                        },
+                                    }}
                                 >
                                     {selectDatos?.map((modalidadtrabajo: modalidadTrabajo) => (
                                         <MenuItem key={modalidadtrabajo.id} value={modalidadtrabajo.id}>

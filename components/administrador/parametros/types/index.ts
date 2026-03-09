@@ -5,6 +5,7 @@ import { Control } from "react-hook-form";
 export type proyecto = {
     id: number,
     nombre: string,
+    nomina: string,
     estadoparametro: string,
     modalidadtrabajo: string,
     id_modalidadtrabajo: number,
@@ -117,6 +118,7 @@ export type formularioCrearProyectoBotonesProps = {
 //useForm
 
 export type proyectoFormularioDatos = {
+    nomina: string,
     nombre: string,
     id_modalidadtrabajo: number | '',
 };
@@ -133,12 +135,14 @@ export type tipoAusenciaFormularioDatos = {
 //mutation
 
 export type editProyectoParametros = {
+    nomina: string,
     id_proyecto: number,
     id_modalidadtrabajo: number,
     nombre: string,
 };
 
-export type insertProyectoParametros = {
+export type createProyectoParametros = {
+    nomina: string,
     nombre: string,
     id_modalidadtrabajo: number,
 };
@@ -153,7 +157,7 @@ export type editControlParametros = {
     serie: string,
 };
 
-export type insertControlParametros = {
+export type createControlParametros = {
     serie: string,
     id_proyecto: number,
 };
@@ -167,7 +171,7 @@ export type editTipoAusenciaParametros = {
     nombre: string,
 };
 
-export type insertTipoAusenciaParametros = {
+export type createTipoAusenciaParametros = {
     nombre: string,
 };
 

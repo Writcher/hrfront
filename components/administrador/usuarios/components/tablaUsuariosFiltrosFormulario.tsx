@@ -39,6 +39,20 @@ export const FormularioFiltros = ({
         value={filtroTipoUsuario}
         onChange={onCambioFiltroTipoUsuario}
         disabled={tiposUsuario.length === 0}
+        slotProps={{
+          select: {
+            MenuProps: {
+              slotProps: {
+                paper: {
+                  style: {
+                    marginTop: '4px',
+                    maxHeight: '200px',
+                  },
+                },
+              },
+            },
+          },
+        }}
       >
         {tiposUsuario.map((tipoEmpleado: tipoUsuario) => (
           <MenuItem key={tipoEmpleado.id} value={tipoEmpleado.id}>

@@ -1,144 +1,178 @@
-"use server"
+'use server'
 
-import { editUsuarioParametros, insertUsuarioParametros } from "@/components/administrador/usuarios/types";
-import CONFIG from "@/config";
-import { fetchUsuarioPorCorreoDTO, fetchUsuariosDTO } from "@/lib/dtos/usuario";
-import { getToken } from "@/lib/utils/getToken";
+import CONFIG from '@/config';
+import { FetchUsuarioPorCorreoDto, FetchUsuariosDto, CreateUsuarioDto, DeleteUsuarioDto, EditUsuarioDto } from '@/lib/dtos/usuario';
+import { getToken } from '@/lib/utils/getToken';
 
-export async function fetchUsuarioPorCorreo(parametros: fetchUsuarioPorCorreoDTO) {
+export async function fetchUsuarioPorCorreo(parametros: FetchUsuarioPorCorreoDto) {
     try {
         const datosUsuarioParams = new URLSearchParams({
-            correo: parametros.correo
+            email: parametros.correo
         });
 
-        const datosUsuarioRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_USUARIOS}?${datosUsuarioParams.toString()}&accion=login`, {
-            method: "GET"
+        const usuarioRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_LOGIN}?${datosUsuarioParams}`, {
+            method: 'GET'
         });
 
-        if (datosUsuarioRaw.status === 404) {
-            throw new Error("Usuario no registrado");
-        } else if (!datosUsuarioRaw.ok) {
-            throw new Error("Error en la respuesta del servidor")
+        if (!usuarioRaw.ok) {
+            throw new Error(`Error fetching usuario: ${usuarioRaw.status} - ${usuarioRaw.statusText}`);
         };
 
-        const datosUsuario = await datosUsuarioRaw.json();
+        const usuario = await usuarioRaw.json();
 
-        return datosUsuario;
+        return usuario;
     } catch (error) {
+        console.error('Fetch usuario failed: ', {
+            timestamp: new Date().toISOString(),
+            error: error instanceof Error ? error.message : error,
+            stack: error instanceof Error ? error.stack : undefined
+        });
+
         throw error;
     };
 };
 
-export async function fetchUsuarios(parametros: fetchUsuariosDTO) {
+export async function fetchUsuarios(params: FetchUsuariosDto) {
     try {
         const token = await getToken();
 
-        const usuariosParametros = new URLSearchParams({
-            busquedaNombre: parametros.busquedaNombre,
-            pagina: parametros.pagina.toString(),
-            filasPorPagina: parametros.filasPorPagina.toString(),
-            columna: parametros.ordenColumna,
-            direccion: parametros.ordenDireccion,
-            filtroTipoUsuario: parametros.filtroTipoUsuario.toString() === '' ? '0' : parametros.filtroTipoUsuario.toString(),
-        });
+        const usuariosParams: Record<string, string> = {
+            nombre: params.busquedaNombre,
+            page: params.pagina.toString(),
+            limit: params.filasPorPagina.toString(),
+            column: params.ordenColumna,
+            direction: params.ordenDireccion,
+        };
 
-        const datosUsuarioRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_USUARIOS}?${usuariosParametros.toString()}&accion=lista`, {
-            method: "GET",
+        if (params.filtroTipoUsuario !== '' && params.filtroTipoUsuario !== 0) {
+            usuariosParams.id_tipousuario = params.filtroTipoUsuario.toString();
+        };
+
+        const usuariosUrlParams = new URLSearchParams(usuariosParams);
+
+        const usuariosRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_USUARIO}?${usuariosUrlParams}`, {
+            method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
             },
         });
 
-        if (!datosUsuarioRaw.ok) {
-            throw new Error("Error en la respuesta del servidor");
+        if (!usuariosRaw.ok) {
+            throw new Error(`Error fetching usuarios: ${usuariosRaw.status} - ${usuariosRaw.statusText}`);
         };
 
-        const datosUsuario = await datosUsuarioRaw.json();
+        const usuarios = await usuariosRaw.json();
 
-        return datosUsuario;
+        return usuarios;
     } catch (error) {
-        throw error;
-    };
-};
-
-export async function insertUsuario(parametros: insertUsuarioParametros) {
-    try {
-        const token = await getToken();
-
-        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_CREAR_USUARIO}`, {
-            method: "POST",
-            headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(parametros),
+        console.error('Fetch usuarios failed: ', {
+            timestamp: new Date().toISOString(),
+            error: error instanceof Error ? error.message : error,
+            stack: error instanceof Error ? error.stack : undefined
         });
 
-        if (!respuestaRaw.ok) {
-            throw new Error("Error en la respuesta del servidor");
-        };
-
-        const respuesta = await respuestaRaw.json();
-
-        return respuesta;
-    } catch (error) {
         throw error;
     };
 };
 
-export async function deleteUsuario(id: number) {
+export async function createUsuario(parametros: CreateUsuarioDto) {
     try {
         const token = await getToken();
 
-        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_USUARIO!.replace("{id}", id!.toString())}`, {
-            method: "PATCH",
+        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_USUARIO}`, {
+            method: 'POST',
             headers: {
-                "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                accion: "baja",
-            }),
-        });
-
-        if (!respuestaRaw.ok) {
-            throw new Error("Error en la respuesta del servidor");
-        };
-
-        const respuesta = await respuestaRaw.json();
-
-        return respuesta;
-    } catch (error) {
-        throw error;
-    };
-};
-
-export async function editUsuario(parametros: editUsuarioParametros) {
-    try {
-        const token = await getToken();
-
-        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_USUARIO!.replace("{id}", parametros.id!.toString())}`, {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-                accion: "editar",
                 nombre: parametros.nombre,
-                correo: parametros.correo,
+                email: parametros.correo,
                 id_tipousuario: parametros.id_tipousuario,
+                contraseña: parametros.contraseña
             }),
         });
 
         if (!respuestaRaw.ok) {
-            throw new Error("Error en la respuesta del servidor");
+            throw new Error(`Error creating usuario: ${respuestaRaw.status} - ${respuestaRaw.statusText}`);
         };
 
         const respuesta = await respuestaRaw.json();
 
         return respuesta;
     } catch (error) {
+        console.error('Create usuario failed: ', {
+            timestamp: new Date().toISOString(),
+            error: error instanceof Error ? error.message : error,
+            stack: error instanceof Error ? error.stack : undefined
+        });
+
+        throw error;
+    };
+};
+
+export async function deleteUsuario(params: DeleteUsuarioDto) {
+    try {
+        const token = await getToken();
+
+        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_USUARIO}/${params.id}`, {
+            method: 'DELETE',
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        if (!respuestaRaw.ok) {
+            throw new Error(`Error deleting usuario with id ${params.id}: ${respuestaRaw.status} - ${respuestaRaw.statusText}`);
+        };
+
+        const respuesta = await respuestaRaw.json();
+
+        return respuesta;
+    } catch (error) {
+        console.error('Delete usuario failed: ', {
+            id: params.id,
+            timestamp: new Date().toISOString(),
+            error: error instanceof Error ? error.message : error,
+            stack: error instanceof Error ? error.stack : undefined
+        });
+
+        throw error;
+    };
+};
+
+export async function editUsuario(params: EditUsuarioDto) {
+    try {
+        const token = await getToken();
+
+        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_USUARIO}/${params.id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+                nombre: params.nombre,
+                email: params.correo,
+                id_tipousuario: params.id_tipousuario
+            }),
+        });
+
+        if (!respuestaRaw.ok) {
+            throw new Error(`Error editing usuario with id ${params.id}: ${respuestaRaw.status} - ${respuestaRaw.statusText}`);
+        };
+
+        const respuesta = await respuestaRaw.json();
+
+        return respuesta;
+    } catch (error) {
+        console.error('Edit usuario failed: ', {
+            id: params.id,
+            timestamp: new Date().toISOString(),
+            error: error instanceof Error ? error.message : error,
+            stack: error instanceof Error ? error.stack : undefined
+        });
+
         throw error;
     };
 };

@@ -8,7 +8,7 @@ import SyncIcon from '@mui/icons-material/Sync';
 import { getNombreMes } from "@/components/rrhh/exportar/utils";
 import { botonesFiltrosHijoProps, botonesFiltrosHijoRRHHProps } from "../../types";
 
-export const Botones = ({ formularioVisible, handleLimpiarFiltros, filtroMes, filtroQuincena, filtroMarcasIncompletas, cargando, meses, creando, camposValidos, handleCambioFiltroMarcasIncompletas, handleCambioFiltroQuincena, handleCambioFiltroMes, handleMostrarFormulario, estado, onCreate }: botonesFiltrosHijoProps) => (
+export const Botones = ({ formularioVisible, handleLimpiarFiltros, filtroMes, filtroQuincena, cargando, meses, creando, camposValidos, handleCambioFiltroQuincena, handleCambioFiltroMes, handleMostrarFormulario, estado, onCreate }: botonesFiltrosHijoProps) => (
     <div className="flex flex-row gap-2 w-full h-11 items-center">
         {formularioVisible ? (
             <></>
@@ -28,12 +28,10 @@ export const Botones = ({ formularioVisible, handleLimpiarFiltros, filtroMes, fi
                 <Formulario
                     filtroMes={filtroMes}
                     filtroQuincena={filtroQuincena}
-                    filtroMarcasIncompletas={filtroMarcasIncompletas}
                     cargando={cargando}
                     meses={meses}
                     onCambioFiltroMes={handleCambioFiltroMes}
                     onCambioFiltroQuincena={handleCambioFiltroQuincena}
-                    onCambioFiltroMarcaIncompleta={handleCambioFiltroMarcasIncompletas}
                     getNombreMes={getNombreMes}
                 />
                 <div className="flex grow" />
@@ -78,7 +76,7 @@ export const Botones = ({ formularioVisible, handleLimpiarFiltros, filtroMes, fi
     </div>
 )
 
-export const BotonesRRHH = ({ handleLimpiarFiltros, filtroMes, filtroQuincena, filtroMarcasIncompletas, cargando, meses, handleCambioFiltroMarcasIncompletas, handleCambioFiltroQuincena, handleCambioFiltroMes }: botonesFiltrosHijoRRHHProps) => (
+export const BotonesRRHH = ({ handleLimpiarFiltros, filtroMes, filtroQuincena, cargando, meses, handleCambioFiltroQuincena, handleCambioFiltroMes }: botonesFiltrosHijoRRHHProps) => (
     <div className="flex flex-row gap-2 w-full h-11 items-center">
         <Button
             variant="contained"
@@ -94,12 +92,10 @@ export const BotonesRRHH = ({ handleLimpiarFiltros, filtroMes, filtroQuincena, f
         <Formulario
             filtroMes={filtroMes}
             filtroQuincena={filtroQuincena}
-            filtroMarcasIncompletas={filtroMarcasIncompletas}
             cargando={cargando}
             meses={meses}
             onCambioFiltroMes={handleCambioFiltroMes}
             onCambioFiltroQuincena={handleCambioFiltroQuincena}
-            onCambioFiltroMarcaIncompleta={handleCambioFiltroMarcasIncompletas}
             getNombreMes={getNombreMes}
         />
         <div className="flex grow" />

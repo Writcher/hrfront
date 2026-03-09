@@ -123,24 +123,6 @@ export type usuarioFormularioDatos = {
   correo: string,
 };
 
-//mutations
-
-export type insertUsuarioParametros = {
-  contraseña: string,
-  correo: string,
-  nombre: string,
-  id_tipousuario: number | '',
-};
-
-export type editUsuarioParametros = {
-  id: number,
-  nombre: string,
-  correo: string,
-  id_tipousuario: number | '',
-};
-
-//responses
-
 
 
 

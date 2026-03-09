@@ -14,6 +14,7 @@ import { importacionJornadasProps } from "./types";
 import { useEstadoBoton } from "./hooks/useEstadoBoton";
 import { Botones } from "./components/tablaJornadasBotones";
 import { fetchTiposAusencia } from "@/services/tipoausencia/service.tipoausencia";
+import { SetImportacionCompletaDto } from "@/lib/dtos/importacion";
 
 export default function Completar({ id_importacion }: importacionJornadasProps) {
 
@@ -46,16 +47,14 @@ export default function Completar({ id_importacion }: importacionJornadasProps) 
         ],
         queryFn: () => fetchJornadasPorImportacion({
             id_importacion,
-            filtroMarcasIncompletas: watch("filtroMarcasIncompletas"),
             pagina: pagina,
             filasPorPagina: filasPorPagina,
         }),
         refetchOnWindowFocus: false,
-        placeholderData: keepPreviousData,
     });
 
     const mutacionComplete = useMutation({
-        mutationFn: (id: number) => setImportacionCompleta(id),
+        mutationFn: (data: SetImportacionCompletaDto) => setImportacionCompleta(data),
         onSuccess: () => {
             showSuccess("Importación completada correctamente");
             queryClient.invalidateQueries({
@@ -69,7 +68,7 @@ export default function Completar({ id_importacion }: importacionJornadasProps) 
     });
 
     const onComplete = () => {
-        mutacionComplete.mutate(id_importacion);
+        mutacionComplete.mutate({ id: id_importacion });
     };
 
     useEffect(() => {
@@ -81,7 +80,7 @@ export default function Completar({ id_importacion }: importacionJornadasProps) 
         };
     }, [jornadasError, selectError, showWarning]);
 
-    const deshabilitado = useEstadoBoton({ totalIncompletoProp: jornadasDatos?.totalIncompleto, cargando: jornadasCargando });
+    const deshabilitado = useEstadoBoton({ totalIncompletoProp: jornadasDatos?.totalJornadas, cargando: jornadasCargando });
 
     return (
         <div className="flex flex-col gap-1 items-start w-full h-full">

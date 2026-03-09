@@ -1,31 +1,52 @@
 "use server"
 
-import { insertempleadoParametros } from "@/components/empleados/types";
 import CONFIG from "@/config";
-import { editEmpleadoDTO, exportPresentesExcelDTO, fetchEmpleadosDTO, fetchPresentesDTO } from "@/lib/dtos/empleado";
+import { CreateEmpleadoDto, DeactivateEmpleadoDto, EditEmpleadoDto, FetchEmpleadosDto, FetchAsistenciaDto } from "@/lib/dtos/empleado";
 import { getToken } from "@/lib/utils/getToken";
 
-export async function fetchEmpleados(parametros: fetchEmpleadosDTO) {
+export async function fetchEmpleados(params: FetchEmpleadosDto) {
     try {
         const token = await getToken();
 
-        const empleadosParametros = new URLSearchParams({
-            accion: "empleados",
-            busquedaNombre: parametros.busquedaNombre,
-            filtroProyecto: parametros.filtroProyecto.toString() === '' ? '0' : parametros.filtroProyecto.toString(),
-            pagina: parametros.pagina.toString(),
-            filasPorPagina: parametros.filasPorPagina.toString(),
-            ordenColumna: parametros.ordenColumna,
-            ordenDireccion: parametros.ordenDireccion,
-            busquedaLegajo: parametros.busquedaLegajo.toString() === '' ? '0' : parametros.busquedaLegajo.toString(),
-            filtroTipoEmpleado: parametros.filtroTipoEmpleado.toString() === '' ? '0' : parametros.filtroTipoEmpleado.toString(),
-            filtroTipoAusencia: parametros.filtroTipoAusencia != null ? parametros.filtroTipoAusencia.toString() === '' ? '0' : parametros.filtroTipoAusencia.toString() : '-1',
-            filtroMes: parametros.filtroMes != null ? parametros.filtroMes.toString() === '' ? '0' : parametros.filtroMes.toString() : '0',
-            filtroQuincena: parametros.filtroQuincena != null ? parametros.filtroQuincena.toString() === '' ? '0' : parametros.filtroQuincena.toString() : '0',
-            filtroMarcaManual: parametros.filtroMarcaManual ? parametros.filtroMarcaManual.toString() : "false",
-        });
+        const empleadosParams: Record<string, string> = {
+            page: params.pagina.toString(),
+            limit: params.filasPorPagina.toString(),
+            column: params.ordenColumna,
+            direction: params.ordenDireccion,
+            id_tipoausencia: params.filtroTipoAusencia != null ? params.filtroTipoAusencia.toString() === '' ? '0' : params.filtroTipoAusencia.toString() : '-1',
+        };
 
-        const empleadosRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_EMPLEADOS}?${empleadosParametros.toString()}`, {
+        if (params.filtroMes != undefined && params.filtroMes !== '' && params.filtroMes !== 0) {
+            empleadosParams.id_mes = params.filtroMes.toString();
+        };
+
+        if (params.filtroQuincena != undefined && params.filtroQuincena !== '' && params.filtroQuincena !== 0) {
+            empleadosParams.quincena = params.filtroQuincena.toString();
+        };
+
+        if (params.filtroMarcaManual) {
+            empleadosParams.manual = params.filtroMarcaManual.toString();
+        };
+
+        if (params.busquedaNombre !== '') {
+            empleadosParams.nombre = params.busquedaNombre;
+        };
+
+        if (params.busquedaLegajo !== '') {
+            empleadosParams.legajo = params.busquedaLegajo.toString();
+        };
+
+        if (params.filtroTipoEmpleado !== '') {
+            empleadosParams.id_tipoempleado = params.filtroTipoEmpleado.toString();
+        };
+
+        if (params.filtroProyecto !== '') {
+            empleadosParams.id_proyecto = params.filtroProyecto.toString();
+        };
+
+        const empleadosUrlParams = new URLSearchParams(empleadosParams);
+
+        const empleadosRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_EMPLEADO}?${empleadosUrlParams}`, {
             method: "GET",
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -33,187 +54,158 @@ export async function fetchEmpleados(parametros: fetchEmpleadosDTO) {
         });
 
         if (!empleadosRaw.ok) {
-            throw new Error("Error en la respuesta del servidor");
+            throw new Error(`Error fetching empleados: ${empleadosRaw.status} - ${empleadosRaw.statusText}`);
         };
 
         const empleados = await empleadosRaw.json();
 
         return empleados;
     } catch (error) {
+        console.error('Fetch empleados failed: ', {
+            timestamp: new Date().toISOString(),
+            error: error instanceof Error ? error.message : error,
+            stack: error instanceof Error ? error.stack : undefined
+        });
+
         throw error;
     };
 };
 
-export async function insertEmpleado(parametros: insertempleadoParametros) {
+export async function createEmpleado(params: CreateEmpleadoDto) {
     try {
         const token = await getToken();
 
-        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_CREAR_EMPLEADO}`, {
+        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_EMPLEADO}`, {
             method: "POST",
             headers: {
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                nombre: parametros.nombre,
-                legajo: parametros.legajo === '' ? null : parametros.legajo,
-                id_reloj: parametros.id_reloj,
-                id_tipoempleado: parametros.id_tipoempleado === '' ? null : parametros.id_tipoempleado,
-                id_proyecto: parametros.id_proyecto === '' ? null : parametros.id_proyecto,
+                nombre: params.nombre,
+                legajo: params.legajo === '' ? null : params.legajo,
+                dni: params.dni,
+                id_tipoempleado: params.id_tipoempleado === '' ? null : params.id_tipoempleado,
+                id_proyecto: params.id_proyecto === '' ? null : params.id_proyecto,
             }),
         });
 
         if (!respuestaRaw.ok) {
-            throw new Error("Error en la respuesta del servidor");
+            throw new Error(`Error creating empleado: ${respuestaRaw.status} - ${respuestaRaw.statusText}`);
         };
 
         const respuesta = await respuestaRaw.json();
 
         return respuesta;
     } catch (error) {
+        console.error('Create empleado failed: ', {
+            timestamp: new Date().toISOString(),
+            error: error instanceof Error ? error.message : error,
+            stack: error instanceof Error ? error.stack : undefined
+        });
+
         throw error;
     };
 };
 
-export async function deactivateEmpleado(id: number) {
+export async function deactivateEmpleado(params: DeactivateEmpleadoDto) {
     try {
         const token = await getToken();
 
-        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_EMPLEADO!.replace("{id}", id!.toString())}`, {
+        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_EMPLEADO}/${params.id}`, {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+
+        if (!respuestaRaw.ok) {
+            throw new Error(`Error deactivating empleado with id ${params.id}: ${respuestaRaw.status} - ${respuestaRaw.statusText}`);
+        };
+
+        const respuesta = await respuestaRaw.json();
+
+        return respuesta;
+    } catch (error) {
+        console.error('Deactivate empleado failed: ', {
+            id: params.id,
+            timestamp: new Date().toISOString(),
+            error: error instanceof Error ? error.message : error,
+            stack: error instanceof Error ? error.stack : undefined
+        });
+
+        throw error;
+    };
+};
+
+export async function editEmpleado(params: EditEmpleadoDto) {
+    try {
+        const token = await getToken();
+
+        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_EMPLEADO}/${params.id}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
-            body: JSON.stringify({ 
-                accion: "deshabilitar" 
+            body: JSON.stringify({
+                id_modalidadvalidacion: params.id_modalidadvalidacion
             }),
         });
 
         if (!respuestaRaw.ok) {
-            throw new Error("Error en la respuesta del servidor");
+            throw new Error(`Error editing empleado with id ${params.id}: ${respuestaRaw.status} - ${respuestaRaw.statusText}`);
         };
 
         const respuesta = await respuestaRaw.json();
 
         return respuesta;
     } catch (error) {
+        console.error('Edit empleado failed: ', {
+            id: params.id,
+            timestamp: new Date().toISOString(),
+            error: error instanceof Error ? error.message : error,
+            stack: error instanceof Error ? error.stack : undefined
+        });
+
         throw error;
     };
 };
 
-export async function editEmpleado(parametros: editEmpleadoDTO) {
+export async function fetchAsistencia(params: FetchAsistenciaDto) {
     try {
         const token = await getToken();
 
-        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_EMPLEADO!.replace("{id}", parametros.id!.toString())}`, {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({ 
-                accion: "editar" ,
-                nombre: parametros.nombre,
-                legajo: parametros.legajo === '' ? null : parametros.legajo,
-                id_reloj: Number(parametros.id_reloj),
-                id_tipoempleado: parametros.id_tipoempleado === '' ? null : parametros.id_tipoempleado,
-                id_turno: parametros.id_turno === '' ? null : parametros.id_turno,
-                id_proyecto: parametros.id_proyecto === '' ? null : parametros.id_proyecto,
-            }),
+        const asistenciaUrlParams = new URLSearchParams({
+            id_proyecto: params.proyecto.toString(),
+            fecha: params.fecha,
+            page: params.pagina.toString(),
+            limit: params.filasPorPagina.toString(),
         });
 
-        if (!respuestaRaw.ok) {
-            throw new Error("Error en la respuesta del servidor");
-        };
-
-        const respuesta = await respuestaRaw.json();
-
-        return respuesta;
-    } catch (error) {
-        throw error;
-    };
-};
-
-export async function fetchPresentes(parametros: fetchPresentesDTO) {
-    try {
-        const token = await getToken();
-
-        const presentesParametros = new URLSearchParams({
-            accion: "presentes",
-            filtroProyecto: parametros.proyecto.toString() === '' ? '0' : parametros.proyecto.toString(),
-            fecha: parametros.fecha,
-            pagina: parametros.pagina.toString(),
-            filasPorPagina: parametros.filasPorPagina.toString(),
-        });
-
-        const empleadosRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_EMPLEADOS}?${presentesParametros.toString()}`, {
+        const asistenciaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_ASISTENCIA}?${asistenciaUrlParams.toString()}`, {
             method: "GET",
             headers: {
                 Authorization: `Bearer ${token}`,
             }
         });
 
-        if (!empleadosRaw.ok) {
-            throw new Error("Error en la respuesta del servidor");
+        if (!asistenciaRaw.ok) {
+            throw new Error(`Error fetching asistencia: ${asistenciaRaw.status} - ${asistenciaRaw.statusText}`);
         };
 
-        const empleados = await empleadosRaw.json();
+        const asistencia = await asistenciaRaw.json();
 
-        return empleados;
+        console.log(asistencia)
+
+        return asistencia;
     } catch (error) {
-        throw error;
-    };
-};
-
-export async function exportPresentesExcel(data: exportPresentesExcelDTO) {
-    try {
-        const token = await getToken();
-
-        const presentesParametros = new URLSearchParams({
-            proyecto: data.proyecto.toString(),
-            fecha: data.fecha,
-            accion: "presentes",
+        console.error('Fetch asistencia failed: ', {
+            timestamp: new Date().toISOString(),
+            error: error instanceof Error ? error.message : error,
+            stack: error instanceof Error ? error.stack : undefined
         });
 
-        const presentesRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_EXCEL_EXPORT}?${presentesParametros.toString()}`, {
-            method: "GET",
-            headers: {
-                Authorization: `Bearer ${token}`,
-            }
-        });
-
-        if (!presentesRaw.ok) {
-            throw new Error("Error en la respuesta del servidor");
-        };
-
-        const presentes = await presentesRaw.blob();
-
-        return presentes;
-    } catch (error) {
-        throw error;
-    };
-};
-
-export async function syncNomina() {
-    try {
-        const token = await getToken();
-
-        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_EMPLEADOS}`, {
-            method: "POST",
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
-
-        if (!respuestaRaw.ok) {
-            throw new Error("Error en la respuesta del servidor");
-        };
-
-        const respuesta = await respuestaRaw.json();
-
-        return respuesta;
-    } catch (error) {
         throw error;
     };
 };

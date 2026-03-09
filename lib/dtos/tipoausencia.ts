@@ -1,17 +1,17 @@
-export type createTipoAusencialDTO = {
+export type CreateTipoAusencialDto = {
     nombre: string,
 };
 
-export type deleteTipoAusenciaDTO = {
+export type DeleteTipoAusenciaDto = {
     id_tipoausencia: number,
 };
 
-export type editTipoAusenciaDTO = {
+export type EditTipoAusenciaDto = {
     nombre: string,
     id_tipoausencia: number,
 };
 
-export type fetchTiposAusenciaPaginatedDTO = {
+export type FetchTiposAusenciaPaginatedDto = {
     pagina: number,
     filasPorPagina: number,
 };

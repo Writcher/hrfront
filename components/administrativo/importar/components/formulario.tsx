@@ -41,6 +41,20 @@ export const Formulario = ({
                             error={!!error}
                             helperText={error?.message}
                             disabled={proyectos.length === 0}
+                            slotProps={{
+                                select: {
+                                    MenuProps: {
+                                        slotProps: {
+                                            paper: {
+                                                style: {
+                                                    marginTop: '4px',
+                                                    maxHeight: '200px',
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                            }}
                         >
                             {proyectos.map((proyecto: proyecto) => (
                                 <MenuItem key={proyecto.id} value={proyecto.id}>
@@ -76,6 +90,20 @@ export const Formulario = ({
                             error={!!error}
                             helperText={error?.message}
                             disabled={tiposJornada.length === 0}
+                            slotProps={{
+                                select: {
+                                    MenuProps: {
+                                        slotProps: {
+                                            paper: {
+                                                style: {
+                                                    marginTop: '4px',
+                                                    maxHeight: '200px',
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                            }}
                         >
                             {tiposJornada.map((tipo: tipoJornada) => (
                                 <MenuItem key={tipo.id} value={tipo.id}>
@@ -111,6 +139,20 @@ export const Formulario = ({
                             error={!!error}
                             helperText={error?.message}
                             disabled={tiposImportacion.length === 0}
+                            slotProps={{
+                                select: {
+                                    MenuProps: {
+                                        slotProps: {
+                                            paper: {
+                                                style: {
+                                                    marginTop: '4px',
+                                                    maxHeight: '200px',
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                            }}
                         >
                             {tiposImportacion.map((tipo: tipoImportacion) => (
                                 <MenuItem key={tipo.id} value={tipo.id}>

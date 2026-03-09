@@ -24,6 +24,8 @@ export const useTablaJornadaResumenFormulario = ({ meses }: useTablaJornadaResum
         (mes: mes) => mes.mes === mesActual && mes.id_año === añoActual
       );
 
+      console.log('mesEncontrado: ', mesEncontrado)
+
       if (mesEncontrado) {
         reset({
           filtroMes: mesEncontrado.id,
@@ -31,7 +33,7 @@ export const useTablaJornadaResumenFormulario = ({ meses }: useTablaJornadaResum
         });
       }
     }
-  }, [meses, mesActual, añoActual, quincenaActual, reset]);
+  }, [meses]);
 
   return form;
 };

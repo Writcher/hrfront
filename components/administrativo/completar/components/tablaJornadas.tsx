@@ -1,5 +1,4 @@
 import { Table, TableBody, TableContainer } from "@mui/material";
-import React from "react";
 import { Fila } from "./tablaJornadasFila";
 import { jornada, tablaJornadasProps } from "../types";
 import { Esqueleto } from "./tablaJornadasEsqueleto";

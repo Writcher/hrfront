@@ -54,6 +54,20 @@ export const Formulario = ({
                                 select
                                 error={!!error}
                                 disabled={!formularioDatos?.tiposJornada || formularioDatos.tiposJornada.length === 0}
+                                slotProps={{
+                                    select: {
+                                        MenuProps: {
+                                            slotProps: {
+                                                paper: {
+                                                    style: {
+                                                        marginTop: '4px',
+                                                        maxHeight: '200px',
+                                                    },
+                                                },
+                                            },
+                                        },
+                                    },
+                                }}
                             >
                                 {formularioDatos?.tiposJornada.map((tipo: tipoJornada) => (
                                     <MenuItem key={tipo.id} value={tipo.id}>
@@ -98,6 +112,20 @@ export const Formulario = ({
                                     select
                                     error={!!error}
                                     disabled={!formularioDatos?.tiposAusencia || formularioDatos.tiposAusencia.length === 0}
+                                    slotProps={{
+                                        select: {
+                                            MenuProps: {
+                                                slotProps: {
+                                                    paper: {
+                                                        style: {
+                                                            marginTop: '4px',
+                                                            maxHeight: '200px',
+                                                        },
+                                                    },
+                                                },
+                                            },
+                                        },
+                                    }}
                                 >
                                     {formularioDatos?.tiposAusencia.map((tipo: tipoAusencia) => (
                                         <MenuItem key={tipo.id} value={tipo.id}>
@@ -142,7 +170,7 @@ export const Formulario = ({
                     />
                 </LocalizationProvider>
                 <div className="flex flex-col justify-start items-center gap-2 w-[67%]">
-                    {watch("tipoJornada") !== formularioDatos?.id_ausencia ? (
+                    {watch("tipoJornada") !== formularioDatos?.id_ausencia &&
                         <div className="flex flex-row justify-start items-center gap-2 w-full">
                             <Controller
                                 name="entrada"
@@ -199,29 +227,8 @@ export const Formulario = ({
                                 )}
                             />
                         </div>
-                    ) : (
-                        <div className="flex flex-row justify-start items-center gap-2 w-full">
-                            <Controller
-                                name="duracionAusencia"
-                                control={control}
-                                rules={{ required: "Debe ingresar una duración" }}
-                                render={({ field, fieldState: { error } }) => (
-                                    <TextField
-                                        {...field}
-                                        id="duracionAusencia"
-                                        label="Duracion de la Ausencia (dias)"
-                                        variant="outlined"
-                                        color="warning"
-                                        size="small"
-                                        type="number"
-                                        className="!w-[50%]"
-                                        error={!!error}
-                                    />
-                                )}
-                            />
-                        </div>
-                    )}
-                    {jornadaPartida === true  && watch("tipoJornada") !== formularioDatos?.id_ausencia ? (
+                    }
+                    {jornadaPartida === true && watch("tipoJornada") !== formularioDatos?.id_ausencia ? (
                         <div className="flex flex-row justify-start items-center gap-2 w-full">
                             <Controller
                                 name="entradaTarde"

@@ -1,16 +1,13 @@
-import { IOSSwitch } from "@/components/ui/switch";
-import { TextField, MenuItem, FormControlLabel, Skeleton } from "@mui/material";
+import { TextField, MenuItem, Skeleton } from "@mui/material";
 import { formularioFiltrosHijoProps, mes } from "../../types";
 
 export const Formulario = ({
     filtroMes,
     filtroQuincena,
-    filtroMarcasIncompletas,
     cargando,
     meses,
     onCambioFiltroMes,
     onCambioFiltroQuincena,
-    onCambioFiltroMarcaIncompleta,
     getNombreMes,
 }: formularioFiltrosHijoProps) => (
     <form className="flex items-center justify-start w-4/6 gap-4">
@@ -34,6 +31,20 @@ export const Formulario = ({
                 value={filtroMes}
                 onChange={onCambioFiltroMes}
                 disabled={meses.length === 0}
+                slotProps={{
+                    select: {
+                        MenuProps: {
+                            slotProps: {
+                                paper: {
+                                    style: {
+                                        marginTop: '4px',
+                                        maxHeight: '200px',
+                                    },
+                                },
+                            },
+                        },
+                    },
+                }}
             >
                 {meses.map((mes: mes) => (
                     <MenuItem key={mes.id} value={mes.id}>{getNombreMes(mes.mes)} de {mes.id_año}</MenuItem>
@@ -53,16 +64,23 @@ export const Formulario = ({
             value={filtroQuincena}
             onChange={onCambioFiltroQuincena}
             disabled={filtroMes === ''}
+            slotProps={{
+                select: {
+                    MenuProps: {
+                        slotProps: {
+                            paper: {
+                                style: {
+                                    marginTop: '4px',
+                                    maxHeight: '200px',
+                                },
+                            },
+                        },
+                    },
+                },
+            }}
         >
             <MenuItem key={1} value={1}>Primera Quincena</MenuItem>
             <MenuItem key={2} value={2}>Segunda Quincena</MenuItem>
         </TextField>
-        <FormControlLabel
-            control={<IOSSwitch sx={{ m: 1 }} />}
-            label="Solo Fichajes Incompletos"
-            className="w-full !text-gray-700"
-            onChange={onCambioFiltroMarcaIncompleta}
-            checked={filtroMarcasIncompletas}
-        />
     </form>
 );

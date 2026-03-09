@@ -1,13 +1,13 @@
 import { Button, TablePagination } from "@mui/material";
 import { useMostrarFormulario } from "../../hooks/useMostrarFormulario";
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
-import { fetchProyectosABM, insertProyecto } from "@/services/proyecto/service.proyecto";
+import { fetchProyectosPaginated, createProyecto } from "@/services/proyecto/service.proyecto";
 import { keepPreviousData, useMutation, useQuery } from "@tanstack/react-query";
 import { useSnackbar } from "@/lib/context/snackbarcontext";
 import { useEffect } from "react";
 import { TablaProyectos } from "./tablaProyectos";
 import { useProyectoFormulario } from "../../hooks/useProyectoFormulario";
-import { insertProyectoParametros, proyectoFormularioDatos } from "../../types";
+import { createProyectoParametros, proyectoFormularioDatos } from "../../types";
 import { Botones } from "./crearProyectoFormularioBotones";
 import { Formulario } from "./crearProyectoFormulario";
 import { fetchModalidadesTrabajo } from "@/services/modalidadtrabajo/service.modalidadtrabajo";
@@ -19,7 +19,7 @@ export default function Proyectos() {
 
     const { showError, showWarning, showSuccess } = useSnackbar();
 
-    const { control, formState: { isValid }, setValue, handleSubmit, reset } = useProyectoFormulario()
+    const { control, formState: { isValid }, handleSubmit, reset } = useProyectoFormulario()
 
     const {
         pagina,
@@ -30,11 +30,11 @@ export default function Proyectos() {
 
     const { data: proyectosDatos, isLoading: proyectosCargando, isError: proyectosError, refetch: proyectosRefetch } = useQuery({
         queryKey: [
-            "fetchProyectosABM",
+            "fetchProyectosPaginated",
             pagina,
             filasPorPagina
         ],
-        queryFn: () => fetchProyectosABM({
+        queryFn: () => fetchProyectosPaginated({
             pagina: pagina,
             filasPorPagina: filasPorPagina,
         }),
@@ -49,7 +49,7 @@ export default function Proyectos() {
     });
 
     const mutacionCreate = useMutation({
-        mutationFn: (data: insertProyectoParametros) => insertProyecto(data),
+        mutationFn: (data: createProyectoParametros) => createProyecto(data),
         onSuccess: () => {
             proyectosRefetch();
             reset();
@@ -63,6 +63,7 @@ export default function Proyectos() {
 
     const onSubmit = (data: proyectoFormularioDatos) => {
         mutacionCreate.mutate({
+            nomina: data.nomina,
             nombre: data.nombre,
             id_modalidadtrabajo: data.id_modalidadtrabajo as number,
         });

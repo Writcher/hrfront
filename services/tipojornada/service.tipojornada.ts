@@ -15,13 +15,19 @@ export async function fetchTiposJornada() {
         });
 
         if (!tiposJornadaRaw.ok) {
-            throw new Error("Error en la respuesta del servidor");
+            throw new Error(`Error fetching tiposJornada: ${tiposJornadaRaw.status} - ${tiposJornadaRaw.statusText}`);
         };
 
         const tiposJornada = await tiposJornadaRaw.json();
 
         return tiposJornada;
     } catch (error) {
+        console.error('Fetch tiposJornada failed: ', {
+            timestamp: new Date().toISOString(),
+            error: error instanceof Error ? error.message : error,
+            stack: error instanceof Error ? error.stack : undefined
+        });
+
         throw error;
     };
 };

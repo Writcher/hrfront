@@ -29,14 +29,14 @@ export const Formulario = ({
                 )}
             />
             <Controller
-                name="id_reloj"
+                name="dni"
                 control={control}
-                rules={{ required: "Debe ingresar ID en reloj" }}
+                rules={{ required: "Debe ingresar DNI" }}
                 render={({ field, fieldState: { error } }) => (
                     <TextField
                         {...field}
-                        id="id_reloj"
-                        label="ID en Reloj"
+                        id="dni"
+                        label="DNI"
                         variant="outlined"
                         color="warning"
                         size="small"
@@ -90,6 +90,20 @@ export const Formulario = ({
                         fullWidth
                         error={!!error}
                         helperText={error?.message}
+                        slotProps={{
+                            select: {
+                                MenuProps: {
+                                    slotProps: {
+                                        paper: {
+                                            style: {
+                                                marginTop: '4px',
+                                                maxHeight: '200px',
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        }}
                     >
                         {proyectos?.map((proyecto: proyecto) => (
                             <MenuItem key={proyecto.id} value={proyecto.id}>
@@ -124,6 +138,20 @@ export const Formulario = ({
                         fullWidth
                         error={!!error}
                         helperText={error?.message}
+                        slotProps={{
+                            select: {
+                                MenuProps: {
+                                    slotProps: {
+                                        paper: {
+                                            style: {
+                                                marginTop: '4px',
+                                                maxHeight: '200px',
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        }}
                     >
                         {tiposEmpleado?.map((tipoEmpleado: tipoEmpleado) => (
                             <MenuItem key={tipoEmpleado.id} value={tipoEmpleado.id}>

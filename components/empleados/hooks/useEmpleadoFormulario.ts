@@ -5,11 +5,11 @@ export const useEmpleadoFormulario = () => {
     return useForm<empleadoFormularioDatos>({
         defaultValues: {
             nombre: '',
-            id_reloj: '',
+            dni: '',
             id_proyecto: '',
             legajo: '',
             id_tipoempleado: '',
-            id_turno: '',
+            id_modalidadvalidacion: '',
         },
     });
 };

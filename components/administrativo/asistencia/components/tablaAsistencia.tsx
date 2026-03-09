@@ -1,5 +1,4 @@
 import { Table, TableBody, TableContainer } from "@mui/material";
-import React from "react";
 import FilaPresentes from "./tablaAsistenciaFila";
 import { tablaPresentesProps, empleado } from "../types";
 import { Esqueleto } from "./tablaAsistenciaEsqueleto";

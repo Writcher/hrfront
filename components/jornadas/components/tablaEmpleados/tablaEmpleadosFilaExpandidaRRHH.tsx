@@ -1,10 +1,10 @@
 import { Button, Divider, TableCell, TablePagination, TableRow } from "@mui/material";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { fetchMeses } from "@/services/mes/service.mes";
-import { fetchJornadas } from "@/services/jornada/service.jornada";
+import { fetchJornadas, fetchResumen } from "@/services/jornada/service.jornada";
 import { useEffect, useState } from "react";
 import { useSnackbar } from "@/lib/context/snackbarcontext";
-import { Formulario } from "../tablaResumen/tablaResumenFiltrosFormulario";
+import { FormularioResumen } from "../tablaResumen/tablaResumenFiltrosFormulario";
 import { TablaResumen } from "../tablaResumen/tablaResumen";
 import { filaExpandidaEmpleadoProps } from "../../types";
 import { useFiltros } from "../../hooks/useFiltrosHijoRRHH";
@@ -59,7 +59,7 @@ export function FilaExpandidaRRHH({
             watchResumen("filtroMes"),
             watchResumen("filtroQuincena"),
         ],
-        queryFn: () => fetchJornadas({
+        queryFn: () => fetchResumen({
             id_empleado: idFilaExpandida,
             filtroMes: watchResumen("filtroMes"),
             filtroQuincena: watchResumen("filtroQuincena"),
@@ -95,8 +95,7 @@ export function FilaExpandidaRRHH({
         handleLimpiarFiltros: handleLimpiarFiltrosJornadas, 
         handleCambioFiltroMes: handleCambioFiltroMesJornadas, 
         handleCambioFiltroQuincena: handleCambioFiltroQuincenaJornadas, 
-        handleCambioFiltroMarcasIncompletas: handleCambioFiltroMarcasIncompletasJornadas
-    } = useFiltrosInteriores({ setValue: setValueJornadas, watch: watchJornadas });
+    } = useFiltrosInteriores({ setValue: setValueJornadas });
 
     const { pagina: paginaJornadas, filasPorPagina: filasPorPaginaJornadas, handleCambioPagina: handleCambioPaginaJornadas, handleCambioFilasPorPagina: handleCambioFilasPorPaginaJornadas } = usePaginacion({ filasIniciales: 16 });
 
@@ -105,7 +104,6 @@ export function FilaExpandidaRRHH({
     }, [
         watchJornadas("filtroMes"),
         watchJornadas("filtroQuincena"),
-        watchJornadas("filtroMarcasIncompletas"),
     ]);
 
     const { data: jornadasDatos, isLoading: jornadasCargando, isError: jornadasError, refetch: jornadasRefetch } = useQuery({
@@ -114,7 +112,6 @@ export function FilaExpandidaRRHH({
             idFilaExpandida,
             watchJornadas("filtroMes"),
             watchJornadas("filtroQuincena"),
-            watchJornadas("filtroMarcasIncompletas"),
             paginaJornadas,
             filasPorPaginaJornadas
         ],
@@ -122,7 +119,6 @@ export function FilaExpandidaRRHH({
             id_empleado: idFilaExpandida,
             filtroMes: watchJornadas("filtroMes"),
             filtroQuincena: watchJornadas("filtroQuincena"),
-            filtroMarcasIncompletas: watchJornadas("filtroMarcasIncompletas"),
             pagina: paginaJornadas,
             filasPorPagina: filasPorPaginaJornadas
         }),
@@ -191,7 +187,7 @@ export function FilaExpandidaRRHH({
                                 >
                                     Limpiar Quincena
                                 </Button>
-                                <Formulario
+                                <FormularioResumen
                                     filtroMes={watchResumen("filtroMes")}
                                     filtroQuincena={watchResumen("filtroQuincena")}
                                     selectCargando={selectCargando}
@@ -255,10 +251,8 @@ export function FilaExpandidaRRHH({
                                 handleLimpiarFiltros={handleLimpiarFiltrosJornadas}
                                 filtroMes={watchJornadas("filtroMes")}
                                 filtroQuincena={watchJornadas("filtroQuincena")}
-                                filtroMarcasIncompletas={watchJornadas("filtroMarcasIncompletas")}
                                 cargando={selectCargando}
                                 meses={selectDatos || []}
-                                handleCambioFiltroMarcasIncompletas={handleCambioFiltroMarcasIncompletasJornadas}
                                 handleCambioFiltroQuincena={handleCambioFiltroQuincenaJornadas}
                                 handleCambioFiltroMes={handleCambioFiltroMesJornadas}
                             />

@@ -6,7 +6,7 @@ import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import { informacionProps } from "../../types";
 import { PulsingWarning } from "@/components/ui/prioridad";
 
-export const Informacion = ({ jornada, dia, setObservacionFormulario }: informacionProps) => (
+export const Informacion = ({ jornada, dia, setObservacionFormulario, onDelete }: informacionProps) => (
     <>
         <TableCell align="left" size="small" className={`${dia === 0 ? 'bg-gradient-to-l from-gray-300 via-gray-300 to-transparent' : dia === 1 ? 'bg-gradient-to-l from-green-300 via-green-300 to-transparent' : ''}`}>
             <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.8rem)]" style={{ userSelect: "none" }}>
@@ -62,7 +62,7 @@ export const Informacion = ({ jornada, dia, setObservacionFormulario }: informac
                         </span>
                     </LightTooltip>
                 }
-                <Tooltip observaciones={jornada.observaciones} />
+                <Tooltip observaciones={jornada.observaciones} onDelete={onDelete} />
                 <LightTooltip title="Añadir Observación" placement="left" arrow>
                     <Button
                         variant="contained"

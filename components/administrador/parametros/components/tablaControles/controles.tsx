@@ -4,10 +4,10 @@ import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import { keepPreviousData, useMutation, useQuery } from "@tanstack/react-query";
 import { useSnackbar } from "@/lib/context/snackbarcontext";
 import { useEffect } from "react";
-import { controlFormularioDatos, insertControlParametros } from "../../types";
+import { controlFormularioDatos, createControlParametros } from "../../types";
 import { Botones } from "./crearControlesFormularioBotones";
 import { Formulario } from "./crearControlesFormulario";
-import { fetchControlesABM, insertControl } from "@/services/control/service.control";
+import { fetchControlesPaginated, createControl } from "@/services/control/service.control";
 import { useControlFormulario } from "../../hooks/useControlFormulario";
 import { fetchProyectos } from "@/services/proyecto/service.proyecto";
 import { TablaControles } from "./tablaControles";
@@ -19,7 +19,7 @@ export default function Controles() {
 
     const { showError, showWarning, showSuccess } = useSnackbar();
 
-    const { control, formState: { isValid }, setValue, handleSubmit, reset } = useControlFormulario()
+    const { control, formState: { isValid }, handleSubmit, reset } = useControlFormulario()
 
     const {
         pagina,
@@ -30,11 +30,11 @@ export default function Controles() {
 
     const { data: controlesDatos, isLoading: controlesCargando, isError: controlesError, refetch: controlesRefetch } = useQuery({
         queryKey: [
-            "fetchControlesABM",
+            "fetchControlesPaginated",
             pagina,
             filasPorPagina
         ],
-        queryFn: () => fetchControlesABM({
+        queryFn: () => fetchControlesPaginated({
             pagina: pagina,
             filasPorPagina: filasPorPagina,
         }),
@@ -49,7 +49,7 @@ export default function Controles() {
     });
 
     const mutacionCreate = useMutation({
-        mutationFn: (data: insertControlParametros) => insertControl(data),
+        mutationFn: (data: createControlParametros) => createControl(data),
         onSuccess: () => {
             controlesRefetch();
             reset();

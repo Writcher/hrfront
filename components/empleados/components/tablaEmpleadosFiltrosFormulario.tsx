@@ -59,6 +59,20 @@ export const FormularioFiltros = ({
         fullWidth
         value={filtroProyecto}
         onChange={onCambioFiltroProyecto}
+        slotProps={{
+                    select: {
+                        MenuProps: {
+                            slotProps: {
+                                paper: {
+                                    style: {
+                                        marginTop: '4px',
+                                        maxHeight: '200px',
+                                    },
+                                },
+                            },
+                        },
+                    },
+                }}
       >
         {proyectos?.map((proyecto: proyecto) => (
           <MenuItem key={proyecto.id} value={proyecto.id}>
@@ -80,6 +94,20 @@ export const FormularioFiltros = ({
         fullWidth
         value={filtroTipoEmpleado}
         onChange={onCambioFiltroTipoEmpleado}
+        slotProps={{
+                    select: {
+                        MenuProps: {
+                            slotProps: {
+                                paper: {
+                                    style: {
+                                        marginTop: '4px',
+                                        maxHeight: '200px',
+                                    },
+                                },
+                            },
+                        },
+                    },
+                }}
       >
         {tiposEmpleado?.map((tipoEmpleado: tipoEmpleado) => (
           <MenuItem key={tipoEmpleado.id} value={tipoEmpleado.id}>

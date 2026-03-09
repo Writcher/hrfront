@@ -1,67 +1,79 @@
 "use server"
 
 import CONFIG from "@/config";
-import { createControlDTO, deleteControlDTO, editControlDTO, fetchControlesABMDTO } from "@/lib/dtos/control";
+import { CreateControlDto, DeleteControlDto, EditControlDto, FetchControlesPaginatedDto } from "@/lib/dtos/control";
 import { getToken } from "@/lib/utils/getToken";
 
-export async function fetchControlesABM(parametros: fetchControlesABMDTO) {
+export async function fetchControlesPaginated(params: FetchControlesPaginatedDto) {
     try {
         const token = await getToken();
 
-        const proyectosParametros = new URLSearchParams({
-            pagina: parametros.pagina != null ? parametros.pagina.toString() : '',
-            filasPorPagina: parametros.filasPorPagina != null ? parametros.filasPorPagina.toString() : '',
+        const controlesUrlParams = new URLSearchParams({
+            page: params.pagina.toString(),
+            limit: params.filasPorPagina.toString(),
         });
 
-        const proyectosRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_CONTROLES}?${proyectosParametros.toString()}`, {
+        const controlesRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_CONTROL}?${controlesUrlParams}`, {
             method: "GET",
             headers: {
                 Authorization: `Bearer ${token}`,
             }
         });
 
-        if (!proyectosRaw.ok) {
-            throw new Error("Error en alguna de las respuestas del servidor");
+        if (!controlesRaw.ok) {
+            throw new Error(`Error fetching controles: ${controlesRaw.status} - ${controlesRaw.statusText}`);
         };
 
-        const proyectos = await proyectosRaw.json();
+        const controles = await controlesRaw.json();
 
-        return proyectos;
+        return controles;
     } catch (error) {
+        console.error('Fetch controles failed: ', {
+            timestamp: new Date().toISOString(),
+            error: error instanceof Error ? error.message : error,
+            stack: error instanceof Error ? error.stack : undefined
+        });
+
         throw error;
     };
 };
 
-export async function insertControl(parametros: createControlDTO) {
+export async function createControl(params: CreateControlDto) {
     try {
         const token = await getToken();
 
-        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_CREAR_CONTROL}`, {
+        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_CONTROL}`, {
             method: "POST",
             headers: {
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(parametros),
+            body: JSON.stringify(params),
         });
 
         if (!respuestaRaw.ok) {
-            throw new Error("Error en la respuesta del servidor");
+            throw new Error(`Error creating control: ${respuestaRaw.status} - ${respuestaRaw.statusText}`);
         };
 
         const respuesta = await respuestaRaw.json();
 
         return respuesta;
     } catch (error) {
+        console.error('Create control failed: ', {
+            timestamp: new Date().toISOString(),
+            error: error instanceof Error ? error.message : error,
+            stack: error instanceof Error ? error.stack : undefined
+        });
+
         throw error;
     };
 };
 
-export async function deleteControl(parametros: deleteControlDTO) {
+export async function deleteControl(params: DeleteControlDto) {
     try {
         const token = await getToken();
 
-        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_CONTROL!.replace("{id}", parametros.id_control!.toString())}`, {
+        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_CONTROL}/${params.id_control}`, {
             method: "DELETE",
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -69,41 +81,55 @@ export async function deleteControl(parametros: deleteControlDTO) {
         });
 
         if (!respuestaRaw.ok) {
-            throw new Error("Error en la respuesta del servidor");
+            throw new Error(`Error deleting control with id ${params.id_control}: ${respuestaRaw.status} - ${respuestaRaw.statusText}`);
         };
 
         const respuesta = await respuestaRaw.json();
 
         return respuesta;
     } catch (error) {
+        console.error('Delete control failed: ', {
+            id: params.id_control,
+            timestamp: new Date().toISOString(),
+            error: error instanceof Error ? error.message : error,
+            stack: error instanceof Error ? error.stack : undefined
+        });
+
         throw error;
     };
 };
 
-export async function editControl(parametros: editControlDTO) {
+export async function editControl(params: EditControlDto) {
     try {
         const token = await getToken();
 
-        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_CONTROL!.replace("{id}", parametros.id_control!.toString())}`, {
+        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_CONTROL}/${params.id_control}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({
-                serie: parametros.serie,
-                id_proyecto: parametros.id_proyecto
+                serie: params.serie,
+                id_proyecto: params.id_proyecto
             }),
         });
 
         if (!respuestaRaw.ok) {
-            throw new Error("Error en la respuesta del servidor");
+            throw new Error(`Error editing control with id ${params.id_control}: ${respuestaRaw.status} - ${respuestaRaw.statusText}`);
         };
 
         const respuesta = await respuestaRaw.json();
 
         return respuesta;
     } catch (error) {
+        console.error('Edit control failed: ', {
+            id: params.id_control,
+            timestamp: new Date().toISOString(),
+            error: error instanceof Error ? error.message : error,
+            stack: error instanceof Error ? error.stack : undefined
+        });
+
         throw error;
     };
 };

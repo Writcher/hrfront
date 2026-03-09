@@ -7,7 +7,6 @@ import { fetchProyectos } from "@/services/proyecto/service.proyecto";
 import { keepPreviousData, useMutation, useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
-import { exportPresentesExcel, fetchPresentes } from "@/services/empleado/service.empleado";
 import { Button, TablePagination } from "@mui/material";
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import { TablaPresentes } from "./components/tablaAsistencia";
@@ -16,6 +15,8 @@ import { Formulario } from "./components/tablaAsistenciaFormulario";
 import { consultaFormularioDatos } from "./types";
 import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
 import SyncIcon from '@mui/icons-material/Sync';
+import { fetchAsistencia } from "@/services/empleado/service.empleado";
+import { exportAsistencia } from "@/services/exportar/exportar.service";
 
 export default function Asistencia() {
 
@@ -37,11 +38,11 @@ export default function Asistencia() {
 
     const { data: presentesDatos, isLoading: presentesCargando, isError: presentesError, refetch: presentesRefetch } = useQuery({
         queryKey: [
-            "fetchPresentes",
+            "fetchAsistencia",
             pagina,
             filasPorPagina,
         ],
-        queryFn: () => fetchPresentes({
+        queryFn: () => fetchAsistencia({
             pagina: pagina,
             filasPorPagina: filasPorPagina,
             fecha: watch("fecha"),
@@ -60,7 +61,7 @@ export default function Asistencia() {
 
 
     const mutacionExport = useMutation({
-        mutationFn: (data: consultaFormularioDatos) => exportPresentesExcel(data),
+        mutationFn: (data: consultaFormularioDatos) => exportAsistencia(data),
         onSuccess: (response) => {
 
             const url = window.URL.createObjectURL(response);
@@ -135,7 +136,7 @@ export default function Asistencia() {
             <div className="flex flex-row gap-1 w-full">
                 <div className="flex justify-center items-center gap-2 border-2 border-[#ED6C02] p-2 rounded w-full text-gray-700">Total Presentes: {presentesDatos ? presentesDatos.totalPresentes : "-"}</div>
                 <div className="flex justify-center items-center gap-2 border-2 border-[#ED6C02] p-2 rounded w-full text-gray-700">Total Directos: {presentesDatos ? presentesDatos.totalJornaleros : "-"}</div>
-                <div className="flex justify-center items-center gap-2 border-2 border-[#ED6C02] p-2 rounded w-full text-gray-700">Total Indirectos: {presentesDatos ? presentesDatos.totalMensualizados : "-"}</div>
+                <div className="flex justify-center items-center gap-2 border-2 border-[#ED6C02] p-2 rounded w-full text-gray-700">Total Indirectos: {presentesDatos ? presentesDatos.totalMensuales : "-"}</div>
                 <div className="flex justify-center items-center gap-2 border-2 border-[#ED6C02] p-2 rounded w-full text-gray-700">Total Ausentes: {presentesDatos ? presentesDatos.totalAusentes : "-"}</div>
             </div>
             <div className="flex flex-row items-center justify-start gap-1 w-full rounded border-2 border-[#ED6C02] p-1">

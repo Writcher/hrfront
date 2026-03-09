@@ -33,6 +33,20 @@ export const Formulario = ({ control, cargando, proyectos }: formularioProps) =>
                         error={!!error}
                         helperText={error?.message}
                         disabled={proyectos.length === 0}
+                        slotProps={{
+                            select: {
+                                MenuProps: {
+                                    slotProps: {
+                                        paper: {
+                                            style: {
+                                                marginTop: '4px',
+                                                maxHeight: '200px',
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        }}
                     >
                         {proyectos.map((proyecto: proyecto) => (
                             <MenuItem key={proyecto.id} value={proyecto.id}>

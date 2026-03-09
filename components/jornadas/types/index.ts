@@ -25,14 +25,14 @@ export type jornada = {
   tipojornada: number,
   tipoausencia: string
   id: number,
-  observaciones: string[],
+  observaciones: {id: number, texto: string}[],
   es_manual: boolean,
 };
 
 export type empleado = {
   id: number,
   legajo: number,
-  id_reloj: number,
+  dni: number,
   nombre: string,
   id_proyecto: number,
   nombreproyecto: string,
@@ -139,6 +139,7 @@ export type filaExpandidaProps = {
   idFilaExpandida: number,
   idFilaExpandidaProp: number | null,
   estadoEmpleado: string,
+  es_mensualizado: boolean
 };
 
 export type botonesFiltrosHijoProps = {
@@ -146,12 +147,10 @@ export type botonesFiltrosHijoProps = {
   handleLimpiarFiltros: () => void,
   filtroMes: number | '',
   filtroQuincena: number | '',
-  filtroMarcasIncompletas: boolean,
   cargando: boolean,
   meses: mes[],
   creando: boolean,
   camposValidos: boolean,
-  handleCambioFiltroMarcasIncompletas: () => void,
   handleCambioFiltroQuincena: (event: React.ChangeEvent<HTMLInputElement>) => void
   handleCambioFiltroMes: (event: React.ChangeEvent<HTMLInputElement>) => void,
   handleMostrarFormulario: () => void,
@@ -163,10 +162,8 @@ export type botonesFiltrosHijoRRHHProps = {
   handleLimpiarFiltros: () => void,
   filtroMes: number | '',
   filtroQuincena: number | '',
-  filtroMarcasIncompletas: boolean,
   cargando: boolean,
   meses: mes[],
-  handleCambioFiltroMarcasIncompletas: () => void,
   handleCambioFiltroQuincena: (event: React.ChangeEvent<HTMLInputElement>) => void
   handleCambioFiltroMes: (event: React.ChangeEvent<HTMLInputElement>) => void,
 };
@@ -184,12 +181,10 @@ export type filaJornadaProps = {
 export type formularioFiltrosHijoProps = {
   filtroMes: number | '',
   filtroQuincena: number | '',
-  filtroMarcasIncompletas: boolean,
   cargando: boolean,
   meses: mes[],
   onCambioFiltroMes: (event: React.ChangeEvent<HTMLInputElement>) => void,
   onCambioFiltroQuincena: (event: React.ChangeEvent<HTMLInputElement>) => void,
-  onCambioFiltroMarcaIncompleta: (event: SyntheticEvent<Element, Event>, checked: boolean) => void,
   getNombreMes: (mes: number) => string,
 };
 
@@ -220,6 +215,7 @@ export type hookGenericoHijoRRHHPropsBase = {
 export type informacionProps = {
   jornada: jornada,
   dia: number,
+  onDelete: (id: number) => void,
   setObservacionFormulario: Dispatch<SetStateAction<boolean>>
 };
 
@@ -234,7 +230,8 @@ export type formularioObservacionProps = {
 };
 
 export type tooltipObservacionesProps = {
-  observaciones: string[],
+  observaciones: {id: number, texto: string}[],
+  onDelete: (id: number) => void
 };
 
 export type formularioCrearJornadaProps = {
@@ -305,7 +302,6 @@ export type useObservacionFormularioDatos = {
 export type tablaJornadasFormularioDatos = {
   filtroMes: number | '',
   filtroQuincena: number | '',
-  filtroMarcasIncompletas: boolean,
   entrada: string | null,
   salida: string | null,
   entradaTarde: string | null,
@@ -313,7 +309,6 @@ export type tablaJornadasFormularioDatos = {
   tipoJornada: number | '',
   fecha: string,
   tipoAusencia: number | '',
-  duracionAusencia: number | '',
   observacion: string,
 };
 
@@ -324,7 +319,7 @@ export type tablaJornadasResumenFormularioDatos = {
 
 //mutations
 
-export type insertJornadaDatos = {
+export type createJornadaDatos = {
   entrada: string | null,
   salida: string | null,
   entradaTarde: string | null,
@@ -335,11 +330,6 @@ export type insertJornadaDatos = {
   duracionAusencia: number | '',
   observacion: string,
   id_empleado: number,
-};
-
-export type insertObservacionDatos = {
-  observacion: string,
-  id_jornada: number,
 };
 
 //responses

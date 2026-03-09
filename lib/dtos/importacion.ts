@@ -5,10 +5,17 @@ export type fetchImportacionesDTO = {
     filasPorPagina: number;
 };
 
-export type setImportacionCompletaDTO = {
+export type DeleteImportacionDto = {
     id: number;
 };
 
-export type deleteImportacionDTO = {
+export type SetImportacionCompletaDto = {
     id: number;
+};
+
+export type FetchImportacionesDto = {
+    filtroIncompletas: boolean;
+    filtroProyecto: number | '';
+    pagina: number;
+    filasPorPagina: number;
 };

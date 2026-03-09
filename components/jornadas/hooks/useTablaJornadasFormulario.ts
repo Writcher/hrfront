@@ -6,14 +6,12 @@ export const useTablaJornadaFormulario = () => {
     defaultValues: {
       filtroMes: '',
       filtroQuincena: '',
-      filtroMarcasIncompletas: false,
       entrada: '',
       salida: '',
       entradaTarde: '',
       salidaTarde: '',
       tipoJornada: '',
       tipoAusencia: '',
-      duracionAusencia: '',
       observacion: '',
       fecha: '',
     }

@@ -5,7 +5,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { filaJornadaProps, filaJornadaFormularioDatos, deleteJornadaDatos, editJornadaDatos, tipoAusencia } from "../types";
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import dayjs from 'dayjs';
-import { deleteJornada, editJornada, updateJornadaTipoAusencia, validateJornada } from "@/services/jornada/service.jornada";
+import { deleteJornada, editJornada, editJornadaTipoAusencia, validateJornada } from "@/services/jornada/service.jornada";
 import { useSnackbar } from "@/lib/context/snackbarcontext";
 import { PulsingWarning } from "@/components/ui/prioridad";
 import DoneRoundedIcon from '@mui/icons-material/DoneRounded';
@@ -64,7 +64,7 @@ export function Fila({ jornada, tiposAusencia, tiposAusenciaCargando }: filaJorn
     };
 
     const mutacionUpdate = useMutation({
-        mutationFn: (datos: { tipoAusencia: number, id_jornada: number }) => updateJornadaTipoAusencia(datos),
+        mutationFn: (datos: { tipoAusencia: number, id_jornada: number }) => editJornadaTipoAusencia(datos),
         onSuccess: () => {
             showSuccess("Jornada actualizada correctamente");
             queryClient.invalidateQueries({
@@ -86,7 +86,7 @@ export function Fila({ jornada, tiposAusencia, tiposAusenciaCargando }: filaJorn
     const mutacionValidate = useMutation({
         mutationFn: async (data: filaJornadaFormularioDatos) => {
             if (jornada.ausencia) {
-                await updateJornadaTipoAusencia({
+                await editJornadaTipoAusencia({
                     tipoAusencia: data.tipoAusencia as number,
                     id_jornada: jornada.id
                 });
@@ -234,6 +234,20 @@ export function Fila({ jornada, tiposAusencia, tiposAusenciaCargando }: filaJorn
                                             error={!!error}
                                             helperText={error?.message}
                                             disabled={tiposAusencia.length === 0 || !tiposAusencia}
+                                            slotProps={{
+                                                select: {
+                                                    MenuProps: {
+                                                        slotProps: {
+                                                            paper: {
+                                                                style: {
+                                                                    marginTop: '4px',
+                                                                    maxHeight: '200px',
+                                                                },
+                                                            },
+                                                        },
+                                                    },
+                                                },
+                                            }}
                                         >
                                             {tiposAusencia.map((tipoAusencia: tipoAusencia) => (
                                                 <MenuItem key={tipoAusencia.id} value={tipoAusencia.id}>

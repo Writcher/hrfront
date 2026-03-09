@@ -1,7 +1,6 @@
 "use client";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { insertJornadasExcel } from "@/services/importacion/service.importar";
 import { Formulario } from "./components/formulario";
 import { useImportarExcelFormulario } from "./hooks/useImportarExcelFormulario";
 import { useDropzoneHook } from "./hooks/useDropzone";
@@ -12,6 +11,7 @@ import { useEffect } from "react";
 import { useSnackbar } from "@/lib/context/snackbarcontext";
 import { Botones } from "./components/botones";
 import { useSelectDatos } from "./hooks/useSelectDatos";
+import { importHikVision, importProsoft } from "@/services/importar/service.importar";
 
 export default function Importar() {
 
@@ -34,10 +34,24 @@ export default function Importar() {
     } = useSelectDatos()
 
     const mutacionImport = useMutation({
-        mutationFn: (data: importarExcelFormularioDatos) => insertJornadasExcel(data),
+        mutationFn: (data: importarExcelFormularioDatos) => {
+            if (data.tipoInforme === 1) {
+                return importProsoft({
+                    archivo: data.archivo!,
+                    proyecto: data.proyecto,
+                    tipoJornada: data.tipoJornada,
+                });
+            } else {
+                return importHikVision({
+                    fecha: data.fecha,
+                    proyecto: data.proyecto,
+                    tipoJornada: data.tipoJornada,
+                });
+            }
+        },
         onSuccess: (response) => {
             showSuccess("Jornadas importadas correctamente");
-            router.push(`/administrativo/importacion/${response.importacion}/completar`);
+            router.push(`/administrativo/importacion/${response}/completar`);
             queryClient.invalidateQueries({
                 queryKey: ["fetchImportaciones"]
             });

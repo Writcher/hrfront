@@ -76,6 +76,20 @@ export const Formulario = ({
           value={filtroProyecto}
           onChange={onCambioFiltroProyecto}
           disabled={proyectos.length === 0}
+          slotProps={{
+            select: {
+              MenuProps: {
+                slotProps: {
+                  paper: {
+                    style: {
+                      marginTop: '4px',
+                      maxHeight: '200px',
+                    },
+                  },
+                },
+              },
+            },
+          }}
         >
           {proyectos.map((proyectos: proyecto) => (
             <MenuItem key={proyectos.id} value={proyectos.id}>
@@ -98,6 +112,20 @@ export const Formulario = ({
           value={filtroTipoEmpleado}
           onChange={onCambioFiltroTipoEmpleado}
           disabled={tiposEmpleado.length === 0}
+          slotProps={{
+            select: {
+              MenuProps: {
+                slotProps: {
+                  paper: {
+                    style: {
+                      marginTop: '4px',
+                      maxHeight: '200px',
+                    },
+                  },
+                },
+              },
+            },
+          }}
         >
           {tiposEmpleado.map((tipoEmpleado: tipoEmpleado) => (
             <MenuItem key={tipoEmpleado.id} value={tipoEmpleado.id}>
@@ -127,6 +155,20 @@ export const Formulario = ({
             value={filtroTipoAusencia}
             onChange={onCambioFiltroTipoAusencia}
             disabled={tiposAusencia.length === 0}
+            slotProps={{
+              select: {
+                MenuProps: {
+                  slotProps: {
+                    paper: {
+                      style: {
+                        marginTop: '4px',
+                        maxHeight: '200px',
+                      },
+                    },
+                  },
+                },
+              },
+            }}
           >
             {tiposAusencia.map((tipoAusencia: tipoAusencia) => (
               <MenuItem key={tipoAusencia.id} value={tipoAusencia.id}>
@@ -155,6 +197,20 @@ export const Formulario = ({
           value={filtroMes}
           onChange={onCambioFiltroMes}
           disabled={meses.length === 0}
+          slotProps={{
+            select: {
+              MenuProps: {
+                slotProps: {
+                  paper: {
+                    style: {
+                      marginTop: '4px',
+                      maxHeight: '200px',
+                    },
+                  },
+                },
+              },
+            },
+          }}
         >
           {meses.map((mes: mes) => (
             <MenuItem key={mes.id} value={mes.id}>{getNombreMesGen(mes.mes)} de {mes.id_año}</MenuItem>
@@ -174,6 +230,20 @@ export const Formulario = ({
         value={filtroQuincena}
         onChange={onCambioFiltroQuincena}
         disabled={filtroMes === ''}
+        slotProps={{
+          select: {
+            MenuProps: {
+              slotProps: {
+                paper: {
+                  style: {
+                    marginTop: '4px',
+                    maxHeight: '200px',
+                  },
+                },
+              },
+            },
+          },
+        }}
       >
         <MenuItem key={1} value={1}>Primera Quincena</MenuItem>
         <MenuItem key={2} value={2}>Segunda Quincena</MenuItem>

@@ -1,6 +1,6 @@
 import { fetchProyectos } from "@/services/proyecto/service.proyecto";
 import { fetchTiposEmpleado } from "@/services/tipoempleado/service.tipoempleado";
-import { fetchTurnos } from "@/services/turno/service.turno";
+import { fetchModalidadesValidacion } from "@/services/modalidadvalidacion/service.modalidadvalidacion";
 import { useQuery } from "@tanstack/react-query";
 
 export const useSelectDatos = () => {
@@ -17,8 +17,8 @@ export const useSelectDatos = () => {
     });
 
     const { data: turnos, isLoading: turnosCargando, isError: turnosError } =useQuery({
-        queryKey: ["fetchTurnos"],
-        queryFn: () => fetchTurnos(),
+        queryKey: ["fetchModalidadesValidacion"],
+        queryFn: () => fetchModalidadesValidacion(),
         refetchOnWindowFocus: false,
     });
 

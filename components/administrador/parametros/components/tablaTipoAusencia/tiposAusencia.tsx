@@ -5,12 +5,12 @@ import { keepPreviousData, useMutation, useQuery } from "@tanstack/react-query";
 import { useSnackbar } from "@/lib/context/snackbarcontext";
 import { useEffect } from "react";
 import { TablaProyectos } from "./tablaTiposAusencia";
-import { insertTipoAusenciaParametros, tipoAusenciaFormularioDatos } from "../../types";
+import { createTipoAusenciaParametros, tipoAusenciaFormularioDatos } from "../../types";
 import { Botones } from "./crearTiposAusenciaFormularioBotones";
 import { Formulario } from "./crearTiposAusenciaFormulario";
 import { usePaginacion } from "@/components/hooks/usePaginacion";
 import { useTipoAusenciaFormulario } from "../../hooks/useTipoAusenciaFormulario";
-import { fetchTiposAusenciaPaginated, insertTipoAusencia } from "@/services/tipoausencia/service.tipoausencia";
+import { fetchTiposAusenciaPaginated, createTipoAusencia } from "@/services/tipoausencia/service.tipoausencia";
 
 export default function Proyectos() {
 
@@ -42,7 +42,7 @@ export default function Proyectos() {
     });
 
     const mutacionCreate = useMutation({
-        mutationFn: (data: insertTipoAusenciaParametros) => insertTipoAusencia(data),
+        mutationFn: (data: createTipoAusenciaParametros) => createTipoAusencia(data),
         onSuccess: () => {
             tiposAusenciaRefetch();
             reset();

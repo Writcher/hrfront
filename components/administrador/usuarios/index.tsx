@@ -13,7 +13,7 @@ import { TablaUsuarios } from "./components/tablaUsuarios";
 import { useUsuarioFormulario } from "./hooks/useUsuarioFormulario";
 import { useMostrarFormulario } from "./hooks/useMostrarFormulario";
 import { Formulario } from "./components/tablaUsuariosFormularioCrear";
-import { usuarioFormularioDatos, insertUsuarioParametros } from "./types";
+import { usuarioFormularioDatos } from "./types";
 import { useSnackbar } from "@/lib/context/snackbarcontext";
 import { getNombreTipoUsuario } from "./utils";
 import { BotonesFiltros } from "./components/tablaUsuariosFiltrosBotones";
@@ -21,7 +21,8 @@ import { Botones } from "./components/tablaUsuariosFormularioCrearBotones";
 import { usePaginacion } from "@/components/hooks/usePaginacion";
 import { useOrdenacion } from "@/components/hooks/useOrdenacion";
 import { fetchTiposUsuario } from "@/services/tipousuario/service.tipousuario";
-import { fetchUsuarios, insertUsuario } from "@/services/usuario/service.usuario";
+import { fetchUsuarios, createUsuario } from "@/services/usuario/service.usuario";
+import { CreateUsuarioDto } from "@/lib/dtos/usuario";
 
 export default function TablaUsuariosLista() {
 
@@ -88,7 +89,7 @@ export default function TablaUsuariosLista() {
   const getNombreTipoUsuarioPorId = getNombreTipoUsuario(selectDatos);
 
   const mutacionCreate = useMutation({
-    mutationFn: (data: insertUsuarioParametros) => insertUsuario(data),
+    mutationFn: (data: CreateUsuarioDto) => createUsuario(data),
     onSuccess: () => {
       showSuccess("Usuario creado correctamente");
       usuariosRefetch();

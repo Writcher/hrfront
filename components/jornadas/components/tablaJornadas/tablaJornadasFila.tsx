@@ -1,14 +1,15 @@
 import { TableRow } from "@mui/material";
 import { getDia } from "../../utils";
-import { filaJornadaProps, insertObservacionDatos, useObservacionFormularioDatos } from "../../types";
+import { filaJornadaProps, useObservacionFormularioDatos } from "../../types";
 import { useState } from "react";
 import { SubmitHandler } from "react-hook-form";
 import { useObservacionFormulario } from "../../hooks/useFormularioObservacion";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSnackbar } from "@/lib/context/snackbarcontext";
-import { insertObservacion } from "@/services/observacion/service.observacion";
+import { createObservacion, deleteObservacion } from "@/services/observacion/service.observacion";
 import { Informacion } from "./filaJornadasInformacion";
 import { Formulario } from "./filaJornadasFormulario";
+import { CreateObservacionDto, DeleteObservacionDto } from "@/lib/dtos/observacion";
 
 export function FilaJornada({ jornada }: filaJornadaProps) {
 
@@ -21,7 +22,7 @@ export function FilaJornada({ jornada }: filaJornadaProps) {
     const queryClient = useQueryClient();
 
     const mutacionCreate = useMutation({
-        mutationFn: (datos: insertObservacionDatos) => insertObservacion(datos),
+        mutationFn: (datos: CreateObservacionDto) => createObservacion(datos),
         onSuccess: () => {
             showSuccess("Observacion creada correctamente");
             reset();
@@ -42,6 +43,23 @@ export function FilaJornada({ jornada }: filaJornadaProps) {
         });
     };
 
+    const mutacionDelete = useMutation({
+        mutationFn: (datos: DeleteObservacionDto) => deleteObservacion(datos),
+        onSuccess: () => {
+            showSuccess('Observacion eliminada correctamente');
+            queryClient.invalidateQueries({
+                queryKey: ["fetchJornadasEmpleado"]
+            });
+        },
+        onError: () => {
+            showError("Error al eliminar observacion");
+        }
+    });
+
+    const onDelete = (id: number) => {
+        mutacionDelete.mutate({ id });
+    };
+
     const dia = getDia(jornada.fecha);
 
     return (
@@ -60,6 +78,7 @@ export function FilaJornada({ jornada }: filaJornadaProps) {
                 <Informacion
                     dia={dia}
                     jornada={jornada}
+                    onDelete={onDelete}
                     setObservacionFormulario={setObservacionFormulario}
                 />
             )}

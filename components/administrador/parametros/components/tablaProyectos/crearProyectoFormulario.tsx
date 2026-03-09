@@ -21,6 +21,23 @@ export const Formulario = ({ control, cargando, modalidadesTrabajo }: formulario
                 />
             )}
         />
+        <Controller
+            name="nomina"
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+                <TextField
+                    {...field}
+                    id="nomina"
+                    label="Nombre en Nomina"
+                    variant="outlined"
+                    color="warning"
+                    size="small"
+                    fullWidth
+                    error={!!error}
+                    helperText={error?.message}
+                />
+            )}
+        />
         {cargando ? (
             <Skeleton
                 variant="rectangular"
@@ -46,6 +63,20 @@ export const Formulario = ({ control, cargando, modalidadesTrabajo }: formulario
                         error={!!error}
                         helperText={error?.message}
                         disabled={modalidadesTrabajo.length === 0}
+                        slotProps={{
+                            select: {
+                                MenuProps: {
+                                    slotProps: {
+                                        paper: {
+                                            style: {
+                                                marginTop: '4px',
+                                                maxHeight: '200px',
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        }}
                     >
                         {modalidadesTrabajo.map((modalidadTrabajo: modalidadTrabajo) => (
                             <MenuItem key={modalidadTrabajo.id} value={modalidadTrabajo.id}>

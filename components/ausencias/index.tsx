@@ -1,7 +1,7 @@
 "use client"
 
-import React, { useEffect } from "react";
-import { Button, TablePagination } from "@mui/material";
+import { useEffect } from "react";
+import { TablePagination } from "@mui/material";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useTablaEmpleadosFiltros } from "./hooks/useTablaEmpleadosFiltros";
 import { useFiltros } from "./hooks/useFiltrosPadre";
@@ -66,7 +66,7 @@ export default function TablaAusenciasEmpleados({ esAdministrativo, esRRHH }: ta
     watch("filtroQuincena"),
   ]);
 
-  const { direccion, columna, handleOrdenacion } = useOrdenacion({ columnaInicial: "nombreapellido" });
+  const { direccion, columna, handleOrdenacion } = useOrdenacion({ columnaInicial: "nombre" });
 
   const { idFila, handleExpansionFila } = useExpansion();
 

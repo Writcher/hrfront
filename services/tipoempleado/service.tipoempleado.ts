@@ -7,21 +7,27 @@ export async function fetchTiposEmpleado() {
     try {
         const token = await getToken();
 
-        const tiposJEmpleadosRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_TIPOEMPLEADO}`, {
+        const tiposEmpleadosRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_TIPOEMPLEADO}`, {
             method: "GET",
             headers: {
                 Authorization: `Bearer ${token}`,
             }
         });
 
-        if (!tiposJEmpleadosRaw.ok) {
-            throw new Error("Error en la respuesta del servidor");
+        if (!tiposEmpleadosRaw.ok) {
+            throw new Error(`Error fetching tiposEmpleado: ${tiposEmpleadosRaw.status} - ${tiposEmpleadosRaw.statusText}`);
         };
 
-        const tiposEmpleados = await tiposJEmpleadosRaw.json();
+        const tiposEmpleados = await tiposEmpleadosRaw.json();
 
         return tiposEmpleados;
     } catch (error) {
+        console.error('Fetch tiposEmpleado failed: ', {
+            timestamp: new Date().toISOString(),
+            error: error instanceof Error ? error.message : error,
+            stack: error instanceof Error ? error.stack : undefined
+        });
+
         throw error;
     };
 };

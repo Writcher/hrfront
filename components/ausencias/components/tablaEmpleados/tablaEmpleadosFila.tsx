@@ -16,7 +16,7 @@ export const Fila = ({ empleado, idFilaExpandidaProp, onExpandirFila, esAdminist
             </TableCell>
             <TableCell align="center" size="small">
                 <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]" style={{ userSelect: "none" }}>
-                    {empleado.id_reloj}
+                    {empleado.dni}
                 </div>
             </TableCell>
             <TableCell align="left" size="small">

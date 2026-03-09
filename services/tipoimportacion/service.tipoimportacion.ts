@@ -15,13 +15,19 @@ export async function fetchTiposImportacion() {
         });
 
         if (!tiposImportacionRaw.ok) {
-            throw new Error("Error en la respuesta del servidor");
+            throw new Error(`Error fetching tiposImportacion: ${tiposImportacionRaw.status} - ${tiposImportacionRaw.statusText}`);
         };
 
         const tiposImportacion = await tiposImportacionRaw.json();
 
         return tiposImportacion;
     } catch (error) {
+        console.error('Fetch tiposImportacion failed: ', {
+            timestamp: new Date().toISOString(),
+            error: error instanceof Error ? error.message : error,
+            stack: error instanceof Error ? error.stack : undefined
+        });
+
         throw error;
     };
 };

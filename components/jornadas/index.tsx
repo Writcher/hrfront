@@ -21,7 +21,6 @@ import { tablaJornadasEmpleadosProps } from "./types";
 import { useOrdenacion } from "../hooks/useOrdenacion";
 import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
 import { useSelectDatos } from "./hooks/useSelectDatosPadre";
-import { IOSSwitch } from "../ui/switch";
 
 export default function TablaJornadasEmpleados({ esAdministrativo, esRRHH }: tablaJornadasEmpleadosProps) {
 
@@ -63,7 +62,7 @@ export default function TablaJornadasEmpleados({ esAdministrativo, esRRHH }: tab
     watch("filtroTipoEmpleado"),
   ]);
 
-  const { direccion, columna, handleOrdenacion } = useOrdenacion({ columnaInicial: "nombreapellido" });
+  const { direccion, columna, handleOrdenacion } = useOrdenacion({ columnaInicial: "nombre" });
 
   const { idFila, handleExpansionFila } = useExpansion();
 

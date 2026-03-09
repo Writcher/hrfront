@@ -3,26 +3,26 @@
 import CONFIG from "@/config";
 import { getToken } from "@/lib/utils/getToken";
 
-export async function fetchMeses() {
+export async function fetchModalidadesValidacion() {
     try {
         const token = await getToken();
 
-        const mesesRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_MES}`, {
+        const modalidadesValidacionRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_MODALIDADVALIDACION}`, {
             method: "GET",
             headers: {
                 Authorization: `Bearer ${token}`,
             }
         });
 
-        if (!mesesRaw.ok) {
-            throw new Error(`Error fetching meses: ${mesesRaw.status} - ${mesesRaw.statusText}`);
+        if (!modalidadesValidacionRaw.ok) {
+            throw new Error(`Error fetching modalidadesValidacion: ${modalidadesValidacionRaw.status} - ${modalidadesValidacionRaw.statusText}`);
         };
 
-        const meses = await mesesRaw.json();
+        const modalidadesValidacion = await modalidadesValidacionRaw.json();
 
-        return meses;
+        return modalidadesValidacion;
     } catch (error) {
-        console.error('Fetch meses failed: ', {
+        console.error('Fetch modalidadesValidacion failed: ', {
             timestamp: new Date().toISOString(),
             error: error instanceof Error ? error.message : error,
             stack: error instanceof Error ? error.stack : undefined

@@ -43,7 +43,7 @@ export default function FilaControl({ control }: filaControlProps) {
             setFormularioVisible(!formularioVisible)
             showSuccess("Control editado correctamente");
             queryClient.invalidateQueries({
-                queryKey: ["fetchControlesABM"]
+                queryKey: ["fetchControlesPaginated"]
             });
         },
         onError: () => {
@@ -65,7 +65,7 @@ export default function FilaControl({ control }: filaControlProps) {
             reset();
             showSuccess("Control eliminado correctamente");
             queryClient.invalidateQueries({
-                queryKey: ["fetchControlesABM"]
+                queryKey: ["fetchControlesPaginated"]
             });
         },
         onError: () => {
@@ -138,6 +138,20 @@ export default function FilaControl({ control }: filaControlProps) {
                                     error={!!error}
                                     helperText={error?.message}
                                     disabled={selectDatos?.length === 0 || !selectDatos}
+                                    slotProps={{
+                                        select: {
+                                            MenuProps: {
+                                                slotProps: {
+                                                    paper: {
+                                                        style: {
+                                                            marginTop: '4px',
+                                                            maxHeight: '200px',
+                                                        },
+                                                    },
+                                                },
+                                            },
+                                        },
+                                    }}
                                 >
                                     {selectDatos?.map((proyecto: proyectoSelect) => (
                                         <MenuItem key={proyecto.id} value={proyecto.id}>

@@ -19,16 +19,16 @@ export const Encabezado = ({ onOrden, columna, direccion }: encabezadoProps) => 
                     Legajo
                 </div>
             </TableCell>
-            <TableCell align="center" onClick={() => onOrden('id_reloj')} style={{ cursor: 'pointer' }} width="10%">
+            <TableCell align="center" onClick={() => onOrden('dni')} style={{ cursor: 'pointer' }} width="10%">
                 <div style={{ userSelect: "none" }}
-                    className={`text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)] ${columna === 'id_reloj' ? (direccion === 'ASC' ? 'text-orange-500' : 'text-red-500') : ''
+                    className={`text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)] ${columna === 'dni' ? (direccion === 'ASC' ? 'text-orange-500' : 'text-red-500') : ''
                         }`}>
                     ID en Reloj
                 </div>
             </TableCell>
-            <TableCell align="left" onClick={() => onOrden('nombreapellido')} style={{ cursor: 'pointer' }} width="80%">
+            <TableCell align="left" onClick={() => onOrden('nombre')} style={{ cursor: 'pointer' }} width="80%">
                 <div style={{ userSelect: "none" }}
-                    className={`text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)] ${columna === 'nombreapellido' ? (direccion === 'ASC' ? 'text-orange-500' : 'text-red-500') : ''
+                    className={`text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)] ${columna === 'nombre' ? (direccion === 'ASC' ? 'text-orange-500' : 'text-red-500') : ''
                         }`}>
                     Nombre de Empleado
                 </div>

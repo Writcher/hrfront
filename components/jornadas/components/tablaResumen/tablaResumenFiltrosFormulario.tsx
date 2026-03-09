@@ -2,7 +2,7 @@ import { TextField, MenuItem, Skeleton } from "@mui/material";
 import { formularioFiltrosProps, mes } from "../../types";
 import { getNombreMes } from "../../utils";
 
-export const Formulario = ({
+export const FormularioResumen = ({
     filtroMes,
     filtroQuincena,
     selectCargando,
@@ -30,6 +30,20 @@ export const Formulario = ({
                 fullWidth
                 value={filtroMes}
                 onChange={onCambioFiltroMes}
+                slotProps={{
+                    select: {
+                        MenuProps: {
+                            slotProps: {
+                                paper: {
+                                    style: {
+                                        marginTop: '4px',
+                                        maxHeight: '200px',
+                                    },
+                                },
+                            },
+                        },
+                    },
+                }}
             >
                 {selectDatos?.map((mes: mes) => (
                     <MenuItem key={mes.id} value={mes.id}>{getNombreMes(mes.mes)} de {mes.id_año}</MenuItem>
@@ -49,6 +63,20 @@ export const Formulario = ({
             value={filtroQuincena}
             onChange={onCambioFiltroQuincena}
             disabled={filtroMes === ''}
+            slotProps={{
+                select: {
+                    MenuProps: {
+                        slotProps: {
+                            paper: {
+                                style: {
+                                    marginTop: '4px',
+                                    maxHeight: '200px',
+                                },
+                            },
+                        },
+                    },
+                },
+            }}
         >
             <MenuItem key={1} value={1}>Primera Quincena</MenuItem>
             <MenuItem key={2} value={2}>Segunda Quincena</MenuItem>

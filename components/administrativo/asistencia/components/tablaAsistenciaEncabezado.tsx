@@ -1,5 +1,4 @@
 import { TableCell, TableHead, TableRow } from "@mui/material";
-import { encabezadoProps } from "../types";
 
 export const Encabezado = () => (
     <TableHead

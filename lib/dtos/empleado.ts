@@ -1,4 +1,4 @@
-export type  fetchEmpleadosDTO = {
+export type  FetchEmpleadosDto = {
     busquedaNombre: string,
     filtroProyecto: number | '',
     busquedaLegajo: number | '',
@@ -13,24 +13,26 @@ export type  fetchEmpleadosDTO = {
     ordenDireccion: "ASC" | "DESC",
 };
 
-export type editEmpleadoDTO = {
-    id_reloj: number | '',
-    nombre: string,
-    legajo: number | '',
+export type EditEmpleadoDto = {
     id: number,
-    id_tipoempleado: number | '',
-    id_turno: number | '',
-    id_proyecto: number | '',
+    id_modalidadvalidacion: number | '',
 };
 
-export type fetchPresentesDTO = {
+export type FetchAsistenciaDto = {
     fecha: string,
     proyecto: number | '',
     pagina: number,
     filasPorPagina: number,
 };
 
-export type exportPresentesExcelDTO = {
-    fecha: string,
-    proyecto: number | '',
+export type CreateEmpleadoDto = {
+  dni: number | '',
+  id_proyecto: number | '',
+  legajo: number | '',
+  nombre: string,
+  id_tipoempleado: number | '',
+};
+
+export type DeactivateEmpleadoDto = {
+    id: number;
 };

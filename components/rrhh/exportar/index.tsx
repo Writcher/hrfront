@@ -1,16 +1,15 @@
 "use client";
 
 import { useMutation } from "@tanstack/react-query";
-import { exportJornadasExcel } from "@/services/importacion/service.importar";
 import { Formulario } from "./components/formulario";
 import { useExportarExcelFormulario } from "./hooks/useExportarExcelFormulario";
 import { exportarExcelDatos } from "./types";
 import { useRouter } from "next/navigation";
-import { getFileName } from "./utils";
 import { useSnackbar } from "@/lib/context/snackbarcontext";
 import { useEffect } from "react";
 import { Botones } from "./components/botones";
 import { useSelectDatos } from "./hooks/useSelectDatos";
+import { exportResumen } from "@/services/exportar/exportar.service";
 
 export default function ExcelExportFormulario() {
 
@@ -23,22 +22,19 @@ export default function ExcelExportFormulario() {
     const {
         proyectos,
         meses,
+        tiposEmpleado,
         cargando,
         error
     } = useSelectDatos();
 
-    const nombreArchivo = proyectos && meses
-        ? getFileName(watch, { proyectos, meses })
-        : "exportacion.xlsx";
-
     const mutacionExport = useMutation({
-        mutationFn: (data: exportarExcelDatos) => exportJornadasExcel(data),
+        mutationFn: (data: exportarExcelDatos) => exportResumen(data),
         onSuccess: (response) => {
 
-            const url = window.URL.createObjectURL(response);
+            const url = window.URL.createObjectURL(response.resumen);
             const a = document.createElement("a");
             a.href = url;
-            a.download = nombreArchivo;
+            a.download = response.nombre;
             document.body.appendChild(a);
             a.click();
             a.remove();
@@ -71,7 +67,7 @@ export default function ExcelExportFormulario() {
                     <Formulario
                         control={control}
                         selectCargando={cargando}
-                        selectDatos={{ proyectos, meses }}
+                        selectDatos={{ proyectos, meses, tiposEmpleado }}
                         watch={watch}
                     />
                 </div>

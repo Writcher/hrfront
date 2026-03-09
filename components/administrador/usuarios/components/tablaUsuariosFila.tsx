@@ -5,11 +5,12 @@ import { useUsuarioFormulario } from "../hooks/useUsuarioFormulario";
 import { useMostrarFormulario } from "../hooks/useMostrarFormulario";
 import { Controller } from "react-hook-form";
 import { useEffect } from "react";
-import { editUsuarioParametros, usuarioFormularioDatos, formularioFilaUsuarioProps, tipoUsuario } from "../types";
+import { usuarioFormularioDatos, formularioFilaUsuarioProps, tipoUsuario } from "../types";
 import { BotonesFila } from "./filaUsuarioBotones";
 import { useConfirmar } from "@/components/hooks/useConfirmar";
 import { fetchTiposUsuario } from "@/services/tipousuario/service.tipousuario";
 import { deleteUsuario, editUsuario } from "@/services/usuario/service.usuario";
+import { DeleteUsuarioDto, EditUsuarioDto } from "@/lib/dtos/usuario";
 
 export default function FilaUsuario({ usuario }: formularioFilaUsuarioProps) {
 
@@ -38,7 +39,7 @@ export default function FilaUsuario({ usuario }: formularioFilaUsuarioProps) {
     }, [usuario, setValue, formularioVisible]);
 
     const mutacionEdit = useMutation({
-        mutationFn: (data: editUsuarioParametros) => editUsuario(data),
+        mutationFn: (data: EditUsuarioDto) => editUsuario(data),
         onSuccess: () => {
             handleMostrarFormulario();
             showSuccess("Usuario editado correctamente");
@@ -61,7 +62,7 @@ export default function FilaUsuario({ usuario }: formularioFilaUsuarioProps) {
     };
 
     const mutacionDelete = useMutation({
-        mutationFn: (id: number) => deleteUsuario(id),
+        mutationFn: (data: DeleteUsuarioDto) => deleteUsuario(data),
         onSuccess: () => {
             queryClient.invalidateQueries({
                 queryKey: ["fetchUsuariosTabla"]
@@ -74,9 +75,9 @@ export default function FilaUsuario({ usuario }: formularioFilaUsuarioProps) {
     });
 
     const onDelete = () => {
-        mutacionDelete.mutate(
-            usuario.id
-        );
+        mutacionDelete.mutate({
+            id: usuario.id
+        });
     };
 
     return (
@@ -155,6 +156,20 @@ export default function FilaUsuario({ usuario }: formularioFilaUsuarioProps) {
                                     error={!!error}
                                     helperText={error?.message}
                                     disabled={selectData?.length === 0 || !selectData}
+                                    slotProps={{
+                                        select: {
+                                            MenuProps: {
+                                                slotProps: {
+                                                    paper: {
+                                                        style: {
+                                                            marginTop: '4px',
+                                                            maxHeight: '200px',
+                                                        },
+                                                    },
+                                                },
+                                            },
+                                        },
+                                    }}
                                 >
                                     {selectData?.map((tipoUsuario: tipoUsuario) => (
                                         <MenuItem key={tipoUsuario.id} value={tipoUsuario.id}>

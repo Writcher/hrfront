@@ -88,6 +88,20 @@ export const Formulario = ({
                         error={!!error}
                         helperText={error?.message}
                         disabled={tiposUsuario.length === 0}
+                        slotProps={{
+                            select: {
+                                MenuProps: {
+                                    slotProps: {
+                                        paper: {
+                                            style: {
+                                                marginTop: '4px',
+                                                maxHeight: '200px',
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        }}
                     >
                         {tiposUsuario.map((tipoUsuario: tipoUsuario) => (
                             <MenuItem key={tipoUsuario.id} value={tipoUsuario.id}>

@@ -37,6 +37,20 @@ export const FormularioTipoAusencia = ({ jornada, dia, control, actualizando, ca
                             error={!!error}
                             helperText={error?.message}
                             disabled={tiposAusencia.length === 0 || !tiposAusencia}
+                            slotProps={{
+                                select: {
+                                    MenuProps: {
+                                        slotProps: {
+                                            paper: {
+                                                style: {
+                                                    marginTop: '4px',
+                                                    maxHeight: '200px',
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                            }}
                         >
                             {tiposAusencia.map((tipoAusencia: tipoAusencia) => (
                                 <MenuItem key={tipoAusencia.id} value={tipoAusencia.id}>
