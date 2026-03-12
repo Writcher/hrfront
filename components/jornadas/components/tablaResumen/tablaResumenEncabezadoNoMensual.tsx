@@ -1,35 +1,53 @@
-import { TableCell, TableHead, TableRow } from "@mui/material";
+import { TableCell, TableHead, TableRow } from '@mui/material';
 
-export const EncabezadoNoMensual = () => (
+export const TablaResumenEncabezadoNoMensual = () => (
     <TableHead>
         <TableRow>
-            <TableCell align="center">
-                <div style={{ userSelect: "none" }} className="text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]">
+            <TableCell align='center'>
+                <div
+                    style={{ userSelect: 'none' }}
+                    className='text-gray-700 font-bold text-sm'
+                >
                     Total
                 </div>
             </TableCell>
-            <TableCell align="center">
-                <div style={{ userSelect: "none" }} className="text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]">
+            <TableCell align='center'>
+                <div
+                    style={{ userSelect: 'none' }}
+                    className='text-gray-700 font-bold text-sm'
+                >
                     Total Normal
                 </div>
             </TableCell>
-            <TableCell align="center">
-                <div style={{ userSelect: "none" }} className="text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]">
+            <TableCell align='center'>
+                <div
+                    style={{ userSelect: 'none' }}
+                    className='text-gray-700 font-bold text-sm'
+                >
                     Total 50%
                 </div>
             </TableCell>
-            <TableCell align="center">
-                <div style={{ userSelect: "none" }} className="text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]">
+            <TableCell align='center'>
+                <div
+                    style={{ userSelect: 'none' }}
+                    className='text-gray-700 font-bold text-sm'
+                >
                     Total 100%
                 </div>
             </TableCell>
-            <TableCell align="center">
-                <div style={{ userSelect: "none" }} className="text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]">
+            <TableCell align='center'>
+                <div
+                    style={{ userSelect: 'none' }}
+                    className='text-gray-700 font-bold text-sm'
+                >
                     Total Feriado
                 </div>
             </TableCell>
-            <TableCell align="center">
-                <div style={{ userSelect: "none" }} className="text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]">
+            <TableCell align='center'>
+                <div
+                    style={{ userSelect: 'none' }}
+                    className='text-gray-700 font-bold text-sm'
+                >
                     Total Nocturno
                 </div>
             </TableCell>

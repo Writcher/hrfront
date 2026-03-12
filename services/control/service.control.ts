@@ -1,8 +1,8 @@
-"use server"
+'use server'
 
-import CONFIG from "@/config";
-import { CreateControlDto, DeleteControlDto, EditControlDto, FetchControlesPaginatedDto } from "@/lib/dtos/control";
-import { getToken } from "@/lib/utils/getToken";
+import CONFIG from '@/config';
+import { CreateControlDto, DeleteControlDto, EditControlDto, FetchControlesPaginatedDto } from '@/lib/dtos/control';
+import { getToken } from '@/lib/utils/getToken';
 
 export async function fetchControlesPaginated(params: FetchControlesPaginatedDto) {
     try {
@@ -14,7 +14,7 @@ export async function fetchControlesPaginated(params: FetchControlesPaginatedDto
         });
 
         const controlesRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_CONTROL}?${controlesUrlParams}`, {
-            method: "GET",
+            method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
             }
@@ -43,10 +43,10 @@ export async function createControl(params: CreateControlDto) {
         const token = await getToken();
 
         const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_CONTROL}`, {
-            method: "POST",
+            method: 'POST',
             headers: {
                 Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json"
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify(params),
         });
@@ -74,7 +74,7 @@ export async function deleteControl(params: DeleteControlDto) {
         const token = await getToken();
 
         const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_CONTROL}/${params.id_control}`, {
-            method: "DELETE",
+            method: 'DELETE',
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -104,9 +104,9 @@ export async function editControl(params: EditControlDto) {
         const token = await getToken();
 
         const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_CONTROL}/${params.id_control}`, {
-            method: "PATCH",
+            method: 'PATCH',
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({

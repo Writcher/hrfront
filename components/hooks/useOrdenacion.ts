@@ -1,5 +1,5 @@
-import { useOrdenacionProps } from "@/lib/types/hooks";
-import { useState } from "react";
+import { useOrdenacionProps } from '@/lib/types/hooks';
+import { useState } from 'react';
 
 export const useOrdenacion = ({ columnaInicial }: useOrdenacionProps) => {
 

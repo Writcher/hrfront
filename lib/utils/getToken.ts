@@ -1,13 +1,13 @@
-"use server"
+'use server'
 
-import { auth } from "@/auth";
-import jwt from "jsonwebtoken";
+import { auth } from '@/auth';
+import jwt from 'jsonwebtoken';
 
 export async function getToken() {
     const session = await auth();
 
     if (!session || !session.user) {
-        throw new Error("Usuario no autenticado");
+        throw new Error('Usuario no autenticado');
     };
 
     const token = jwt.sign(

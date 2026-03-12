@@ -1,8 +1,8 @@
-"use server";
+'use server';
 
-import CONFIG from "@/config";
-import { ImportHikVisionDto, ImportProsoftDto } from "@/lib/dtos/importar";
-import { getToken } from "@/lib/utils/getToken";
+import CONFIG from '@/config';
+import { ImportHikVisionDto, ImportProsoftDto } from '@/lib/dtos/importar';
+import { getToken } from '@/lib/utils/getToken';
 
 export async function importProsoft(params: ImportProsoftDto) {
     try {
@@ -10,12 +10,12 @@ export async function importProsoft(params: ImportProsoftDto) {
 
         const formData = new FormData();
 
-        formData.append("file", params.archivo);
-        formData.append("id_proyecto", params.proyecto.toString());
-        formData.append("id_tipojornada", params.tipoJornada.toString());
+        formData.append('file', params.archivo);
+        formData.append('id_proyecto', params.proyecto.toString());
+        formData.append('id_tipojornada', params.tipoJornada.toString());
 
         const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_IMPORTAR}/prosoft`, {
-            method: "POST",
+            method: 'POST',
             body: formData,
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -45,7 +45,7 @@ export async function importHikVision(params: ImportHikVisionDto) {
         const token = await getToken();
 
         const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_IMPORTAR}/hikvision`, {
-            method: "POST",
+            method: 'POST',
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json'

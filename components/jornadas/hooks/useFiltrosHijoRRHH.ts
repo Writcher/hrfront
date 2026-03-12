@@ -1,16 +1,14 @@
-import { hookGenericoHijoRRHHProps } from "../types";
-
-export const useFiltros = ({ setValue }: hookGenericoHijoRRHHProps<'setValue'>) => {
+export const useFiltros = ({ setValue }: any) => {
     
     const handleLimpiarFiltros = () => {
-        setValue("filtroQuincena", '');
+        setValue('filtroQuincena', '');
     };
     const handleCambioFiltroMes = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setValue("filtroMes", Number(event.target.value));
+        setValue('filtroMes', Number(event.target.value));
     };
 
     const handleCambioFiltroQuincena = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setValue("filtroQuincena", Number(event.target.value));
+        setValue('filtroQuincena', Number(event.target.value));
     };
 
     return {

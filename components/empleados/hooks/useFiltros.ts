@@ -1,6 +1,6 @@
-import { useCallback, useState } from "react";
-import debounce from "lodash.debounce";
-import { hookGenericoPadreProps } from "../types";
+import { useCallback, useState } from 'react';
+import debounce from 'lodash.debounce';
+import { hookGenericoPadreProps } from '../types';
 
 export const useFiltros = ({ setValue }: hookGenericoPadreProps<'setValue'>) => {
 
@@ -27,12 +27,12 @@ export const useFiltros = ({ setValue }: hookGenericoPadreProps<'setValue'>) => 
   };
 
   const handleLimpiarFiltros = () => {
-    setValue("busquedaNombre", "");
-    setValue("busquedaNombreNormal", "");
-    setValue("filtroProyecto", '');
-    setValue("busquedaLegajo", '');
-    setValue("busquedaLegajoNormal", '');
-    setValue("filtroTipoEmpleado", '');
+    setValue('busquedaNombre', '');
+    setValue('busquedaNombreNormal', '');
+    setValue('filtroProyecto', '');
+    setValue('busquedaLegajo', '');
+    setValue('busquedaLegajoNormal', '');
+    setValue('filtroTipoEmpleado', '');
     setBusquedaNombreVisible(false);
     setFiltroProyectoVisible(false);
     setBusquedaLegajoVisible(true);
@@ -43,11 +43,11 @@ export const useFiltros = ({ setValue }: hookGenericoPadreProps<'setValue'>) => 
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleBusquedaNombre = useCallback(debounce((searchTerm: string) => {
-    setValue("busquedaNombre", searchTerm);
+    setValue('busquedaNombre', searchTerm);
   }, 500), []);
 
   const handleCambioBusquedaNombre = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue("busquedaNombreNormal", event.target.value);
+    setValue('busquedaNombreNormal', event.target.value);
     handleBusquedaNombre(event.target.value);
     const filtrosActuales = filtrosActivos;
     setFiltrosActivos({ ...filtrosActuales, busquedaNombre: event.target.value });
@@ -55,24 +55,24 @@ export const useFiltros = ({ setValue }: hookGenericoPadreProps<'setValue'>) => 
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleBusquedaLegajo = useCallback(debounce((searchTerm: number) => {
-    setValue("busquedaLegajo", searchTerm);
+    setValue('busquedaLegajo', searchTerm);
   }, 500), []);
 
   const handleCambioBusquedaLegajo = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue("busquedaLegajoNormal", Number(event.target.value));
+    setValue('busquedaLegajoNormal', Number(event.target.value));
     handleBusquedaLegajo(Number(event.target.value));
     const filtrosActuales = filtrosActivos;
     setFiltrosActivos({ ...filtrosActuales, busquedaLegajo: Number(event.target.value) });
   };
 
   const handleCambioFiltroProyecto = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue("filtroProyecto", Number(event.target.value));
+    setValue('filtroProyecto', Number(event.target.value));
     const filtrosActuales = filtrosActivos;
     setFiltrosActivos({ ...filtrosActuales, filtroProyecto: Number(event.target.value) });
   };
 
   const handleCambioFiltroTipoEmpleado = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue("filtroTipoEmpleado", Number(event.target.value));
+    setValue('filtroTipoEmpleado', Number(event.target.value));
     const filtrosActuales = filtrosActivos;
     setFiltrosActivos({ ...filtrosActuales, filtroTipoEmpleado: Number(event.target.value) });
   };

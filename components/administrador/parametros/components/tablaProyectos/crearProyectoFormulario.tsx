@@ -1,20 +1,20 @@
-import { MenuItem, Skeleton, TextField } from "@mui/material";
-import { Controller } from "react-hook-form";
-import { formularioCrearProyectoProps, modalidadTrabajo } from "../../types";
+import { MenuItem, Skeleton, TextField } from '@mui/material';
+import { Controller } from 'react-hook-form';
+import { formularioCrearProyectoProps, modalidadTrabajo } from '../../types';
 
 export const Formulario = ({ control, cargando, modalidadesTrabajo }: formularioCrearProyectoProps) => (
-    <div className="flex flex-col items-center justify-center w-[80%] h-full gap-4">
+    <div className='flex flex-col items-center justify-center w-[80%] h-full gap-4'>
         <Controller
-            name="nombre"
+            name='nombre'
             control={control}
             render={({ field, fieldState: { error } }) => (
                 <TextField
                     {...field}
-                    id="nombre"
-                    label="Nombre"
-                    variant="outlined"
-                    color="warning"
-                    size="small"
+                    id='nombre'
+                    label='Nombre'
+                    variant='outlined'
+                    color='warning'
+                    size='small'
                     fullWidth
                     error={!!error}
                     helperText={error?.message}
@@ -22,16 +22,16 @@ export const Formulario = ({ control, cargando, modalidadesTrabajo }: formulario
             )}
         />
         <Controller
-            name="nomina"
+            name='nomina'
             control={control}
             render={({ field, fieldState: { error } }) => (
                 <TextField
                     {...field}
-                    id="nomina"
-                    label="Nombre en Nomina"
-                    variant="outlined"
-                    color="warning"
-                    size="small"
+                    id='nomina'
+                    label='Nombre en Nomina'
+                    variant='outlined'
+                    color='warning'
+                    size='small'
                     fullWidth
                     error={!!error}
                     helperText={error?.message}
@@ -40,24 +40,24 @@ export const Formulario = ({ control, cargando, modalidadesTrabajo }: formulario
         />
         {cargando ? (
             <Skeleton
-                variant="rectangular"
-                width="100%"
-                height="40px"
-                sx={{ borderRadius: "5px" }}
+                variant='rectangular'
+                width='100%'
+                height='40px'
+                sx={{ borderRadius: '5px' }}
             />
         ) : (
             <Controller
-                name="id_modalidadtrabajo"
+                name='id_modalidadtrabajo'
                 control={control}
-                rules={{ required: "Debe seleccionar una modalidado" }}
+                rules={{ required: 'Debe seleccionar una modalidado' }}
                 render={({ field, fieldState: { error } }) => (
                     <TextField
                         {...field}
-                        id="id_tipousuario"
-                        label="Modalidad de Trabajo"
-                        variant="outlined"
-                        color="warning"
-                        size="small"
+                        id='id_tipousuario'
+                        label='Modalidad de Trabajo'
+                        variant='outlined'
+                        color='warning'
+                        size='small'
                         select
                         fullWidth
                         error={!!error}

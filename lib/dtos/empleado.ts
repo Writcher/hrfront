@@ -10,7 +10,7 @@ export type  FetchEmpleadosDto = {
     pagina: number,
     filasPorPagina: number,
     ordenColumna: string,
-    ordenDireccion: "ASC" | "DESC",
+    ordenDireccion: 'ASC' | 'DESC',
 };
 
 export type EditEmpleadoDto = {
@@ -23,14 +23,6 @@ export type FetchAsistenciaDto = {
     proyecto: number | '',
     pagina: number,
     filasPorPagina: number,
-};
-
-export type CreateEmpleadoDto = {
-  dni: number | '',
-  id_proyecto: number | '',
-  legajo: number | '',
-  nombre: string,
-  id_tipoempleado: number | '',
 };
 
 export type DeactivateEmpleadoDto = {

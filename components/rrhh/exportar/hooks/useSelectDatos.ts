@@ -1,17 +1,17 @@
-import { fetchMeses } from "@/services/mes/service.mes";
-import { fetchProyectos } from "@/services/proyecto/service.proyecto";
-import { fetchTiposEmpleado } from "@/services/tipoempleado/service.tipoempleado";
-import { useQuery } from "@tanstack/react-query";
+import { fetchMeses } from '@/services/mes/service.mes';
+import { fetchProyectos } from '@/services/proyecto/service.proyecto';
+import { fetchTiposEmpleado } from '@/services/tipoempleado/service.tipoempleado';
+import { useQuery } from '@tanstack/react-query';
 
 export const useSelectDatos = () => {
     const { data: proyectos, isLoading: proyectosCargando, isError: proyectosError } = useQuery({
-        queryKey: ["fetchProyectos"],
+        queryKey: ['fetchProyectos'],
         queryFn: () => fetchProyectos(),
         refetchOnWindowFocus: false,
     });
 
     const { data: meses, isLoading: mesesCargando, isError: mesesError } = useQuery({
-        queryKey: ["fetchMeses"],
+        queryKey: ['fetchMeses'],
         queryFn: () => fetchMeses(),
         refetchOnWindowFocus: false,
     });

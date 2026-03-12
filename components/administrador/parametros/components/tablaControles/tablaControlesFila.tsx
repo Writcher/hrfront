@@ -1,15 +1,15 @@
-import { Chip, MenuItem, TableCell, TableRow, TextField } from "@mui/material";
-import { controlFormularioDatos, deleteControlParametros, deleteProyectoParametros, editControlParametros, editProyectoParametros, filaControlProps, filaProyectoProps, modalidadTrabajo, proyectoSelect } from "../../types";
-import { useSnackbar } from "@/lib/context/snackbarcontext";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { deleteProyecto, editProyecto, fetchProyectos } from "@/services/proyecto/service.proyecto";
-import { useConfirmar } from "@/components/hooks/useConfirmar";
-import { useEffect } from "react";
-import { useMostrarFormulario } from "../../hooks/useMostrarFormulario";
-import { Controller } from "react-hook-form";
-import { BotonesFila } from "./filaControlesBotones";
-import { useControlFormulario } from "../../hooks/useControlFormulario";
-import { deleteControl, editControl } from "@/services/control/service.control";
+import { Chip, MenuItem, TableCell, TableRow, TextField } from '@mui/material';
+import { controlFormularioDatos, deleteControlParametros, deleteProyectoParametros, editControlParametros, editProyectoParametros, filaControlProps, filaProyectoProps, modalidadTrabajo, proyectoSelect } from '../../types';
+import { useSnackbar } from '@/lib/context/snackbarcontext';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { deleteProyecto, editProyecto, fetchProyectos } from '@/services/proyecto/service.proyecto';
+import { useConfirmar } from '@/components/hooks/useConfirmar';
+import { useEffect } from 'react';
+import { useMostrarFormulario } from '../../hooks/useMostrarFormulario';
+import { Controller } from 'react-hook-form';
+import { BotonesFila } from './filaControlesBotones';
+import { useControlFormulario } from '../../hooks/useControlFormulario';
+import { deleteControl, editControl } from '@/services/control/service.control';
 
 export default function FilaControl({ control }: filaControlProps) {
 
@@ -24,7 +24,7 @@ export default function FilaControl({ control }: filaControlProps) {
     const queryClient = useQueryClient();
 
     const { data: selectDatos, isLoading: selectCargando, isError: selectError } = useQuery({
-        queryKey: ["fetchProyectos"],
+        queryKey: ['fetchProyectos'],
         queryFn: () => fetchProyectos(),
         refetchOnWindowFocus: false,
     });
@@ -41,13 +41,13 @@ export default function FilaControl({ control }: filaControlProps) {
         onSuccess: () => {
             reset();
             setFormularioVisible(!formularioVisible)
-            showSuccess("Control editado correctamente");
+            showSuccess('Control editado correctamente');
             queryClient.invalidateQueries({
-                queryKey: ["fetchControlesPaginated"]
+                queryKey: ['fetchControlesPaginated']
             });
         },
         onError: () => {
-            showError("Error al eliminar control");
+            showError('Error al eliminar control');
         },
     });
 
@@ -63,13 +63,13 @@ export default function FilaControl({ control }: filaControlProps) {
         mutationFn: (data: deleteControlParametros) => deleteControl(data),
         onSuccess: () => {
             reset();
-            showSuccess("Control eliminado correctamente");
+            showSuccess('Control eliminado correctamente');
             queryClient.invalidateQueries({
-                queryKey: ["fetchControlesPaginated"]
+                queryKey: ['fetchControlesPaginated']
             });
         },
         onError: () => {
-            showError("Error al eliminar control");
+            showError('Error al eliminar control');
         },
     });
 
@@ -81,31 +81,31 @@ export default function FilaControl({ control }: filaControlProps) {
 
     useEffect(() => {
         if (selectError) {
-            showWarning("Error al cargar los datos")
+            showWarning('Error al cargar los datos')
         };
     }, [selectError])
 
     return (
         <TableRow>
-            <TableCell align="left" size="small">
-                <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.75rem)]" style={{ userSelect: "none" }}>
+            <TableCell align='left' size='small'>
+                <div className='text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.75rem)]' style={{ userSelect: 'none' }}>
                     {control.id}
                 </div>
             </TableCell>
-            <TableCell align="center" size="small">
-                <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]" style={{ userSelect: "none" }}>
+            <TableCell align='center' size='small'>
+                <div className='text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]' style={{ userSelect: 'none' }}>
                     {formularioVisible ? (
                         <Controller
-                            name="serie"
+                            name='serie'
                             control={controlForm}
-                            rules={{ required: "Debe ingresar un numero de serie" }}
+                            rules={{ required: 'Debe ingresar un numero de serie' }}
                             render={({ field, fieldState: { error } }) => (
                                 <TextField
                                     {...field}
-                                    id="serie"
-                                    variant="outlined"
-                                    color="warning"
-                                    size="small"
+                                    id='serie'
+                                    variant='outlined'
+                                    color='warning'
+                                    size='small'
                                     fullWidth
                                     error={!!error}
                                     helperText={error?.message}
@@ -119,20 +119,20 @@ export default function FilaControl({ control }: filaControlProps) {
                     )}
                 </div>
             </TableCell>
-            <TableCell align="center" size="small">
-                <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]" style={{ userSelect: "none" }}>
+            <TableCell align='center' size='small'>
+                <div className='text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]' style={{ userSelect: 'none' }}>
                     {formularioVisible ? (
                         <Controller
-                            name="id_proyecto"
+                            name='id_proyecto'
                             control={controlForm}
-                            rules={{ required: "Debe seleccionar un proyecto" }}
+                            rules={{ required: 'Debe seleccionar un proyecto' }}
                             render={({ field, fieldState: { error } }) => (
                                 <TextField
                                     {...field}
-                                    id="id_proyecto"
-                                    variant="outlined"
-                                    color="warning"
-                                    size="small"
+                                    id='id_proyecto'
+                                    variant='outlined'
+                                    color='warning'
+                                    size='small'
                                     select
                                     fullWidth
                                     error={!!error}
@@ -168,7 +168,7 @@ export default function FilaControl({ control }: filaControlProps) {
                     )}
                 </div>
             </TableCell>
-            <TableCell align="right" size="small">
+            <TableCell align='right' size='small'>
                 <BotonesFila
                     editando={mutacionEdit.isPending}
                     borrando={mutacionDelete.isPending}

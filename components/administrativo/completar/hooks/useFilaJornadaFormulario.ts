@@ -1,13 +1,13 @@
-import { useForm } from "react-hook-form"
-import { filaJornadaFormularioDatos, jornada } from "../types"
+import { useForm } from 'react-hook-form'
+import { filaJornadaFormularioDatos, jornada } from '../types'
 
 export const useFilaJornadaFormulario = (jornada: jornada) => {
     return useForm<filaJornadaFormularioDatos>({
         defaultValues: {
             id: jornada.id,
-            entrada: jornada.entrada ? jornada.entrada : "",
-            salida: jornada.salida ? jornada.salida : "",
-            tipoAusencia: jornada.id_tipoausencia ? jornada.id_tipoausencia : "",
+            entrada: jornada.entrada ? jornada.entrada : '',
+            salida: jornada.salida ? jornada.salida : '',
+            tipoAusencia: jornada.id_tipoausencia ? jornada.id_tipoausencia : '',
         }
     });
 };

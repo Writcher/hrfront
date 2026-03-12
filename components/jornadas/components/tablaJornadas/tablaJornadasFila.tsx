@@ -1,17 +1,18 @@
-import { TableRow } from "@mui/material";
-import { getDia } from "../../utils";
-import { filaJornadaProps, useObservacionFormularioDatos } from "../../types";
-import { useState } from "react";
-import { SubmitHandler } from "react-hook-form";
-import { useObservacionFormulario } from "../../hooks/useFormularioObservacion";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useSnackbar } from "@/lib/context/snackbarcontext";
-import { createObservacion, deleteObservacion } from "@/services/observacion/service.observacion";
-import { Informacion } from "./filaJornadasInformacion";
-import { Formulario } from "./filaJornadasFormulario";
-import { CreateObservacionDto, DeleteObservacionDto } from "@/lib/dtos/observacion";
+import { TableRow } from '@mui/material';
+import { getDia } from '../../utils';
+import { useState } from 'react';
+import { SubmitHandler } from 'react-hook-form';
+import { useObservacionFormulario } from '../../hooks/useFormularioObservacion';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useSnackbar } from '@/lib/context/snackbarcontext';
+import { createObservacion, deleteObservacion } from '@/services/observacion/service.observacion';
+import { FilaJornadaInformacion } from './filaJornadasInformacion';
+import { FilaJornadaFormulario } from './filaJornadasFormulario';
+import { CreateObservacionDto, DeleteObservacionDto } from '@/lib/dtos/observacion';
+import { TablaJornadasFilaProps } from '../../types/tablaJornadas/tablaJornadasFilaProps';
+import { ObservacionForm } from '../../types/tablaJornadas/useObservacionForm';
 
-export function FilaJornada({ jornada }: filaJornadaProps) {
+export function TablaJornadasFila({ jornada }: TablaJornadasFilaProps) {
 
     const { control, reset, handleSubmit, formState: { isValid } } = useObservacionFormulario();
 
@@ -24,19 +25,19 @@ export function FilaJornada({ jornada }: filaJornadaProps) {
     const mutacionCreate = useMutation({
         mutationFn: (datos: CreateObservacionDto) => createObservacion(datos),
         onSuccess: () => {
-            showSuccess("Observacion creada correctamente");
+            showSuccess('Observacion creada correctamente');
             reset();
             setObservacionFormulario(false);
             queryClient.invalidateQueries({
-                queryKey: ["fetchJornadasEmpleado"]
+                queryKey: ['fetchJornadasEmpleado']
             });
         },
         onError: () => {
-            showError("Error al crear observacion");
+            showError('Error al crear observacion');
         }
     });
 
-    const onCreate: SubmitHandler<useObservacionFormularioDatos> = (datos) => {
+    const onCreate: SubmitHandler<ObservacionForm> = (datos) => {
         mutacionCreate.mutate({
             observacion: datos.observacion,
             id_jornada: jornada.id,
@@ -48,11 +49,11 @@ export function FilaJornada({ jornada }: filaJornadaProps) {
         onSuccess: () => {
             showSuccess('Observacion eliminada correctamente');
             queryClient.invalidateQueries({
-                queryKey: ["fetchJornadasEmpleado"]
+                queryKey: ['fetchJornadasEmpleado']
             });
         },
         onError: () => {
-            showError("Error al eliminar observacion");
+            showError('Error al eliminar observacion');
         }
     });
 
@@ -65,7 +66,7 @@ export function FilaJornada({ jornada }: filaJornadaProps) {
     return (
         <TableRow>
             {observacionFormulario ? (
-                <Formulario
+                <FilaJornadaFormulario
                     fecha={jornada.fecha}
                     dia={dia}
                     control={control}
@@ -75,7 +76,7 @@ export function FilaJornada({ jornada }: filaJornadaProps) {
                     setObservacionFormulario={setObservacionFormulario}
                 />
             ) : (
-                <Informacion
+                <FilaJornadaInformacion
                     dia={dia}
                     jornada={jornada}
                     onDelete={onDelete}

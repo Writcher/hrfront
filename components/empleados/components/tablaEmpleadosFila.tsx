@@ -1,16 +1,16 @@
-import { Chip, MenuItem, TableCell, TableRow, TextField } from "@mui/material";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deactivateEmpleado, editEmpleado } from "@/services/empleado/service.empleado";
-import { useSnackbar } from "@/lib/context/snackbarcontext";
-import { useEmpleadoFormulario } from "../hooks/useEmpleadoFormulario";
-import { Controller } from "react-hook-form";
-import { useEffect } from "react";
-import { editEmpleadoParametros, empleadoFormularioDatos, formularioFilaEmpleadoProps, turno } from "../types";
-import { BotonesFila } from "./filaEmpleadosBotones";
-import { useConfirmar } from "../../hooks/useConfirmar";
-import { useMostrarFormulario } from "../hooks/useMostrarFormulario";
-import { useSelectDatos } from "../hooks/useSelectDatos";
-import { DeactivateEmpleadoDto } from "@/lib/dtos/empleado";
+import { Chip, MenuItem, TableCell, TableRow, TextField } from '@mui/material';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { deactivateEmpleado, editEmpleado } from '@/services/empleado/service.empleado';
+import { useSnackbar } from '@/lib/context/snackbarcontext';
+import { useEmpleadoFormulario } from '../hooks/useEmpleadoFormulario';
+import { Controller } from 'react-hook-form';
+import { useEffect } from 'react';
+import { editEmpleadoParametros, empleadoFormularioDatos, formularioFilaEmpleadoProps, turno } from '../types';
+import { BotonesFila } from './filaEmpleadosBotones';
+import { useConfirmar } from '../../hooks/useConfirmar';
+import { useMostrarFormulario } from '../hooks/useMostrarFormulario';
+import { useSelectDatos } from '../hooks/useSelectDatos';
+import { DeactivateEmpleadoDto } from '@/lib/dtos/empleado';
 
 export default function FilaEmpleado({ empleado }: formularioFilaEmpleadoProps) {
 
@@ -25,11 +25,7 @@ export default function FilaEmpleado({ empleado }: formularioFilaEmpleadoProps) 
     const { confirmar: confirmarBaja, handleConfirmar: handleConfirmarBaja } = useConfirmar();
 
     const {
-        //proyectos,
-        //tiposEmpleado,
         turnos,
-        //cargando,
-        //error
     } = useSelectDatos();
 
     useEffect(() => {
@@ -47,13 +43,13 @@ export default function FilaEmpleado({ empleado }: formularioFilaEmpleadoProps) 
         mutationFn: (data: editEmpleadoParametros) => editEmpleado(data),
         onSuccess: () => {
             handleMostrarFormulario();
-            showSuccess("Empleado editado correctamente");
+            showSuccess('Empleado editado correctamente');
             queryClient.invalidateQueries({
-                queryKey: ["fetchEmpleadosTablaJornadas"]
+                queryKey: ['fetchEmpleadosTablaJornadas']
             });
         },
         onError: () => {
-            showError("Error al eliminar empleado");
+            showError('Error al eliminar empleado');
         },
     });
 
@@ -73,12 +69,12 @@ export default function FilaEmpleado({ empleado }: formularioFilaEmpleadoProps) 
         mutationFn: (data: DeactivateEmpleadoDto) => deactivateEmpleado(data),
         onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: ["fetchEmpleadosTablaJornadas"]
+                queryKey: ['fetchEmpleadosTablaJornadas']
             });
-            showSuccess("Empleado dado de baja correctamente");
+            showSuccess('Empleado dado de baja correctamente');
         },
         onError: () => {
-            showError("Error al dar de baja empleado");
+            showError('Error al dar de baja empleado');
         },
     });
 
@@ -90,39 +86,39 @@ export default function FilaEmpleado({ empleado }: formularioFilaEmpleadoProps) 
 
     return (
         <TableRow>
-            <TableCell align="center" size="small">
-                <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.75rem)]" style={{ userSelect: "none" }}>
+            <TableCell align='center' size='small'>
+                <div className='text-gray-700 font-medium' style={{ userSelect: 'none' }}>
                     {empleado.legajo}
                 </div>
             </TableCell>
-            <TableCell align="center" size="small">
-                <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]" style={{ userSelect: "none" }}>
+            <TableCell align='center' size='small'>
+                <div className='text-gray-700 font-medium' style={{ userSelect: 'none' }}>
                     {empleado.dni}
                 </div>
             </TableCell>
-            <TableCell align="center" size="small">
-                <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]" style={{ userSelect: "none" }}>
+            <TableCell align='center' size='small'>
+                <div className='text-gray-700 font-medium' style={{ userSelect: 'none' }}>
                     {empleado.nombre}
                 </div>
             </TableCell>
-            <TableCell align="center" size="small">
-                <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]" style={{ userSelect: "none" }}>
+            <TableCell align='center' size='small'>
+                <div className='text-gray-700 font-medium' style={{ userSelect: 'none' }}>
                     {empleado.tipoempleado}
                 </div>
             </TableCell>
-            <TableCell align="center" size="small">
-                <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]" style={{ userSelect: "none" }}>
+            <TableCell align='center' size='small'>
+                <div className='text-gray-700 font-medium' style={{ userSelect: 'none' }}>
                     {formularioVisible ? (
                         <Controller
-                            name="id_modalidadvalidacion"
+                            name='id_modalidadvalidacion'
                             control={control}
                             render={({ field, fieldState: { error } }) => (
                                 <TextField
                                     {...field}
-                                    id="id_modalidadvalidacion"
-                                    variant="outlined"
-                                    color="warning"
-                                    size="small"
+                                    id='id_modalidadvalidacion'
+                                    variant='outlined'
+                                    color='warning'
+                                    size='small'
                                     select
                                     fullWidth
                                     error={!!error}
@@ -158,23 +154,23 @@ export default function FilaEmpleado({ empleado }: formularioFilaEmpleadoProps) 
                     )}
                 </div>
             </TableCell>
-            <TableCell align="center" size="small">
-                <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]" style={{ userSelect: "none" }}>
+            <TableCell align='center' size='small'>
+                <div className='text-gray-700 font-medium' style={{ userSelect: 'none' }}>
                     {empleado.nombreproyecto}
                 </div>
             </TableCell>
-            <TableCell align="center" size="small">
-                <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.75rem)]" style={{ userSelect: "none" }}>
+            <TableCell align='center' size='small'>
+                <div className='text-gray-700 font-medium' style={{ userSelect: 'none' }}>
                     <Chip
                         label={empleado.estadoempleado}
-                        className="!rounded"
+                        className='!rounded'
                         color={
                             empleado.estadoempleado.toLowerCase() === 'activo' ? 'success' : 'error'
                         }
                     />
                 </div>
             </TableCell>
-            <TableCell align="right" size="small">
+            <TableCell align='right' size='small'>
                 <BotonesFila
                     editando={mutacionEdit.isPending}
                     desactivando={mutacionDeactivate.isPending}

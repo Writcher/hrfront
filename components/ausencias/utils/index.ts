@@ -1,4 +1,4 @@
-import { proyecto, tipoAusencia, tipoEmpleado, mes } from "../types";
+import { proyecto, tipoAusencia, tipoEmpleado, mes } from '../types';
 
 export const getNombreProyecto = (selectDatos: proyecto[]) => {
     const getNombreProyectoPorId = (id: number) => {
@@ -40,7 +40,7 @@ export const getNombreMes = (selectDatos: mes[]) => {
     const getNombreMesPorId = (id: number) => {
         const nombreMes = selectDatos?.find((mes: mes) => mes.id === Number(id));
 
-        const nombre = nombreMes ? getNombreMesGen(nombreMes.mes) : "Desconocido"
+        const nombre = nombreMes ? getNombreMesGen(nombreMes.mes) : 'Desconocido'
 
         return nombre
     };
@@ -51,7 +51,7 @@ export const getNombreMes = (selectDatos: mes[]) => {
 export const formatHorasMinutos = (total: number) => {
     const horas = Math.floor(total);
     const minutos = Math.round((total - horas) * 60);
-    const minutosFormateados = String(minutos).padStart(2, "0");
+    const minutosFormateados = String(minutos).padStart(2, '0');
     return `${horas}:${minutosFormateados} hs`;
 };
 
@@ -62,6 +62,6 @@ export const getDia = (fecha: string) => {
 };
 
 export const getNombreMesGen = (mes: number) => {
-    const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-    return meses[mes - 1] ?? "";
+    const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+    return meses[mes - 1] ?? '';
 };

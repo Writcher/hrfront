@@ -1,6 +1,6 @@
 export type fetchImportacionesDTO = {
     filtroIncompletas: boolean;
-    filtroProyecto: number | "";
+    filtroProyecto: number | '';
     pagina: number;
     filasPorPagina: number;
 };

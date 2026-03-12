@@ -2,14 +2,14 @@
 'use server'
 
 import CONFIG from '@/config';
-import { getToken } from "@/lib/utils/getToken";
+import { getToken } from '@/lib/utils/getToken';
 
 export async function syncEmpleados() {
     try {
         const token = await getToken();
 
         const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_SYNC}`, {
-            method: "POST",
+            method: 'POST',
             headers: {
                 Authorization: `Bearer ${token}`,
             },

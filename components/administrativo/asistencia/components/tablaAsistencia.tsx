@@ -1,8 +1,8 @@
-import { Table, TableBody, TableContainer } from "@mui/material";
-import FilaPresentes from "./tablaAsistenciaFila";
-import { tablaPresentesProps, empleado } from "../types";
-import { Esqueleto } from "./tablaAsistenciaEsqueleto";
-import { Encabezado } from "./tablaAsistenciaEncabezado";
+import { Table, TableBody, TableContainer } from '@mui/material';
+import FilaPresentes from './tablaAsistenciaFila';
+import { tablaPresentesProps, empleado } from '../types';
+import { Esqueleto } from './tablaAsistenciaEsqueleto';
+import { Encabezado } from './tablaAsistenciaEncabezado';
 
 export const TablaPresentes = ({
   empleados,
@@ -13,7 +13,7 @@ export const TablaPresentes = ({
   return (
     <>
       {cargando || empleados && empleados.length > 0 ? (
-        <TableContainer className="outer-table-container">
+        <TableContainer className='outer-table-container'>
           <Table stickyHeader>
             <Encabezado
             />
@@ -36,7 +36,7 @@ export const TablaPresentes = ({
         </TableContainer>
       ) : null}
       {!cargando && (!empleados || empleados.length === 0) && (
-        <div className="flex items-center justify-center py-[5vh] h-full w-full text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.8rem)]">
+        <div className='flex items-center justify-center py-[5vh] h-full w-full text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.8rem)]'>
           No se encontraron empleados presentes
         </div>
       )}

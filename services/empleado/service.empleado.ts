@@ -1,8 +1,8 @@
-"use server"
+'use server'
 
-import CONFIG from "@/config";
-import { CreateEmpleadoDto, DeactivateEmpleadoDto, EditEmpleadoDto, FetchEmpleadosDto, FetchAsistenciaDto } from "@/lib/dtos/empleado";
-import { getToken } from "@/lib/utils/getToken";
+import CONFIG from '@/config';
+import { DeactivateEmpleadoDto, EditEmpleadoDto, FetchEmpleadosDto, FetchAsistenciaDto } from '@/lib/dtos/empleado';
+import { getToken } from '@/lib/utils/getToken';
 
 export async function fetchEmpleados(params: FetchEmpleadosDto) {
     try {
@@ -47,7 +47,7 @@ export async function fetchEmpleados(params: FetchEmpleadosDto) {
         const empleadosUrlParams = new URLSearchParams(empleadosParams);
 
         const empleadosRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_EMPLEADO}?${empleadosUrlParams}`, {
-            method: "GET",
+            method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
             }
@@ -71,49 +71,12 @@ export async function fetchEmpleados(params: FetchEmpleadosDto) {
     };
 };
 
-export async function createEmpleado(params: CreateEmpleadoDto) {
-    try {
-        const token = await getToken();
-
-        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_EMPLEADO}`, {
-            method: "POST",
-            headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                nombre: params.nombre,
-                legajo: params.legajo === '' ? null : params.legajo,
-                dni: params.dni,
-                id_tipoempleado: params.id_tipoempleado === '' ? null : params.id_tipoempleado,
-                id_proyecto: params.id_proyecto === '' ? null : params.id_proyecto,
-            }),
-        });
-
-        if (!respuestaRaw.ok) {
-            throw new Error(`Error creating empleado: ${respuestaRaw.status} - ${respuestaRaw.statusText}`);
-        };
-
-        const respuesta = await respuestaRaw.json();
-
-        return respuesta;
-    } catch (error) {
-        console.error('Create empleado failed: ', {
-            timestamp: new Date().toISOString(),
-            error: error instanceof Error ? error.message : error,
-            stack: error instanceof Error ? error.stack : undefined
-        });
-
-        throw error;
-    };
-};
-
 export async function deactivateEmpleado(params: DeactivateEmpleadoDto) {
     try {
         const token = await getToken();
 
         const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_EMPLEADO}/${params.id}`, {
-            method: "DELETE",
+            method: 'DELETE',
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -143,9 +106,9 @@ export async function editEmpleado(params: EditEmpleadoDto) {
         const token = await getToken();
 
         const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_EMPLEADO}/${params.id}`, {
-            method: "PATCH",
+            method: 'PATCH',
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({
@@ -184,7 +147,7 @@ export async function fetchAsistencia(params: FetchAsistenciaDto) {
         });
 
         const asistenciaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_ASISTENCIA}?${asistenciaUrlParams.toString()}`, {
-            method: "GET",
+            method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
             }

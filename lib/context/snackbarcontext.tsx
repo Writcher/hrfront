@@ -1,10 +1,10 @@
-"use client";
+'use client';
 import React, { createContext, useContext, useState, ReactNode, useCallback } from 'react';
-import Alert from "@mui/material/Alert";
-import Slide, { SlideProps } from "@mui/material/Slide";
-import Snackbar from "@mui/material/Snackbar";
+import Alert from '@mui/material/Alert';
+import Slide, { SlideProps } from '@mui/material/Slide';
+import Snackbar from '@mui/material/Snackbar';
 
-type SnackbarSeverity = "success" | "error" | "warning" | "info";
+type SnackbarSeverity = 'success' | 'error' | 'warning' | 'info';
 
 interface SnackbarMessage {
   id: string;
@@ -24,7 +24,7 @@ interface SnackbarContextType {
 const SnackbarContext = createContext<SnackbarContextType | undefined>(undefined);
 
 function SlideTransition(props: SlideProps) {
-  return <Slide {...props} direction="up" />;
+  return <Slide {...props} direction='up' />;
 }
 
 export function SnackbarProvider({ children }: { children: ReactNode }) {
@@ -42,19 +42,19 @@ export function SnackbarProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const showSuccess = useCallback((message: string, duration?: number) => {
-    showSnackbar(message, "success", duration);
+    showSnackbar(message, 'success', duration);
   }, [showSnackbar]);
 
   const showError = useCallback((message: string, duration?: number) => {
-    showSnackbar(message, "error", duration);
+    showSnackbar(message, 'error', duration);
   }, [showSnackbar]);
 
   const showWarning = useCallback((message: string, duration?: number) => {
-    showSnackbar(message, "warning", duration);
+    showSnackbar(message, 'warning', duration);
   }, [showSnackbar]);
 
   const showInfo = useCallback((message: string, duration?: number) => {
-    showSnackbar(message, "info", duration);
+    showSnackbar(message, 'info', duration);
   }, [showSnackbar]);
 
   return (
@@ -97,7 +97,7 @@ export function SnackbarProvider({ children }: { children: ReactNode }) {
             <Alert
               onClose={handleClose}
               severity={snackbar.severity}
-              variant="filled"
+              variant='filled'
             >
               {snackbar.message}
             </Alert>

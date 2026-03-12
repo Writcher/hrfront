@@ -1,5 +1,5 @@
-import { BaseSyntheticEvent, SyntheticEvent } from "react";
-import { Control, FieldValues, UseFormGetValues, UseFormReset, UseFormSetValue, UseFormWatch } from "react-hook-form";
+import { BaseSyntheticEvent, SyntheticEvent } from 'react';
+import { Control, FieldValues, UseFormGetValues, UseFormReset, UseFormSetValue, UseFormWatch } from 'react-hook-form';
 
 //schema
 
@@ -227,6 +227,7 @@ export type formularioTipoAusenciaProps = {
   actualizando: boolean,
   camposValidos: boolean,
   onUpdate: (e?: BaseSyntheticEvent<object, any, any> | undefined) => Promise<void>,
+  onDelete: (id: number) => void,
   setTipoAusenciaFormulario: () => void,
 };
 

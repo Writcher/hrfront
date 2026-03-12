@@ -1,18 +1,18 @@
-"use server"
+'use server'
 
-import CONFIG from "@/config";
-import { FetchObservacionesEmpleadoDto, CreateObservacionDto, DeleteObservacionDto } from "@/lib/dtos/observacion";
-import { getToken } from "@/lib/utils/getToken";
+import CONFIG from '@/config';
+import { FetchObservacionesEmpleadoDto, CreateObservacionDto, DeleteObservacionDto } from '@/lib/dtos/observacion';
+import { getToken } from '@/lib/utils/getToken';
 
 export async function createObservacion(params: CreateObservacionDto) {
     try {
         const token = await getToken();
 
         const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_JORNADA}/${params.id_jornada}/observacion`, {
-            method: "POST",
+            method: 'POST',
             headers: {
                 Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json"
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({
                 texto: params.observacion
@@ -57,7 +57,7 @@ export async function fetchObservacionesEmpleado(params: FetchObservacionesEmple
         const observacionesUrlParams = new URLSearchParams(observacionesParams);
 
         const observacionesRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_EMPLEADO}/${params.id_empleado}/observacion?${observacionesUrlParams}`, {
-            method: "GET",
+            method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
             }

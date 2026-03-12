@@ -1,20 +1,20 @@
-"use client"
+'use client'
 
-import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { usePaginacion } from "../../hooks/usePaginacion";
-import { useTablaJornadasFiltro } from "./hooks/useTablaJornadasFiltro";
-import { setImportacionCompleta } from "@/services/importacion/service.importacion";
-import { TablePagination } from "@mui/material";
-import { TablaJornadas } from "./components/tablaJornadas";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { fetchJornadasPorImportacion } from "@/services/jornada/service.jornada";
-import { useSnackbar } from "@/lib/context/snackbarcontext";
-import { importacionJornadasProps } from "./types";
-import { useEstadoBoton } from "./hooks/useEstadoBoton";
-import { Botones } from "./components/tablaJornadasBotones";
-import { fetchTiposAusencia } from "@/services/tipoausencia/service.tipoausencia";
-import { SetImportacionCompletaDto } from "@/lib/dtos/importacion";
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { usePaginacion } from '../../hooks/usePaginacion';
+import { useTablaJornadasFiltro } from './hooks/useTablaJornadasFiltro';
+import { setImportacionCompleta } from '@/services/importacion/service.importacion';
+import { TablePagination } from '@mui/material';
+import { TablaJornadas } from './components/tablaJornadas';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { fetchJornadasPorImportacion } from '@/services/jornada/service.jornada';
+import { useSnackbar } from '@/lib/context/snackbarcontext';
+import { importacionJornadasProps } from './types';
+import { useEstadoBoton } from './hooks/useEstadoBoton';
+import { Botones } from './components/tablaJornadasBotones';
+import { fetchTiposAusencia } from '@/services/tipoausencia/service.tipoausencia';
+import { SetImportacionCompletaDto } from '@/lib/dtos/importacion';
 
 export default function Completar({ id_importacion }: importacionJornadasProps) {
 
@@ -26,24 +26,24 @@ export default function Completar({ id_importacion }: importacionJornadasProps) 
 
     useEffect(() => {
         handleCambioPagina(null, 0);
-    }, [watch("filtroMarcasIncompletas")]);
+    }, [watch('filtroMarcasIncompletas')]);
 
     const router = useRouter();
 
     const queryClient = useQueryClient();
 
     const { data: selectDatos, isError: selectError, isLoading: selectCargando } = useQuery({
-        queryKey: ["fetchTiposAusencia"],
+        queryKey: ['fetchTiposAusencia'],
         queryFn: () => fetchTiposAusencia(),
         refetchOnWindowFocus: false
     });
 
     const { data: jornadasDatos, isLoading: jornadasCargando, isError: jornadasError } = useQuery({
         queryKey: [
-            "fetchJornadasPorImportacion",
+            'fetchJornadasPorImportacion',
             pagina,
             filasPorPagina,
-            watch("filtroMarcasIncompletas")
+            watch('filtroMarcasIncompletas')
         ],
         queryFn: () => fetchJornadasPorImportacion({
             id_importacion,
@@ -56,14 +56,14 @@ export default function Completar({ id_importacion }: importacionJornadasProps) 
     const mutacionComplete = useMutation({
         mutationFn: (data: SetImportacionCompletaDto) => setImportacionCompleta(data),
         onSuccess: () => {
-            showSuccess("Importación completada correctamente");
+            showSuccess('Importación completada correctamente');
             queryClient.invalidateQueries({
-                queryKey: ["fetchImportaciones"]
+                queryKey: ['fetchImportaciones']
             });
             router.push(`/administrativo/importaciones`);
         },
         onError: () => {
-            showError("Error al completar importación");
+            showError('Error al completar importación');
         },
     });
 
@@ -73,18 +73,18 @@ export default function Completar({ id_importacion }: importacionJornadasProps) 
 
     useEffect(() => {
         if (jornadasError) {
-            showWarning("Error al cargar las jornadas");
+            showWarning('Error al cargar las jornadas');
         };
         if (selectError) {
-            showWarning("Error al cargar los datos");
+            showWarning('Error al cargar los datos');
         };
     }, [jornadasError, selectError, showWarning]);
 
     const deshabilitado = useEstadoBoton({ totalIncompletoProp: jornadasDatos?.totalJornadas, cargando: jornadasCargando });
 
     return (
-        <div className="flex flex-col gap-1 items-start w-full h-full">
-            <div className="flex flex-col justify-between w-full h-full overflow-y-auto border-2 border-[#ED6C02] rounded">
+        <div className='flex flex-col gap-2 sm:gap-3 items-start w-full h-full overflow-hidden'>
+            <div className='flex flex-col w-full flex-1 min-h-0 rounded border-2 border-orange-500 overflow-hidden'>
                 <TablaJornadas
                     jornadas={jornadasDatos?.jornadas || []}
                     cargando={jornadasCargando}
@@ -93,25 +93,24 @@ export default function Completar({ id_importacion }: importacionJornadasProps) 
                     tiposAusenciaCargando={selectCargando}
                 />
                 {(jornadasCargando || (jornadasDatos?.jornadas.length ?? 0) > 0) && (
-                    <div className="flex justify-end items-center overflow-x-hide"
-                        style={{ borderTop: "2px solid #ED6C02" }}>
+                    <div className='shrink-0 flex justify-end items-center border-t-2 border-orange-500'>
                         <TablePagination
                             rowsPerPageOptions={[25, 50]}
-                            component="div"
+                            component='div'
                             count={jornadasDatos?.totalJornadas || 0}
                             rowsPerPage={filasPorPagina}
                             page={pagina}
                             onPageChange={handleCambioPagina}
                             onRowsPerPageChange={handleCambioFilasPorPagina}
-                            labelRowsPerPage="Filas por página"
+                            labelRowsPerPage='Filas por página'
                             labelDisplayedRows={({ from, to, count }) =>
                                 `${from}-${to} de ${count !== -1 ? count : `más de ${to}`}`
                             }
                             slotProps={{
                                 select: {
                                     MenuProps: {
-                                        anchorOrigin: { vertical: "top", horizontal: "right" },
-                                        transformOrigin: { vertical: "top", horizontal: "left" }
+                                        anchorOrigin: { vertical: 'top', horizontal: 'right' },
+                                        transformOrigin: { vertical: 'top', horizontal: 'left' }
                                     },
                                 }
                             }}

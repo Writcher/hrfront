@@ -1,5 +1,5 @@
-import { MenuItem, TextField } from "@mui/material";
-import { Controller } from "react-hook-form";
+import { MenuItem, TextField } from '@mui/material';
+import { Controller } from 'react-hook-form';
 
 interface FormularioInicioSesionProps {
     control: any;
@@ -8,40 +8,40 @@ interface FormularioInicioSesionProps {
 export const FormularioInicioSesion: React.FC<FormularioInicioSesionProps> = ({
     control
 }) => (
-    <div className="flex flex-col items-center gap-4 w-[40%]">
+    <div className='flex flex-col items-center gap-4 w-[40%]'>
         <Controller
-            name="correo"
+            name='correo'
             control={control}
-            rules={{ required: "Debe ingresar su correo electronico" }}
+            rules={{ required: 'Debe ingresar su correo electronico' }}
             render={({ field, fieldState: { error } }) => (
                 <TextField
                     {...field}
-                    id="correo"
-                    label="Correo Electronico"
-                    variant="outlined"
-                    color="warning"
-                    size="small"
+                    id='correo'
+                    label='Correo Electronico'
+                    variant='outlined'
+                    color='warning'
+                    size='small'
                     fullWidth
-                    type="email"
+                    type='email'
                     error={!!error}
                     helperText={error?.message}
                 />
             )}
         />
         <Controller
-            name="contraseña"
+            name='contraseña'
             control={control}
-            rules={{ required: "Debe ingresar su contraseña" }}
+            rules={{ required: 'Debe ingresar su contraseña' }}
             render={({ field, fieldState: { error } }) => (
                 <TextField
                     {...field}
-                    id="correo"
-                    label="Contraseña"
-                    variant="outlined"
-                    color="warning"
-                    size="small"
+                    id='correo'
+                    label='Contraseña'
+                    variant='outlined'
+                    color='warning'
+                    size='small'
                     fullWidth
-                    type="password"
+                    type='password'
                     error={!!error}
                     helperText={error?.message}
                 />

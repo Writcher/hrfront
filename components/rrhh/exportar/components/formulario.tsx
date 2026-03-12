@@ -1,7 +1,7 @@
-import { TextField, MenuItem, Skeleton } from "@mui/material";
-import { Controller } from "react-hook-form";
-import { formularioProps } from "../types";
-import { getNombreMes } from "../utils";
+import { TextField, MenuItem, Skeleton } from '@mui/material';
+import { Controller } from 'react-hook-form';
+import { formularioProps } from '../types';
+import { getNombreMes } from '../utils';
 
 export const Formulario = ({
     control,
@@ -9,28 +9,28 @@ export const Formulario = ({
     selectDatos,
     watch,
 }: formularioProps) => (
-    <div className="flex flex-col items-center justify-start w-full gap-4">
-        <div className="flex items-center justify-between w-full gap-2">
+    <div className='flex flex-col items-center justify-start w-full gap-4'>
+        <div className='flex items-center justify-between w-full gap-2'>
             {selectCargando ? (
                 <Skeleton
-                    variant="rectangular"
-                    width="100%"
-                    height="40px"
-                    sx={{ borderRadius: "5px" }}
+                    variant='rectangular'
+                    width='100%'
+                    height='40px'
+                    sx={{ borderRadius: '5px' }}
                 />
             ) : (
                 <Controller
-                    name="proyectos"
+                    name='proyectos'
                     control={control}
-                    rules={{ required: "Debe seleccionar al menos un proyecto" }}
+                    rules={{ required: 'Debe seleccionar al menos un proyecto' }}
                     render={({ field, fieldState: { error } }) => (
                         <TextField
                             {...field}
-                            id="proyectos"
-                            label="Seleccionar Proyecto/s"
-                            variant="outlined"
-                            color="warning"
-                            size="small"
+                            id='proyectos'
+                            label='Seleccionar Proyecto/s'
+                            variant='outlined'
+                            color='warning'
+                            size='small'
                             select
                             slotProps={{
                                 select: {
@@ -69,23 +69,23 @@ export const Formulario = ({
             )}
             {selectCargando ? (
                 <Skeleton
-                    variant="rectangular"
-                    width="100%"
-                    height="40px"
-                    sx={{ borderRadius: "5px" }}
+                    variant='rectangular'
+                    width='100%'
+                    height='40px'
+                    sx={{ borderRadius: '5px' }}
                 />
             ) : (
                 <Controller
-                    name="tipoEmpleado"
+                    name='tipoEmpleado'
                     control={control}
                     render={({ field, fieldState: { error } }) => (
                         <TextField
                             {...field}
-                            id="tipoEmpleado"
-                            label="Seleccionar Tipo de Empleado"
-                            variant="outlined"
-                            color="warning"
-                            size="small"
+                            id='tipoEmpleado'
+                            label='Seleccionar Tipo de Empleado'
+                            variant='outlined'
+                            color='warning'
+                            size='small'
                             select
                             fullWidth
                             error={!!error}
@@ -115,27 +115,27 @@ export const Formulario = ({
                 />
             )}
         </div>
-        <div className="flex items-center justify-between w-full gap-2">
+        <div className='flex items-center justify-between w-full gap-2'>
             {selectCargando ? (
                 <Skeleton
-                    variant="rectangular"
-                    width="100%"
-                    height="40px"
-                    sx={{ borderRadius: "5px" }}
+                    variant='rectangular'
+                    width='100%'
+                    height='40px'
+                    sx={{ borderRadius: '5px' }}
                 />
             ) : (
                 <Controller
-                    name="mes"
+                    name='mes'
                     control={control}
-                    rules={{ required: "Debe seleccionar un mes" }}
+                    rules={{ required: 'Debe seleccionar un mes' }}
                     render={({ field, fieldState: { error } }) => (
                         <TextField
                             {...field}
-                            id="mes"
-                            label="Seleccionar Mes"
-                            variant="outlined"
-                            color="warning"
-                            size="small"
+                            id='mes'
+                            label='Seleccionar Mes'
+                            variant='outlined'
+                            color='warning'
+                            size='small'
                             select
                             fullWidth
                             error={!!error}
@@ -165,21 +165,21 @@ export const Formulario = ({
                 />
             )}
             <Controller
-                name="quincena"
+                name='quincena'
                 control={control}
                 render={({ field, fieldState: { error } }) => (
                     <TextField
                         {...field}
-                        id="quincena"
-                        label="Seleccionar Quincena"
-                        variant="outlined"
-                        color="warning"
-                        size="small"
+                        id='quincena'
+                        label='Seleccionar Quincena'
+                        variant='outlined'
+                        color='warning'
+                        size='small'
                         select
                         fullWidth
                         error={!!error}
                         helperText={error?.message}
-                        disabled={watch("mes") === ''}
+                        disabled={watch('mes') === ''}
                         slotProps={{
                             select: {
                                 MenuProps: {

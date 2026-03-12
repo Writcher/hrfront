@@ -1,4 +1,4 @@
-import { TableCell, TableHead, TableRow } from "@mui/material";
+import { TableCell, TableHead, TableRow } from '@mui/material';
 
 export const Encabezado = () => (
     <TableHead
@@ -11,38 +11,38 @@ export const Encabezado = () => (
         }}
     >
         <TableRow>
-            <TableCell align="left" width="10%">
-                <div style={{ userSelect: "none" }}
+            <TableCell align='left' width='10%'>
+                <div style={{ userSelect: 'none' }}
                     className={`text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]`}>
                     ID
                 </div>
             </TableCell>
-            <TableCell align="center" width="20%">
-                <div style={{ userSelect: "none" }}
+            <TableCell align='center' width='20%'>
+                <div style={{ userSelect: 'none' }}
                     className={`text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]`}>
                     Nombre
                 </div>
             </TableCell>
-            <TableCell align="center" width="20%">
-                <div style={{ userSelect: "none" }}
+            <TableCell align='center' width='20%'>
+                <div style={{ userSelect: 'none' }}
                     className={`text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]`}>
                     Nombre en Nomina
                 </div>
             </TableCell>
-            <TableCell align="center" width="20%">
-                <div style={{ userSelect: "none" }}
+            <TableCell align='center' width='20%'>
+                <div style={{ userSelect: 'none' }}
                     className={`text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]`}>
                     Modalidad de Trabajo
                 </div>
             </TableCell>
-            <TableCell align="center" width="15%">
-                <div style={{ userSelect: "none" }}
+            <TableCell align='center' width='15%'>
+                <div style={{ userSelect: 'none' }}
                     className={`text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]`}>
                     Estado
                 </div>
             </TableCell>
-            <TableCell align="right" width="15%">
-                <div style={{ userSelect: "none" }}
+            <TableCell align='right' width='15%'>
+                <div style={{ userSelect: 'none' }}
                     className={`text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]`}>
                     Acciones
                 </div>

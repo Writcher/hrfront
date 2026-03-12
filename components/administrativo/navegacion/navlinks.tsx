@@ -1,13 +1,13 @@
-"use client"
+'use client'
 
-import { useDrawer } from "@/lib/context/navcontext";
-import { Button, IconButton } from "@mui/material";
+import { useDrawer } from '@/lib/context/navcontext';
+import { Button, IconButton } from '@mui/material';
 import { usePathname } from 'next/navigation';
 import UploadFileRoundedIcon from '@mui/icons-material/UploadFileRounded';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import SummarizeRoundedIcon from '@mui/icons-material/SummarizeRounded';
 import PeopleAltRoundedIcon from '@mui/icons-material/PeopleAltRounded';
-import Link from "next/link";
+import Link from 'next/link';
 
 const linksadmin = [
     { name: 'Inicio', href: '/administrativo', icon: HomeRoundedIcon },
@@ -27,38 +27,38 @@ export default function NavLinksAdministrativo() {
             {linksadmin.map((link) => {
                 const LinkIcon = link.icon;
                 const isActive =
-                    link.href === "/administrativo"
+                    link.href === '/administrativo'
                         ? pathname === link.href
                         : pathname.startsWith(link.href);
 
                 return hidden ? (
-                    <div className="flex h-[5vh]" key={link.href}>
+                    <div className='flex h-10' key={link.href}>
                         <IconButton
                             key={link.name}
                             component={Link}
                             href={link.href}
-                            color="warning"
-                            sx={{ marginX: "0.25vw", marginY: "0.125vw" }}
+                            color='warning'
+                            sx={{ marginX: '4px', marginY: '2px' }}
                             className={`!grow !items-center !justify-center !rounded !font-medium hover:!bg-orange-100 hover:!text-orange-600 ${isActive ? '!text-orange-600 !bg-orange-100' : '!text-gray-800'}`}
                         >
-                            <span className="flex items-center justify-center"><LinkIcon /></span>
+                            <span className='flex items-center justify-center'><LinkIcon /></span>
                         </IconButton>
                     </div>
                 ) : (
-                    <div className="flex h-[5vh]" key={link.href}>
+                    <div className='flex h-10' key={link.href}>
                         <Button
                             key={link.name}
                             component={Link}
                             href={link.href}
-                            variant="text"
-                            color="warning"
+                            variant='text'
+                            color='warning'
                             className={`!grow !items-center !justify-start !rounded !font-medium hover:!bg-orange-100 hover:!text-orange-600 ${isActive ? '!text-orange-600 !bg-orange-100' : '!text-gray-800'}`}
-                            sx={{ textTransform: "none", marginX: "0.25vw", marginY: "0.125vw", paddingLeft: "10.5%" }}
+                            sx={{ textTransform: 'none', marginX: '4px', marginY: '2px', paddingLeft: '10.5%' }}
                             fullWidth
                             disableElevation
-                            startIcon={<span className="flex items-center justify-center"><LinkIcon /></span>}
+                            startIcon={<span className='flex items-center justify-center'><LinkIcon /></span>}
                         >
-                            <span className="text-[clamp(0.1rem,5vw,1rem)]">{link.name}</span>                           
+                            <span className='text-base'>{link.name}</span>                           
                         </Button>
                     </div>
                 );

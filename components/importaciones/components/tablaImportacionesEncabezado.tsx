@@ -1,5 +1,5 @@
-import { TableCell, TableHead, TableRow } from "@mui/material";
-import { encabezadoProps } from "../types";
+import { TableCell, TableHead, TableRow } from '@mui/material';
+import { encabezadoProps } from '../types';
 
 export const Encabezado = ({ esAdministrativo }: encabezadoProps) => (
     <TableHead
@@ -12,40 +12,40 @@ export const Encabezado = ({ esAdministrativo }: encabezadoProps) => (
         }}
     >
         <TableRow>
-            <TableCell align="left" width="20%">
-                <div style={{ userSelect: "none" }}
-                    className={`text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]`}>
+            <TableCell align='left' width='20%'>
+                <div style={{ userSelect: 'none' }}
+                    className={`text-gray-700 font-bold text-sm`}>
                     Nombre del Archivo
                 </div>
             </TableCell>
-            <TableCell align="center" width="20%">
-                <div style={{ userSelect: "none" }}
-                    className={`text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]`}>
+            <TableCell align='center' width='20%'>
+                <div style={{ userSelect: 'none' }}
+                    className={`text-gray-700 font-bold text-sm`}>
                     Fecha de Importacion
                 </div>
             </TableCell>
-            <TableCell align="center" width="20%">
-                <div style={{ userSelect: "none" }}
-                    className={`text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]`}>
+            <TableCell align='center' width='20%'>
+                <div style={{ userSelect: 'none' }}
+                    className={`text-gray-700 font-bold text-sm`}>
                     Proyecto
                 </div>
             </TableCell>
-            <TableCell align="center" width="20%">
-                <div style={{ userSelect: "none" }}
-                    className={`text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]`}>
+            <TableCell align='center' width='20%'>
+                <div style={{ userSelect: 'none' }}
+                    className={`text-gray-700 font-bold text-sm`}>
                     Usuario que Importo
                 </div>
             </TableCell>
-            <TableCell align="center" width="10%">
-                <div style={{ userSelect: "none" }}
-                    className={`text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]`}>
+            <TableCell align='center' width='10%'>
+                <div style={{ userSelect: 'none' }}
+                    className={`text-gray-700 font-bold text-sm`}>
                     Estado
                 </div>
             </TableCell>
             {esAdministrativo &&
-                <TableCell align="right" width="10%">
-                    <div style={{ userSelect: "none" }}
-                        className={`text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]`}>
+                <TableCell align='right' width='10%'>
+                    <div style={{ userSelect: 'none' }}
+                        className={`text-gray-700 font-bold text-sm`}>
                         Acciones
                     </div>
                 </TableCell>

@@ -1,5 +1,5 @@
-import { Menu, MenuItem } from "@mui/material";
-import { menuFiltrosProps } from "../../types";
+import { Menu, MenuItem } from '@mui/material';
+import { menuFiltrosProps } from '../../types';
 
 export const MenuFiltros = ({
   anchorEl,

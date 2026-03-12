@@ -1,14 +1,14 @@
-import { Chip, TableCell, TableRow, TextField } from "@mui/material";
-import { deleteTipoAusenciaParametros, editTipoAusenciaParametros, filaTipoAusenciaProps, tipoAusenciaFormularioDatos } from "../../types";
-import { useSnackbar } from "@/lib/context/snackbarcontext";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useConfirmar } from "@/components/hooks/useConfirmar";
-import { useEffect } from "react";
-import { useMostrarFormulario } from "../../hooks/useMostrarFormulario";
-import { Controller } from "react-hook-form";
-import { BotonesFila } from "./filaTiposAusenciaBotones";
-import { useTipoAusenciaFormulario } from "../../hooks/useTipoAusenciaFormulario";
-import { deleteTipoAusencia, editTipoAusencia } from "@/services/tipoausencia/service.tipoausencia";
+import { Chip, TableCell, TableRow, TextField } from '@mui/material';
+import { deleteTipoAusenciaParametros, editTipoAusenciaParametros, filaTipoAusenciaProps, tipoAusenciaFormularioDatos } from '../../types';
+import { useSnackbar } from '@/lib/context/snackbarcontext';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useConfirmar } from '@/components/hooks/useConfirmar';
+import { useEffect } from 'react';
+import { useMostrarFormulario } from '../../hooks/useMostrarFormulario';
+import { Controller } from 'react-hook-form';
+import { BotonesFila } from './filaTiposAusenciaBotones';
+import { useTipoAusenciaFormulario } from '../../hooks/useTipoAusenciaFormulario';
+import { deleteTipoAusencia, editTipoAusencia } from '@/services/tipoausencia/service.tipoausencia';
 
 export default function FilaTipoAusencia({ tipoAusencia }: filaTipoAusenciaProps) {
 
@@ -33,13 +33,13 @@ export default function FilaTipoAusencia({ tipoAusencia }: filaTipoAusenciaProps
         onSuccess: () => {
             reset();
             setFormularioVisible(!formularioVisible)
-            showSuccess("Tipo de ausencia editado correctamente");
+            showSuccess('Tipo de ausencia editado correctamente');
             queryClient.invalidateQueries({
-                queryKey: ["fetchTiposAusenciaPaginated"]
+                queryKey: ['fetchTiposAusenciaPaginated']
             });
         },
         onError: () => {
-            showError("Error al eliminar tipo de ausencia");
+            showError('Error al eliminar tipo de ausencia');
         },
     });
 
@@ -54,13 +54,13 @@ export default function FilaTipoAusencia({ tipoAusencia }: filaTipoAusenciaProps
         mutationFn: (data: deleteTipoAusenciaParametros) => deleteTipoAusencia(data),
         onSuccess: () => {
             reset();
-            showSuccess("Tipo de ausencia eliminado correctamente");
+            showSuccess('Tipo de ausencia eliminado correctamente');
             queryClient.invalidateQueries({
-                queryKey: ["fetchTiposAusenciaPaginated"]
+                queryKey: ['fetchTiposAusenciaPaginated']
             });
         },
         onError: () => {
-            showError("Error al eliminar tipo de ausencia");
+            showError('Error al eliminar tipo de ausencia');
         },
     });
 
@@ -72,25 +72,25 @@ export default function FilaTipoAusencia({ tipoAusencia }: filaTipoAusenciaProps
 
     return (
         <TableRow>
-            <TableCell align="left" size="small">
-                <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.75rem)]" style={{ userSelect: "none" }}>
+            <TableCell align='left' size='small'>
+                <div className='text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.75rem)]' style={{ userSelect: 'none' }}>
                     {tipoAusencia.id}
                 </div>
             </TableCell>
-            <TableCell align="center" size="small">
-                <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]" style={{ userSelect: "none" }}>
+            <TableCell align='center' size='small'>
+                <div className='text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]' style={{ userSelect: 'none' }}>
                     {formularioVisible ? (
                         <Controller
-                            name="nombre"
+                            name='nombre'
                             control={control}
-                            rules={{ required: "Debe ingresar un nombre" }}
+                            rules={{ required: 'Debe ingresar un nombre' }}
                             render={({ field, fieldState: { error } }) => (
                                 <TextField
                                     {...field}
-                                    id="nombre"
-                                    variant="outlined"
-                                    color="warning"
-                                    size="small"
+                                    id='nombre'
+                                    variant='outlined'
+                                    color='warning'
+                                    size='small'
                                     fullWidth
                                     error={!!error}
                                     helperText={error?.message}
@@ -104,16 +104,16 @@ export default function FilaTipoAusencia({ tipoAusencia }: filaTipoAusenciaProps
                     )}
                 </div>
             </TableCell>
-            <TableCell align="center" size="small">
-                <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.75rem)]" style={{ userSelect: "none" }}>
+            <TableCell align='center' size='small'>
+                <div className='text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.75rem)]' style={{ userSelect: 'none' }}>
                     <Chip
                         label={tipoAusencia.estadoparametro}
-                        className="!rounded"
+                        className='!rounded'
                         color={tipoAusencia.estadoparametro.toLowerCase() === 'activo' ? 'success' : 'error'}
                     />
                 </div>
             </TableCell>
-            <TableCell align="right" size="small">
+            <TableCell align='right' size='small'>
                 <BotonesFila
                     editando={mutacionEdit.isPending}
                     borrando={mutacionDelete.isPending}

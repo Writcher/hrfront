@@ -1,15 +1,15 @@
-"use server"
+'use server'
 
-import CONFIG from "@/config";
-import { DeleteProyectoDto, EditProyectoDto, FetchProyectosPaginatedDto, CreateProyectoDto } from "@/lib/dtos/proyecto";
-import { getToken } from "@/lib/utils/getToken";
+import CONFIG from '@/config';
+import { DeleteProyectoDto, EditProyectoDto, FetchProyectosPaginatedDto, CreateProyectoDto } from '@/lib/dtos/proyecto';
+import { getToken } from '@/lib/utils/getToken';
 
 export async function fetchProyectos() {
     try {
         const token = await getToken();
 
         const proyectosRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_PROYECTO}`, {
-            method: "GET",
+            method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
             }
@@ -43,7 +43,7 @@ export async function fetchProyectosPaginated(params: FetchProyectosPaginatedDto
         });
 
         const proyectosRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_PROYECTO}/paginated?${proyectosUrlParams}`, {
-            method: "GET",
+            method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
             }
@@ -72,10 +72,10 @@ export async function createProyecto(params: CreateProyectoDto) { //PENDING aña
         const token = await getToken();
 
         const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_PROYECTO}`, {
-            method: "POST",
+            method: 'POST',
             headers: {
                 Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json"
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify(params),
         });
@@ -103,7 +103,7 @@ export async function deleteProyecto(params: DeleteProyectoDto) {
         const token = await getToken();
 
         const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_PROYECTO}/${params.id_proyecto}`, {
-            method: "DELETE",
+            method: 'DELETE',
             headers: {
                 Authorization: `Bearer ${token}`,
             }
@@ -133,9 +133,9 @@ export async function editProyecto(params: EditProyectoDto) { //PENDING añadir 
         const token = await getToken();
 
         const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_PROYECTO}/${params.id_proyecto}`, {
-            method: "PATCH",
+            method: 'PATCH',
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({

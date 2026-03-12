@@ -1,9 +1,8 @@
-import { Table, TableBody, TableCell, TableContainer, TableRow } from "@mui/material";
-import React from "react";
-import { Esqueleto } from "./tablaImportacionesEsqueleto";
-import { importacion, tablaImportacionesProps } from "../types";
-import Fila from "./tablaImportacionesFila";
-import { Encabezado } from "./tablaImportacionesEncabezado";
+import { Table, TableBody, TableContainer } from '@mui/material';
+import { Esqueleto } from './tablaImportacionesEsqueleto';
+import { importacion, tablaImportacionesProps } from '../types';
+import Fila from './tablaImportacionesFila';
+import { Encabezado } from './tablaImportacionesEncabezado';
 
 export const TablaImportaciones = ({
     importaciones,
@@ -14,7 +13,7 @@ export const TablaImportaciones = ({
     return (
         <>
             {cargando || importaciones && importaciones.length > 0 ? (
-                <TableContainer className="outer-table-container">
+                <TableContainer className='outer-table-container flex-1 overflow-auto'>
                     <Table stickyHeader>
                         <Encabezado
                             esAdministrativo={esAdministrativo}
@@ -36,7 +35,7 @@ export const TablaImportaciones = ({
                 </TableContainer>
             ) : null}
             {!cargando && (!importaciones || importaciones.length === 0) && (
-                <div className="flex items-center justify-center py-[5vh] h-full w-full text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.8rem)]">
+                <div className='flex items-center justify-center py-8 h-full w-full text-gray-700 font-medium text-sm'>
                     No se encontraron informes
                 </div>
             )}

@@ -1,7 +1,7 @@
-import NextAuth from "next-auth";
-import Credentials from "next-auth/providers/credentials";
-import { fetchTipoUsuarioPorId } from "./services/tipousuario/service.tipousuario";
-import { fetchUsuarioPorCorreo } from "./services/usuario/service.usuario";
+import NextAuth from 'next-auth';
+import Credentials from 'next-auth/providers/credentials';
+import { fetchTipoUsuarioPorId } from './services/tipousuario/service.tipousuario';
+import { fetchUsuarioPorCorreo } from './services/usuario/service.usuario';
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
     providers: [
@@ -27,7 +27,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                         tipoUsuario: tipoUsuario?.nombre || 'usuario',
                     };
                 } catch (error) {
-                    console.error("Error en authorize:", error);
+                    console.error('Error en authorize:', error);
                     return null;
                 }
             },
@@ -37,7 +37,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         signIn: '/login',
     },
     session: {
-        strategy: "jwt"
+        strategy: 'jwt'
     },
     callbacks: {
         async jwt({ token, user }) {

@@ -1,5 +1,5 @@
-import { useForm } from "react-hook-form";
-import { usuarioFormularioDatos } from "../types";
+import { useForm } from 'react-hook-form';
+import { usuarioFormularioDatos } from '../types';
 
 export const useUsuarioFormulario = () => {
     return useForm<usuarioFormularioDatos>({

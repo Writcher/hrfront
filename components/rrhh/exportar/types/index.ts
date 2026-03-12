@@ -1,5 +1,5 @@
-import { tipoEmpleado } from "@/components/ausencias/types";
-import { Control, UseFormWatch } from "react-hook-form";
+import { tipoEmpleado } from '@/components/ausencias/types';
+import { Control, UseFormWatch } from 'react-hook-form';
 
 
 //schema

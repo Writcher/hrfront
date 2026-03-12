@@ -1,5 +1,5 @@
-import { SyntheticEvent } from "react";
-import { UseFormSetValue, UseFormWatch } from "react-hook-form";
+import { SyntheticEvent } from 'react';
+import { UseFormSetValue, UseFormWatch } from 'react-hook-form';
 
 //schema
 

@@ -1,6 +1,6 @@
 // schema
 
-import { Control } from "react-hook-form";
+import { Control } from 'react-hook-form';
 
 export type proyecto = {
     id: number,

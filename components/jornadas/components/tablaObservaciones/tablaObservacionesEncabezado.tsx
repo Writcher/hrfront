@@ -1,15 +1,15 @@
-import { TableCell, TableHead, TableRow } from "@mui/material";
+import { TableCell, TableHead, TableRow } from '@mui/material';
 
-export const Encabezado = () => (
+export const TablaObservacionesEncabezado = () => (
     <TableHead>
         <TableRow>
-            <TableCell align="center" width="15%">
-                <div style={{ userSelect: "none" }} className="text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]">
+            <TableCell align='left' width='20%'>
+                <div style={{ userSelect: 'none' }} className='text-gray-700 font-bold text-sm'>
                     Fecha
                 </div>
             </TableCell>
-            <TableCell align="left" width="85%">
-                <div style={{ userSelect: "none" }} className="text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]">
+            <TableCell align='left' width='80%'>
+                <div style={{ userSelect: 'none' }} className='text-gray-700 font-bold text-sm'>
                     Observacion
                 </div>
             </TableCell>

@@ -1,8 +1,8 @@
-"use server"
+'use server'
 
-import CONFIG from "@/config";
-import { DeleteImportacionDto, FetchImportacionesDto, SetImportacionCompletaDto } from "@/lib/dtos/importacion";
-import { getToken } from "@/lib/utils/getToken";
+import CONFIG from '@/config';
+import { DeleteImportacionDto, FetchImportacionesDto, SetImportacionCompletaDto } from '@/lib/dtos/importacion';
+import { getToken } from '@/lib/utils/getToken';
 
 export async function fetchImportaciones(params: FetchImportacionesDto) {
     try {
@@ -21,7 +21,7 @@ export async function fetchImportaciones(params: FetchImportacionesDto) {
         const importacionesUrlParams = new URLSearchParams(importacionesParams);
 
         const importacionesRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_IMPORTACION}?${importacionesUrlParams}`, {
-            method: "GET",
+            method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
             }
@@ -50,7 +50,7 @@ export async function setImportacionCompleta(params: SetImportacionCompletaDto) 
         const token = await getToken();
 
         const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_IMPORTACION}/${params.id}`, {
-            method: "PATCH",
+            method: 'PATCH',
             headers: {
                 Authorization: `Bearer ${token}`,
             }
@@ -80,7 +80,7 @@ export async function deleteImportacion(params: DeleteImportacionDto) {
         const token = await getToken();
 
         const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_IMPORTACION}/${params.id}`, {
-            method: "DELETE",
+            method: 'DELETE',
             headers: {
                 Authorization: `Bearer ${token}`,
             }

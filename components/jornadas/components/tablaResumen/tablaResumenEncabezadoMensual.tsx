@@ -1,20 +1,29 @@
-import { TableCell, TableHead, TableRow } from "@mui/material";
+import { TableCell, TableHead, TableRow } from '@mui/material';
 
-export const EncabezadoMensual = () => (
+export const TablaResumenEncabezadoMensual = () => (
     <TableHead>
         <TableRow>
-            <TableCell align="center">
-                <div style={{ userSelect: "none" }} className="text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]">
+            <TableCell align='center'>
+                <div
+                    style={{ userSelect: 'none' }}
+                    className='text-gray-700 font-bold text-sm'
+                >
                     Total de Asistencias
                 </div>
             </TableCell>
-            <TableCell align="center">
-                <div style={{ userSelect: "none" }} className="text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]">
+            <TableCell align='center'>
+                <div
+                    style={{ userSelect: 'none' }}
+                    className='text-gray-700 font-bold text-sm'
+                >
                     Total de Ausencias Justificadas
                 </div>
             </TableCell>
-            <TableCell align="center">
-                <div style={{ userSelect: "none" }} className="text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]">
+            <TableCell align='center'>
+                <div
+                    style={{ userSelect: 'none' }}
+                    className='text-gray-700 font-bold text-sm'
+                >
                     Total de Ausencias Injustificadas
                 </div>
             </TableCell>

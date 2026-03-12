@@ -1,7 +1,8 @@
-import { TextField, MenuItem, Skeleton } from "@mui/material";
-import { formularioFiltrosHijoProps, mes } from "../../types";
+import { TextField, MenuItem, Skeleton } from '@mui/material';
+import { Mes } from '@/lib/types/entites/mes';
+import { TablaJornadasFiltrosFormularioProps } from '../../types/tablaJornadas/tablaJornadasFiltrosFormularioProps';
 
-export const Formulario = ({
+export const TablaJornadasFiltrosFormulario = ({
     filtroMes,
     filtroQuincena,
     cargando,
@@ -9,23 +10,23 @@ export const Formulario = ({
     onCambioFiltroMes,
     onCambioFiltroQuincena,
     getNombreMes,
-}: formularioFiltrosHijoProps) => (
-    <form className="flex items-center justify-start w-4/6 gap-4">
+}: TablaJornadasFiltrosFormularioProps) => (
+    <form className='flex items-center justify-start w-full gap-2'>
         {cargando ?
             <Skeleton
-                variant="rectangular"
-                width="100%"
-                height="40px"
-                sx={{ borderRadius: "5px" }}
+                variant='rectangular'
+                width='100%'
+                height='40px'
+                sx={{ borderRadius: '5px' }}
             /> :
             <TextField
-                id="month"
-                name="month"
-                label="Filtrar por Mes"
-                type="text"
-                variant="outlined"
-                color="warning"
-                size="small"
+                id='month'
+                name='month'
+                label='Filtrar por Mes'
+                type='text'
+                variant='outlined'
+                color='warning'
+                size='small'
                 select
                 fullWidth
                 value={filtroMes}
@@ -46,19 +47,21 @@ export const Formulario = ({
                     },
                 }}
             >
-                {meses.map((mes: mes) => (
-                    <MenuItem key={mes.id} value={mes.id}>{getNombreMes(mes.mes)} de {mes.id_año}</MenuItem>
+                {meses.map((mes: Mes) => (
+                    <MenuItem key={mes.id} value={mes.id}>
+                        {getNombreMes(mes.mes)} de {mes.id_año}
+                    </MenuItem>
                 ))}
             </TextField>
         }
         <TextField
-            id="quincena"
-            name="quincena"
-            label="Filtrar por Quincena"
-            type="text"
-            variant="outlined"
-            color="warning"
-            size="small"
+            id='quincena'
+            name='quincena'
+            label='Filtrar por Quincena'
+            type='text'
+            variant='outlined'
+            color='warning'
+            size='small'
             select
             fullWidth
             value={filtroQuincena}

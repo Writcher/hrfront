@@ -1,6 +1,6 @@
-import { useCallback, useState } from "react";
-import debounce from "lodash.debounce";
-import { hookGenericoPadreProps } from "../types";
+import { useCallback, useState } from 'react';
+import debounce from 'lodash.debounce';
+import { hookGenericoPadreProps } from '../types';
 
 export const useFiltros = ({ setValue }: hookGenericoPadreProps<'setValue'>) => {
 
@@ -23,9 +23,9 @@ export const useFiltros = ({ setValue }: hookGenericoPadreProps<'setValue'>) => 
   };
 
   const handleLimpiarFiltros = () => {
-    setValue("busquedaNombre", "");
-    setValue("busquedaNombreNormal", "");
-    setValue("filtroTipoUsuario", '');
+    setValue('busquedaNombre', '');
+    setValue('busquedaNombreNormal', '');
+    setValue('filtroTipoUsuario', '');
     setBusquedaNombreVisible(true);
     setFiltroTipoUsuarioVisible(false);
     setFiltrosActivos({});
@@ -34,18 +34,18 @@ export const useFiltros = ({ setValue }: hookGenericoPadreProps<'setValue'>) => 
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleBusquedaNombre = useCallback(debounce((searchTerm: string) => {
-    setValue("busquedaNombre", searchTerm);
+    setValue('busquedaNombre', searchTerm);
   }, 500), []);
 
   const handleCambioBusquedaNombre = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue("busquedaNombreNormal", event.target.value);
+    setValue('busquedaNombreNormal', event.target.value);
     handleBusquedaNombre(event.target.value);
     const filtrosActuales = filtrosActivos;
     setFiltrosActivos({ ...filtrosActuales, busquedaNombre: event.target.value });
   };
 
   const handleCambioFiltroTipoUsuario = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue("filtroTipoUsuario", Number(event.target.value));
+    setValue('filtroTipoUsuario', Number(event.target.value));
     const filtrosActuales = filtrosActivos;
     setFiltrosActivos({ ...filtrosActuales, filtroTipoUsuario: Number(event.target.value) });
   };

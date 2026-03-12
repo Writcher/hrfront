@@ -1,8 +1,8 @@
-"use server"
+'use server'
 
-import CONFIG from "@/config";
-import { DeleteJornadaDto, EditJornadaDto, FetchJornadasDto, FetchJornadasPorImportacionDto, CreateJornadaDto, EditJornadaTipoAusenciaDto, ValidateJornadaDto, FetchResumenDto } from "@/lib/dtos/jornada";
-import { getToken } from "@/lib/utils/getToken";
+import CONFIG from '@/config';
+import { DeleteJornadaDto, EditJornadaDto, FetchJornadasDto, FetchJornadasPorImportacionDto, CreateJornadaDto, EditJornadaTipoAusenciaDto, ValidateJornadaDto, FetchResumenDto } from '@/lib/dtos/jornada';
+import { getToken } from '@/lib/utils/getToken';
 
 export async function fetchJornadas(params: FetchJornadasDto) {
     try {
@@ -34,7 +34,7 @@ export async function fetchJornadas(params: FetchJornadasDto) {
         const jornadasUrlParams = new URLSearchParams(jornadasParams);
 
         const jornadasRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_EMPLEADO}/${params.id_empleado}/jornada?${jornadasUrlParams}`, {
-            method: "GET",
+            method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
             }
@@ -74,7 +74,7 @@ export async function fetchResumen(params: FetchResumenDto) {
         const resumenUrlParams = new URLSearchParams(resumenParams);
 
         const resumenRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_EMPLEADO}/${params.id_empleado}/resumen?${resumenUrlParams}`, {
-            method: "GET",
+            method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
             }
@@ -104,10 +104,10 @@ export async function editJornada(params: EditJornadaDto) {
         const token = await getToken();
 
         const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_JORNADA}/${params.id}/editar`, {
-            method: "PATCH",
+            method: 'PATCH',
             headers: {
                 Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json"
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({
                 entrada: params.entrada,
@@ -139,7 +139,7 @@ export async function deleteJornada(params: DeleteJornadaDto) {
         const token = await getToken();
 
         const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_JORNADA}/${params.id}`, {
-            method: "DELETE",
+            method: 'DELETE',
             headers: {
                 Authorization: `Bearer ${token}`,
             }
@@ -169,7 +169,7 @@ export async function validateJornada(params: ValidateJornadaDto) {
         const token = await getToken();
 
         const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_JORNADA}/${params.id}/validar`, {
-            method: "PATCH",
+            method: 'PATCH',
             headers: {
                 Authorization: `Bearer ${token}`,
             }
@@ -199,9 +199,9 @@ export async function editJornadaTipoAusencia(params: EditJornadaTipoAusenciaDto
         const token = await getToken();
 
         const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_JORNADA}/${params.id_jornada}/justificar`, {
-            method: "PATCH",
+            method: 'PATCH',
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({
@@ -233,10 +233,10 @@ export async function createJornada(params: CreateJornadaDto) {
         const token = await getToken();
 
         const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_JORNADA}`, {
-            method: "POST",
+            method: 'POST',
             headers: {
                 Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json"
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({
                 entrada: params.entrada,
@@ -279,7 +279,7 @@ export async function fetchJornadasPorImportacion(params: FetchJornadasPorImport
         });
 
         const jornadasRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_IMPORTACION}/${params.id_importacion}/jornada?${jornadasUrlParams}`, {
-            method: "GET",
+            method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
             }

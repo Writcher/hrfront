@@ -1,4 +1,4 @@
-import { proyecto, tipoEmpleado } from "../types";
+import { proyecto, tipoEmpleado } from '../types';
 
 export const getNombreProyecto = ( selectDatos: proyecto[]) => {
       const getNombreProyectoPorId = (id: number) => {

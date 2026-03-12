@@ -1,14 +1,14 @@
-"use server"
+'use server'
 
-import CONFIG from "@/config";
-import { getToken } from "@/lib/utils/getToken";
+import CONFIG from '@/config';
+import { getToken } from '@/lib/utils/getToken';
 
 export async function fetchTiposImportacion() {
     try {
         const token = await getToken();
 
         const tiposImportacionRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_TIPOIMPORTACION}`, {
-            method: "GET",
+            method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
             }

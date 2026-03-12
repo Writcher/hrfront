@@ -1,13 +1,13 @@
-"use server"
+'use server'
 
-import CONFIG from "@/config";
-import { FetchTipoUsuarioPorIdDto } from "@/lib/dtos/tipousuario";
-import { getToken } from "@/lib/utils/getToken";
+import CONFIG from '@/config';
+import { FetchTipoUsuarioPorIdDto } from '@/lib/dtos/tipousuario';
+import { getToken } from '@/lib/utils/getToken';
 
 export async function fetchTipoUsuarioPorId(params: FetchTipoUsuarioPorIdDto) {
     try {
         const tipoUsuarioRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_TIPOUSUARIO}/${params.id}`, {
-            method: "GET"
+            method: 'GET'
         });
 
         if (!tipoUsuarioRaw.ok) {
@@ -34,7 +34,7 @@ export async function fetchTiposUsuario() {
         const token = await getToken();
 
         const tiposUsuarioRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_TIPOUSUARIO}`, {
-            method: "GET",
+            method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
             }

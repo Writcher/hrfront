@@ -1,15 +1,15 @@
-"use server"
+'use server'
 
-import CONFIG from "@/config";
-import { CreateTipoAusencialDto, DeleteTipoAusenciaDto, EditTipoAusenciaDto, FetchTiposAusenciaPaginatedDto } from "@/lib/dtos/tipoausencia";
-import { getToken } from "@/lib/utils/getToken";
+import CONFIG from '@/config';
+import { CreateTipoAusencialDto, DeleteTipoAusenciaDto, EditTipoAusenciaDto, FetchTiposAusenciaPaginatedDto } from '@/lib/dtos/tipoausencia';
+import { getToken } from '@/lib/utils/getToken';
 
 export async function fetchTiposAusencia() {
     try {
         const token = await getToken();
 
         const tiposAusenciaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_TIPOAUSENCIA}`, {
-            method: "GET",
+            method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
             }
@@ -43,7 +43,7 @@ export async function fetchTiposAusenciaPaginated(params: FetchTiposAusenciaPagi
         });
 
         const tiposAusenciaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_TIPOAUSENCIA}/paginated?${tiposAusenciaUrlParams}`, {
-            method: "GET",
+            method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
             }
@@ -72,10 +72,10 @@ export async function createTipoAusencia(params: CreateTipoAusencialDto) {
         const token = await getToken();
 
         const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_TIPOAUSENCIA}`, {
-            method: "POST",
+            method: 'POST',
             headers: {
                 Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json"
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify(params),
         });
@@ -103,7 +103,7 @@ export async function deleteTipoAusencia(params: DeleteTipoAusenciaDto) {
         const token = await getToken();
 
         const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_TIPOAUSENCIA}/${params.id_tipoausencia}`, {
-            method: "DELETE",
+            method: 'DELETE',
             headers: {
                 Authorization: `Bearer ${token}`,
             }
@@ -132,9 +132,9 @@ export async function editTipoAusencia(params: EditTipoAusenciaDto) {
         const token = await getToken();
 
         const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_TIPOAUSENCIA}/${params.id_tipoausencia}`, {
-            method: "PATCH",
+            method: 'PATCH',
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({

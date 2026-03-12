@@ -1,8 +1,8 @@
 'use server'
 
 import CONFIG from '@/config';
-import { ExportResumenDto, ExportAsistenciaDto } from "@/lib/dtos/exportar";
-import { getToken } from "@/lib/utils/getToken";
+import { ExportResumenDto, ExportAsistenciaDto } from '@/lib/dtos/exportar';
+import { getToken } from '@/lib/utils/getToken';
 
 export async function exportResumen(params: ExportResumenDto) {
     try {
@@ -27,7 +27,7 @@ export async function exportResumen(params: ExportResumenDto) {
         });
 
         const resumenRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_EXPORTAR}/resumen?${resumenUrlParams}`, {
-            method: "GET",
+            method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
             }
@@ -38,7 +38,7 @@ export async function exportResumen(params: ExportResumenDto) {
         };
 
         const contentDisposition = resumenRaw.headers.get('content-disposition');
-        const filenameMatch = contentDisposition?.match(/filename="(.+)"/);
+        const filenameMatch = contentDisposition?.match(/filename='(.+)'/);
         const nombre = filenameMatch ? filenameMatch[1] : 'exportacion.xlsx';
 
         const resumen = await resumenRaw.blob();
@@ -68,7 +68,7 @@ export async function exportAsistencia(data: ExportAsistenciaDto) {
         });
 
         const asistenciaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_EXPORTAR}/asistencia?${asistenciaUrlParams}`, {
-            method: "GET",
+            method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
             }

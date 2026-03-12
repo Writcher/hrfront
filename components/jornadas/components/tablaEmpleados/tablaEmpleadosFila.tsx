@@ -1,44 +1,42 @@
-import { TableCell, TableRow } from "@mui/material";
-import React from "react";
-import { FilaExpandidaAdministrativo } from "./tablaEmpleadosFilaExpandidaAdministrativo";
-import { filaEmpleadoProps } from "../../types";
-import { FilaExpandidaRRHH } from "./tablaEmpleadosFilaExpandidaRRHH";
+import { TableCell, TableRow } from '@mui/material';
+import React from 'react';
+import { TablaEmpleadoFilaExpanida } from './tablaEmpleadosFilaExpandida';
+import { TablaEmpleadosFilaProps } from '../../types/tablaEmpleados/tablaEmpleadosFilaProps';
 
-export const Fila = ({ empleado, idFilaExpandidaProp, onExpandirFila, esAdministrativo, esRRHH }: filaEmpleadoProps) => (
+export const TablaEmpleadosFila = ({ 
+    empleado, 
+    idFilaExpandidaProp, 
+    onExpandirFila, 
+    esAdministrativo
+}: TablaEmpleadosFilaProps) => (
     <React.Fragment >
         <TableRow
             onClick={() => onExpandirFila(empleado.id)}
             className={`cursor-pointer ${idFilaExpandidaProp === empleado.id ? 'bg-orange-100' : ''}`}
         >
-            <TableCell align="center" size="small">
-                <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.75rem)]" style={{ userSelect: "none" }}>
+            <TableCell align='center' size='small'>
+                <div className='text-gray-700 font-medium'>
                     {empleado.legajo}
                 </div>
             </TableCell>
-            <TableCell align="center" size="small">
-                <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]" style={{ userSelect: "none" }}>
+            <TableCell align='center' size='small'>
+                <div className='text-gray-700 font-medium' style={{ userSelect: 'none' }}>
                     {empleado.dni}
                 </div>
             </TableCell>
-            <TableCell align="left" size="small">
-                <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]" style={{ userSelect: "none" }}>
+            <TableCell align='left' size='small'>
+                <div className='text-gray-700 font-medium' style={{ userSelect: 'none' }}>
                     {empleado.nombre}
                 </div>
             </TableCell>
         </TableRow>
-        {idFilaExpandidaProp === empleado.id && esAdministrativo &&
-            <FilaExpandidaAdministrativo
+        {idFilaExpandidaProp === empleado.id &&
+            <TablaEmpleadoFilaExpanida
                 idFilaExpandida={empleado.id}
                 idFilaExpandidaProp={idFilaExpandidaProp}
                 estadoEmpleado={empleado.estadoempleado}
                 es_mensualizado={empleado.es_mensualizado}
-            />
-        }
-        {idFilaExpandidaProp === empleado.id && esRRHH &&
-            <FilaExpandidaRRHH
-                idFilaExpandida={empleado.id}
-                idFilaExpandidaProp={idFilaExpandidaProp}
-                es_mensualizado={empleado.es_mensualizado}
+                esAdministrativo={esAdministrativo ? esAdministrativo : false}
             />
         }
     </React.Fragment>

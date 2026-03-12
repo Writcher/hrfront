@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Formulario } from "./components/formulario";
-import { useImportarExcelFormulario } from "./hooks/useImportarExcelFormulario";
-import { useDropzoneHook } from "./hooks/useDropzone";
-import { importarExcelFormularioDatos } from "./types";
-import { Dropzone } from "./components/dropzone";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import { useSnackbar } from "@/lib/context/snackbarcontext";
-import { Botones } from "./components/botones";
-import { useSelectDatos } from "./hooks/useSelectDatos";
-import { importHikVision, importProsoft } from "@/services/importar/service.importar";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { Formulario } from './components/formulario';
+import { useImportarExcelFormulario } from './hooks/useImportarExcelFormulario';
+import { useDropzoneHook } from './hooks/useDropzone';
+import { importarExcelFormularioDatos } from './types';
+import { Dropzone } from './components/dropzone';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import { useSnackbar } from '@/lib/context/snackbarcontext';
+import { Botones } from './components/botones';
+import { useSelectDatos } from './hooks/useSelectDatos';
+import { importHikVision, importProsoft } from '@/services/importar/service.importar';
 
 export default function Importar() {
 
@@ -50,29 +50,29 @@ export default function Importar() {
             }
         },
         onSuccess: (response) => {
-            showSuccess("Jornadas importadas correctamente");
+            showSuccess('Jornadas importadas correctamente');
             router.push(`/administrativo/importacion/${response}/completar`);
             queryClient.invalidateQueries({
-                queryKey: ["fetchImportaciones"]
+                queryKey: ['fetchImportaciones']
             });
             queryClient.invalidateQueries({
-                queryKey: ["fetchJornadasPorImportacion"]
+                queryKey: ['fetchJornadasPorImportacion']
             });
             reset();
         },
         onError: (error: any) => {
-            showError(error.message || "Error al importar jornadas");
+            showError(error.message || 'Error al importar jornadas');
         },
     });
 
     const onImport = (data: importarExcelFormularioDatos) => {
-        if (watch("tipoInforme") === 1 && !watch("archivo")) {
-            setError("archivo", { message: "Debe seleccionar un archivo Excel" });
+        if (watch('tipoInforme') === 1 && !watch('archivo')) {
+            setError('archivo', { message: 'Debe seleccionar un archivo Excel' });
             return;
         };
 
-        if (watch("tipoInforme") === 2 && watch("fecha") === '') {
-            setError("fecha", { message: "Debe seleccionar una fecha" });
+        if (watch('tipoInforme') === 2 && watch('fecha') === '') {
+            setError('fecha', { message: 'Debe seleccionar una fecha' });
             return;
         };
 
@@ -81,14 +81,14 @@ export default function Importar() {
 
     useEffect(() => {
         if (error) {
-            showWarning("Error al cargar los datos");
+            showWarning('Error al cargar los datos');
         };
     }, [error, showWarning]);
 
     return (
-        <div className="flex flex-col gap-4 items-center justify-center w-full h-full">
-            <form onSubmit={handleSubmit(onImport)} className="flex flex-col justify-between items-center w-full h-full gap-2">
-                <div className="flex flex-col pt-[25vh] gap-2 w-[80%]">
+        <div className='flex flex-col gap-2 sm:gap-3 items-start w-full h-full overflow-hidden'>
+            <form onSubmit={handleSubmit(onImport)} className='flex flex-col justify-between items-center w-full h-full gap-2'>
+                <div className='flex flex-col min-w-[650px] max-w-2xl h-full justify-center gap-2'>
                     <Formulario
                         control={control}
                         watch={watch}
@@ -97,13 +97,13 @@ export default function Importar() {
                         tiposJornada={tiposJornada || []}
                         tiposImportacion={tiposImportacion || []}
                     />
-                    {watch("tipoInforme") === 1 &&
+                    {watch('tipoInforme') === 1 &&
                         <Dropzone
                             getRootProps={getRootProps}
                             getInputProps={getInputProps}
                             isDragActive={isDragActive}
                             borrarArchivo={borrarArchivo}
-                            archivo={watch("archivo")}
+                            archivo={watch('archivo')}
                             errores={errors}
                         />
                     }

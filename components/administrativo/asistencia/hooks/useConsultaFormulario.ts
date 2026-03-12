@@ -1,5 +1,5 @@
-import { useForm } from "react-hook-form";
-import { consultaFormularioDatos } from "../types";
+import { useForm } from 'react-hook-form';
+import { consultaFormularioDatos } from '../types';
 
 export const useConsultaFormulario = () => {
     return useForm<consultaFormularioDatos>({

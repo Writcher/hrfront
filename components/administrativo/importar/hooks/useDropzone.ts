@@ -1,19 +1,19 @@
-import { useCallback } from "react";
-import { FileRejection, useDropzone } from "react-dropzone";
-import { hookProps } from "../types";
+import { useCallback } from 'react';
+import { FileRejection, useDropzone } from 'react-dropzone';
+import { hookProps } from '../types';
 
 export const useDropzoneHook = ({ setValue, setError, clearErrors }: hookProps) => {
 
     const onDrop = useCallback((acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
-        clearErrors("archivo");
+        clearErrors('archivo');
 
         if (rejectedFiles.length > 0) {
-            setError("archivo", { message: "Solo se permiten archivos Excel (.xlsx, .xls)" });
+            setError('archivo', { message: 'Solo se permiten archivos Excel (.xlsx, .xls)' });
             return;
         }
 
         if (acceptedFiles.length > 0) {
-            setValue("archivo", acceptedFiles[0]);
+            setValue('archivo', acceptedFiles[0]);
         }
     }, []);
 
@@ -28,8 +28,8 @@ export const useDropzoneHook = ({ setValue, setError, clearErrors }: hookProps) 
     });
 
     const borrarArchivo = () => {
-        setValue("archivo", null);
-        clearErrors("archivo");
+        setValue('archivo', null);
+        clearErrors('archivo');
     };
     
     return {

@@ -1,14 +1,14 @@
-"use server"
+'use server'
 
-import CONFIG from "@/config";
-import { getToken } from "@/lib/utils/getToken";
+import CONFIG from '@/config';
+import { getToken } from '@/lib/utils/getToken';
 
 export async function fetchMeses() {
     try {
         const token = await getToken();
 
         const mesesRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_MES}`, {
-            method: "GET",
+            method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
             }
