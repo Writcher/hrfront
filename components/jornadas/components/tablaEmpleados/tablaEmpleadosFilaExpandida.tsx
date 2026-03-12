@@ -56,10 +56,6 @@ export function TablaEmpleadoFilaExpanida({
     } = useTablaJornadasForm();
 
     const {
-        watch: watchFiltros
-    } = useTablaJornadasFiltrosForm();
-
-    const {
         handleLimpiarFiltros,
         handleCambioFiltroMes,
         handleCambioFiltroQuincena
@@ -75,8 +71,8 @@ export function TablaEmpleadoFilaExpanida({
     useEffect(() => {
         handleCambioPagina(null, 0);
     }, [
-        watchFiltros('filtroMes'),
-        watchFiltros('filtroQuincena'),
+        watch('filtroMes'),
+        watch('filtroQuincena'),
     ]);
 
     const {
@@ -107,15 +103,15 @@ export function TablaEmpleadoFilaExpanida({
         queryKey: [
             'fetchJornadasEmpleado',
             idFilaExpandida,
-            watchFiltros('filtroMes'),
-            watchFiltros('filtroQuincena'),
+            watch('filtroMes'),
+            watch('filtroQuincena'),
             pagina,
             filasPorPagina
         ],
         queryFn: () => fetchJornadas({
             id_empleado: idFilaExpandida,
-            filtroMes: watchFiltros('filtroMes'),
-            filtroQuincena: watchFiltros('filtroQuincena'),
+            filtroMes: watch('filtroMes'),
+            filtroQuincena: watch('filtroQuincena'),
             pagina: pagina,
             filasPorPagina: filasPorPagina
         }),
@@ -350,8 +346,8 @@ export function TablaEmpleadoFilaExpanida({
                                 <TablaJornadasFiltrosBotones
                                     formularioVisible={formularioVisible}
                                     handleLimpiarFiltros={handleLimpiarFiltros}
-                                    filtroMes={watchFiltros('filtroMes')}
-                                    filtroQuincena={watchFiltros('filtroQuincena')}
+                                    filtroMes={watch('filtroMes')}
+                                    filtroQuincena={watch('filtroQuincena')}
                                     cargando={selectCargando}
                                     meses={selectDatos || []}
                                     creando={mutacionCreate.isPending}

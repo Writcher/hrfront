@@ -14,7 +14,7 @@ export const Informacion = ({ jornada, dia, onDelete, setObservacionFormulario, 
                     day: 'numeric',
                     month: 'numeric',
                     year: '2-digit'
-                }).format(new Date(jornada.fecha)).replace(/\//g, '-')}
+                }).format(new Date(jornada.fecha.replace('Z', ''))).replace(/\//g, '-')}
             </div>
         </TableCell>
         <TableCell align='center' size='small' className={`${dia === 0 ? 'bg-gray-300' : dia === 1 ? 'bg-green-300' : ''}`}>

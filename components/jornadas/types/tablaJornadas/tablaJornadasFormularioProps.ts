@@ -1,13 +1,12 @@
 import { Control, UseFormSetValue, UseFormWatch } from 'react-hook-form';
-import { TablaJornadasForm } from './useTablaJornadasForm';
-import { formularioDatos } from '..';
+import { formularioDatos, tablaJornadasFormularioDatos } from '..';
 
 export type TablaJornadasFormularioProps = {
   formularioDatos: formularioDatos | undefined,
   formularioCargando: boolean,
-  control: Control<TablaJornadasForm>,
-  watch: UseFormWatch<TablaJornadasForm>,
+  control: Control<tablaJornadasFormularioDatos>,
+  watch: UseFormWatch<tablaJornadasFormularioDatos>,
   onCambioJornadaPartida: () => void;
   jornadaPartida: boolean;
-  setValue: UseFormSetValue<TablaJornadasForm>,
+  setValue: UseFormSetValue<tablaJornadasFormularioDatos>,
 };

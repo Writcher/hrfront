@@ -16,7 +16,7 @@ export const FormularioTipoAusencia = ({ jornada, dia, control, actualizando, ca
                     day: 'numeric',
                     month: 'numeric',
                     year: '2-digit'
-                }).format(new Date(jornada.fecha)).replace(/\//g, '-')}
+                }).format(new Date(jornada.fecha.replace('Z', ''))).replace(/\//g, '-')}
             </div>
         </TableCell>
         <TableCell align='center' size='small'>

@@ -1,7 +1,8 @@
 import { useCallback, useState } from 'react';
 import debounce from 'lodash.debounce';
+import { hookGenericoPadreProps } from '../types';
 
-export const useFiltros = ({ setValue, watch }: any) => {
+export const useFiltros = ({ setValue, watch }: hookGenericoPadreProps<'setValue' | 'watch'>) => {
 
   const [filtrosActivos, setFiltrosActivos] = useState<{ [key: string]: any }>({});
 

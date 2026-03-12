@@ -1,9 +1,11 @@
 import { useForm } from 'react-hook-form';
-import { TablaJornadasForm } from '../types/tablaJornadas/useTablaJornadasForm';
+import { tablaJornadasFormularioDatos } from '../types';
 
 export const useTablaJornadasForm = () => {
-  return useForm<TablaJornadasForm>({
+  return useForm<tablaJornadasFormularioDatos>({
     defaultValues: {
+      filtroMes: '',
+      filtroQuincena: '',
       entrada: '',
       salida: '',
       entradaTarde: '',

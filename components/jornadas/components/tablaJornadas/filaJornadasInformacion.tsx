@@ -6,21 +6,21 @@ import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import { PulsingWarning } from '@/components/ui/prioridad';
 import { FilaJornadasInformacionProps } from '../../types/tablaJornadas/filaJornadasInformacionProps';
 
-export const FilaJornadaInformacion = ({ 
-    jornada, 
-    dia, 
-    setObservacionFormulario, 
-    onDelete 
+export const FilaJornadaInformacion = ({
+    jornada,
+    dia,
+    setObservacionFormulario,
+    onDelete
 }: FilaJornadasInformacionProps) => (
     <>
         <TableCell align='left' size='small' className={`${dia === 0 ? 'bg-gradient-to-l from-gray-300 via-gray-300 to-transparent' : dia === 1 ? 'bg-gradient-to-l from-green-300 via-green-300 to-transparent' : ''}`}>
-            <div className='text-gray-700 font-medium' style={{ userSelect: 'none' }}>
+            <div className='text-gray-700 font-medium'>
                 {new Intl.DateTimeFormat('es-AR', {
                     weekday: 'long',
                     day: 'numeric',
                     month: 'numeric',
                     year: '2-digit'
-                }).format(new Date(jornada.fecha)).replace(/\//g, '-')}
+                }).format(new Date(jornada.fecha.replace('Z', ''))).replace(/\//g, '-')}
             </div>
         </TableCell>
         <TableCell align='center' size='small' className={`${dia === 0 ? 'bg-gray-300' : dia === 1 ? 'bg-green-300' : ''}`}>

@@ -1,4 +1,6 @@
-export const useFiltros = ({ setValue }: any) => {
+import { hookGenericoHijoRRHHProps } from "../types";
+
+export const useFiltros = ({ setValue }: hookGenericoHijoRRHHProps<'setValue'>) => {
     
     const handleLimpiarFiltros = () => {
         setValue('filtroQuincena', '');

@@ -1,8 +1,8 @@
 import { useForm } from 'react-hook-form';
-import { TablaEmpleadosFiltrosForm } from '../types/tablaEmpleados/useTablaEmpleadosFiltrosForm';
+import { tablaEmpleadosFiltrosDatos } from '../types';
 
 export const useTablaEmpleadosFiltros = () => {
-  return useForm<TablaEmpleadosFiltrosForm>({
+  return useForm<tablaEmpleadosFiltrosDatos>({
     defaultValues: {
       busquedaNombre: '',
       busquedaNombreNormal: '',

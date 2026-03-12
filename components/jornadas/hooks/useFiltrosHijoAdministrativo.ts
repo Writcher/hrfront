@@ -1,4 +1,6 @@
-export const useFiltrosInteriores = ({ setValue }: any) => {
+import { hookGenericoHijoAdministrativoProps } from "../types";
+
+export const useFiltrosInteriores = ({ setValue }: hookGenericoHijoAdministrativoProps<'setValue'>) => {
     
     const handleLimpiarFiltros = () => {
         setValue('filtroMes', '');

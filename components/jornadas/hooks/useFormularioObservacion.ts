@@ -1,8 +1,8 @@
 import { useForm } from 'react-hook-form'
-import { ObservacionForm } from '../types/tablaJornadas/useObservacionForm';
+import { useObservacionFormularioDatos } from '../types';
 
 export const useObservacionFormulario = () => {
-    return useForm<ObservacionForm>({
+    return useForm<useObservacionFormularioDatos>({
         defaultValues: {
             observacion: '',
         }
