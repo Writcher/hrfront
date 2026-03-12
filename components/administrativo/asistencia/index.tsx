@@ -1,21 +1,22 @@
-"use client"
+'use client'
 
-import { useSnackbar } from "@/lib/context/snackbarcontext";
-import { useConsultaFormulario } from "./hooks/useConsultaFormulario";
-import { usePaginacion } from "@/components/hooks/usePaginacion";
-import { fetchProyectos } from "@/services/proyecto/service.proyecto";
-import { keepPreviousData, useMutation, useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useSnackbar } from '@/lib/context/snackbarcontext';
+import { useConsultaFormulario } from './hooks/useConsultaFormulario';
+import { usePaginacion } from '@/components/hooks/usePaginacion';
+import { fetchProyectos } from '@/services/proyecto/service.proyecto';
+import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
-import { exportPresentesExcel, fetchPresentes } from "@/services/empleado/service.empleado";
-import { Button, TablePagination } from "@mui/material";
+import { Button, TablePagination } from '@mui/material';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
-import { TablaPresentes } from "./components/tablaAsistencia";
-import Link from "next/link";
-import { Formulario } from "./components/tablaAsistenciaFormulario";
-import { consultaFormularioDatos } from "./types";
+import { TablaPresentes } from './components/tablaAsistencia';
+import Link from 'next/link';
+import { Formulario } from './components/tablaAsistenciaFormulario';
+import { consultaFormularioDatos } from './types';
 import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
 import SyncIcon from '@mui/icons-material/Sync';
+import { fetchAsistencia } from '@/services/empleado/service.empleado';
+import { exportAsistencia } from '@/services/exportar/exportar.service';
 
 export default function Asistencia() {
 
@@ -27,55 +28,55 @@ export default function Asistencia() {
 
     const [primeraBusqueda, setPrimeraBusqueda] = useState<boolean>(false);
 
-    const [alternarLista, setAlternarLista] = useState<"presentes" | "ausentes" | "">("");
+    const [alternarLista, setAlternarLista] = useState<'presentes' | 'ausentes' | ''>('');
 
     const { data: proyectosDatos, isLoading: proyectosCargando, isError: proyectosError } = useQuery({
-        queryKey: ["fetchProyectos"],
+        queryKey: ['fetchProyectos'],
         queryFn: () => fetchProyectos(),
         refetchOnWindowFocus: false,
     });
 
     const { data: presentesDatos, isLoading: presentesCargando, isError: presentesError, refetch: presentesRefetch } = useQuery({
         queryKey: [
-            "fetchPresentes",
+            'fetchAsistencia',
             pagina,
             filasPorPagina,
         ],
-        queryFn: () => fetchPresentes({
+        queryFn: () => fetchAsistencia({
             pagina: pagina,
             filasPorPagina: filasPorPagina,
-            fecha: watch("fecha"),
-            proyecto: watch("proyecto"),
+            fecha: watch('fecha'),
+            proyecto: watch('proyecto'),
         }),
         refetchOnWindowFocus: false,
-        enabled: !!watch("proyecto") && !!watch("fecha") && primeraBusqueda,
+        enabled: !!watch('proyecto') && !!watch('fecha') && primeraBusqueda,
         placeholderData: keepPreviousData,
     });
 
     const nombreProyecto = proyectosDatos && proyectosCargando === false
         ? proyectosDatos.find(
-            (p: { id: number; nombre: string }) => p.id === watch("proyecto")
+            (p: { id: number; nombre: string }) => p.id === watch('proyecto')
         )?.nombre
         : '';
 
 
     const mutacionExport = useMutation({
-        mutationFn: (data: consultaFormularioDatos) => exportPresentesExcel(data),
+        mutationFn: (data: consultaFormularioDatos) => exportAsistencia(data),
         onSuccess: (response) => {
 
             const url = window.URL.createObjectURL(response);
-            const a = document.createElement("a");
+            const a = document.createElement('a');
             a.href = url;
-            a.download = `Listado de Asistencia - ${nombreProyecto} - ${watch("fecha")}`;
+            a.download = `Listado de Asistencia - ${nombreProyecto} - ${watch('fecha')}`;
             document.body.appendChild(a);
             a.click();
             a.remove();
             window.URL.revokeObjectURL(url);
 
-            showSuccess("Archivo exportado correctamente");
+            showSuccess('Archivo exportado correctamente');
         },
         onError: () => {
-            showError("Error al exportar archivo");
+            showError('Error al exportar archivo');
         }
     });
 
@@ -88,39 +89,39 @@ export default function Asistencia() {
 
     useEffect(() => {
         if (proyectosError) {
-            showWarning("Error al cargar los datos");
+            showWarning('Error al cargar los datos');
         };
         if (presentesError) {
-            showWarning("Error al cargar empleados presentes");
+            showWarning('Error al cargar empleados presentes');
         };
     }, [proyectosError, presentesError]);
 
     return (
-        <div className="flex flex-col gap-1 items-start w-full h-full">
-            <div className="flex flex-row gap-2 w-full">
+        <div className='flex flex-col gap-1 items-start w-full h-full'>
+            <div className='flex flex-row gap-2 w-full'>
                 <Formulario
                     control={control}
                     cargando={proyectosCargando}
                     proyectos={proyectosDatos || []}
                 />
-                <div className="flex grow" />
+                <div className='flex grow' />
                 <Button
-                    variant="contained"
-                    color="success"
+                    variant='contained'
+                    color='success'
                     disableElevation
                     onClick={handleSubmit(onExport)}
                     endIcon={
                         mutacionExport.isPending ? (
-                            <SyncIcon className="animate-spin" style={{ animationDirection: 'reverse' }} />
+                            <SyncIcon className='animate-spin' style={{ animationDirection: 'reverse' }} />
                         ) : <DownloadRoundedIcon />
                     }
                     disabled={mutacionExport.isPending || !isValid}
                 >
-                    {!mutacionExport.isPending ? "Descargar" : "Descargando"}
+                    {!mutacionExport.isPending ? 'Descargar' : 'Descargando'}
                 </Button>
                 <Button
-                    variant="contained"
-                    color="success"
+                    variant='contained'
+                    color='success'
                     disableElevation
                     endIcon={<SearchRoundedIcon />}
                     disabled={!isValid}
@@ -132,21 +133,21 @@ export default function Asistencia() {
                     Consultar Informacion
                 </Button>
             </div>
-            <div className="flex flex-row gap-1 w-full">
-                <div className="flex justify-center items-center gap-2 border-2 border-[#ED6C02] p-2 rounded w-full text-gray-700">Total Presentes: {presentesDatos ? presentesDatos.totalPresentes : "-"}</div>
-                <div className="flex justify-center items-center gap-2 border-2 border-[#ED6C02] p-2 rounded w-full text-gray-700">Total Directos: {presentesDatos ? presentesDatos.totalJornaleros : "-"}</div>
-                <div className="flex justify-center items-center gap-2 border-2 border-[#ED6C02] p-2 rounded w-full text-gray-700">Total Indirectos: {presentesDatos ? presentesDatos.totalMensualizados : "-"}</div>
-                <div className="flex justify-center items-center gap-2 border-2 border-[#ED6C02] p-2 rounded w-full text-gray-700">Total Ausentes: {presentesDatos ? presentesDatos.totalAusentes : "-"}</div>
+            <div className='flex flex-row gap-1 w-full'>
+                <div className='flex justify-center items-center gap-2 border-2 border-[#ED6C02] p-2 rounded w-full text-gray-700'>Total Presentes: {presentesDatos ? presentesDatos.totalPresentes : '-'}</div>
+                <div className='flex justify-center items-center gap-2 border-2 border-[#ED6C02] p-2 rounded w-full text-gray-700'>Total Directos: {presentesDatos ? presentesDatos.totalJornaleros : '-'}</div>
+                <div className='flex justify-center items-center gap-2 border-2 border-[#ED6C02] p-2 rounded w-full text-gray-700'>Total Indirectos: {presentesDatos ? presentesDatos.totalMensuales : '-'}</div>
+                <div className='flex justify-center items-center gap-2 border-2 border-[#ED6C02] p-2 rounded w-full text-gray-700'>Total Ausentes: {presentesDatos ? presentesDatos.totalAusentes : '-'}</div>
             </div>
-            <div className="flex flex-row items-center justify-start gap-1 w-full rounded border-2 border-[#ED6C02] p-1">
+            <div className='flex flex-row items-center justify-start gap-1 w-full rounded border-2 border-[#ED6C02] p-1'>
                 <Button
-                    variant="contained"
-                    className={`!h-[40px] hover:!bg-orange-100 hover:!text-orange-600 ${alternarLista === "presentes" ? "!bg-orange-100 !text-orange-600" : "!bg-gray-100 !text-gray-700"}`}
+                    variant='contained'
+                    className={`!h-[40px] hover:!bg-orange-100 hover:!text-orange-600 ${alternarLista === 'presentes' ? '!bg-orange-100 !text-orange-600' : '!bg-gray-100 !text-gray-700'}`}
                     disableElevation
                     fullWidth
                     disabled={presentesCargando || !primeraBusqueda}
                     onClick={() => {
-                        setAlternarLista("presentes");
+                        setAlternarLista('presentes');
                         handleCambioPagina(null, 0);
                         presentesRefetch();
                     }}
@@ -154,13 +155,13 @@ export default function Asistencia() {
                     Presentes
                 </Button>
                 <Button
-                    variant="contained"
-                    className={`!h-[40px] hover:!bg-orange-100 hover:!text-orange-600 ${alternarLista === "ausentes" ? "!bg-orange-100 !text-orange-600" : "!bg-gray-100 !text-gray-700"}`}
+                    variant='contained'
+                    className={`!h-[40px] hover:!bg-orange-100 hover:!text-orange-600 ${alternarLista === 'ausentes' ? '!bg-orange-100 !text-orange-600' : '!bg-gray-100 !text-gray-700'}`}
                     fullWidth
                     disableElevation
                     disabled={presentesCargando || !primeraBusqueda}
                     onClick={() => {
-                        setAlternarLista("ausentes");
+                        setAlternarLista('ausentes');
                         handleCambioPagina(null, 0);
                         presentesRefetch();
                     }}
@@ -168,8 +169,8 @@ export default function Asistencia() {
                     Ausentes
                 </Button>
             </div>
-            <div className="flex flex-col justify-between w-full h-full overflow-y-auto rounded" style={{ border: "2px solid #ED6C02" }}>
-                {alternarLista === "presentes" &&
+            <div className='flex flex-col justify-between w-full h-full overflow-y-auto rounded' style={{ border: '2px solid #ED6C02' }}>
+                {alternarLista === 'presentes' &&
                     <>
                         <TablaPresentes
                             empleados={presentesDatos?.presentes || []}
@@ -178,25 +179,25 @@ export default function Asistencia() {
                             cargando={presentesCargando}
                         />
                         {(presentesCargando || (presentesDatos?.presentes.length ?? 0) > 0) && (
-                            <div className="flex justify-end items-center overflow-x-hide"
-                                style={{ borderTop: "2px solid #ED6C02" }}>
+                            <div className='flex justify-end items-center overflow-x-hide'
+                                style={{ borderTop: '2px solid #ED6C02' }}>
                                 <TablePagination
                                     rowsPerPageOptions={[50, 75, 100]}
-                                    component="div"
+                                    component='div'
                                     count={presentesDatos?.totalPresentes || 0}
                                     rowsPerPage={filasPorPagina}
                                     page={pagina}
                                     onPageChange={handleCambioPagina}
                                     onRowsPerPageChange={handleCambioFilasPorPagina}
-                                    labelRowsPerPage="Filas por página"
+                                    labelRowsPerPage='Filas por página'
                                     labelDisplayedRows={({ from, to, count }) =>
                                         `${from}-${to} de ${count !== -1 ? count : `más de ${to}`}`
                                     }
                                     slotProps={{
                                         select: {
                                             MenuProps: {
-                                                anchorOrigin: { vertical: "top", horizontal: "right" },
-                                                transformOrigin: { vertical: "top", horizontal: "left" }
+                                                anchorOrigin: { vertical: 'top', horizontal: 'right' },
+                                                transformOrigin: { vertical: 'top', horizontal: 'left' }
                                             },
                                         }
                                     }}
@@ -205,7 +206,7 @@ export default function Asistencia() {
                         )}
                     </>
                 }
-                {alternarLista === "ausentes" &&
+                {alternarLista === 'ausentes' &&
                     <>
                         <TablaPresentes
                             empleados={presentesDatos?.ausentes || []}
@@ -214,25 +215,25 @@ export default function Asistencia() {
                             cargando={presentesCargando}
                         />
                         {(presentesCargando || (presentesDatos?.ausentes.length ?? 0) > 0) && (
-                            <div className="flex justify-end items-center overflow-x-hide"
-                                style={{ borderTop: "2px solid #ED6C02" }}>
+                            <div className='flex justify-end items-center overflow-x-hide'
+                                style={{ borderTop: '2px solid #ED6C02' }}>
                                 <TablePagination
                                     rowsPerPageOptions={[50, 75, 100]}
-                                    component="div"
+                                    component='div'
                                     count={presentesDatos?.totalAusentes || 0}
                                     rowsPerPage={filasPorPagina}
                                     page={pagina}
                                     onPageChange={handleCambioPagina}
                                     onRowsPerPageChange={handleCambioFilasPorPagina}
-                                    labelRowsPerPage="Filas por página"
+                                    labelRowsPerPage='Filas por página'
                                     labelDisplayedRows={({ from, to, count }) =>
                                         `${from}-${to} de ${count !== -1 ? count : `más de ${to}`}`
                                     }
                                     slotProps={{
                                         select: {
                                             MenuProps: {
-                                                anchorOrigin: { vertical: "top", horizontal: "right" },
-                                                transformOrigin: { vertical: "top", horizontal: "left" }
+                                                anchorOrigin: { vertical: 'top', horizontal: 'right' },
+                                                transformOrigin: { vertical: 'top', horizontal: 'left' }
                                             },
                                         }
                                     }}
@@ -242,12 +243,12 @@ export default function Asistencia() {
                     </>
                 }
             </div>
-            <div className="flex w-full justify-between">
+            <div className='flex w-full justify-between'>
                 <Button
                     component={Link}
-                    variant="contained"
-                    color="warning"
-                    href={"/administrativo/empleados"}
+                    variant='contained'
+                    color='warning'
+                    href={'/administrativo/empleados'}
                     disableElevation
                     startIcon={<ArrowBackRoundedIcon />}
                 >

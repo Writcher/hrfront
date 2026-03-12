@@ -1,18 +1,18 @@
-"use client";
+'use client';
 
-import Nav from "@/components/navegacion/nav";
-import { useDrawer } from "@/lib/context/navcontext";
-import NavLinksAdministrador from "@/components/administrador/navegacion/navlinks";
+import Nav from '@/components/navegacion/nav';
+import { useDrawer } from '@/lib/context/navcontext';
+import NavLinksAdministrador from '@/components/administrador/navegacion/navlinks';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
     const { hidden } = useDrawer();
 
     return (
-        <div className="flex flex-row h-screen w-screen">
-            <div style={{ width: hidden ? "5vw" : "12.5vw"}}>
+        <div className='flex flex-row h-screen w-screen'>
+            <div style={{ width: hidden ? '5vw' : '12.5vw'}}>
                 <Nav links={NavLinksAdministrador}/>
             </div>
-            <div className="flex flex-grow m-[4px]">
+            <div className='flex flex-grow m-[4px]'>
                 {children}
             </div>
         </div>

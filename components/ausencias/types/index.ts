@@ -1,5 +1,5 @@
-import { BaseSyntheticEvent, SyntheticEvent } from "react";
-import { Control, FieldValues, UseFormGetValues, UseFormReset, UseFormSetValue, UseFormWatch } from "react-hook-form";
+import { BaseSyntheticEvent, SyntheticEvent } from 'react';
+import { Control, FieldValues, UseFormGetValues, UseFormReset, UseFormSetValue, UseFormWatch } from 'react-hook-form';
 
 //schema
 
@@ -25,13 +25,13 @@ export type jornada = {
   tipojornada: string,
   tipoausencia: string
   id: number,
-  observaciones: string[],
+  observaciones: {id: number, texto: string}[],
 };
 
 export type empleado = {
   id: number,
   legajo: number,
-  id_reloj: number,
+  dni: number,
   nombre: string,
   id_proyecto: number,
   nombreproyecto: string,
@@ -204,6 +204,7 @@ export type hookGenericoHijoProps<T extends FieldValues> = {
 export type informacionProps = {
   jornada: jornada,
   dia: number,
+  onDelete: (id: number) => void,
   setObservacionFormulario: () => void,
   setTipoAusenciaFormulario: () => void,
 };
@@ -226,12 +227,14 @@ export type formularioTipoAusenciaProps = {
   actualizando: boolean,
   camposValidos: boolean,
   onUpdate: (e?: BaseSyntheticEvent<object, any, any> | undefined) => Promise<void>,
+  onDelete: (id: number) => void,
   setTipoAusenciaFormulario: () => void,
 };
 
 
 export type tooltipObservacionesProps = {
-  observaciones: string[],
+  observaciones: {id: number, texto: string}[],
+  onDelete: (id: number) => void,
 };
 
 export type filaExpandidaEmpleadoProps = {
@@ -287,7 +290,7 @@ export type useFormularioTipoAusenciaDatos = {
 
 //mutations
 
-export type insertObservacionDatos = {
+export type createObservacionDatos = {
   observacion: string,
   id_jornada: number,
 };

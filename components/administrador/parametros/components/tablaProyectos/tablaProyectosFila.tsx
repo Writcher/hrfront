@@ -1,15 +1,15 @@
-import { Chip, MenuItem, TableCell, TableRow, TextField } from "@mui/material";
-import { deleteProyectoParametros, editProyectoParametros, filaProyectoProps, modalidadTrabajo, proyectoFormularioDatos } from "../../types";
-import { useSnackbar } from "@/lib/context/snackbarcontext";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { deleteProyecto, editProyecto } from "@/services/proyecto/service.proyecto";
-import { useProyectoFormulario } from "../../hooks/useProyectoFormulario";
-import { useConfirmar } from "@/components/hooks/useConfirmar";
-import { fetchModalidadesTrabajo } from "@/services/modalidadtrabajo/service.modalidadtrabajo";
-import { useEffect } from "react";
-import { useMostrarFormulario } from "../../hooks/useMostrarFormulario";
-import { Controller } from "react-hook-form";
-import { BotonesFila } from "./filaProyectoBotones";
+import { Chip, MenuItem, TableCell, TableRow, TextField } from '@mui/material';
+import { deleteProyectoParametros, editProyectoParametros, filaProyectoProps, modalidadTrabajo, proyectoFormularioDatos } from '../../types';
+import { useSnackbar } from '@/lib/context/snackbarcontext';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { deleteProyecto, editProyecto } from '@/services/proyecto/service.proyecto';
+import { useProyectoFormulario } from '../../hooks/useProyectoFormulario';
+import { useConfirmar } from '@/components/hooks/useConfirmar';
+import { fetchModalidadesTrabajo } from '@/services/modalidadtrabajo/service.modalidadtrabajo';
+import { useEffect } from 'react';
+import { useMostrarFormulario } from '../../hooks/useMostrarFormulario';
+import { Controller } from 'react-hook-form';
+import { BotonesFila } from './filaProyectoBotones';
 
 export default function FilaProyecto({ proyecto }: filaProyectoProps) {
 
@@ -24,7 +24,7 @@ export default function FilaProyecto({ proyecto }: filaProyectoProps) {
     const queryClient = useQueryClient();
 
     const { data: selectDatos, isLoading: selectCargando, isError: selectError } = useQuery({
-        queryKey: ["fetchModalidadesTrabajo"],
+        queryKey: ['fetchModalidadesTrabajo'],
         queryFn: () => fetchModalidadesTrabajo(),
         refetchOnWindowFocus: false,
     });
@@ -41,19 +41,20 @@ export default function FilaProyecto({ proyecto }: filaProyectoProps) {
         onSuccess: () => {
             reset();
             setFormularioVisible(!formularioVisible)
-            showSuccess("Proyecto editado correctamente");
+            showSuccess('Proyecto editado correctamente');
             queryClient.invalidateQueries({
-                queryKey: ["fetchProyectosABM"]
+                queryKey: ['fetchProyectosPaginated']
             });
         },
         onError: () => {
-            showError("Error al eliminar proyecto");
+            showError('Error al eliminar proyecto');
         },
     });
 
     const onEdit = (data: proyectoFormularioDatos) => {
         mutacionEdit.mutate({
             id_proyecto: proyecto.id,
+            nomina: data.nomina,
             nombre: data.nombre,
             id_modalidadtrabajo: data.id_modalidadtrabajo as number,
         });
@@ -63,13 +64,13 @@ export default function FilaProyecto({ proyecto }: filaProyectoProps) {
         mutationFn: (data: deleteProyectoParametros) => deleteProyecto(data),
         onSuccess: () => {
             reset();
-            showSuccess("Proyecto eliminado correctamente");
+            showSuccess('Proyecto eliminado correctamente');
             queryClient.invalidateQueries({
-                queryKey: ["fetchProyectosABM"]
+                queryKey: ['fetchProyectosPaginated']
             });
         },
         onError: () => {
-            showError("Error al eliminar proyecto");
+            showError('Error al eliminar proyecto');
         },
     });
 
@@ -81,31 +82,31 @@ export default function FilaProyecto({ proyecto }: filaProyectoProps) {
 
     useEffect(() => {
         if (selectError) {
-            showWarning("Error al cargar los datos")
+            showWarning('Error al cargar los datos')
         };
     }, [selectError])
 
     return (
         <TableRow>
-            <TableCell align="left" size="small">
-                <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.75rem)]" style={{ userSelect: "none" }}>
+            <TableCell align='left' size='small'>
+                <div className='text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.75rem)]' style={{ userSelect: 'none' }}>
                     {proyecto.id}
                 </div>
             </TableCell>
-            <TableCell align="center" size="small">
-                <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]" style={{ userSelect: "none" }}>
+            <TableCell align='center' size='small'>
+                <div className='text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]' style={{ userSelect: 'none' }}>
                     {formularioVisible ? (
                         <Controller
-                            name="nombre"
+                            name='nombre'
                             control={control}
-                            rules={{ required: "Debe ingresar un nombre" }}
+                            rules={{ required: 'Debe ingresar un nombre' }}
                             render={({ field, fieldState: { error } }) => (
                                 <TextField
                                     {...field}
-                                    id="nombre"
-                                    variant="outlined"
-                                    color="warning"
-                                    size="small"
+                                    id='nombre'
+                                    variant='outlined'
+                                    color='warning'
+                                    size='small'
                                     fullWidth
                                     error={!!error}
                                     helperText={error?.message}
@@ -119,25 +120,66 @@ export default function FilaProyecto({ proyecto }: filaProyectoProps) {
                     )}
                 </div>
             </TableCell>
-            <TableCell align="center" size="small">
-                <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]" style={{ userSelect: "none" }}>
+            <TableCell align='center' size='small'>
+                <div className='text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]' style={{ userSelect: 'none' }}>
                     {formularioVisible ? (
                         <Controller
-                            name="id_modalidadtrabajo"
+                            name='nomina'
                             control={control}
-                            rules={{ required: "Debe seleccionar una modalidad" }}
+                            rules={{ required: 'Debe ingresar el nombre en nomina' }}
                             render={({ field, fieldState: { error } }) => (
                                 <TextField
                                     {...field}
-                                    id="id_tipoempleado"
-                                    variant="outlined"
-                                    color="warning"
-                                    size="small"
+                                    id='nomina'
+                                    variant='outlined'
+                                    color='warning'
+                                    size='small'
+                                    fullWidth
+                                    error={!!error}
+                                    helperText={error?.message}
+                                />
+                            )}
+                        />
+                    ) : (
+                        <>
+                            {proyecto.nomina}
+                        </>
+                    )}
+                </div>
+            </TableCell>
+            <TableCell align='center' size='small'>
+                <div className='text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]' style={{ userSelect: 'none' }}>
+                    {formularioVisible ? (
+                        <Controller
+                            name='id_modalidadtrabajo'
+                            control={control}
+                            rules={{ required: 'Debe seleccionar una modalidad' }}
+                            render={({ field, fieldState: { error } }) => (
+                                <TextField
+                                    {...field}
+                                    id='id_tipoempleado'
+                                    variant='outlined'
+                                    color='warning'
+                                    size='small'
                                     select
                                     fullWidth
                                     error={!!error}
                                     helperText={error?.message}
                                     disabled={selectDatos?.length === 0 || !selectDatos}
+                                    slotProps={{
+                                        select: {
+                                            MenuProps: {
+                                                slotProps: {
+                                                    paper: {
+                                                        style: {
+                                                            marginTop: '4px',
+                                                            maxHeight: '200px',
+                                                        },
+                                                    },
+                                                },
+                                            },
+                                        },
+                                    }}
                                 >
                                     {selectDatos?.map((modalidadtrabajo: modalidadTrabajo) => (
                                         <MenuItem key={modalidadtrabajo.id} value={modalidadtrabajo.id}>
@@ -154,16 +196,16 @@ export default function FilaProyecto({ proyecto }: filaProyectoProps) {
                     )}
                 </div>
             </TableCell>
-            <TableCell align="center" size="small">
-                <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.75rem)]" style={{ userSelect: "none" }}>
+            <TableCell align='center' size='small'>
+                <div className='text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.75rem)]' style={{ userSelect: 'none' }}>
                     <Chip
                         label={proyecto.estadoparametro}
-                        className="!rounded"
+                        className='!rounded'
                         color={proyecto.estadoparametro.toLowerCase() === 'activo' ? 'success' : 'error'}
                     />
                 </div>
             </TableCell>
-            <TableCell align="right" size="small">
+            <TableCell align='right' size='small'>
                 <BotonesFila
                     editando={mutacionEdit.isPending}
                     borrando={mutacionDelete.isPending}

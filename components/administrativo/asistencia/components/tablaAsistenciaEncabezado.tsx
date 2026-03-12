@@ -1,5 +1,4 @@
-import { TableCell, TableHead, TableRow } from "@mui/material";
-import { encabezadoProps } from "../types";
+import { TableCell, TableHead, TableRow } from '@mui/material';
 
 export const Encabezado = () => (
     <TableHead
@@ -12,20 +11,20 @@ export const Encabezado = () => (
         }}
     >
         <TableRow>
-            <TableCell align="left" width="20%">
-                <div style={{ userSelect: "none" }}
+            <TableCell align='left' width='20%'>
+                <div style={{ userSelect: 'none' }}
                     className={`text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]`}>
                     Numero
                 </div>
             </TableCell>
-            <TableCell align="center" width="60%">
-                <div style={{ userSelect: "none" }}
+            <TableCell align='center' width='60%'>
+                <div style={{ userSelect: 'none' }}
                     className={`text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]`}>
                     Nombre y Apellido
                 </div>
             </TableCell>
-            <TableCell align="center" width="20%">
-                <div style={{ userSelect: "none" }}
+            <TableCell align='center' width='20%'>
+                <div style={{ userSelect: 'none' }}
                     className={`text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)]`}>
                     Tipo de Empleado
                 </div>

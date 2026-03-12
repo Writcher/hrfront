@@ -1,4 +1,4 @@
-import { tipoUsuario } from "../types";
+import { tipoUsuario } from '../types';
 
 export const getNombreTipoUsuario = (selectDatos: tipoUsuario[]) => {
     const getNombreTipoUsuarioPorId = (id: number) => {

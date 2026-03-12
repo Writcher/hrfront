@@ -1,6 +1,6 @@
 // schema
 
-import { Control } from "react-hook-form";
+import { Control } from 'react-hook-form';
 
 export type proyecto = {
     id: number,
@@ -9,7 +9,7 @@ export type proyecto = {
 
 export type empleado = {
     id: number,
-    id_reloj: number,
+    dni: number,
     nombre: string,
     tipoempleado: string,
     id_tipoempleado: number | '',

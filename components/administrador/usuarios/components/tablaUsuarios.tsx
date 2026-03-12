@@ -1,9 +1,9 @@
-import { Table, TableBody, TableContainer } from "@mui/material";
-import React from "react";
-import { tablaUsuariosProps, usuario } from "../types";
-import { Esqueleto } from "./tablaUsuariosEsqueleto";
-import { Encabezado } from "./tablaUsuariosEncabezado";
-import FilaUsuario from "./tablaUsuariosFila";
+import { Table, TableBody, TableContainer } from '@mui/material';
+import React from 'react';
+import { tablaUsuariosProps, usuario } from '../types';
+import { Esqueleto } from './tablaUsuariosEsqueleto';
+import { Encabezado } from './tablaUsuariosEncabezado';
+import FilaUsuario from './tablaUsuariosFila';
 
 export const TablaUsuarios = ({
   usuarios,
@@ -16,7 +16,7 @@ export const TablaUsuarios = ({
   return (
     <>
       {cargando || usuarios && usuarios.length > 0 ? (
-        <TableContainer className="outer-table-container">
+        <TableContainer className='outer-table-container'>
           <Table stickyHeader>
             <Encabezado
               columna={columna}
@@ -41,7 +41,7 @@ export const TablaUsuarios = ({
         </TableContainer>
       ) : null}
       {!cargando && (!usuarios || usuarios.length === 0) && (
-        <div className="flex items-center justify-center py-[5vh] h-full w-full text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.8rem)]">
+        <div className='flex items-center justify-center py-[5vh] h-full w-full text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.8rem)]'>
           No se encontraron usuarios
         </div>
       )}

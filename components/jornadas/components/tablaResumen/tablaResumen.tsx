@@ -1,35 +1,34 @@
-import { Table, TableContainer } from "@mui/material";
-import React from "react";
-import { tablaJornadasResumenProps } from "../../types";
-import { EncabezadoMensual } from "./tablaResumenEncabezadoMensual";
-import { EncabezadoNoMensual } from "./tablaResumenEncabezadoNoMensual";
-import { EsqueletoMensual } from "./tablaResumenEsqueletoMensual";
-import { EsqueletoNoMensual } from "./tablaResumenEsqueletoNoMensual";
-import { FilaMensual } from "./tablaResumenFilaMensual";
-import { FilaNoMensual } from "./tablaResumenFilaNoMensual";
+import { Table, TableContainer } from '@mui/material';
+import { TablaResumenEncabezadoMensual } from './tablaResumenEncabezadoMensual';
+import { TablaResumenEncabezadoNoMensual } from './tablaResumenEncabezadoNoMensual';
+import { TablaResumenEsqueletoMensual } from './tablaResumenEsqueletoMensual';
+import { TablaResumenEsqueletoNoMensual } from './tablaResumenEsqueletoNoMensual';
+import { TablaResumenFilaMensual } from './tablaResumenFilaMensual';
+import { TablaResumenFilaNoMensual } from './tablaResumenFilaNoMensual';
+import { TablaResumenProps } from '../../types/tablaResumen/tablaResumenProps';
 
 export const TablaResumen = ({
     resumen,
     cargando,
     es_mensualizado
-}: tablaJornadasResumenProps) => {
+}: TablaResumenProps) => {
     return (
-        <TableContainer className="inner-table-container">
-            <Table stickyHeader size="small">
+        <TableContainer className='inner-table-container'>
+            <Table stickyHeader size='small'>
                 {es_mensualizado 
-                    ?   <EncabezadoMensual />
-                    :   <EncabezadoNoMensual />
+                    ?   <TablaResumenEncabezadoMensual />
+                    :   <TablaResumenEncabezadoNoMensual />
                 }
                 {cargando ? (
                     es_mensualizado
-                        ?   <EsqueletoMensual />
-                        :   <EsqueletoNoMensual />
+                        ?   <TablaResumenEsqueletoMensual />
+                        :   <TablaResumenEsqueletoNoMensual />
                 ) : (
                     es_mensualizado
-                        ?   <FilaMensual
+                        ?   <TablaResumenFilaMensual
                                 resumen={resumen}
                             />
-                        :   <FilaNoMensual
+                        :   <TablaResumenFilaNoMensual
                                 resumen={resumen}
                             />
                 )}

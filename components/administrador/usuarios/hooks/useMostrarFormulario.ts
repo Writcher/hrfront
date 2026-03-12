@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { hookGenericoHijoProps } from "../types";
+import { useState } from 'react';
+import { hookGenericoHijoProps } from '../types';
 
 export const useMostrarFormulario = ({ reset }: hookGenericoHijoProps) => {
 

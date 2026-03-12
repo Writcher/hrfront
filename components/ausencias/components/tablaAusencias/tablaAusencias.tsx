@@ -1,9 +1,9 @@
-import { Table, TableBody, TableContainer } from "@mui/material";
-import React from "react";
-import { tablaJornadasProps, jornada } from "../../types";
-import { Esqueleto } from "./tablaAusenciasEsqueleto";
-import { FilaJornada } from "./tablaAusenciasFila";
-import { Encabezado } from "./tablaAusenciasEncabezado";
+import { Table, TableBody, TableContainer } from '@mui/material';
+import React from 'react';
+import { tablaJornadasProps, jornada } from '../../types';
+import { Esqueleto } from './tablaAusenciasEsqueleto';
+import { FilaJornada } from './tablaAusenciasFila';
+import { Encabezado } from './tablaAusenciasEncabezado';
 
 export const TablaAusencias = ({
     jornadas,
@@ -12,8 +12,8 @@ export const TablaAusencias = ({
     return (
         <>
             {cargando || jornadas && jornadas.length > 0 ? (
-                <TableContainer className="inner-table-container" id={"tablaJornadaBody"}>
-                    <Table stickyHeader size="small">
+                <TableContainer className='inner-table-container' id={'tablaJornadaBody'}>
+                    <Table stickyHeader size='small'>
                         <Encabezado />
                         {cargando ? (
                             <Esqueleto
@@ -33,7 +33,7 @@ export const TablaAusencias = ({
                 </TableContainer>
             ) : null}
             {!cargando && (!jornadas || jornadas.length === 0) && (
-                <div className="flex items-center justify-center py-[5vh] h-full w-full text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.8rem)]">
+                <div className='flex items-center justify-center py-8 h-full w-full text-gray-700 font-medium text-sm'>
                     No se encontraron jornadas
                 </div>
             )}

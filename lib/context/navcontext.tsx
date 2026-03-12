@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState } from 'react';
 
 type DrawerContextType = {
   hidden: boolean;
@@ -26,7 +26,7 @@ export const DrawerProvider = ({ children }: { children: React.ReactNode }) => {
 export const useDrawer = () => {
   const context = useContext(DrawerContext);
   if (!context) {
-    throw new Error("useDrawer must be used within a DrawerProvider");
+    throw new Error('useDrawer must be used within a DrawerProvider');
   }
   return context;
 };

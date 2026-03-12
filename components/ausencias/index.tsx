@@ -1,23 +1,23 @@
-"use client"
+'use client'
 
-import React, { useEffect } from "react";
-import { Button, TablePagination } from "@mui/material";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { useTablaEmpleadosFiltros } from "./hooks/useTablaEmpleadosFiltros";
-import { useFiltros } from "./hooks/useFiltrosPadre";
-import { useExpansion } from "../hooks/useExpansion";
-import { MenuFiltros } from "./components/tablaEmpleados/tablaEmpleadosFiltrosMenu";
-import { Formulario } from "./components/tablaEmpleados/tablaEmpleadosFiltrosFormulario";
-import { FiltrosActivos } from "./components/tablaEmpleados/tablaEmpleadosFiltrosActivos";
-import { TablaEmpleados } from "./components/tablaEmpleados/tablaEmpleados";
-import { fetchEmpleados } from "@/services/empleado/service.empleado";
-import { useSnackbar } from "@/lib/context/snackbarcontext";
-import { getNombreMes, getNombreProyecto, getNombreTipoAusencia, getNombreTipoEmpleado } from "./utils";
-import { Botones } from "./components/tablaEmpleados/tablaEmpleadosFiltrosBotones";
-import { usePaginacion } from "@/components/hooks/usePaginacion";
-import { tablaAusenciasEmpleadosProps } from "./types";
-import { useOrdenacion } from "../hooks/useOrdenacion";
-import { useSelectDatos } from "./hooks/useSelectDatosPadre";
+import { useEffect } from 'react';
+import { TablePagination } from '@mui/material';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { useTablaEmpleadosFiltros } from './hooks/useTablaEmpleadosFiltros';
+import { useFiltros } from './hooks/useFiltrosPadre';
+import { useExpansion } from '../hooks/useExpansion';
+import { MenuFiltros } from './components/tablaEmpleados/tablaEmpleadosFiltrosMenu';
+import { Formulario } from './components/tablaEmpleados/tablaEmpleadosFiltrosFormulario';
+import { FiltrosActivos } from './components/tablaEmpleados/tablaEmpleadosFiltrosActivos';
+import { TablaEmpleados } from './components/tablaEmpleados/tablaEmpleados';
+import { fetchEmpleados } from '@/services/empleado/service.empleado';
+import { useSnackbar } from '@/lib/context/snackbarcontext';
+import { getNombreMes, getNombreProyecto, getNombreTipoAusencia, getNombreTipoEmpleado } from './utils';
+import { Botones } from './components/tablaEmpleados/tablaEmpleadosFiltrosBotones';
+import { usePaginacion } from '@/components/hooks/usePaginacion';
+import { tablaAusenciasEmpleadosProps } from './types';
+import { useOrdenacion } from '../hooks/useOrdenacion';
+import { useSelectDatos } from './hooks/useSelectDatosPadre';
 
 export default function TablaAusenciasEmpleados({ esAdministrativo, esRRHH }: tablaAusenciasEmpleadosProps) {
 
@@ -57,16 +57,16 @@ export default function TablaAusenciasEmpleados({ esAdministrativo, esRRHH }: ta
   useEffect(() => {
     handleCambioPagina(null, 0);
   }, [
-    watch("busquedaNombre"),
-    watch("filtroProyecto"),
-    watch("busquedaLegajo"),
-    watch("filtroTipoEmpleado"),
-    watch("filtroTipoAusencia"),
-    watch("filtroMes"),
-    watch("filtroQuincena"),
+    watch('busquedaNombre'),
+    watch('filtroProyecto'),
+    watch('busquedaLegajo'),
+    watch('filtroTipoEmpleado'),
+    watch('filtroTipoAusencia'),
+    watch('filtroMes'),
+    watch('filtroQuincena'),
   ]);
 
-  const { direccion, columna, handleOrdenacion } = useOrdenacion({ columnaInicial: "nombreapellido" });
+  const { direccion, columna, handleOrdenacion } = useOrdenacion({ columnaInicial: 'nombre' });
 
   const { idFila, handleExpansionFila } = useExpansion();
 
@@ -81,31 +81,31 @@ export default function TablaAusenciasEmpleados({ esAdministrativo, esRRHH }: ta
 
   const { data: empleadosDatos, isLoading: empleadosCargando, isError: empleadosError } = useQuery({
     queryKey: [
-      "fetchEmpleadosTablaAusencias",
+      'fetchEmpleadosTablaAusencias',
       pagina,
       filasPorPagina,
       columna,
       direccion,
-      watch("busquedaNombre"),
-      watch("filtroProyecto"),
-      watch("busquedaLegajo"),
-      watch("filtroTipoEmpleado"),
-      watch("filtroTipoAusencia"),
-      watch("filtroMes"),
-      watch("filtroQuincena"),
+      watch('busquedaNombre'),
+      watch('filtroProyecto'),
+      watch('busquedaLegajo'),
+      watch('filtroTipoEmpleado'),
+      watch('filtroTipoAusencia'),
+      watch('filtroMes'),
+      watch('filtroQuincena'),
     ],
     queryFn: () => fetchEmpleados({
-      busquedaNombre: watch("busquedaNombre"),
-      filtroProyecto: watch("filtroProyecto"),
+      busquedaNombre: watch('busquedaNombre'),
+      filtroProyecto: watch('filtroProyecto'),
       pagina: pagina,
       filasPorPagina: filasPorPagina,
       ordenColumna: columna,
       ordenDireccion: direccion,
-      busquedaLegajo: watch("busquedaLegajo"),
-      filtroTipoEmpleado: watch("filtroTipoEmpleado"),
-      filtroTipoAusencia: watch("filtroTipoAusencia"),
-      filtroMes: watch("filtroMes"),
-      filtroQuincena: watch("filtroQuincena"),
+      busquedaLegajo: watch('busquedaLegajo'),
+      filtroTipoEmpleado: watch('filtroTipoEmpleado'),
+      filtroTipoAusencia: watch('filtroTipoAusencia'),
+      filtroMes: watch('filtroMes'),
+      filtroQuincena: watch('filtroQuincena'),
     }),
     refetchOnWindowFocus: false,
     placeholderData: keepPreviousData,
@@ -118,20 +118,23 @@ export default function TablaAusenciasEmpleados({ esAdministrativo, esRRHH }: ta
 
   useEffect(() => {
     if (error) {
-      showWarning("Error al cargar los datos");
+      showWarning('Error al cargar los datos');
     };
     if (empleadosError) {
-      showWarning("Error al cargar empleados");
+      showWarning('Error al cargar empleados');
     };
   }, [error, empleadosError, showWarning]);
 
   return (
-    <div className="flex flex-col gap-1 items-start w-full h-full">
-      <div className="flex flex-row gap-2 w-full">
-        <Botones
-          onClick={handleClickFiltros}
-          onClean={handleLimpiarFiltros}
-        />
+    <div className='flex flex-col gap-2 sm:gap-3 items-start w-full h-full overflow-hidden'>
+      {/* Filtros */}
+      <div className='flex flex-row gap-2 w-full shrink-0 flex-wrap items-start'>
+        <div className='shrink-0'>
+          <Botones
+            onClick={handleClickFiltros}
+            onClean={handleLimpiarFiltros}
+          />
+        </div>
         <MenuFiltros
           anchorEl={ancla}
           open={abrirFiltros}
@@ -177,43 +180,50 @@ export default function TablaAusenciasEmpleados({ esAdministrativo, esRRHH }: ta
             handleCerrarFiltros();
           }}
         />
-        <Formulario
-          mostrarBusquedaNombre={busquedaNombreVisible}
-          mostrarFiltroProyecto={filtroProyectoVisible}
-          mostrarBusquedaLegajo={busquedaLegajoVisible}
-          mostrarFiltroTipoEmpleado={filtroTipoEmpleadoVisible}
-          mostrarFiltroTipoAusencia={filtroTipoAusenciaVisible}
-          busquedaNombreNormal={watch("busquedaNombreNormal")}
-          filtroProyecto={watch("filtroProyecto")}
-          busquedaLegajoNormal={watch("busquedaLegajoNormal")}
-          filtroTipoEmpleado={watch("filtroTipoEmpleado")}
-          filtroTipoAusencia={watch("filtroTipoAusencia")}
-          filtroMes={watch("filtroMes")}
-          filtroQuincena={watch("filtroQuincena")}
-          proyectos={proyectos || []}
-          tiposEmpleado={tiposEmpleado || []}
-          tiposAusencia={tiposAusencia || []}
-          meses={meses || []}
-          cargando={cargando}
-          onCambioBusquedaNombre={handleCambioBusquedaNombre}
-          onCambioFiltroProyecto={handleCambioFiltroProyecto}
-          onCambioBusquedaLegajo={handleCambioBusquedaLegajo}
-          onCambioFiltroTipoEmpleado={handleCambioFiltroTipoEmpleado}
-          onCambioFiltroTipoAusencia={handleCambioFiltroTipoAusencia}
-          onCambioFiltroQuincena={handleCambioFiltroQuincena}
-          onCambioFiltroMes={handleCambioFiltroMes}
-          esAdministrativo={esAdministrativo || false}
+        <div className='flex-1 min-w-[280px] max-w-2xl'>
+          <Formulario
+            mostrarBusquedaNombre={busquedaNombreVisible}
+            mostrarFiltroProyecto={filtroProyectoVisible}
+            mostrarBusquedaLegajo={busquedaLegajoVisible}
+            mostrarFiltroTipoEmpleado={filtroTipoEmpleadoVisible}
+            mostrarFiltroTipoAusencia={filtroTipoAusenciaVisible}
+            busquedaNombreNormal={watch('busquedaNombreNormal')}
+            filtroProyecto={watch('filtroProyecto')}
+            busquedaLegajoNormal={watch('busquedaLegajoNormal')}
+            filtroTipoEmpleado={watch('filtroTipoEmpleado')}
+            filtroTipoAusencia={watch('filtroTipoAusencia')}
+            filtroMes={watch('filtroMes')}
+            filtroQuincena={watch('filtroQuincena')}
+            proyectos={proyectos || []}
+            tiposEmpleado={tiposEmpleado || []}
+            tiposAusencia={tiposAusencia || []}
+            meses={meses || []}
+            cargando={cargando}
+            onCambioBusquedaNombre={handleCambioBusquedaNombre}
+            onCambioFiltroProyecto={handleCambioFiltroProyecto}
+            onCambioBusquedaLegajo={handleCambioBusquedaLegajo}
+            onCambioFiltroTipoEmpleado={handleCambioFiltroTipoEmpleado}
+            onCambioFiltroTipoAusencia={handleCambioFiltroTipoAusencia}
+            onCambioFiltroQuincena={handleCambioFiltroQuincena}
+            onCambioFiltroMes={handleCambioFiltroMes}
+            esAdministrativo={esAdministrativo || false}
+          />
+        </div>
+        <div className='flex grow shrink-0' />
+      </div>
+      {/* Filtros Activos */}
+      <div className='shrink-0 w-full'>
+        <FiltrosActivos
+          filtrosActivos={filtrosActivos}
+          getNombreProyectoPorId={getNombreProyectoPorId}
+          getNombreTipoEmpleadoPorId={getNombreTipoEmpleadoPorId}
+          getNombreTipoAusenciaPorId={getNombreTipoAusenciaPorId}
+          getNombreMesPorId={getNombreMesPorId}
+          handleLimpiarFiltro={handleLimpiarFiltro}
         />
       </div>
-      <FiltrosActivos
-        filtrosActivos={filtrosActivos}
-        getNombreProyectoPorId={getNombreProyectoPorId}
-        getNombreTipoEmpleadoPorId={getNombreTipoEmpleadoPorId}
-        getNombreTipoAusenciaPorId={getNombreTipoAusenciaPorId}
-        getNombreMesPorId={getNombreMesPorId}
-        handleLimpiarFiltro={handleLimpiarFiltro}
-      />
-      <div className="flex flex-col justify-between w-full h-full overflow-y-auto rounded" style={{ border: "2px solid #ED6C02" }}>
+      {/* Tabla */}
+      <div className='flex flex-col w-full flex-1 min-h-0 rounded border-2 border-orange-500 overflow-hidden'>
         <TablaEmpleados
           empleados={empleadosDatos?.empleados}
           cargando={empleadosCargando}
@@ -225,30 +235,29 @@ export default function TablaAusenciasEmpleados({ esAdministrativo, esRRHH }: ta
           onExpandirFila={handleExpansionFila}
           esAdministrativo={esAdministrativo}
           esRRHH={esRRHH}
-          filtroTipoAusencia={watch("filtroTipoAusencia")}
-          filtroMes={watch("filtroMes")}
-          filtroQuincena={watch("filtroQuincena")}
+          filtroTipoAusencia={watch('filtroTipoAusencia')}
+          filtroMes={watch('filtroMes')}
+          filtroQuincena={watch('filtroQuincena')}
         />
         {(empleadosCargando || (empleadosDatos?.empleados.length ?? 0) > 0) && (
-          <div className="flex justify-end items-center overflow-x-hide"
-            style={{ borderTop: "2px solid #ED6C02" }}>
+          <div className='shrink-0 flex justify-end items-center border-t-2 border-orange-500'>
             <TablePagination
               rowsPerPageOptions={[25, 50, 75, 100]}
-              component="div"
+              component='div'
               count={empleadosDatos?.totalEmpleados || 0}
               rowsPerPage={filasPorPagina}
               page={pagina}
               onPageChange={handleCambioPagina}
               onRowsPerPageChange={handleCambioFilasPorPagina}
-              labelRowsPerPage="Filas por página"
+              labelRowsPerPage='Filas por página'
               labelDisplayedRows={({ from, to, count }) =>
                 `${from}-${to} de ${count !== -1 ? count : `más de ${to}`}`
               }
               slotProps={{
                 select: {
                   MenuProps: {
-                    anchorOrigin: { vertical: "top", horizontal: "right" },
-                    transformOrigin: { vertical: "top", horizontal: "left" }
+                    anchorOrigin: { vertical: 'top', horizontal: 'right' },
+                    transformOrigin: { vertical: 'top', horizontal: 'left' }
                   },
                 }
               }}

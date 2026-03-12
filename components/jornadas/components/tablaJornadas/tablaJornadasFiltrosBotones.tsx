@@ -1,107 +1,94 @@
-import { Button } from "@mui/material";
+import { Button } from '@mui/material';
 import UploadRoundedIcon from '@mui/icons-material/UploadRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import FilterAltOffRoundedIcon from '@mui/icons-material/FilterAltOffRounded';
-import { Formulario } from "./tablaJornadasFiltrosFormulario";
+import { TablaJornadasFiltrosFormulario } from './tablaJornadasFiltrosFormulario';
 import SaveAsRoundedIcon from '@mui/icons-material/SaveAsRounded';
 import SyncIcon from '@mui/icons-material/Sync';
-import { getNombreMes } from "@/components/rrhh/exportar/utils";
-import { botonesFiltrosHijoProps, botonesFiltrosHijoRRHHProps } from "../../types";
+import { getNombreMes } from '@/components/rrhh/exportar/utils';
+import { TablaJornadasFiltrosBotonesProps } from '../../types/tablaJornadas/tablaJornadasFiltrosBotonesProps';
 
-export const Botones = ({ formularioVisible, handleLimpiarFiltros, filtroMes, filtroQuincena, filtroMarcasIncompletas, cargando, meses, creando, camposValidos, handleCambioFiltroMarcasIncompletas, handleCambioFiltroQuincena, handleCambioFiltroMes, handleMostrarFormulario, estado, onCreate }: botonesFiltrosHijoProps) => (
-    <div className="flex flex-row gap-2 w-full h-11 items-center">
-        {formularioVisible ? (
-            <></>
-        ) : (
+export const TablaJornadasFiltrosBotones = ({
+    formularioVisible,
+    handleLimpiarFiltros,
+    filtroMes,
+    filtroQuincena,
+    cargando,
+    meses,
+    creando,
+    camposValidos,
+    handleCambioFiltroQuincena,
+    handleCambioFiltroMes,
+    handleMostrarFormulario,
+    estado,
+    onCreate,
+    esAdministrativo
+}: TablaJornadasFiltrosBotonesProps) => (
+    <>
+        {!formularioVisible &&
             <>
-                <Button
-                    variant="contained"
-                    color="error"
-                    size="small"
-                    className="!h-[40px]"
-                    disableElevation
-                    onClick={handleLimpiarFiltros}
-                    endIcon={<FilterAltOffRoundedIcon />}
-                >
-                    Limpiar Filtros
-                </Button>
-                <Formulario
+                <div className='shrink-0'>
+                    <Button
+                        variant='contained'
+                        color='error'
+                        size='small'
+                        className='!h-10'
+                        disableElevation
+                        onClick={handleLimpiarFiltros}
+                        endIcon={<FilterAltOffRoundedIcon />}
+                    >
+                        Limpiar Filtros
+                    </Button>
+                </div>
+                <div className='flex-1 min-w-[280px] max-w-2xl'>
+                <TablaJornadasFiltrosFormulario
                     filtroMes={filtroMes}
                     filtroQuincena={filtroQuincena}
-                    filtroMarcasIncompletas={filtroMarcasIncompletas}
                     cargando={cargando}
                     meses={meses}
                     onCambioFiltroMes={handleCambioFiltroMes}
                     onCambioFiltroQuincena={handleCambioFiltroQuincena}
-                    onCambioFiltroMarcaIncompleta={handleCambioFiltroMarcasIncompletas}
                     getNombreMes={getNombreMes}
                 />
-                <div className="flex grow" />
+                </div>
+                <div className='flex grow shrink-0' />
             </>
-        )}
-        <Button
-            variant="contained"
-            color={formularioVisible ? "error" : "success"}
-            size="small"
-            className="!h-[40px]"
-            disableElevation
-            onClick={handleMostrarFormulario}
-            endIcon={formularioVisible ? <CloseRoundedIcon /> : <UploadRoundedIcon />}
-            disabled={estado.toLowerCase() === 'baja'}
+        }
+        {esAdministrativo &&
+            <Button
+                variant='contained'
+                color={formularioVisible ? 'error' : 'success'}
+                size='small'
+                className='!h-10'
+                disableElevation
+                onClick={handleMostrarFormulario}
+                endIcon={formularioVisible ? <CloseRoundedIcon /> : <UploadRoundedIcon />}
+                disabled={estado.toLowerCase() === 'baja'}
 
-        >
-            {formularioVisible ? "Cancelar" : "Carga Manual"}
-        </Button>
-        {formularioVisible ? (
+            >
+                {formularioVisible ? 'Cancelar' : 'Carga Manual'}
+            </Button>
+        }
+        {formularioVisible &&
             <>
-                <div className="flex grow" />
+                <div className='flex grow shrink-0' />
                 <Button
-                    variant="contained"
-                    color="success"
-                    size="small"
-                    className="!h-[40px]"
+                    variant='contained'
+                    color='success'
+                    size='small'
+                    className='!h-10'
                     disableElevation
                     endIcon={
                         creando ? (
-                            <SyncIcon className="animate-spin" style={{ animationDirection: 'reverse' }} />
+                            <SyncIcon className='animate-spin' style={{ animationDirection: 'reverse' }} />
                         ) : <SaveAsRoundedIcon />
                     }
                     onClick={onCreate}
                     disabled={creando || !camposValidos}
                 >
-                    {!creando ? "Guardar" : "Guardando"}
+                    {!creando ? 'Guardar' : 'Guardando'}
                 </Button>
             </>
-        ) :
-            <></>
         }
-    </div>
-)
-
-export const BotonesRRHH = ({ handleLimpiarFiltros, filtroMes, filtroQuincena, filtroMarcasIncompletas, cargando, meses, handleCambioFiltroMarcasIncompletas, handleCambioFiltroQuincena, handleCambioFiltroMes }: botonesFiltrosHijoRRHHProps) => (
-    <div className="flex flex-row gap-2 w-full h-11 items-center">
-        <Button
-            variant="contained"
-            color="error"
-            size="small"
-            className="!h-[40px]"
-            disableElevation
-            onClick={handleLimpiarFiltros}
-            endIcon={<FilterAltOffRoundedIcon />}
-        >
-            Limpiar Filtros
-        </Button>
-        <Formulario
-            filtroMes={filtroMes}
-            filtroQuincena={filtroQuincena}
-            filtroMarcasIncompletas={filtroMarcasIncompletas}
-            cargando={cargando}
-            meses={meses}
-            onCambioFiltroMes={handleCambioFiltroMes}
-            onCambioFiltroQuincena={handleCambioFiltroQuincena}
-            onCambioFiltroMarcaIncompleta={handleCambioFiltroMarcasIncompletas}
-            getNombreMes={getNombreMes}
-        />
-        <div className="flex grow" />
-    </div>
-)
+    </>
+);

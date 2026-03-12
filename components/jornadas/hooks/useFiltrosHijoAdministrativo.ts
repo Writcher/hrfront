@@ -1,28 +1,20 @@
-import { hookGenericoHijoAdministrativoProps } from "../types";
-
-export const useFiltrosInteriores = ({ setValue, watch }: hookGenericoHijoAdministrativoProps<'setValue' | 'watch'>) => {
-    
-    const filtroMarcasIncompletas = watch("filtroMarcasIncompletas")
+export const useFiltrosInteriores = ({ setValue }: any) => {
     
     const handleLimpiarFiltros = () => {
-        setValue("filtroMes", '');
-        setValue("filtroQuincena", '');
-        setValue("filtroMarcasIncompletas", false);
+        setValue('filtroMes', '');
+        setValue('filtroQuincena', '');
     };
+    
     const handleCambioFiltroMes = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setValue("filtroMes", Number(event.target.value));
+        setValue('filtroMes', Number(event.target.value));
     };
     const handleCambioFiltroQuincena = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setValue("filtroQuincena", Number(event.target.value));
-    };
-    const handleCambioFiltroMarcasIncompletas = () => {
-        setValue("filtroMarcasIncompletas", !filtroMarcasIncompletas)
+        setValue('filtroQuincena', Number(event.target.value));
     };
 
     return {
         handleLimpiarFiltros,
         handleCambioFiltroMes,
-        handleCambioFiltroQuincena,
-        handleCambioFiltroMarcasIncompletas,
+        handleCambioFiltroQuincena
     };
 };

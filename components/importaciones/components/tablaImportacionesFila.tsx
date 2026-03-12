@@ -1,9 +1,9 @@
-import { useSnackbar } from "@/lib/context/snackbarcontext";
-import { deleteImportacion } from "@/services/importacion/service.importacion";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteImportacionDatos, filaImportacionProps } from "../types";
-import { Chip, TableCell, TableRow } from "@mui/material";
-import { Botones } from "./filaImportacionBotones";
+import { useSnackbar } from '@/lib/context/snackbarcontext';
+import { deleteImportacion } from '@/services/importacion/service.importacion';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { deleteImportacionDatos, filaImportacionProps } from '../types';
+import { Chip, TableCell, TableRow } from '@mui/material';
+import { Botones } from './filaImportacionBotones';
 
 export default function Fila({ importacion, esAdministrativo }: filaImportacionProps) {
 
@@ -15,12 +15,12 @@ export default function Fila({ importacion, esAdministrativo }: filaImportacionP
         mutationFn: (data: deleteImportacionDatos) => deleteImportacion(data),
         onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: ["fetchImportaciones"]
+                queryKey: ['fetchImportaciones']
             });
-            showSuccess("Importación borrada correctamente");
+            showSuccess('Importación borrada correctamente');
         },
         onError: () => {
-            showError("Error al borrar la importación");
+            showError('Error al borrar la importación');
         }
     });
 
@@ -35,13 +35,13 @@ export default function Fila({ importacion, esAdministrativo }: filaImportacionP
 
     return (
         <TableRow key={importacion.id}>
-            <TableCell align="left" size="small">
-                <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.75rem)]" style={{ userSelect: "none" }}>
+            <TableCell align='left' size='small'>
+                <div className='text-gray-700 font-medium' style={{ userSelect: 'none' }}>
                     {importacion.nombre}
                 </div>
             </TableCell>
-            <TableCell align="center" size="small">
-                <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.75rem)]" style={{ userSelect: "none" }}>
+            <TableCell align='center' size='small'>
+                <div className='text-gray-700 font-medium' style={{ userSelect: 'none' }}>
                     {new Intl.DateTimeFormat('es-AR', {
                         weekday: 'long',
                         day: 'numeric',
@@ -50,33 +50,33 @@ export default function Fila({ importacion, esAdministrativo }: filaImportacionP
                     }).format(new Date(importacion.fecha)).replace(/\//g, '-')}
                 </div>
             </TableCell>
-            <TableCell align="center" size="small">
-                <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.75rem)]" style={{ userSelect: "none" }}>
+            <TableCell align='center' size='small'>
+                <div className='text-gray-700 font-medium' style={{ userSelect: 'none' }}>
                     {importacion.nombreproyecto}
                 </div>
             </TableCell>
-            <TableCell align="center" size="small">
-                <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.75rem)]" style={{ userSelect: "none" }}>
+            <TableCell align='center' size='small'>
+                <div className='text-gray-700 font-medium' style={{ userSelect: 'none' }}>
                     {importacion.nombreusuario}
                 </div>
             </TableCell>
-            <TableCell align="center" size="small">
-                <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.75rem)]" style={{ userSelect: "none" }}>
+            <TableCell align='center' size='small'>
+                <div className='text-gray-700 font-medium' style={{ userSelect: 'none' }}>
                     <Chip
                         label={importacion.nombreestado}
-                        className="!rounded"
+                        className='!rounded'
                         color={
                             completa
-                                ? "success"
+                                ? 'success'
                                 : incompleta
-                                    ? "error"
-                                    : "warning"
+                                    ? 'error'
+                                    : 'warning'
                         }
                     />
                 </div>
             </TableCell>
             {esAdministrativo &&
-                <TableCell align="right" size="small">
+                <TableCell align='right' size='small'>
                     <Botones
                         id={importacion.id}
                         completa={completa}

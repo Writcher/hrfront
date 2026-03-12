@@ -1,17 +1,17 @@
-import { Button, TablePagination } from "@mui/material";
-import { useMostrarFormulario } from "../../hooks/useMostrarFormulario";
+import { Button, TablePagination } from '@mui/material';
+import { useMostrarFormulario } from '../../hooks/useMostrarFormulario';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
-import { keepPreviousData, useMutation, useQuery } from "@tanstack/react-query";
-import { useSnackbar } from "@/lib/context/snackbarcontext";
-import { useEffect } from "react";
-import { controlFormularioDatos, insertControlParametros } from "../../types";
-import { Botones } from "./crearControlesFormularioBotones";
-import { Formulario } from "./crearControlesFormulario";
-import { fetchControlesABM, insertControl } from "@/services/control/service.control";
-import { useControlFormulario } from "../../hooks/useControlFormulario";
-import { fetchProyectos } from "@/services/proyecto/service.proyecto";
-import { TablaControles } from "./tablaControles";
-import { usePaginacion } from "@/components/hooks/usePaginacion";
+import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query';
+import { useSnackbar } from '@/lib/context/snackbarcontext';
+import { useEffect } from 'react';
+import { controlFormularioDatos, createControlParametros } from '../../types';
+import { Botones } from './crearControlesFormularioBotones';
+import { Formulario } from './crearControlesFormulario';
+import { fetchControlesPaginated, createControl } from '@/services/control/service.control';
+import { useControlFormulario } from '../../hooks/useControlFormulario';
+import { fetchProyectos } from '@/services/proyecto/service.proyecto';
+import { TablaControles } from './tablaControles';
+import { usePaginacion } from '@/components/hooks/usePaginacion';
 
 export default function Controles() {
 
@@ -19,7 +19,7 @@ export default function Controles() {
 
     const { showError, showWarning, showSuccess } = useSnackbar();
 
-    const { control, formState: { isValid }, setValue, handleSubmit, reset } = useControlFormulario()
+    const { control, formState: { isValid }, handleSubmit, reset } = useControlFormulario()
 
     const {
         pagina,
@@ -30,11 +30,11 @@ export default function Controles() {
 
     const { data: controlesDatos, isLoading: controlesCargando, isError: controlesError, refetch: controlesRefetch } = useQuery({
         queryKey: [
-            "fetchControlesABM",
+            'fetchControlesPaginated',
             pagina,
             filasPorPagina
         ],
-        queryFn: () => fetchControlesABM({
+        queryFn: () => fetchControlesPaginated({
             pagina: pagina,
             filasPorPagina: filasPorPagina,
         }),
@@ -43,21 +43,21 @@ export default function Controles() {
     });
 
     const { data: selectDatos, isLoading: selectCargando, isError: selectError } = useQuery({
-        queryKey: ["fetchProyectos"],
+        queryKey: ['fetchProyectos'],
         queryFn: () => fetchProyectos(),
         refetchOnWindowFocus: false,
     });
 
     const mutacionCreate = useMutation({
-        mutationFn: (data: insertControlParametros) => insertControl(data),
+        mutationFn: (data: createControlParametros) => createControl(data),
         onSuccess: () => {
             controlesRefetch();
             reset();
             setFormularioVisible(false);
-            showSuccess("Control creado correctamente");
+            showSuccess('Control creado correctamente');
         },
         onError: () => {
-            showError("Error al crear control");
+            showError('Error al crear control');
         },
     });
 
@@ -70,33 +70,33 @@ export default function Controles() {
 
     useEffect(() => {
         if (controlesError) {
-            showWarning("Error al cargar controles")
+            showWarning('Error al cargar controles')
         };
         if (selectError) {
-            showWarning("Error al cargar los datos")
+            showWarning('Error al cargar los datos')
         };
     }, [controlesError, selectError])
 
     return (
-        <div className="flex flex-col gap-1 items-start w-full h-full">
-            <div className="flex flex-row gap-2 w-full p-1">
-                <div className="flex grow" />
+        <div className='flex flex-col gap-1 items-start w-full h-full'>
+            <div className='flex flex-row gap-2 w-full p-1'>
+                <div className='flex grow' />
                 {!formularioVisible &&
                     <Button
-                        variant="contained"
-                        color={"success"}
-                        size="small"
-                        className="!h-[40px]"
+                        variant='contained'
+                        color={'success'}
+                        size='small'
+                        className='!h-[40px]'
                         disableElevation
                         onClick={() => setFormularioVisible(!formularioVisible)}
                         endIcon={<AddRoundedIcon />}
                     >
-                        {"Cargar Control"}
+                        {'Cargar Control'}
                     </Button>
                 }
             </div>
             {formularioVisible
-                ?   <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col justify-between items-center w-full h-full">
+                ?   <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col justify-between items-center w-full h-full'>
                         <Formulario
                             control={control}
                             cargando={selectCargando}
@@ -111,31 +111,31 @@ export default function Controles() {
                             camposValidos={isValid}
                         />
                     </form>
-                :   <div className="flex flex-col justify-between w-full h-full overflow-y-auto rounded border-2 border-[#ED6C02]">
+                :   <div className='flex flex-col justify-between w-full h-full overflow-y-auto rounded border-2 border-[#ED6C02]'>
                         <TablaControles
                             controles={controlesDatos?.controles || []}
                             cargando={controlesCargando}
                         />
                         {(controlesCargando || (controlesDatos?.controles.length ?? 0) > 0) && (
-                            <div className="flex justify-end items-center overflow-x-hide"
-                                style={{ borderTop: "2px solid #ED6C02" }}>
+                            <div className='flex justify-end items-center overflow-x-hide'
+                                style={{ borderTop: '2px solid #ED6C02' }}>
                                 <TablePagination
                                     rowsPerPageOptions={[25, 50, 75, 100]}
-                                    component="div"
+                                    component='div'
                                     count={controlesDatos?.totalControles || 0}
                                     rowsPerPage={filasPorPagina}
                                     page={pagina}
                                     onPageChange={handleCambioPagina}
                                     onRowsPerPageChange={handleCambioFilasPorPagina}
-                                    labelRowsPerPage="Filas por página"
+                                    labelRowsPerPage='Filas por página'
                                     labelDisplayedRows={({ from, to, count }) =>
                                         `${from}-${to} de ${count !== -1 ? count : `más de ${to}`}`
                                     }
                                     slotProps={{
                                         select: {
                                             MenuProps: {
-                                                anchorOrigin: { vertical: "top", horizontal: "right" },
-                                                transformOrigin: { vertical: "top", horizontal: "left" }
+                                                anchorOrigin: { vertical: 'top', horizontal: 'right' },
+                                                transformOrigin: { vertical: 'top', horizontal: 'left' }
                                             },
                                         }
                                     }}

@@ -1,16 +1,16 @@
-import { fetchTiposAusencia } from "@/services/tipoausencia/service.tipoausencia";
-import { fetchTiposJornada } from "@/services/tipojornada/service.tipojornada";
-import { useQuery } from "@tanstack/react-query";
+import { fetchTiposAusencia } from '@/services/tipoausencia/service.tipoausencia';
+import { fetchTiposJornada } from '@/services/tipojornada/service.tipojornada';
+import { useQuery } from '@tanstack/react-query';
 
-export const useSelectDatosFormulario = () => {
+export const useDatosFormularioCrearJornada = () => {
     const { data: tiposJornada, isLoading: tiposJornadaCargando, isError: tiposJornadaError } = useQuery({
-        queryKey: ["fetchTiposJornada"],
+        queryKey: ['fetchTiposJornada'],
         queryFn: () => fetchTiposJornada(),
         refetchOnWindowFocus: false,
     });
 
     const { data: tiposAusencia, isLoading: tiposAusenciaCargando, isError: tiposAusenciaError } = useQuery({
-        queryKey: ["fetchTiposAusencia"],
+        queryKey: ['fetchTiposAusencia'],
         queryFn: () => fetchTiposAusencia(),
         refetchOnWindowFocus: false,
     });
@@ -24,7 +24,7 @@ export const useSelectDatosFormulario = () => {
 
     if (tiposJornada && tiposAusencia) {
         const tipo = tiposJornada.find(
-            (item: { id: number, nombre: string }) => item.nombre === "Ausencia"
+            (item: { id: number, nombre: string }) => item.nombre === 'Ausencia'
         );
 
         id_ausencia = tipo ? tipo.id : null;
@@ -33,7 +33,7 @@ export const useSelectDatosFormulario = () => {
 
     if (tiposJornada && tiposAusencia) {
         const tipo = tiposJornada.find(
-            (item: { id: number, nombre: string }) => item.nombre === "Jornada Normal"
+            (item: { id: number, nombre: string }) => item.nombre === 'Jornada Normal'
         );
 
         id_jornadaNormal = tipo ? tipo.id : null;

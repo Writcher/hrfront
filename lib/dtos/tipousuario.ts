@@ -1,3 +1,3 @@
-export type fetchTipoUsuarioPorIdDTO = {
+export type FetchTipoUsuarioPorIdDto = {
     id: number;
 };

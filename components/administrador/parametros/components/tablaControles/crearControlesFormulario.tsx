@@ -1,20 +1,20 @@
-import { MenuItem, Skeleton, TextField } from "@mui/material";
-import { Controller } from "react-hook-form";
-import { proyectoSelect, formularioCrearControlesProps } from "../../types";
+import { MenuItem, Skeleton, TextField } from '@mui/material';
+import { Controller } from 'react-hook-form';
+import { proyectoSelect, formularioCrearControlesProps } from '../../types';
 
 export const Formulario = ({ control, cargando, proyectos }: formularioCrearControlesProps) => (
-    <div className="flex flex-col items-center justify-center w-[80%] h-full gap-4">
+    <div className='flex flex-col items-center justify-center w-[80%] h-full gap-4'>
         <Controller
-            name="serie"
+            name='serie'
             control={control}
             render={({ field, fieldState: { error } }) => (
                 <TextField
                     {...field}
-                    id="serie"
-                    label="Numero de Serie"
-                    variant="outlined"
-                    color="warning"
-                    size="small"
+                    id='serie'
+                    label='Numero de Serie'
+                    variant='outlined'
+                    color='warning'
+                    size='small'
                     fullWidth
                     error={!!error}
                     helperText={error?.message}
@@ -23,29 +23,43 @@ export const Formulario = ({ control, cargando, proyectos }: formularioCrearCont
         />
         {cargando ? (
             <Skeleton
-                variant="rectangular"
-                width="100%"
-                height="40px"
-                sx={{ borderRadius: "5px" }}
+                variant='rectangular'
+                width='100%'
+                height='40px'
+                sx={{ borderRadius: '5px' }}
             />
         ) : (
             <Controller
-                name="id_proyecto"
+                name='id_proyecto'
                 control={control}
-                rules={{ required: "Debe seleccionar un proyecto" }}
+                rules={{ required: 'Debe seleccionar un proyecto' }}
                 render={({ field, fieldState: { error } }) => (
                     <TextField
                         {...field}
-                        id="id_Proyecto"
-                        label="Proyecto"
-                        variant="outlined"
-                        color="warning"
-                        size="small"
+                        id='id_Proyecto'
+                        label='Proyecto'
+                        variant='outlined'
+                        color='warning'
+                        size='small'
                         select
                         fullWidth
                         error={!!error}
                         helperText={error?.message}
                         disabled={proyectos.length === 0}
+                        slotProps={{
+                            select: {
+                                MenuProps: {
+                                    slotProps: {
+                                        paper: {
+                                            style: {
+                                                marginTop: '4px',
+                                                maxHeight: '200px',
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        }}
                     >
                         {proyectos.map((proyecto: proyectoSelect) => (
                             <MenuItem key={proyecto.id} value={proyecto.id}>

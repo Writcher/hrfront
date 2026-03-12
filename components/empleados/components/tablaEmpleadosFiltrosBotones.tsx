@@ -1,13 +1,17 @@
-import { Button, ButtonGroup } from "@mui/material";
-import { botonesFiltrosProps } from "../types";
+import { Button, ButtonGroup } from '@mui/material';
+import { botonesFiltrosProps } from '../types';
 import FilterAltRoundedIcon from '@mui/icons-material/FilterAltRounded';
 import FilterAltOffRoundedIcon from '@mui/icons-material/FilterAltOffRounded';
 
 export const BotonesFiltros = ({ onClick, onClean }: botonesFiltrosProps) => (
-    <ButtonGroup variant="outlined" color="inherit">
+    <ButtonGroup
+        variant='outlined'
+        color='inherit'
+        className='!h-10'
+    >
         <Button
-            variant="contained"
-            className="!bg-gray-800 hover:!bg-gray-700 !text-white"
+            variant='contained'
+            className='!bg-gray-800 hover:!bg-gray-700 !text-white'
             disableElevation
             endIcon={<FilterAltRoundedIcon />}
             onClick={onClick}
@@ -15,8 +19,8 @@ export const BotonesFiltros = ({ onClick, onClean }: botonesFiltrosProps) => (
             Filtros
         </Button>
         <Button
-            variant="contained"
-            color="error"
+            variant='contained'
+            color='error'
             disableElevation
             onClick={onClean}
         >

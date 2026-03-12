@@ -1,4 +1,4 @@
-import { Control, UseFormGetValues, UseFormReset, UseFormSetValue, UseFormWatch } from "react-hook-form";
+import { Control, UseFormGetValues, UseFormReset, UseFormSetValue, UseFormWatch } from 'react-hook-form';
 
 //schema
 
@@ -20,15 +20,15 @@ export type turno = {
 export type empleado = {
   id: number,
   legajo: number,
-  id_reloj: number,
+  dni: number,
   nombre: string,
   id_proyecto: number,
   nombreproyecto: string,
   estadoempleado: string,
   tipoempleado: string,
   id_tipoempleado: number | '',
-  id_turno: number | '',
-  turno: string | null,
+  id_modalidadvalidacion: number | '',
+  modalidadvalidacion: string | null,
 };
 
 //props
@@ -146,31 +146,23 @@ export type tablaEmpleadosFormularioDatos = {
 };
 
 export type empleadoFormularioDatos = {
-  id_reloj: number | '',
+  dni: number | '',
   id_proyecto: number | '',
   legajo: number | '',
   nombre: string,
   id_tipoempleado: number | '',
-  id_turno: number | ''
+  id_modalidadvalidacion: number | ''
 };
 
 //mutations
 
-export type insertempleadoParametros = {
-  id_reloj: number | '',
-  id_proyecto: number | '',
-  legajo: number | '',
-  nombre: string,
-  id_tipoempleado: number | '',
-};
-
 export type editEmpleadoParametros = {
-  id_reloj: number | '',
+  dni: number | '',
   nombre: string,
   legajo: number | '',
   id: number,
   id_tipoempleado: number | '',
-  id_turno: number | '',
+  id_modalidadvalidacion: number | '',
   id_proyecto: number | '',
 };
 

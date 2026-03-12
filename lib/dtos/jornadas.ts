@@ -4,7 +4,7 @@ export type  fetchEmpleadosTablaJornadasParams = {
     pagina: number,
     filasPorPagina: number,
     ordenColumna: string,
-    ordenDireccion: "ASC" | "DESC"
+    ordenDireccion: 'ASC' | 'DESC'
 };
 
 export type fetchJornadasEmpleadosParams = {

@@ -1,136 +1,162 @@
-"use server"
+'use server'
 
-import CONFIG from "@/config";
-import { createTipoAusencialDTO, deleteTipoAusenciaDTO, editTipoAusenciaDTO, fetchTiposAusenciaABMDTO } from "@/lib/dtos/tipoausencia";
-import { getToken } from "@/lib/utils/getToken";
+import CONFIG from '@/config';
+import { CreateTipoAusencialDto, DeleteTipoAusenciaDto, EditTipoAusenciaDto, FetchTiposAusenciaPaginatedDto } from '@/lib/dtos/tipoausencia';
+import { getToken } from '@/lib/utils/getToken';
 
 export async function fetchTiposAusencia() {
     try {
         const token = await getToken();
-            
-        const tiposAusenciaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_TIPOSAUSENCIA}?accion=select`, {
-            method: "GET",
+
+        const tiposAusenciaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_TIPOAUSENCIA}`, {
+            method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
             }
         });
 
         if (!tiposAusenciaRaw.ok) {
-            throw new Error("Error en la respuesta del servidor");
+            throw new Error(`Error fetching tiposAusencia: ${tiposAusenciaRaw.status} - ${tiposAusenciaRaw.statusText}`);
         };
 
         const tiposAusencia = await tiposAusenciaRaw.json();
 
         return tiposAusencia;
     } catch (error) {
+        console.error('Fetch tiposAusencia failed: ', {
+            timestamp: new Date().toISOString(),
+            error: error instanceof Error ? error.message : error,
+            stack: error instanceof Error ? error.stack : undefined
+        });
+
         throw error;
     };
 };
 
-export async function fetchTiposAusenciaABM(parametros: fetchTiposAusenciaABMDTO) {
+export async function fetchTiposAusenciaPaginated(params: FetchTiposAusenciaPaginatedDto) {
     try {
         const token = await getToken();
 
-        const tiposAusenciaParametros = new URLSearchParams({
-            pagina: parametros.pagina != null ? parametros.pagina.toString() : '',
-            filasPorPagina: parametros.filasPorPagina != null ? parametros.filasPorPagina.toString() : '',
+        const tiposAusenciaUrlParams = new URLSearchParams({
+            page: params.pagina.toString(),
+            limit: params.filasPorPagina.toString(),
         });
 
-        const tiposAusenciaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_TIPOSAUSENCIA}?${tiposAusenciaParametros.toString()}&accion=abm`, {
-            method: "GET",
+        const tiposAusenciaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_TIPOAUSENCIA}/paginated?${tiposAusenciaUrlParams}`, {
+            method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
             }
         });
 
         if (!tiposAusenciaRaw.ok) {
-            throw new Error("Error en alguna de las respuestas del servidor");
+            throw new Error(`Error fetching tiposAusencia: ${tiposAusenciaRaw.status} - ${tiposAusenciaRaw.statusText}`);
         };
 
         const tiposAusencia = await tiposAusenciaRaw.json();
 
         return tiposAusencia;
     } catch (error) {
+        console.error('Fetch tiposAusencia failed: ', {
+            timestamp: new Date().toISOString(),
+            error: error instanceof Error ? error.message : error,
+            stack: error instanceof Error ? error.stack : undefined
+        });
+
         throw error;
     };
 };
 
-export async function insertTipoAusencia(parametros: createTipoAusencialDTO) {
+export async function createTipoAusencia(params: CreateTipoAusencialDto) {
     try {
         const token = await getToken();
 
-        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_CREAR_TIPOAUSENCIA}`, {
-            method: "POST",
+        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_TIPOAUSENCIA}`, {
+            method: 'POST',
             headers: {
                 Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json"
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify(parametros),
+            body: JSON.stringify(params),
         });
 
         if (!respuestaRaw.ok) {
-            throw new Error("Error en la respuesta del servidor");
+            throw new Error(`Error creating tiposAusencia: ${respuestaRaw.status} - ${respuestaRaw.statusText}`);
         };
 
         const respuesta = await respuestaRaw.json();
 
         return respuesta;
     } catch (error) {
+        console.error('Create tiposAusencia failed: ', {
+            timestamp: new Date().toISOString(),
+            error: error instanceof Error ? error.message : error,
+            stack: error instanceof Error ? error.stack : undefined
+        });
+
         throw error;
     };
 };
 
-export async function deleteTipoAusencia(parametros: deleteTipoAusenciaDTO) {
+export async function deleteTipoAusencia(params: DeleteTipoAusenciaDto) {
     try {
         const token = await getToken();
 
-        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_TIPOAUSENCIA!.replace("{id}", parametros.id_tipoausencia!.toString())}`, {
-            method: "PATCH",
+        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_TIPOAUSENCIA}/${params.id_tipoausencia}`, {
+            method: 'DELETE',
             headers: {
-                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            }
+        });
+
+        if (!respuestaRaw.ok) {
+            throw new Error(`Error deleting tiposAusencia with id ${params.id_tipoausencia}: ${respuestaRaw.status} - ${respuestaRaw.statusText}`);
+        };
+
+        const respuesta = await respuestaRaw.json();
+
+        return respuesta;
+    } catch (error) {
+        console.error('Delete tipoAusencia failed: ', {
+            timestamp: new Date().toISOString(),
+            error: error instanceof Error ? error.message : error,
+            stack: error instanceof Error ? error.stack : undefined
+        });
+
+        throw error;
+    };
+};
+
+export async function editTipoAusencia(params: EditTipoAusenciaDto) {
+    try {
+        const token = await getToken();
+
+        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_TIPOAUSENCIA}/${params.id_tipoausencia}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({
-                accion: "baja",
+                nombre: params.nombre,
             }),
         });
 
         if (!respuestaRaw.ok) {
-            throw new Error("Error en la respuesta del servidor");
+            throw new Error(`Error deleting tiposAusencia with id ${params.id_tipoausencia}: ${respuestaRaw.status} - ${respuestaRaw.statusText}`);
         };
 
         const respuesta = await respuestaRaw.json();
 
         return respuesta;
     } catch (error) {
-        throw error;
-    };
-};
-
-export async function editTipoAusencia(parametros: editTipoAusenciaDTO) {
-    try {
-        const token = await getToken();
-
-        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_TIPOAUSENCIA!.replace("{id}", parametros.id_tipoausencia!.toString())}`, {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-                accion: "editar",
-                nombre: parametros.nombre,
-            }),
+        console.error('Edit tipoAusencia failed: ', {
+            id: params.id_tipoausencia,
+            timestamp: new Date().toISOString(),
+            error: error instanceof Error ? error.message : error,
+            stack: error instanceof Error ? error.stack : undefined
         });
 
-        if (!respuestaRaw.ok) {
-            throw new Error("Error en la respuesta del servidor");
-        };
-
-        const respuesta = await respuestaRaw.json();
-
-        return respuesta;
-    } catch (error) {
         throw error;
     };
 };

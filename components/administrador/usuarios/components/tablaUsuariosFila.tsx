@@ -1,15 +1,16 @@
-import { Chip, MenuItem, TableCell, TableRow, TextField } from "@mui/material";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useSnackbar } from "@/lib/context/snackbarcontext";
-import { useUsuarioFormulario } from "../hooks/useUsuarioFormulario";
-import { useMostrarFormulario } from "../hooks/useMostrarFormulario";
-import { Controller } from "react-hook-form";
-import { useEffect } from "react";
-import { editUsuarioParametros, usuarioFormularioDatos, formularioFilaUsuarioProps, tipoUsuario } from "../types";
-import { BotonesFila } from "./filaUsuarioBotones";
-import { useConfirmar } from "@/components/hooks/useConfirmar";
-import { fetchTiposUsuario } from "@/services/tipousuario/service.tipousuario";
-import { deleteUsuario, editUsuario } from "@/services/usuario/service.usuario";
+import { Chip, MenuItem, TableCell, TableRow, TextField } from '@mui/material';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useSnackbar } from '@/lib/context/snackbarcontext';
+import { useUsuarioFormulario } from '../hooks/useUsuarioFormulario';
+import { useMostrarFormulario } from '../hooks/useMostrarFormulario';
+import { Controller } from 'react-hook-form';
+import { useEffect } from 'react';
+import { usuarioFormularioDatos, formularioFilaUsuarioProps, tipoUsuario } from '../types';
+import { BotonesFila } from './filaUsuarioBotones';
+import { useConfirmar } from '@/components/hooks/useConfirmar';
+import { fetchTiposUsuario } from '@/services/tipousuario/service.tipousuario';
+import { deleteUsuario, editUsuario } from '@/services/usuario/service.usuario';
+import { DeleteUsuarioDto, EditUsuarioDto } from '@/lib/dtos/usuario';
 
 export default function FilaUsuario({ usuario }: formularioFilaUsuarioProps) {
 
@@ -24,7 +25,7 @@ export default function FilaUsuario({ usuario }: formularioFilaUsuarioProps) {
     const { confirmar: confirmarBorrar, handleConfirmar: handleConfirmarBorrar } = useConfirmar();
 
     const { data: selectData } = useQuery({
-        queryKey: ["fetchTiposUsuario"],
+        queryKey: ['fetchTiposUsuario'],
         queryFn: () => fetchTiposUsuario(),
         refetchOnWindowFocus: false
     });
@@ -38,16 +39,16 @@ export default function FilaUsuario({ usuario }: formularioFilaUsuarioProps) {
     }, [usuario, setValue, formularioVisible]);
 
     const mutacionEdit = useMutation({
-        mutationFn: (data: editUsuarioParametros) => editUsuario(data),
+        mutationFn: (data: EditUsuarioDto) => editUsuario(data),
         onSuccess: () => {
             handleMostrarFormulario();
-            showSuccess("Usuario editado correctamente");
+            showSuccess('Usuario editado correctamente');
             queryClient.invalidateQueries({
-                queryKey: ["fetchUsuariosTabla"]
+                queryKey: ['fetchUsuariosTabla']
             });
         },
         onError: () => {
-            showError("Error al eliminar empleado");
+            showError('Error al eliminar empleado');
         },
     });
 
@@ -61,40 +62,40 @@ export default function FilaUsuario({ usuario }: formularioFilaUsuarioProps) {
     };
 
     const mutacionDelete = useMutation({
-        mutationFn: (id: number) => deleteUsuario(id),
+        mutationFn: (data: DeleteUsuarioDto) => deleteUsuario(data),
         onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: ["fetchUsuariosTabla"]
+                queryKey: ['fetchUsuariosTabla']
             });
-            showSuccess("Usuario eliminado correctamente");
+            showSuccess('Usuario eliminado correctamente');
         },
         onError: () => {
-            showError("Error al eliminar usuario");
+            showError('Error al eliminar usuario');
         },
     });
 
     const onDelete = () => {
-        mutacionDelete.mutate(
-            usuario.id
-        );
+        mutacionDelete.mutate({
+            id: usuario.id
+        });
     };
 
     return (
         <TableRow>
-            <TableCell align="left" size="small">
-                <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.75rem)]" style={{ userSelect: "none" }}>
+            <TableCell align='left' size='small'>
+                <div className='text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.75rem)]' style={{ userSelect: 'none' }}>
                     {formularioVisible ? (
                         <Controller
-                            name="nombre"
+                            name='nombre'
                             control={control}
-                            rules={{ required: "Debe ingresar un nombre" }}
+                            rules={{ required: 'Debe ingresar un nombre' }}
                             render={({ field, fieldState: { error } }) => (
                                 <TextField
                                     {...field}
-                                    id="nombre"
-                                    variant="outlined"
-                                    color="warning"
-                                    size="small"
+                                    id='nombre'
+                                    variant='outlined'
+                                    color='warning'
+                                    size='small'
                                     fullWidth
                                     error={!!error}
                                     helperText={error?.message}
@@ -108,20 +109,20 @@ export default function FilaUsuario({ usuario }: formularioFilaUsuarioProps) {
                     )}
                 </div>
             </TableCell>
-            <TableCell align="center" size="small">
-                <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]" style={{ userSelect: "none" }}>
+            <TableCell align='center' size='small'>
+                <div className='text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]' style={{ userSelect: 'none' }}>
                     {formularioVisible ? (
                         <Controller
-                            name="correo"
+                            name='correo'
                             control={control}
-                            rules={{ required: "Debe ingresar un correo" }}
+                            rules={{ required: 'Debe ingresar un correo' }}
                             render={({ field, fieldState: { error } }) => (
                                 <TextField
                                     {...field}
-                                    id="nombre"
-                                    variant="outlined"
-                                    color="warning"
-                                    size="small"
+                                    id='nombre'
+                                    variant='outlined'
+                                    color='warning'
+                                    size='small'
                                     fullWidth
                                     error={!!error}
                                     helperText={error?.message}
@@ -135,26 +136,40 @@ export default function FilaUsuario({ usuario }: formularioFilaUsuarioProps) {
                     )}
                 </div>
             </TableCell>
-            <TableCell align="center" size="small">
-                <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]" style={{ userSelect: "none" }}>
+            <TableCell align='center' size='small'>
+                <div className='text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.9rem)]' style={{ userSelect: 'none' }}>
                     {formularioVisible ? (
                         <Controller
-                            name="id_tipousuario"
+                            name='id_tipousuario'
                             control={control}
-                            rules={{ required: "Debe seleccionar un tipo" }}
+                            rules={{ required: 'Debe seleccionar un tipo' }}
                             render={({ field, fieldState: { error } }) => (
                                 <TextField
                                     {...field}
-                                    id="id_tipoempleado"
-                                    label="Seleccionar Tipo de Usuario"
-                                    variant="outlined"
-                                    color="warning"
-                                    size="small"
+                                    id='id_tipoempleado'
+                                    label='Seleccionar Tipo de Usuario'
+                                    variant='outlined'
+                                    color='warning'
+                                    size='small'
                                     select
                                     fullWidth
                                     error={!!error}
                                     helperText={error?.message}
                                     disabled={selectData?.length === 0 || !selectData}
+                                    slotProps={{
+                                        select: {
+                                            MenuProps: {
+                                                slotProps: {
+                                                    paper: {
+                                                        style: {
+                                                            marginTop: '4px',
+                                                            maxHeight: '200px',
+                                                        },
+                                                    },
+                                                },
+                                            },
+                                        },
+                                    }}
                                 >
                                     {selectData?.map((tipoUsuario: tipoUsuario) => (
                                         <MenuItem key={tipoUsuario.id} value={tipoUsuario.id}>
@@ -171,18 +186,18 @@ export default function FilaUsuario({ usuario }: formularioFilaUsuarioProps) {
                     )}
                 </div>
             </TableCell>
-            <TableCell align="center" size="small">
-                <div className="text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.75rem)]" style={{ userSelect: "none" }}>
+            <TableCell align='center' size='small'>
+                <div className='text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.75rem)]' style={{ userSelect: 'none' }}>
                     <Chip
                         label={usuario.estadousuario}
-                        className="!rounded"
+                        className='!rounded'
                         color={
                             usuario.estadousuario.toLowerCase() === 'activo' ? 'success' : 'error'
                         }
                     />
                 </div>
             </TableCell>
-            <TableCell align="right" size="small">
+            <TableCell align='right' size='small'>
                 <BotonesFila
                     editando={mutacionEdit.isPending}
                     borrando={mutacionDelete.isPending}

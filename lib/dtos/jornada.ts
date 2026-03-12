@@ -1,34 +1,40 @@
-export type fetchJornadasDTO = {
+export type FetchJornadasDto = {
     id_empleado: number | null,
     filtroMes: number | '',
     filtroQuincena: number | '',
     filtroMarcasIncompletas?: boolean,
-    pagina?: number,
-    filasPorPagina?: number,
+    pagina: number,
+    filasPorPagina: number,
     ausencias?: boolean,
     filtroTipoAusencia?: number | '',
 };
 
-export type editJornadaDTO = {
+export type FetchResumenDto = {
+    id_empleado: number | null,
+    filtroMes: number | '',
+    filtroQuincena: number | '',
+};
+
+export type EditJornadaDto = {
     id: number,
     entrada: string | null,
     salida: string | null,
 };
 
-export type deleteJornadaDTO = {
+export type DeleteJornadaDto = {
     id: number,
 };
 
-export type validateJornadaDTO = {
+export type ValidateJornadaDto = {
     id: number,
 };
 
-export type updateJornadaTipoAusenciaDTO = {
+export type EditJornadaTipoAusenciaDto = {
     tipoAusencia: number | '',
     id_jornada: number,
 };
 
-export type insertJornadaDTO = {
+export type CreateJornadaDto = {
     entrada: string | null,
     salida: string | null,
     entradaTarde: string | null,
@@ -40,8 +46,7 @@ export type insertJornadaDTO = {
     id_empleado: number,
 };
 
-export type fetchJornadasPorImportacionDTO = {
-    filtroMarcasIncompletas: boolean;
+export type FetchJornadasPorImportacionDto = {
     id_importacion: number;
     pagina: number;
     filasPorPagina: number;

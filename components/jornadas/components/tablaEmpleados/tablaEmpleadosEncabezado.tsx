@@ -1,7 +1,7 @@
-import { TableCell, TableHead, TableRow } from "@mui/material";
-import { encabezadoProps } from "../../types";
+import { TableCell, TableHead, TableRow } from '@mui/material';
+import { TablaEmpleadosEncabezadoProps } from '../../types/tablaEmpleados/tablaEmpleadosEncabezadoProps';
 
-export const Encabezado = ({ onOrden, columna, direccion }: encabezadoProps) => (
+export const TablaEmpleadosEncabezado = ({ onOrden, columna, direccion }: TablaEmpleadosEncabezadoProps) => (
     <TableHead
         sx={{
             '& .MuiTableCell-root': {
@@ -12,24 +12,55 @@ export const Encabezado = ({ onOrden, columna, direccion }: encabezadoProps) => 
         }}
     >
         <TableRow>
-            <TableCell align="center" onClick={() => onOrden('legajo')} style={{ cursor: 'pointer' }} width="10%">
-                <div style={{ userSelect: "none" }}
-                    className={`text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)] ${columna === 'legajo' ? (direccion === 'ASC' ? 'text-orange-500' : 'text-red-500') : ''
-                        }`}>
+            <TableCell
+                align='center'
+                onClick={() => onOrden('legajo')}
+                style={{ cursor: 'pointer', minWidth: '100px' }}
+                width='10%'
+            >
+                <div
+                    style={{ userSelect: 'none' }}
+                    className={`text-gray-700 font-bold text-sm ${columna === 'legajo'
+                        ? (direccion === 'ASC' ? 'text-orange-500' : 'text-red-500')
+                        : ''
+                        }`
+                    }
+                >
                     Legajo
                 </div>
             </TableCell>
-            <TableCell align="center" onClick={() => onOrden('id_reloj')} style={{ cursor: 'pointer' }} width="10%">
-                <div style={{ userSelect: "none" }}
-                    className={`text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)] ${columna === 'id_reloj' ? (direccion === 'ASC' ? 'text-orange-500' : 'text-red-500') : ''
-                        }`}>
+            <TableCell
+                align='center'
+                onClick={() => onOrden('dni')}
+                style={{ cursor: 'pointer', minWidth: '120px' }}
+                width='10%'
+            >
+                <div
+                    style={{ userSelect: 'none' }}
+                    className={`text-gray-700 font-bold text-sm ${columna === 'dni'
+                        ? (direccion === 'ASC' ? 'text-orange-500' : 'text-red-500')
+                        : ''
+                        }`
+                    }
+                >
                     ID en Reloj
                 </div>
             </TableCell>
-            <TableCell align="left" onClick={() => onOrden('nombreapellido')} style={{ cursor: 'pointer' }} width="80%">
-                <div style={{ userSelect: "none" }}
-                    className={`text-gray-700 font-bold text-[clamp(0.25rem,5vw,1rem)] ${columna === 'nombreapellido' ? (direccion === 'ASC' ? 'text-orange-500' : 'text-red-500') : ''
-                        }`}>
+            <TableCell
+                align='left'
+                onClick={() => onOrden('nombre')}
+                style={{ cursor: 'pointer', minWidth: '200px' }}
+                width='80%'
+            >
+                <div
+                    style={{ userSelect: 'none' }}
+                    className={`text-gray-700 font-bold text-sm ${
+                        columna === 'nombre'
+                            ? (direccion === 'ASC' ? 'text-orange-500' : 'text-red-500')
+                            : ''
+                        }`
+                    }
+                >
                     Nombre de Empleado
                 </div>
             </TableCell>

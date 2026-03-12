@@ -1,102 +1,106 @@
-"use server"
+'use server'
 
-import CONFIG from "@/config";
-import { deleteImportacionDTO } from "@/lib/dtos/importacion";
-import { fetchImportacionesParams, fetchImportacionJornadasParams } from "@/lib/dtos/importaciones";
-import { getToken } from "@/lib/utils/getToken";
+import CONFIG from '@/config';
+import { DeleteImportacionDto, FetchImportacionesDto, SetImportacionCompletaDto } from '@/lib/dtos/importacion';
+import { getToken } from '@/lib/utils/getToken';
 
-export async function fetchImportaciones(params: fetchImportacionesParams) {
+export async function fetchImportaciones(params: FetchImportacionesDto) {
     try {
         const token = await getToken();
 
-        const datosImportacionesParams = new URLSearchParams({
-            filtroIncompletas: params.filtroIncompletas.toString(),
-            filtroProyecto: params.filtroProyecto.toString() === '' ? '0' : params.filtroProyecto.toString(),
-            pagina: params.pagina.toString(),
-            filasPorPagina: params.filasPorPagina.toString(),
-        });
+        const importacionesParams: Record<string, string> = {
+            incompletas: params.filtroIncompletas.toString(),
+            page: params.pagina.toString(),
+            limit: params.filasPorPagina.toString(),
+        };
 
-        const datosImportacionesRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_IMPORTACIONES}?${datosImportacionesParams.toString()}`, {
-            method: "GET",
+        if (params.filtroProyecto !== '' && params.filtroProyecto !== 0) {
+            importacionesParams.id_proyecto = params.filtroProyecto.toString()
+        };
+
+        const importacionesUrlParams = new URLSearchParams(importacionesParams);
+
+        const importacionesRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_IMPORTACION}?${importacionesUrlParams}`, {
+            method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
             }
         });
 
-        if (!datosImportacionesRaw.ok) {
-            throw new Error("Error en la respuesta del servidor");
+        if (!importacionesRaw.ok) {
+            throw new Error(`Error fetching importaciones: ${importacionesRaw.status} - ${importacionesRaw.statusText}`);
         };
 
-        const datosEmpleados = await datosImportacionesRaw.json();
+        const datosEmpleados = await importacionesRaw.json();
 
         return datosEmpleados;
     } catch (error) {
+        console.error('Fetch importaciones failed: ', {
+            timestamp: new Date().toISOString(),
+            error: error instanceof Error ? error.message : error,
+            stack: error instanceof Error ? error.stack : undefined
+        });
+
         throw error;
     };
 };
 
-export async function fetchImportacionJornadas(params: fetchImportacionJornadasParams) {
+export async function setImportacionCompleta(params: SetImportacionCompletaDto) {
     try {
         const token = await getToken();
 
-        const datosImportacionJornadasParams = new URLSearchParams({
-            pagina: params.pagina.toString(),
-            filasPorPagina: params.filasPorPagina.toString()
-        });
-
-        const importacionJornadasRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_IMPORTACIONJORNADAS!.replace("{id}", params.idImportacion!.toString())}?${datosImportacionJornadasParams.toString()}`, {
-            method: "GET",
-            headers: {
-                Authorization: `Bearer ${token}`,
-            }
-        });
-
-        const importacionJornadas = await importacionJornadasRaw.json();
-
-        return importacionJornadas;
-    } catch (error) {
-        throw error;
-    };
-};
-
-export async function setImportacionCompleta(id: number) {
-    try {
-        const token = await getToken();
-
-        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_IMPORTACION!.replace("{id}", id!.toString())}`, {
-            method: "PATCH",
-            headers: {
-                Authorization: `Bearer ${token}`,
-            }
-        });
-
-        const respuesta = await respuestaRaw.json()
-
-        return respuesta;
-    } catch (error) {
-        throw error;
-    };
-};
-
-export async function deleteImportacion(parametros: deleteImportacionDTO) {
-    try {
-        const token = await getToken();
-
-        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_IMPORTACION!.replace("{id}", parametros.id!.toString())}`, {
-            method: "DELETE",
+        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_IMPORTACION}/${params.id}`, {
+            method: 'PATCH',
             headers: {
                 Authorization: `Bearer ${token}`,
             }
         });
 
         if (!respuestaRaw.ok) {
-            throw new Error("Error en la respuesta del servidor");
+            throw new Error(`Error editing importacion with id ${params.id}: ${respuestaRaw.status} - ${respuestaRaw.statusText}`);
+        };
+
+        const respuesta = await respuestaRaw.json()
+
+        return respuesta;
+    } catch (error) {
+        console.error('Edit importacion failed: ', {
+            id: params.id,
+            timestamp: new Date().toISOString(),
+            error: error instanceof Error ? error.message : error,
+            stack: error instanceof Error ? error.stack : undefined
+        });
+
+        throw error;
+    };
+};
+
+export async function deleteImportacion(params: DeleteImportacionDto) {
+    try {
+        const token = await getToken();
+
+        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_IMPORTACION}/${params.id}`, {
+            method: 'DELETE',
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        });
+
+        if (!respuestaRaw.ok) {
+            throw new Error(`Error deleting importacion with id ${params.id}: ${respuestaRaw.status} - ${respuestaRaw.statusText}`);
         };
 
         const respuesta = await respuestaRaw.json();
 
         return respuesta;
     } catch (error) {
+        console.error('Delete importacion failed: ', {
+            id: params.id,
+            timestamp: new Date().toISOString(),
+            error: error instanceof Error ? error.message : error,
+            stack: error instanceof Error ? error.stack : undefined
+        });
+
         throw error;
     };
 };

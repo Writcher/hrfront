@@ -1,7 +1,7 @@
-import { Menu, MenuItem } from "@mui/material";
-import { menuFiltrosProps } from "../../types";
+import { Menu, MenuItem } from '@mui/material';
+import { TablaEmpleadosFiltrosMenuProps } from '../../types/tablaEmpleados/tablaEmpleadosFiltrosMenuProps';
 
-export const MenuFiltros = ({
+export const TablaEmpleadosFiltrosMenu = ({
   anchorEl,
   open,
   onClose,
@@ -9,7 +9,7 @@ export const MenuFiltros = ({
   onSeleccionFiltroProyecto,
   onSeleccionBusquedaLegajo,
   onSeleccionFiltroTipoEmpleado,
-}: menuFiltrosProps) => (
+}: TablaEmpleadosFiltrosMenuProps) => (
   <Menu anchorEl={anchorEl} open={open} onClose={onClose}>
     <MenuItem onClick={onSeleccionBusquedaNombre}>Buscar por Nombre de Empleado</MenuItem>
     <MenuItem onClick={onSeleccionFiltroTipoEmpleado}>Filtrar por Tipo de Empleado</MenuItem>

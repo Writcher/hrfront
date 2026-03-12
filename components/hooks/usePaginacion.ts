@@ -1,5 +1,5 @@
-import { usePaginacionProps } from "@/lib/types/hooks";
-import { useState } from "react";
+import { usePaginacionProps } from '@/lib/types/hooks';
+import { useState } from 'react';
 
 export const usePaginacion = ({ filasIniciales }: usePaginacionProps) => {
 

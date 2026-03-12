@@ -1,4 +1,5 @@
-import { Control, UseFormWatch } from "react-hook-form";
+import { tipoEmpleado } from '@/components/ausencias/types';
+import { Control, UseFormWatch } from 'react-hook-form';
 
 
 //schema
@@ -31,7 +32,8 @@ export type botonesProps = {
 //useForm
 
 export type exportarExcelDatos = {
-    proyecto: number | '',
+    proyectos: number[],
+    tipoEmpleado: number | '',
     mes: number | '',
     quincena: number | '',
 };
@@ -45,4 +47,5 @@ export type exportarExcelDatos = {
 export type selectDatos = {
     proyectos: proyecto[],
     meses: mes[],
+    tiposEmpleado: tipoEmpleado[]
 };

@@ -1,5 +1,5 @@
-import { DropzoneInputProps, DropzoneRootProps } from "react-dropzone";
-import { Control, FieldErrors, UseFormClearErrors, UseFormSetError, UseFormSetValue, UseFormWatch } from "react-hook-form";
+import { DropzoneInputProps, DropzoneRootProps } from 'react-dropzone';
+import { Control, FieldErrors, UseFormClearErrors, UseFormSetError, UseFormSetValue, UseFormWatch } from 'react-hook-form';
 
 //schema
 

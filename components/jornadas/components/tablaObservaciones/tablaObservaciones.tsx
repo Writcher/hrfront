@@ -1,28 +1,27 @@
-import { Table, TableBody, TableCell, TableContainer, TableRow } from "@mui/material";
-import React from "react";
-import { observacionResumen, tablaJornadasResumenObservacionesProps } from "../../types";
-import { Encabezado } from "./tablaObservacionesEncabezado";
-import { Esqueleto } from "./tablaObservacionesEsqueleto";
-import { Fila } from "./tablaObservacionesFila";
+import { Table, TableBody, TableContainer } from '@mui/material';
+import { TablaObservacionesEncabezado } from './tablaObservacionesEncabezado';
+import { TablaObservacionesEsqueleto } from './tablaObservacionesEsqueleto';
+import { TablaObservacionesFila } from './tablaObservacionesFila';
+import { ObservacionResumen, TablaObservacionesProps } from '../../types/tablaObservaciones/tablaObservacionesProps';
 
 export const TablaObservaciones = ({
     observaciones,
     cargando,
     filas
-}: tablaJornadasResumenObservacionesProps) => {
+}: TablaObservacionesProps) => {
     return (
-        <TableContainer className="inner-table-container">
-            <Table stickyHeader size="small">
-                <Encabezado />
+        <TableContainer className='inner-table-container'>
+            <Table stickyHeader size='small'>
+                <TablaObservacionesEncabezado />
                 {cargando ? (
-                    <Esqueleto
+                    <TablaObservacionesEsqueleto
                         filas={filas}
                     />
                 ) : (
                     <TableBody>
                         {observaciones && (
-                            observaciones.map((observacion: observacionResumen, index) => (
-                                <Fila
+                            observaciones.map((observacion: ObservacionResumen, index) => (
+                                <TablaObservacionesFila
                                     observacion={observacion}
                                     key={index}
                                 />

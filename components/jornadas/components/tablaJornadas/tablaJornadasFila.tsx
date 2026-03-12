@@ -1,16 +1,18 @@
-import { TableRow } from "@mui/material";
-import { getDia } from "../../utils";
-import { filaJornadaProps, insertObservacionDatos, useObservacionFormularioDatos } from "../../types";
-import { useState } from "react";
-import { SubmitHandler } from "react-hook-form";
-import { useObservacionFormulario } from "../../hooks/useFormularioObservacion";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useSnackbar } from "@/lib/context/snackbarcontext";
-import { insertObservacion } from "@/services/observacion/service.observacion";
-import { Informacion } from "./filaJornadasInformacion";
-import { Formulario } from "./filaJornadasFormulario";
+import { TableRow } from '@mui/material';
+import { getDia } from '../../utils';
+import { useState } from 'react';
+import { SubmitHandler } from 'react-hook-form';
+import { useObservacionFormulario } from '../../hooks/useFormularioObservacion';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useSnackbar } from '@/lib/context/snackbarcontext';
+import { createObservacion, deleteObservacion } from '@/services/observacion/service.observacion';
+import { FilaJornadaInformacion } from './filaJornadasInformacion';
+import { FilaJornadaFormulario } from './filaJornadasFormulario';
+import { CreateObservacionDto, DeleteObservacionDto } from '@/lib/dtos/observacion';
+import { TablaJornadasFilaProps } from '../../types/tablaJornadas/tablaJornadasFilaProps';
+import { ObservacionForm } from '../../types/tablaJornadas/useObservacionForm';
 
-export function FilaJornada({ jornada }: filaJornadaProps) {
+export function TablaJornadasFila({ jornada }: TablaJornadasFilaProps) {
 
     const { control, reset, handleSubmit, formState: { isValid } } = useObservacionFormulario();
 
@@ -21,25 +23,42 @@ export function FilaJornada({ jornada }: filaJornadaProps) {
     const queryClient = useQueryClient();
 
     const mutacionCreate = useMutation({
-        mutationFn: (datos: insertObservacionDatos) => insertObservacion(datos),
+        mutationFn: (datos: CreateObservacionDto) => createObservacion(datos),
         onSuccess: () => {
-            showSuccess("Observacion creada correctamente");
+            showSuccess('Observacion creada correctamente');
             reset();
             setObservacionFormulario(false);
             queryClient.invalidateQueries({
-                queryKey: ["fetchJornadasEmpleado"]
+                queryKey: ['fetchJornadasEmpleado']
             });
         },
         onError: () => {
-            showError("Error al crear observacion");
+            showError('Error al crear observacion');
         }
     });
 
-    const onCreate: SubmitHandler<useObservacionFormularioDatos> = (datos) => {
+    const onCreate: SubmitHandler<ObservacionForm> = (datos) => {
         mutacionCreate.mutate({
             observacion: datos.observacion,
             id_jornada: jornada.id,
         });
+    };
+
+    const mutacionDelete = useMutation({
+        mutationFn: (datos: DeleteObservacionDto) => deleteObservacion(datos),
+        onSuccess: () => {
+            showSuccess('Observacion eliminada correctamente');
+            queryClient.invalidateQueries({
+                queryKey: ['fetchJornadasEmpleado']
+            });
+        },
+        onError: () => {
+            showError('Error al eliminar observacion');
+        }
+    });
+
+    const onDelete = (id: number) => {
+        mutacionDelete.mutate({ id });
     };
 
     const dia = getDia(jornada.fecha);
@@ -47,7 +66,7 @@ export function FilaJornada({ jornada }: filaJornadaProps) {
     return (
         <TableRow>
             {observacionFormulario ? (
-                <Formulario
+                <FilaJornadaFormulario
                     fecha={jornada.fecha}
                     dia={dia}
                     control={control}
@@ -57,9 +76,10 @@ export function FilaJornada({ jornada }: filaJornadaProps) {
                     setObservacionFormulario={setObservacionFormulario}
                 />
             ) : (
-                <Informacion
+                <FilaJornadaInformacion
                     dia={dia}
                     jornada={jornada}
+                    onDelete={onDelete}
                     setObservacionFormulario={setObservacionFormulario}
                 />
             )}

@@ -1,197 +1,305 @@
-"use server"
+'use server'
 
-import CONFIG from "@/config";
-import { deleteJornadaDTO, editJornadaDTO, fetchJornadasDTO, fetchJornadasPorImportacionDTO, insertJornadaDTO, updateJornadaTipoAusenciaDTO, validateJornadaDTO } from "@/lib/dtos/jornada";
-import { getToken } from "@/lib/utils/getToken";
+import CONFIG from '@/config';
+import { DeleteJornadaDto, EditJornadaDto, FetchJornadasDto, FetchJornadasPorImportacionDto, CreateJornadaDto, EditJornadaTipoAusenciaDto, ValidateJornadaDto, FetchResumenDto } from '@/lib/dtos/jornada';
+import { getToken } from '@/lib/utils/getToken';
 
-export async function fetchJornadas(parametros: fetchJornadasDTO) {
+export async function fetchJornadas(params: FetchJornadasDto) {
     try {
         const token = await getToken();
 
-        const jornadasParametros = new URLSearchParams({
-            filtroMes: parametros.filtroMes.toString() === '' ? '0' : parametros.filtroMes.toString(),
-            filtroQuincena: parametros.filtroQuincena.toString() === '' ? '0' : parametros.filtroQuincena.toString(),
-            filtroMarcasIncompletas: parametros.filtroMarcasIncompletas ? parametros.filtroMarcasIncompletas.toString() : "false",
-            pagina: parametros.pagina != null ? parametros.pagina.toString() : '',
-            filasPorPagina: parametros.filasPorPagina != null ? parametros.filasPorPagina.toString() : '',
-            ausencias: parametros.ausencias ? parametros.ausencias.toString() : "false",
-            filtroTipoAusencia: parametros.filtroTipoAusencia != null ? parametros.filtroTipoAusencia.toString() : '0'
-        });
+        const jornadasParams: Record<string, string> = {
+            page: params.pagina.toString(),
+            limit: params.filasPorPagina.toString(),
+        };
 
-        const jornadasRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_EMPLEADOJORNADAS!.replace("{id}", parametros.id_empleado!.toString())}?${jornadasParametros.toString()}`, {
-            method: "GET",
+        if (params.filtroMes !== '' && params.filtroMes !== 0) {
+            jornadasParams.id_mes = params.filtroMes.toString();
+        };
+
+        if (params.filtroQuincena !== '' && params.filtroQuincena !== 0) {
+            jornadasParams.quincena = params.filtroQuincena.toString();
+        };
+
+        if (params.ausencias) {
+            jornadasParams.ausencias = params.ausencias.toString();
+        };
+
+        if (params.filtroTipoAusencia === '') {
+            jornadasParams.id_tipoausencia = '0';
+        } else if (params.filtroTipoAusencia != null) {
+            jornadasParams.id_tipoausencia = params.filtroTipoAusencia.toString();
+        };
+
+        const jornadasUrlParams = new URLSearchParams(jornadasParams);
+
+        const jornadasRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_EMPLEADO}/${params.id_empleado}/jornada?${jornadasUrlParams}`, {
+            method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
             }
         });
 
         if (!jornadasRaw.ok) {
-            throw new Error("Error en la respuesta del servidor");
+            throw new Error(`Error fetching jornadas for employee with id ${params.id_empleado}: ${jornadasRaw.status} - ${jornadasRaw.statusText}`);
         };
 
         const jornadas = await jornadasRaw.json();
 
         return jornadas;
     } catch (error) {
+        console.error('Fetch jornadas failed: ', {
+            id_empleado: params.id_empleado,
+            timestamp: new Date().toISOString(),
+            error: error instanceof Error ? error.message : error,
+            stack: error instanceof Error ? error.stack : undefined
+        });
+
         throw error;
     };
 };
 
-export async function editJornada(parametros: editJornadaDTO) {
+export async function fetchResumen(params: FetchResumenDto) {
     try {
         const token = await getToken();
 
-        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_JORNADA!.replace("{id}", parametros.id!.toString())}`, {
-            method: "PATCH",
+        const resumenParams: Record<string, string> = {
+            id_mes: params.filtroMes.toString()
+        };
+
+        if (params.filtroQuincena !== '' && params.filtroQuincena !== 0) {
+            resumenParams.quincena = params.filtroQuincena.toString();
+        };
+
+        const resumenUrlParams = new URLSearchParams(resumenParams);
+
+        const resumenRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_EMPLEADO}/${params.id_empleado}/resumen?${resumenUrlParams}`, {
+            method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json"
+            }
+        });
+
+        if (!resumenRaw.ok) {
+            throw new Error(`Error jornadas for employee with id ${params.id_empleado}: ${resumenRaw.status} - ${resumenRaw.statusText}`);
+        };
+
+        const resumen = await resumenRaw.json();
+
+        return resumen;
+    } catch (error) {
+        console.error('Fetch resumen failed: ', {
+            id_empleado: params.id_empleado,
+            timestamp: new Date().toISOString(),
+            error: error instanceof Error ? error.message : error,
+            stack: error instanceof Error ? error.stack : undefined
+        });
+
+        throw error;
+    };
+};
+
+export async function editJornada(params: EditJornadaDto) {
+    try {
+        const token = await getToken();
+
+        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_JORNADA}/${params.id}/editar`, {
+            method: 'PATCH',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                entrada: parametros.entrada,
-                salida: parametros.salida,
-                accion: 'editar'
+                entrada: params.entrada,
+                salida: params.salida
             })
         });
 
         if (!respuestaRaw.ok) {
-            throw new Error("Error en la respuesta del servidor");
+            throw new Error(`Error editing jornada with id ${params.id}: ${respuestaRaw.status} - ${respuestaRaw.statusText}`);
         };
 
         const respuesta = await respuestaRaw.json();
 
         return respuesta;
     } catch (error) {
+        console.error('Edit jornada failed: ', {
+            id: params.id,
+            timestamp: new Date().toISOString(),
+            error: error instanceof Error ? error.message : error,
+            stack: error instanceof Error ? error.stack : undefined
+        });
+
         throw error;
     };
 };
 
-export async function deleteJornada(parametros: deleteJornadaDTO) {
+export async function deleteJornada(params: DeleteJornadaDto) {
     try {
         const token = await getToken();
 
-        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_JORNADA!.replace("{id}", parametros.id!.toString())}`, {
-            method: "DELETE",
+        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_JORNADA}/${params.id}`, {
+            method: 'DELETE',
             headers: {
                 Authorization: `Bearer ${token}`,
             }
         });
 
         if (!respuestaRaw.ok) {
-            throw new Error("Error en la respuesta del servidor");
+            throw new Error(`Error deleting jornada with id ${params.id}: ${respuestaRaw.status} - ${respuestaRaw.statusText}`);
         };
 
         const respuesta = await respuestaRaw.json();
 
         return respuesta;
     } catch (error) {
+        console.error('Delete jornada failed: ', {
+            id: params.id,
+            timestamp: new Date().toISOString(),
+            error: error instanceof Error ? error.message : error,
+            stack: error instanceof Error ? error.stack : undefined
+        });
+
         throw error;
     };
 };
 
-export async function validateJornada(parametros: validateJornadaDTO) {
+export async function validateJornada(params: ValidateJornadaDto) {
     try {
         const token = await getToken();
 
-        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_JORNADA!.replace("{id}", parametros.id!.toString())}`, {
-            method: "PATCH",
+        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_JORNADA}/${params.id}/validar`, {
+            method: 'PATCH',
             headers: {
-                "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({ accion: "validar" }),
+            }
         });
 
         if (!respuestaRaw.ok) {
-            throw new Error("Error en la respuesta del servidor");
+            throw new Error(`Error validating jornada with id ${params.id}: ${respuestaRaw.status} - ${respuestaRaw.statusText}`);
         };
 
         const respuesta = await respuestaRaw.json();
 
         return respuesta;
     } catch (error) {
+        console.error('Validate jornada failed: ', {
+            id: params.id,
+            timestamp: new Date().toISOString(),
+            error: error instanceof Error ? error.message : error,
+            stack: error instanceof Error ? error.stack : undefined
+        });
+
         throw error;
     };
 };
 
-export async function updateJornadaTipoAusencia(parametros: updateJornadaTipoAusenciaDTO) {
+export async function editJornadaTipoAusencia(params: EditJornadaTipoAusenciaDto) {
     try {
         const token = await getToken();
 
-        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_JORNADA!.replace("{id}", parametros.id_jornada!.toString())}`, {
-            method: "PATCH",
+        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_JORNADA}/${params.id_jornada}/justificar`, {
+            method: 'PATCH',
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
             },
-            body: JSON.stringify({ 
-                accion: "justificar",
-                tipoAusencia: parametros.tipoAusencia
+            body: JSON.stringify({
+                tipoAusencia: params.tipoAusencia
             }),
         });
 
         if (!respuestaRaw.ok) {
-            throw new Error("Error en la respuesta del servidor");
+            throw new Error(`Error editing jornada with id ${params.id_jornada}: ${respuestaRaw.status} - ${respuestaRaw.statusText}`);
         };
 
         const respuesta = await respuestaRaw.json();
 
         return respuesta;
     } catch (error) {
+        console.error('Edit jornada tipoAusencia failed: ', {
+            id: params.id_jornada,
+            timestamp: new Date().toISOString(),
+            error: error instanceof Error ? error.message : error,
+            stack: error instanceof Error ? error.stack : undefined
+        });
+
         throw error;
     };
 };
 
-export async function insertJornada(parametros: insertJornadaDTO) {
+export async function createJornada(params: CreateJornadaDto) {
     try {
         const token = await getToken();
 
-        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_CREAR_JORNADA}`, {
-            method: "POST",
+        const respuestaRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_JORNADA}`, {
+            method: 'POST',
             headers: {
                 Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json"
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify(parametros),
+            body: JSON.stringify({
+                entrada: params.entrada,
+                salida: params.salida,
+                entradaTarde: params.entradaTarde,
+                salidaTarde: params.salidaTarde,
+                fecha: params.fecha,
+                id_tipojornada: params.id_tipojornada === '' ? undefined : params.id_tipojornada,
+                id_tipoausencia: params.id_tipoausencia === '' ? undefined : params.id_tipoausencia,
+                observacion: params.observacion,
+                id_empleado: params.id_empleado
+            }),
         });
 
         if (!respuestaRaw.ok) {
-            throw new Error("Error en la respuesta del servidor");
+            throw new Error(`Error creating jornada: ${respuestaRaw.status} - ${respuestaRaw.statusText}`);
         };
 
         const respuesta = await respuestaRaw.json();
 
         return respuesta;
     } catch (error) {
+        console.error('Create jornada failed: ', {
+            timestamp: new Date().toISOString(),
+            error: error instanceof Error ? error.message : error,
+            stack: error instanceof Error ? error.stack : undefined
+        });
+
         throw error;
     };
 };
 
-export async function fetchJornadasPorImportacion(parametros: fetchJornadasPorImportacionDTO) {
+export async function fetchJornadasPorImportacion(params: FetchJornadasPorImportacionDto) {
     try {
         const token = await getToken();
 
-        const jornadasParametros = new URLSearchParams({
-            filtroMarcasIncompletas: parametros.filtroMarcasIncompletas.toString(),
-            pagina: parametros.pagina.toString(),
-            filasPorPagina: parametros.filasPorPagina.toString()
+        const jornadasUrlParams = new URLSearchParams({
+            page: params.pagina.toString(),
+            limit: params.filasPorPagina.toString()
         });
 
-        const jornadasRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_IMPORTACIONJORNADAS!.replace("{id}", parametros.id_importacion!.toString())}?${jornadasParametros.toString()}`, {
-            method: "GET",
+        const jornadasRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_IMPORTACION}/${params.id_importacion}/jornada?${jornadasUrlParams}`, {
+            method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
             }
         });
 
         if (!jornadasRaw.ok) {
-            throw new Error("Error en la respuesta del servidor");
+            throw new Error(`Error fetching jornadas: ${jornadasRaw.status} - ${jornadasRaw.statusText}`);
         };
 
         const jornadas = await jornadasRaw.json();
 
         return jornadas;
     } catch (error) {
+        console.error('Fetch jornadas failed: ', {
+            id_importacion: params.id_importacion,
+            timestamp: new Date().toISOString(),
+            error: error instanceof Error ? error.message : error,
+            stack: error instanceof Error ? error.stack : undefined
+        });
+
         throw error;
     };
 };

@@ -1,11 +1,11 @@
-import { hookGenericoPadreProps } from "../types";
+import { hookGenericoPadreProps } from '../types';
 
 export const useFiltros = ({ setValue, watch }: hookGenericoPadreProps) => {
     
-    const filtroMarcasIncompletas = watch("filtroMarcasIncompletas");
+    const filtroMarcasIncompletas = watch('filtroMarcasIncompletas');
 
     const handleCambioFiltroIncompletas = () => {
-        setValue("filtroMarcasIncompletas", !filtroMarcasIncompletas)
+        setValue('filtroMarcasIncompletas', !filtroMarcasIncompletas)
     };
 
     return {

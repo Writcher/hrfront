@@ -1,27 +1,33 @@
-"use server"
+'use server'
 
-import CONFIG from "@/config";
-import { getToken } from "@/lib/utils/getToken";
+import CONFIG from '@/config';
+import { getToken } from '@/lib/utils/getToken';
 
 export async function fetchModalidadesTrabajo() {
     try {
         const token = await getToken();
 
-        const mesesRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_MODALIDADESTRABAJO}`, {
-            method: "GET",
+        const modalidadesTrabajoRaw = await fetch(`${CONFIG.URL_BASE}${CONFIG.URL_MODALIDADTRABAJO}`, {
+            method: 'GET',
             headers: {
                 Authorization: `Bearer ${token}`,
             }
         });
 
-        if (!mesesRaw.ok) {
-            throw new Error("Error en la respuesta del servidor");
+        if (!modalidadesTrabajoRaw.ok) {
+            throw new Error(`Error fetching modalidadesTrabajo: ${modalidadesTrabajoRaw.status} - ${modalidadesTrabajoRaw.statusText}`);
         };
 
-        const meses = await mesesRaw.json();
+        const modalidadesTrabajo = await modalidadesTrabajoRaw.json();
 
-        return meses;
+        return modalidadesTrabajo;
     } catch (error) {
+        console.error('Fetch modalidadesTrabajo failed: ', {
+            timestamp: new Date().toISOString(),
+            error: error instanceof Error ? error.message : error,
+            stack: error instanceof Error ? error.stack : undefined
+        });
+
         throw error;
     };
 };

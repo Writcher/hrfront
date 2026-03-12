@@ -1,54 +1,54 @@
-import { Skeleton, TableBody, TableCell, TableRow } from "@mui/material";
-import { esqueletoProps } from "../../types";
+import { Skeleton, TableBody, TableCell, TableRow } from '@mui/material';
+import { TablaJornadasEsqueletoProps } from '../../types/tablaJornadas/tablaJornadasEsqueletoProps';
 
-export const Esqueleto = ({ filas }: esqueletoProps) => (
+export const TablaJornadasEsqueleto = ({ filas }: TablaJornadasEsqueletoProps) => (
     <TableBody>
         {Array.from({ length: filas }).map((_, index) => (
             <TableRow key={index}>
-                <TableCell align="left" size="small">
-                    <div className="flex items-center justify-start">
-                        <Skeleton variant="text" width={100} />
+                <TableCell align='left' size='small'>
+                    <div className='flex items-center justify-start'>
+                        <Skeleton variant='text' width={100} />
                     </div>
                 </TableCell>
-                <TableCell align="center" size="small">
-                    <div className="flex items-center justify-center">
-                        <Skeleton variant="text" width={100} />
+                <TableCell align='center' size='small'>
+                    <div className='flex items-center justify-center'>
+                        <Skeleton variant='text' width={100} />
                     </div>
                 </TableCell>
-                <TableCell align="center" size="small">
-                    <div className="flex items-center justify-center">
-                        <Skeleton variant="text" width={100} />
+                <TableCell align='center' size='small'>
+                    <div className='flex items-center justify-center'>
+                        <Skeleton variant='text' width={100} />
                     </div>
                 </TableCell>
-                <TableCell align="center" size="small">
-                    <div className="flex items-center justify-center">
-                        <Skeleton variant="text" width={100} />
+                <TableCell align='center' size='small'>
+                    <div className='flex items-center justify-center'>
+                        <Skeleton variant='text' width={100} />
                     </div>
                 </TableCell>
-                <TableCell align="center" size="small">
-                    <div className="flex items-center justify-center">
-                        <Skeleton variant="text" width={100} />
+                <TableCell align='center' size='small'>
+                    <div className='flex items-center justify-center'>
+                        <Skeleton variant='text' width={100} />
                     </div>
                 </TableCell>
-                <TableCell align="center" size="small">
-                    <div className="flex items-center justify-center">
-                        <Skeleton variant="text" width={100} />
+                <TableCell align='center' size='small'>
+                    <div className='flex items-center justify-center'>
+                        <Skeleton variant='text' width={100} />
                     </div>
                 </TableCell>
-                <TableCell align="center" size="small">
-                    <div className="flex items-center justify-center">
-                        <Skeleton variant="text" width={100} />
+                <TableCell align='center' size='small'>
+                    <div className='flex items-center justify-center'>
+                        <Skeleton variant='text' width={100} />
                     </div>
                 </TableCell>
-                <TableCell align="center" size="small">
-                    <div className="flex items-center justify-center">
-                        <Skeleton variant="text" width={100} />
+                <TableCell align='center' size='small'>
+                    <div className='flex items-center justify-center'>
+                        <Skeleton variant='text' width={100} />
                     </div>
                 </TableCell>
-                <TableCell align="center" size="small">
-                    <div className="flex items-center justify-end gap-2">
-                        <Skeleton variant="rectangular" className="!rounded" width={60} height={30} />
-                        <Skeleton variant="rectangular" className="!rounded" width={60} height={30} />
+                <TableCell align='center' size='small'>
+                    <div className='flex items-center justify-end gap-2'>
+                        <Skeleton variant='rectangular' className='!rounded' width={60} height={30} />
+                        <Skeleton variant='rectangular' className='!rounded' width={60} height={30} />
                     </div>
                 </TableCell>
             </TableRow>

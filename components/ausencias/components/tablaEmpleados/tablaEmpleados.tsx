@@ -1,15 +1,14 @@
-import { Table, TableBody, TableContainer } from "@mui/material";
-import React from "react";
-import { Esqueleto } from "./tablaEmpleadosEsqueleto";
-import { empleado, tablaEmpleadosProps } from "../../types";
-import { Fila } from "./tablaEmpleadosFila";
-import { Encabezado } from "./tablaEmpleadosEncabezado";
+import { Table, TableBody, TableContainer } from '@mui/material';
+import { Esqueleto } from './tablaEmpleadosEsqueleto';
+import { empleado, tablaEmpleadosProps } from '../../types';
+import { Fila } from './tablaEmpleadosFila';
+import { Encabezado } from './tablaEmpleadosEncabezado';
 
 export const TablaEmpleados = ({ empleados, cargando, idFilaExpandida, filas, columna, direccion, onOrden, onExpandirFila, esAdministrativo, esRRHH, filtroTipoAusencia, filtroMes, filtroQuincena }: tablaEmpleadosProps) => {
   return (
     <>
       {cargando || empleados && empleados.length > 0 ? (
-        <TableContainer className="outer-table-container">
+        <TableContainer className='outer-table-container flex-1 overflow-auto'>
           <Table stickyHeader>
             <Encabezado
               onOrden={onOrden}
@@ -41,8 +40,8 @@ export const TablaEmpleados = ({ empleados, cargando, idFilaExpandida, filas, co
         </TableContainer>
       ) : null}
       {!cargando && (!empleados || empleados.length === 0) && (
-        <div className="flex items-center justify-center py-[5vh] h-full w-full text-gray-700 font-medium text-[clamp(0.25rem,4vw,0.8rem)]">
-          No se encontraron empleados que cumplan los criterios seleccionados
+        <div className='flex items-center justify-center py-8 h-full w-full text-gray-700 font-medium text-sm'>
+          No se encontraron empleados
         </div>
       )}
     </>

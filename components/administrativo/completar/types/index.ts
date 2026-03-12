@@ -1,4 +1,4 @@
-import { UseFormGetValues, UseFormSetValue, UseFormWatch } from "react-hook-form";
+import { UseFormSetValue, UseFormWatch } from 'react-hook-form';
 
 //schema
 
@@ -11,6 +11,7 @@ export type jornada = {
     id: number,
     id_tipoausencia: number,
     ausencia: boolean,
+    observaciones: { id: number, texto: string }[],
 };
 
 export type tipoAusencia = {

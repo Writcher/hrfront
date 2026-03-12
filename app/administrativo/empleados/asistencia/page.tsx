@@ -1,14 +1,14 @@
-import Asistencia from "@/components/administrativo/asistencia";
+import Asistencia from '@/components/administrativo/asistencia';
 
 export default function PaginaPresentes() {
     return(
-        <div className="flex flex-col gap-2 w-full h-full">
-            <div className="flex items-center justify-center h-[10%] text-gray-800 text-center font-bold">
-                <p className="text-[clamp(1rem,5vw,2rem)]">
+        <div className='flex flex-col gap-2 w-full h-full'>
+            <div className='flex items-center justify-center h-[10%] text-gray-800 text-center font-bold'>
+                <p className='text-[clamp(1rem,5vw,2rem)]'>
                     Asistencia
                 </p>
             </div>
-            <div className="flex items-center justify-center h-[90%]">
+            <div className='flex items-center justify-center h-[90%]'>
                 <Asistencia />
             </div>
         </div>

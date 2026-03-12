@@ -1,36 +1,36 @@
-import { Skeleton, TableBody, TableCell, TableRow } from "@mui/material";
+import { Skeleton, TableBody, TableCell, TableRow } from '@mui/material';
 
-export const EsqueletoNoMensual = () => (
+export const TablaResumenEsqueletoNoMensual = () => (
     <TableBody>
         <TableRow>
-            <TableCell align="center" size="small">
-                <div className="flex items-center justify-center">
-                    <Skeleton variant="text" width={100} />
+            <TableCell align='center' size='small'>
+                <div className='flex items-center justify-center'>
+                    <Skeleton variant='text' width={100} />
                 </div>
             </TableCell>
-            <TableCell align="center" size="small">
-                <div className="flex items-center justify-center">
-                    <Skeleton variant="text" width={100} />
+            <TableCell align='center' size='small'>
+                <div className='flex items-center justify-center'>
+                    <Skeleton variant='text' width={100} />
                 </div>
             </TableCell>
-            <TableCell align="center" size="small">
-                <div className="flex items-center justify-center">
-                    <Skeleton variant="text" width={100} />
+            <TableCell align='center' size='small'>
+                <div className='flex items-center justify-center'>
+                    <Skeleton variant='text' width={100} />
                 </div>
             </TableCell>
-            <TableCell align="center" size="small">
-                <div className="flex items-center justify-center">
-                    <Skeleton variant="text" width={100} />
+            <TableCell align='center' size='small'>
+                <div className='flex items-center justify-center'>
+                    <Skeleton variant='text' width={100} />
                 </div>
             </TableCell>
-            <TableCell align="center" size="small">
-                <div className="flex items-center justify-center">
-                    <Skeleton variant="text" width={100} />
+            <TableCell align='center' size='small'>
+                <div className='flex items-center justify-center'>
+                    <Skeleton variant='text' width={100} />
                 </div>
             </TableCell>
-            <TableCell align="center" size="small">
-                <div className="flex items-center justify-center">
-                    <Skeleton variant="text" width={100} />
+            <TableCell align='center' size='small'>
+                <div className='flex items-center justify-center'>
+                    <Skeleton variant='text' width={100} />
                 </div>
             </TableCell>
         </TableRow>

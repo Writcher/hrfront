@@ -1,4 +1,4 @@
-import { Control, UseFormGetValues, UseFormReset, UseFormSetValue, UseFormWatch } from "react-hook-form";
+import { Control, UseFormGetValues, UseFormReset, UseFormSetValue, UseFormWatch } from 'react-hook-form';
 
 //schema
 
@@ -122,24 +122,6 @@ export type usuarioFormularioDatos = {
   nombre: string,
   correo: string,
 };
-
-//mutations
-
-export type insertUsuarioParametros = {
-  contraseña: string,
-  correo: string,
-  nombre: string,
-  id_tipousuario: number | '',
-};
-
-export type editUsuarioParametros = {
-  id: number,
-  nombre: string,
-  correo: string,
-  id_tipousuario: number | '',
-};
-
-//responses
 
 
 

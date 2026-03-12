@@ -1,20 +1,20 @@
-import { hookGenericoProps } from "../types";
+import { hookGenericoProps } from '../types';
 
 export const useFiltros = ({ setValue, watch }: hookGenericoProps) => {
 
-    const filtroIncompletas = watch("filtroIncompletas");
+    const filtroIncompletas = watch('filtroIncompletas');
 
     const handleLimpiarFiltros = () => {
-        setValue("filtroProyecto", '');
-        setValue("filtroIncompletas", false)
+        setValue('filtroProyecto', '');
+        setValue('filtroIncompletas', false)
     };
 
     const handleCambioFiltroIncompletas = () => {
-        setValue("filtroIncompletas", !filtroIncompletas)
+        setValue('filtroIncompletas', !filtroIncompletas)
     };
 
     const handleCambioFiltroProyecto = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setValue("filtroProyecto", Number(event.target.value));
+        setValue('filtroProyecto', Number(event.target.value));
     };
     
     return {
