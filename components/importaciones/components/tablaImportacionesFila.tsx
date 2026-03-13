@@ -47,7 +47,7 @@ export default function Fila({ importacion, esAdministrativo }: filaImportacionP
                         day: 'numeric',
                         month: 'numeric',
                         year: '2-digit'
-                    }).format(new Date(importacion.fecha)).replace(/\//g, '-')}
+                    }).format(new Date(importacion.fecha.replace('Z', ''))).replace(/\//g, '-')}
                 </div>
             </TableCell>
             <TableCell align='center' size='small'>

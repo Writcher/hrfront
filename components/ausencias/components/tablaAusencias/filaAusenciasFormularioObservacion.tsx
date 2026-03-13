@@ -15,7 +15,7 @@ export const FormularioObservacion = ({ fecha, dia, control, creando, camposVali
                     day: 'numeric',
                     month: 'numeric',
                     year: '2-digit'
-                }).format(new Date(fecha)).replace(/\//g, '-')}
+                }).format(new Date(fecha.replace('Z', ''))).replace(/\//g, '-')}
             </div>
         </TableCell>
         <TableCell colSpan={2} align='center' size='small'>

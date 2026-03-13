@@ -181,7 +181,7 @@ export function Fila({ jornada, tiposAusencia, tiposAusenciaCargando }: filaJorn
                             day: 'numeric',
                             month: 'numeric',
                             year: '2-digit'
-                        }).format(new Date(jornada.fecha)).replace(/\//g, '-')}
+                        }).format(new Date(jornada.fecha.replace('Z', ''))).replace(/\//g, '-')}
                     </div>
                 </TableCell>
                 <TableCell align='center' size='small'>

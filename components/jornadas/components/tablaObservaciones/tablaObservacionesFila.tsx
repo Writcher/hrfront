@@ -10,7 +10,7 @@ export const TablaObservacionesFila = ({ observacion }: TablaObservacionesFilaPr
                     day: 'numeric',
                     month: 'numeric',
                     year: '2-digit'
-                }).format(new Date(observacion.fecha)).replace(/\//g, '-')}
+                }).format(new Date(observacion.fecha.replace('Z', ''))).replace(/\//g, '-')}
             </div>
         </TableCell>
         <TableCell align='left' size='small' width='80%'>
