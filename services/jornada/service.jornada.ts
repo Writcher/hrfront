@@ -205,7 +205,7 @@ export async function editJornadaTipoAusencia(params: EditJornadaTipoAusenciaDto
                 Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({
-                tipoAusencia: params.tipoAusencia
+                id_tipoausencia: params.tipoAusencia
             }),
         });
 
