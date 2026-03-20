@@ -6,11 +6,12 @@ export const TablaObservacionesFila = ({ observacion }: TablaObservacionesFilaPr
         <TableCell align='left' size='small' width='20%'>
             <div className='text-gray-700 font-medium'>
                 {new Intl.DateTimeFormat('es-AR', {
+                    timeZone: 'UTC',
                     weekday: 'long',
                     day: 'numeric',
                     month: 'numeric',
                     year: '2-digit'
-                }).format(new Date(observacion.fecha.replace('Z', ''))).replace(/\//g, '-')}
+                }).format(new Date(observacion.fecha)).replace(/\//g, '-')}
             </div>
         </TableCell>
         <TableCell align='left' size='small' width='80%'>
